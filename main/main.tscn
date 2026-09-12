@@ -1,0 +1,34 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://main/main.gd" id="1_main"]
+[ext_resource type="PackedScene" path="res://player/player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://enemy/crowd/crowd_manager.gd" id="3_crowd_manager"]
+[ext_resource type="Script" path="res://enemy/spawner/spawn_area.gd" id="4_spawn_area"]
+[ext_resource type="Script" path="res://enemy/spawner/enemy_spawner.gd" id="5_enemy_spawner"]
+[ext_resource type="PackedScene" path="res://enemy/enemy.tscn" id="6_enemy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_spawn_area"]
+size = Vector2(1920, 1080)
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_main")
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="CrowdManager" type="Node" parent="."]
+script = ExtResource("3_crowd_manager")
+
+[node name="SpawnArea" type="Area2D" parent="."]
+position = Vector2(960, 540)
+monitoring = false
+monitorable = false
+script = ExtResource("4_spawn_area")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpawnArea"]
+shape = SubResource("RectangleShape2D_spawn_area")
+
+[node name="EnemySpawner" type="Node" parent="."]
+script = ExtResource("5_enemy_spawner")
+enemy_scene = ExtResource("6_enemy")

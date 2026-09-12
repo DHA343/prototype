@@ -1,6 +1,8 @@
 class_name Enemy
 extends Node2D
 
+signal died(enemy: Enemy)
+
 @export_group("Movement")
 @export_range(0.0, 1000.0, 10.0, "suffix:unit/s") var move_speed: float = 180.0
 @export_range(0.0, 200.0, 1.0, "suffix:unit") var stop_distance: float = 36.0
@@ -74,6 +76,7 @@ func _on_hurtbox_hit_received(hit: HitData) -> void:
 
 
 func _on_health_died() -> void:
+	died.emit(self)
 	queue_free()
 
 
