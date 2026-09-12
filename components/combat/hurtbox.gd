@@ -6,6 +6,11 @@ signal hit_received(hit: HitData)
 @onready var _collision_shape: CollisionShape2D = $CollisionShape2D
 
 
+func _ready() -> void:
+	monitoring = false
+	monitorable = true
+
+
 func receive_hit(hit: HitData) -> void:
 	hit_received.emit(hit)
 

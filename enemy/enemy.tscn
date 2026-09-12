@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://bxq2vprxoho0o"]
+
+[ext_resource type="Script" uid="uid://o7kuw3081s8k" path="res://enemy/enemy.gd" id="1_enemy"]
+[ext_resource type="Script" uid="uid://ckpqhc1x4nwet" path="res://components/combat/hurtbox.gd" id="2_hurtbox"]
+[ext_resource type="Script" uid="uid://dnyf0tl6ivkvh" path="res://components/combat/health.gd" id="3_health"]
+[ext_resource type="Script" uid="uid://di4xqdiuawg5d" path="res://components/movement/knockback.gd" id="4_knockback"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hurtbox"]
+radius = 20.0
+
+[node name="Enemy" type="Node2D" unique_id=1916068948]
+script = ExtResource("1_enemy")
+
+[node name="Visual" type="Polygon2D" parent="." unique_id=506864925]
+color = Color(1, 0.3, 0.32, 1)
+polygon = PackedVector2Array(-20, 0, -18.4776, -7.6537, -14.1421, -14.1421, -7.6537, -18.4776, 0, -20, 7.6537, -18.4776, 14.1421, -14.1421, 18.4776, -7.6537, 20, 0, 18.4776, 7.6537, 14.1421, 14.1421, 7.6537, 18.4776, 0, 20, -7.6537, 18.4776, -14.1421, 14.1421, -18.4776, 7.6537)
+
+[node name="Hurtbox" type="Area2D" parent="." unique_id=1731161422]
+monitoring = false
+script = ExtResource("2_hurtbox")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=152707756]
+shape = SubResource("CircleShape2D_hurtbox")
+
+[node name="Health" type="Node" parent="." unique_id=1888851119]
+script = ExtResource("3_health")
+
+[node name="Knockback" type="Node" parent="." unique_id=534943770]
+script = ExtResource("4_knockback")
