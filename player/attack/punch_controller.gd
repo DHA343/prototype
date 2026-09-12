@@ -13,9 +13,9 @@ var _cooldown: float = 0.0
 
 
 func _ready() -> void:
-	assert(_player != null, "PunchController: Playerの子として配置する必要があります")
-	assert(_attack_root != null, "PunchController: AttackRootが必要です")
-	assert(punch_attack_scene != null, "PunchController: punch_attack_sceneが必要です")
+	assert(_player != null, "Must be placed under a Player node.")
+	assert(_attack_root != null, "An AttackRoot node is required.")
+	assert(punch_attack_scene != null, "punch_attack_scene is required.")
 
 
 func _process(delta: float) -> void:
@@ -35,7 +35,7 @@ func _spawn_punch() -> void:
 	var instance := punch_attack_scene.instantiate()
 	var punch_attack := instance as PunchAttack
 	if punch_attack == null:
-		push_error("PunchController: punch_attack_sceneはPunchAttackをrootに持つPackedSceneである必要があります")
+		push_error("punch_attack_scene must be a PackedScene with a PunchAttack root node.")
 		instance.queue_free()
 		return
 

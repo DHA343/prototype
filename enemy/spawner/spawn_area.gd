@@ -13,7 +13,7 @@ var bounds: Rect2:
 func _ready() -> void:
 	monitoring = false
 	monitorable = false
-	assert(_rectangle != null, "SpawnArea: CollisionShape2DにはRectangleShape2Dが必要です")
+	assert(_rectangle != null, "CollisionShape2D must use a RectangleShape2D shape.")
 
 
 func random_point() -> Vector2:

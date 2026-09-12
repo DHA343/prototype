@@ -45,7 +45,7 @@ func _spawn_enemy() -> Enemy:
 	var instance := enemy_scene.instantiate()
 	var enemy := instance as Enemy
 	if enemy == null:
-		push_error("EnemySpawner: enemy_sceneはEnemyをrootに持つPackedSceneである必要があります")
+		push_error("enemy_scene must be a PackedScene with an Enemy root node.")
 		instance.queue_free()
 		return null
 
@@ -73,19 +73,19 @@ func _on_respawn_timer_timeout() -> void:
 
 func _has_valid_setup() -> bool:
 	if enemy_scene == null:
-		push_error("EnemySpawner: enemy_sceneが未設定のため開始できません")
+		push_error("enemy_scene is not assigned.")
 		return false
 	if not is_instance_valid(_target):
-		push_error("EnemySpawner: targetが未設定のため開始できません")
+		push_error("target is not assigned.")
 		return false
 	if not is_instance_valid(_crowd_manager):
-		push_error("EnemySpawner: crowd_managerが未設定のため開始できません")
+		push_error("crowd_manager is not assigned.")
 		return false
 	if not is_instance_valid(_spawn_parent):
-		push_error("EnemySpawner: spawn_parentが未設定のため開始できません")
+		push_error("spawn_parent is not assigned.")
 		return false
 	if not is_instance_valid(_spawn_area):
-		push_error("EnemySpawner: spawn_areaが未設定のため開始できません")
+		push_error("spawn_area is not assigned.")
 		return false
 
 	return true
