@@ -1,9 +1,11 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene format=3 uid="uid://dntlcrcd1rsf"]
 
-[ext_resource type="Script" path="res://player/player.gd" id="1_player"]
-[ext_resource type="Script" path="res://components/combat/hurtbox.gd" id="2_hurtbox"]
-[ext_resource type="Script" path="res://components/combat/health.gd" id="3_health"]
-[ext_resource type="Script" path="res://components/movement/knockback.gd" id="4_knockback"]
+[ext_resource type="Script" uid="uid://dllmoyl0ui85t" path="res://player/player.gd" id="1_player"]
+[ext_resource type="Script" uid="uid://ckpqhc1x4nwet" path="res://components/combat/hurtbox.gd" id="2_hurtbox"]
+[ext_resource type="Script" uid="uid://dnyf0tl6ivkvh" path="res://components/combat/health.gd" id="3_health"]
+[ext_resource type="Script" uid="uid://di4xqdiuawg5d" path="res://components/movement/knockback.gd" id="4_knockback"]
+[ext_resource type="Script" uid="uid://v6duqyyix1lw" path="res://player/attack/punch_controller.gd" id="5_punch_controller"]
+[ext_resource type="PackedScene" path="res://player/attack/punch_attack.tscn" id="6_punch_attack"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_body"]
 radius = 24.0
@@ -11,25 +13,35 @@ radius = 24.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_hurtbox"]
 radius = 24.0
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" unique_id=571282771]
 position = Vector2(960, 540)
 script = ExtResource("1_player")
 
-[node name="Visual" type="Polygon2D" parent="."]
-polygon = PackedVector2Array(-24, 0, -22.1731, -9.1844, -16.9706, -16.9706, -9.1844, -22.1731, 0, -24, 9.1844, -22.1731, 16.9706, -16.9706, 22.1731, -9.1844, 24, 0, 22.1731, 9.1844, 16.9706, 16.9706, 9.1844, 22.1731, 0, 24, -9.1844, 22.1731, -16.9706, 16.9706, -22.1731, 9.1844)
+[node name="Visual" type="Polygon2D" parent="." unique_id=1486397048]
 color = Color(0.26, 0.75, 1, 1)
+polygon = PackedVector2Array(-24, 0, -22.1731, -9.1844, -16.9706, -16.9706, -9.1844, -22.1731, 0, -24, 9.1844, -22.1731, 16.9706, -16.9706, 22.1731, -9.1844, 24, 0, 22.1731, 9.1844, 16.9706, 16.9706, 9.1844, 22.1731, 0, 24, -9.1844, 22.1731, -16.9706, 16.9706, -22.1731, 9.1844)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1372838565]
 shape = SubResource("CircleShape2D_body")
 
-[node name="Hurtbox" type="Area2D" parent="."]
+[node name="Hurtbox" type="Area2D" parent="." unique_id=1615724665]
+collision_layer = 2
+collision_mask = 0
+monitoring = false
 script = ExtResource("2_hurtbox")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=644716962]
 shape = SubResource("CircleShape2D_hurtbox")
 
-[node name="Health" type="Node" parent="."]
+[node name="Health" type="Node" parent="." unique_id=941473666]
 script = ExtResource("3_health")
 
-[node name="Knockback" type="Node" parent="."]
+[node name="Knockback" type="Node" parent="." unique_id=1590308592]
 script = ExtResource("4_knockback")
+
+[node name="AttackRoot" type="Node2D" parent="." unique_id=1909347542]
+z_index = 1
+
+[node name="PunchController" type="Node" parent="." unique_id=1374205450]
+script = ExtResource("5_punch_controller")
+punch_attack_scene = ExtResource("6_punch_attack")
