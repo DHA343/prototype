@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://player/player.gd" id="1_player"]
+[ext_resource type="Script" path="res://components/combat/hurtbox.gd" id="2_hurtbox"]
+[ext_resource type="Script" path="res://components/combat/health.gd" id="3_health"]
+[ext_resource type="Script" path="res://components/movement/knockback.gd" id="4_knockback"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_body"]
+radius = 24.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hurtbox"]
+radius = 24.0
+
+[node name="Player" type="CharacterBody2D"]
+position = Vector2(960, 540)
+script = ExtResource("1_player")
+
+[node name="Visual" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-24, 0, -22.1731, -9.1844, -16.9706, -16.9706, -9.1844, -22.1731, 0, -24, 9.1844, -22.1731, 16.9706, -16.9706, 22.1731, -9.1844, 24, 0, 22.1731, 9.1844, 16.9706, 16.9706, 9.1844, 22.1731, 0, 24, -9.1844, 22.1731, -16.9706, 16.9706, -22.1731, 9.1844)
+color = Color(0.26, 0.75, 1, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_body")
+
+[node name="Hurtbox" type="Area2D" parent="."]
+script = ExtResource("2_hurtbox")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+shape = SubResource("CircleShape2D_hurtbox")
+
+[node name="Health" type="Node" parent="."]
+script = ExtResource("3_health")
+
+[node name="Knockback" type="Node" parent="."]
+script = ExtResource("4_knockback")
