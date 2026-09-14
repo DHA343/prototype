@@ -1,9 +1,8 @@
-[gd_resource type="Resource" script_class="CrowdSettings" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="CrowdSettings" format=3 uid="uid://c5227u0mmg3mn"]
 
-[ext_resource type="Script" path="res://components/crowd/crowd_settings.gd" id="1_crowd_settings"]
+[ext_resource type="Script" uid="uid://c7syy6xgvqry1" path="res://systems/crowd/crowd_settings.gd" id="1_gayw4"]
 
 [resource]
-script = ExtResource("1_crowd_settings")
-radius = 16.0
-avoidance_radius = 22.0
-response = 1.0
+script = ExtResource("1_gayw4")
+radius = 12.0
+avoidance_radius = 24.0

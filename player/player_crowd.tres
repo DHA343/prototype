@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="CrowdSettings" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="CrowdSettings" format=3]
 
-[ext_resource type="Script" path="res://components/crowd/crowd_settings.gd" id="1_crowd_settings"]
+[ext_resource type="Script" uid="uid://c7syy6xgvqry1" path="res://systems/crowd/crowd_settings.gd" id="1_crowd_settings"]
 
 [resource]
 script = ExtResource("1_crowd_settings")
