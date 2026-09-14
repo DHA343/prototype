@@ -19,10 +19,22 @@ extends Node
 	set(value):
 		max_correction_speed = maxf(value, 0.0)
 
+@export_group("Separation")
+@export_range(0.0, 1000.0, 10.0, "suffix:unit/s") var separation_speed: float = 100.0:
+	set(value):
+		separation_speed = maxf(value, 0.0)
+
+@export_range(0.1, 8.0, 0.1) var separation_power: float = 2.0:
+	set(value):
+		separation_power = clampf(value, 0.1, 8.0)
+
 var _members: Array[Node2D] = []
 var _radii: Array[float] = []
+var _avoidance_radii: Array[float] = []
+var _responses: Array[float] = []
 var _positions: Array[Vector2] = []
 var _corrections: Array[Vector2] = []
+var _separation_velocities: Array[Vector2] = []
 var _grid: Dictionary = {}
 var _pairs: Array[Vector2i] = []
 
@@ -39,21 +51,34 @@ func _physics_process(delta: float) -> void:
 	_copy_positions()
 	_build_grid()
 	_build_pairs()
+	_apply_separation(delta)
 	_solve(delta)
 	_write_positions()
 
 
-func register_member(member: Node2D, radius: float) -> void:
+func register_member(
+	member: Node2D,
+	radius: float,
+	avoidance_radius: float,
+	response: float
+) -> void:
 	if not is_instance_valid(member):
 		return
 
+	var safe_radius := maxf(radius, 0.0)
+	var safe_avoidance_radius := maxf(avoidance_radius, safe_radius)
+	var safe_response := clampf(response, 0.0, 10.0)
 	var member_index := _members.find(member)
 	if member_index >= 0:
-		_radii[member_index] = maxf(radius, 0.0)
+		_radii[member_index] = safe_radius
+		_avoidance_radii[member_index] = safe_avoidance_radius
+		_responses[member_index] = safe_response
 		return
 
 	_members.append(member)
-	_radii.append(maxf(radius, 0.0))
+	_radii.append(safe_radius)
+	_avoidance_radii.append(safe_avoidance_radius)
+	_responses.append(safe_response)
 
 
 func unregister_member(member: Node2D) -> void:
@@ -63,11 +88,14 @@ func unregister_member(member: Node2D) -> void:
 
 	_members.remove_at(member_index)
 	_radii.remove_at(member_index)
+	_avoidance_radii.remove_at(member_index)
+	_responses.remove_at(member_index)
 
 
 func _copy_positions() -> void:
 	_positions.resize(_members.size())
 	_corrections.resize(_members.size())
+	_separation_velocities.resize(_members.size())
 
 	for member_index in _members.size():
 		_positions[member_index] = _members[member_index].global_position
@@ -77,8 +105,8 @@ func _build_grid() -> void:
 	_grid.clear()
 
 	for member_index in _members.size():
-		var radius := _radii[member_index]
-		var radius_offset := Vector2(radius, radius)
+		var avoidance_radius := _avoidance_radii[member_index]
+		var radius_offset := Vector2(avoidance_radius, avoidance_radius)
 		var minimum_cell := _world_to_cell(_positions[member_index] - radius_offset)
 		var maximum_cell := _world_to_cell(_positions[member_index] + radius_offset)
 
@@ -114,6 +142,52 @@ func _build_pairs() -> void:
 				_pairs.append(pair)
 
 
+func _apply_separation(delta: float) -> void:
+	for member_index in _members.size():
+		_separation_velocities[member_index] = Vector2.ZERO
+
+	for pair in _pairs:
+		var member_a_index := pair.x
+		var member_b_index := pair.y
+		var response_sum := _responses[member_a_index] + _responses[member_b_index]
+		if response_sum <= 0.0:
+			continue
+
+		var minimum_distance := _radii[member_a_index] + _radii[member_b_index]
+		var avoidance_distance := (
+			_avoidance_radii[member_a_index] + _avoidance_radii[member_b_index]
+		)
+		if avoidance_distance <= minimum_distance:
+			continue
+
+		var offset := _positions[member_b_index] - _positions[member_a_index]
+		var distance := offset.length()
+		if distance >= avoidance_distance:
+			continue
+
+		var normal := _fallback_normal(member_a_index, member_b_index)
+		if not is_zero_approx(distance):
+			normal = offset / distance
+
+		var proximity := clampf(
+			(avoidance_distance - distance) / (avoidance_distance - minimum_distance),
+			0.0,
+			1.0
+		)
+		var strength := pow(proximity, separation_power)
+		var pair_velocity := normal * separation_speed * strength
+		var weight_a := _responses[member_a_index] / response_sum
+		var weight_b := _responses[member_b_index] / response_sum
+
+		_separation_velocities[member_a_index] -= pair_velocity * weight_a
+		_separation_velocities[member_b_index] += pair_velocity * weight_b
+
+	var separation_delta := maxf(delta, 0.0)
+	for member_index in _members.size():
+		var velocity := _separation_velocities[member_index].limit_length(separation_speed)
+		_positions[member_index] += velocity * separation_delta
+
+
 func _solve(delta: float) -> void:
 	var iteration_count := solver_iterations
 	var max_iteration_correction := max_correction_speed * maxf(delta, 0.0)
@@ -137,14 +211,20 @@ func _accumulate_corrections() -> void:
 		if distance >= minimum_distance:
 			continue
 
+		var response_sum := _responses[member_a_index] + _responses[member_b_index]
+		if response_sum <= 0.0:
+			continue
+
 		var normal := _fallback_normal(member_a_index, member_b_index)
 		if not is_zero_approx(distance):
 			normal = delta / distance
 
 		var overlap := minimum_distance - distance
-		var half_correction := normal * overlap * stiffness * 0.5
-		_corrections[member_a_index] -= half_correction
-		_corrections[member_b_index] += half_correction
+		var correction := normal * overlap * stiffness
+		var weight_a := _responses[member_a_index] / response_sum
+		var weight_b := _responses[member_b_index] / response_sum
+		_corrections[member_a_index] -= correction * weight_a
+		_corrections[member_b_index] += correction * weight_b
 
 
 func _apply_corrections(max_iteration_correction: float) -> void:
@@ -167,6 +247,8 @@ func _remove_invalid_members() -> void:
 
 		_members.remove_at(member_index)
 		_radii.remove_at(member_index)
+		_avoidance_radii.remove_at(member_index)
+		_responses.remove_at(member_index)
 
 
 func _world_to_cell(world_position: Vector2) -> Vector2i:

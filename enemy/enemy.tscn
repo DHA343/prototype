@@ -4,12 +4,14 @@
 [ext_resource type="Script" uid="uid://ckpqhc1x4nwet" path="res://components/combat/hurtbox.gd" id="2_hurtbox"]
 [ext_resource type="Script" uid="uid://dnyf0tl6ivkvh" path="res://components/combat/health.gd" id="3_health"]
 [ext_resource type="Script" uid="uid://di4xqdiuawg5d" path="res://components/movement/knockback.gd" id="4_knockback"]
+[ext_resource type="Resource" path="res://enemy/enemy_crowd.tres" id="5_enemy_crowd"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hurtbox"]
 radius = 20.0
 
 [node name="Enemy" type="Node2D" unique_id=1916068948]
 script = ExtResource("1_enemy")
+crowd = ExtResource("5_enemy_crowd")
 
 [node name="Visual" type="Polygon2D" parent="." unique_id=506864925]
 color = Color(1, 0.3, 0.32, 1)

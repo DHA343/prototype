@@ -4,6 +4,9 @@ extends CharacterBody2D
 @export_group("Movement")
 @export_range(0.0, 2000.0, 10.0, "suffix:unit/s") var move_speed: float = 360.0
 
+@export_group("Crowd")
+@export var crowd: CrowdSettings
+
 @export_group("Combat")
 @export_range(0.0, 1.0, 0.01) var knockback_resistance: float = 0.0:
 	set(value):

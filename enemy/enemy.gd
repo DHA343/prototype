@@ -8,7 +8,7 @@ signal died(enemy: Enemy)
 @export_range(0.0, 200.0, 1.0, "suffix:unit") var stop_distance: float = 36.0
 
 @export_group("Crowd")
-@export_range(0.0, 100.0, 1.0, "suffix:unit") var crowd_radius: float = 16.0
+@export var crowd: CrowdSettings
 
 @export_group("Combat")
 @export_range(0.0, 1.0, 0.01) var knockback_resistance: float = 0.0:
@@ -50,8 +50,16 @@ func setup(target: Node2D, crowd_manager: CrowdManager) -> void:
 	_crowd_manager = crowd_manager
 	if not is_instance_valid(_crowd_manager):
 		return
+	if crowd == null:
+		push_error("Crowd settings are not assigned.")
+		return
 
-	_crowd_manager.register_member(self, crowd_radius)
+	_crowd_manager.register_member(
+		self,
+		crowd.radius,
+		crowd.avoidance_radius,
+		crowd.response
+	)
 	_is_registered = true
 
 
