@@ -6,12 +6,16 @@
 [ext_resource type="Script" uid="uid://bgg80861140tt" path="res://enemy/spawner/spawn_area.gd" id="4_spawn_area"]
 [ext_resource type="Script" uid="uid://dfpoas8gomjqd" path="res://enemy/spawner/enemy_spawner.gd" id="5_enemy_spawner"]
 [ext_resource type="PackedScene" uid="uid://bxq2vprxoho0o" path="res://enemy/enemy.tscn" id="6_enemy"]
+[ext_resource type="Script" path="res://systems/audio/world_sound_output.gd" id="7_world_sound_output"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_spawn_area"]
 size = Vector2(1920, 1080)
 
 [node name="Main" type="Node2D" unique_id=1883962826]
 script = ExtResource("1_main")
+
+[node name="WorldSoundOutput" type="Node2D" parent="." unique_id=884794201]
+script = ExtResource("7_world_sound_output")
 
 [node name="Actors" type="Node2D" parent="."]
 y_sort_enabled = true
