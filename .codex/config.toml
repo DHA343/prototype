@@ -1,0 +1,8 @@
+[sandbox_workspace_write]
+writable_roots = [
+    'C:\Users\tsumu\AppData\Roaming\Godot',
+    'C:\Users\tsumu\AppData\Local\Godot',
+]
+
+[mcp_servers."godot-ai"]
+enabled = true
