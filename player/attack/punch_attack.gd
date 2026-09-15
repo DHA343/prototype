@@ -6,6 +6,9 @@ extends Node2D
 @export_range(0.0, 2000.0, 10.0, "suffix:unit/s") var knockback: float = 300.0
 @export_range(0.01, 1.0, 0.01, "suffix:s") var hit_active_duration: float = 0.09
 
+@export_group("Audio")
+@export var hit_sound: SoundCue
+
 @export_group("Layout")
 @export_range(0.0, 100.0, 1.0, "suffix:unit") var side_offset: float = 14.0
 @export_range(0.0, 150.0, 1.0, "suffix:unit") var hitbox_forward_offset: float = 46.0
@@ -19,6 +22,7 @@ extends Node2D
 @export_range(0.01, 1.0, 0.01, "suffix:s") var lifetime: float = 0.14
 
 var _attacker: Node = null
+var _world_sound_output: WorldSoundOutput
 var _direction: Vector2 = Vector2.RIGHT
 var _side_sign: float = -1.0
 var _hit_hurtbox_ids: Dictionary = {}
@@ -40,8 +44,14 @@ func _ready() -> void:
 	get_tree().create_timer(lifetime).timeout.connect(queue_free)
 
 
-func setup(attacker: Node, direction: Vector2, side_sign: float) -> void:
+func setup(
+	attacker: Node,
+	direction: Vector2,
+	side_sign: float,
+	world_sound_output: WorldSoundOutput
+) -> void:
 	_attacker = attacker
+	_world_sound_output = world_sound_output
 	_direction = direction.normalized()
 	if _direction.is_zero_approx():
 		_direction = Vector2.RIGHT
@@ -61,6 +71,18 @@ func _on_hurtbox_detected(hurtbox: Hurtbox) -> void:
 	hit.hit_position = hurtbox.global_position
 	hit.hit_direction = _direction
 	hurtbox.receive_hit(hit)
+	_play_hit_sound(hit.hit_position)
+
+
+func _play_hit_sound(hit_position: Vector2) -> void:
+	if hit_sound == null:
+		return
+	if not is_instance_valid(_world_sound_output):
+		push_error("world_sound_output is not assigned.")
+		return
+
+	var sound_request := SoundRequest.new(hit_sound, hit_position, self)
+	_world_sound_output.request(sound_request)
 
 
 func _play_visual() -> void:

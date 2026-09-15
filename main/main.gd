@@ -7,6 +7,8 @@ extends Node2D
 @onready var spawn_area: SpawnArea = $SpawnArea
 @onready var enemy_spawner: EnemySpawner = $EnemySpawner
 @onready var damage_number_spawner: DamageNumberSpawner = $DamageNumberLayer/DamageNumberSpawner
+@onready var world_sound_output: WorldSoundOutput = $WorldSoundOutput
+@onready var punch_controller: PunchController = $Actors/Player/PunchController
 
 
 func _ready() -> void:
@@ -20,6 +22,7 @@ func _ready() -> void:
 			player.crowd.response
 		)
 
+	punch_controller.setup(world_sound_output)
 	enemy_spawner.enemy_spawned.connect(_on_enemy_spawned)
 	enemy_spawner.setup(player, crowd_manager, enemies, spawn_area)
 	enemy_spawner.start()

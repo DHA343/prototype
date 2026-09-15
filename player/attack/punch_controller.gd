@@ -7,6 +7,7 @@ extends Node
 var _last_aim_direction: Vector2 = Vector2.RIGHT
 var _next_side_sign: float = -1.0
 var _cooldown: float = 0.0
+var _world_sound_output: WorldSoundOutput
 
 @onready var _player: Player = get_parent() as Player
 @onready var _attack_root: Node2D = $"../AttackRoot"
@@ -16,6 +17,14 @@ func _ready() -> void:
 	assert(_player != null, "Must be placed under a Player node.")
 	assert(_attack_root != null, "An AttackRoot node is required.")
 	assert(punch_attack_scene != null, "punch_attack_scene is required.")
+
+
+func setup(world_sound_output: WorldSoundOutput) -> void:
+	if not is_instance_valid(world_sound_output):
+		push_error("world_sound_output is not assigned.")
+		return
+
+	_world_sound_output = world_sound_output
 
 
 func _process(delta: float) -> void:
@@ -40,7 +49,7 @@ func _spawn_punch() -> void:
 		return
 
 	_update_aim_direction()
-	punch_attack.setup(_player, _last_aim_direction, _next_side_sign)
+	punch_attack.setup(_player, _last_aim_direction, _next_side_sign, _world_sound_output)
 	_attack_root.add_child(punch_attack)
 	_next_side_sign *= -1.0
 
