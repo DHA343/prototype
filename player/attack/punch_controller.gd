@@ -46,6 +46,6 @@ func _spawn_punch() -> void:
 
 
 func _update_aim_direction() -> void:
-	var aim_offset := _player.get_global_mouse_position() - _player.global_position
+	var aim_offset := _player.get_global_mouse_position() - _attack_root.global_position
 	if not aim_offset.is_zero_approx():
 		_last_aim_direction = aim_offset.normalized()

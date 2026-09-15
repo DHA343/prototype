@@ -1,27 +1,27 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene format=3 uid="uid://rv5y16rxikdf"]
 
-[ext_resource type="Script" path="res://player/attack/punch_attack.gd" id="1_punch_attack"]
-[ext_resource type="Script" path="res://components/combat/hitbox.gd" id="2_hitbox"]
+[ext_resource type="Script" uid="uid://b5pd7bm43w7or" path="res://player/attack/punch_attack.gd" id="1_punch_attack"]
+[ext_resource type="Script" uid="uid://qrvsxwdr56gm" path="res://components/combat/hitbox.gd" id="2_hitbox"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hitbox"]
 radius = 18.0
 height = 72.0
 
-[node name="PunchAttack" type="Node2D"]
+[node name="PunchAttack" type="Node2D" unique_id=1588396361]
 script = ExtResource("1_punch_attack")
+damage = 30.0
 
-[node name="VisualRoot" type="Node2D" parent="."]
+[node name="VisualRoot" type="Node2D" parent="." unique_id=1527551148]
 
-[node name="PlaceholderVisual" type="Polygon2D" parent="VisualRoot"]
-polygon = PackedVector2Array(-19, 0, -17.5537, -4.9749, -13.435, -9.1924, -7.2709, -12.0104, 0, -13, 7.2709, -12.0104, 13.435, -9.1924, 17.5537, -4.9749, 19, 0, 17.5537, 4.9749, 13.435, 9.1924, 7.2709, 12.0104, 0, 13, -7.2709, 12.0104, -13.435, 9.1924, -17.5537, 4.9749)
+[node name="PlaceholderVisual" type="Polygon2D" parent="VisualRoot" unique_id=438501714]
 color = Color(0.65, 0.9, 1, 0.9)
+polygon = PackedVector2Array(-19, 0, -17.5537, -4.9749, -13.435, -9.1924, -7.2709, -12.0104, 0, -13, 7.2709, -12.0104, 13.435, -9.1924, 17.5537, -4.9749, 19, 0, 17.5537, 4.9749, 13.435, 9.1924, 7.2709, 12.0104, 0, 13, -7.2709, 12.0104, -13.435, 9.1924, -17.5537, 4.9749)
 
-[node name="Hitbox" type="Area2D" parent="."]
+[node name="Hitbox" type="Area2D" parent="." unique_id=1957386022]
 collision_layer = 8
 collision_mask = 4
-monitoring = true
 monitorable = false
 script = ExtResource("2_hitbox")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=1153378881]
 shape = SubResource("CapsuleShape2D_hitbox")

@@ -13,9 +13,13 @@ size = Vector2(1920, 1080)
 [node name="Main" type="Node2D" unique_id=1883962826]
 script = ExtResource("1_main")
 
-[node name="Player" parent="." unique_id=1133452163 instance=ExtResource("2_player")]
+[node name="Actors" type="Node2D" parent="."]
+y_sort_enabled = true
 
-[node name="Enemies" type="Node2D" parent="." unique_id=512686501]
+[node name="Player" parent="Actors" unique_id=1133452163 instance=ExtResource("2_player")]
+
+[node name="Enemies" type="Node2D" parent="Actors" unique_id=512686501]
+y_sort_enabled = true
 
 [node name="CrowdManager" type="Node" parent="." unique_id=2104208583]
 script = ExtResource("3_crowd_manager")
