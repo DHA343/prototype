@@ -2,6 +2,7 @@ class_name Enemy
 extends Node2D
 
 signal died(enemy: Enemy)
+signal damaged(damage: float, hit_position: Vector2, knockback_velocity: Vector2)
 
 @export_group("Movement")
 @export_range(0.0, 1000.0, 10.0, "suffix:unit/s") var move_speed: float = 180.0
@@ -79,8 +80,9 @@ func _on_hurtbox_hit_received(hit: HitData) -> void:
 
 	var direction := hit.hit_direction.normalized()
 	var multiplier := 1.0 - knockback_resistance
-	var knockback_velocity := direction * hit.knockback * multiplier
-	knockback.apply(knockback_velocity)
+	var added_knockback := direction * hit.knockback * multiplier
+	knockback.apply(added_knockback)
+	damaged.emit(hit.damage, hit.hit_position, knockback.velocity)
 
 
 func _on_health_died() -> void:
