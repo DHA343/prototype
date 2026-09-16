@@ -9,6 +9,7 @@ extends Node2D
 @onready var damage_number_spawner: DamageNumberSpawner = $DamageNumberLayer/DamageNumberSpawner
 @onready var world_sound_output: WorldSoundOutput = $WorldSoundOutput
 @onready var punch_controller: PunchController = $Actors/Player/PunchController
+@onready var impact_camera_shake: ImpactCameraShake = $Camera2D/CameraShake/ImpactCameraShake
 
 
 func _ready() -> void:
@@ -23,6 +24,7 @@ func _ready() -> void:
 		)
 
 	punch_controller.setup(world_sound_output)
+	punch_controller.camera_shake_requested.connect(impact_camera_shake.request_trauma)
 	enemy_spawner.enemy_spawned.connect(_on_enemy_spawned)
 	enemy_spawner.setup(player, crowd_manager, enemies, spawn_area)
 	enemy_spawner.start()

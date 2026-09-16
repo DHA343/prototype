@@ -1,10 +1,15 @@
 class_name PunchAttack
 extends Node2D
 
+signal camera_shake_requested(trauma: float)
+
 @export_group("Hit")
 @export_range(0.0, 1000.0, 0.1) var damage: float = 10.0
 @export_range(0.0, 2000.0, 10.0, "suffix:unit/s") var knockback: float = 300.0
 @export_range(0.01, 1.0, 0.01, "suffix:s") var hit_active_duration: float = 0.09
+
+@export_group("Feedback")
+@export_range(0.0, 1.0, 0.01) var hit_camera_trauma: float = 0.15
 
 @export_group("Audio")
 @export var hit_sound: SoundCue
@@ -72,6 +77,8 @@ func _on_hurtbox_detected(hurtbox: Hurtbox) -> void:
 	hit.hit_direction = _direction
 	hurtbox.receive_hit(hit)
 	_play_hit_sound(hit.hit_position)
+	if hit_camera_trauma > 0.0:
+		camera_shake_requested.emit(hit_camera_trauma)
 
 
 func _play_hit_sound(hit_position: Vector2) -> void:

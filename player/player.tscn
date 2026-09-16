@@ -16,7 +16,7 @@ radius = 24.0
 radius = 24.0
 
 [node name="Player" type="CharacterBody2D" unique_id=571282771]
-position = Vector2(960, 564)
+position = Vector2(0, 0)
 script = ExtResource("1_player")
 crowd = ExtResource("7_player_crowd")
 

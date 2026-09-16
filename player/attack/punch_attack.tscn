@@ -8,7 +8,7 @@
 [sub_resource type="Resource" id="Resource_6v1qx"]
 script = ExtResource("2_nqmmw")
 stream = ExtResource("3_tkwyx")
-pitch_semitones = 14.600000000000001
+pitch_semitones = 14.6
 random_pitch_semitones = 4.0
 metadata/_custom_type_script = "uid://b3v0jytvki4sj"
 
@@ -18,7 +18,7 @@ height = 72.0
 
 [node name="PunchAttack" type="Node2D" unique_id=1588396361]
 script = ExtResource("1_punch_attack")
-damage = 50.0
+damage = 40.0
 knockback = 1000.0
 hit_sound = SubResource("Resource_6v1qx")
 

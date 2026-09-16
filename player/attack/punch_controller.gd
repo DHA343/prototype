@@ -1,6 +1,8 @@
 class_name PunchController
 extends Node
 
+signal camera_shake_requested(trauma: float)
+
 @export var punch_attack_scene: PackedScene
 @export_range(0.01, 2.0, 0.01, "suffix:s") var attack_interval: float = 0.20
 
@@ -48,10 +50,15 @@ func _spawn_punch() -> void:
 		instance.queue_free()
 		return
 
+	punch_attack.camera_shake_requested.connect(_on_punch_camera_shake_requested)
 	_update_aim_direction()
 	punch_attack.setup(_player, _last_aim_direction, _next_side_sign, _world_sound_output)
 	_attack_root.add_child(punch_attack)
 	_next_side_sign *= -1.0
+
+
+func _on_punch_camera_shake_requested(trauma: float) -> void:
+	camera_shake_requested.emit(trauma)
 
 
 func _update_aim_direction() -> void:
