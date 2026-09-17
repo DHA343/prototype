@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://di4xqdiuawg5d" path="res://components/movement/knockback.gd" id="4_knockback"]
 [ext_resource type="Resource" path="res://enemy/enemy_crowd.tres" id="5_enemy_crowd"]
 [ext_resource type="PackedScene" path="res://components/visual/drop_shadow.tscn" id="6_drop_shadow"]
+[ext_resource type="Script" uid="uid://dswt8io4stc0j" path="res://components/visual/hit_scale_reaction.gd" id="7_hit_scale_reaction"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hurtbox"]
 radius = 20.0
@@ -18,8 +19,10 @@ crowd = ExtResource("5_enemy_crowd")
 position = Vector2(0, 4)
 size = Vector2(36, 14)
 
-[node name="Visual" type="Polygon2D" parent="." unique_id=506864925]
+[node name="VisualRoot" type="Node2D" parent="."]
 position = Vector2(0, -20)
+
+[node name="Visual" type="Polygon2D" parent="VisualRoot" unique_id=506864925]
 color = Color(1, 0.3, 0.32, 1)
 polygon = PackedVector2Array(-20, 0, -18.4776, -7.6537, -14.1421, -14.1421, -7.6537, -18.4776, 0, -20, 7.6537, -18.4776, 14.1421, -14.1421, 18.4776, -7.6537, 20, 0, 18.4776, 7.6537, 14.1421, 14.1421, 7.6537, 18.4776, 0, 20, -7.6537, 18.4776, -14.1421, 14.1421, -18.4776, 7.6537)
 
@@ -39,3 +42,6 @@ script = ExtResource("3_health")
 
 [node name="Knockback" type="Node" parent="." unique_id=534943770]
 script = ExtResource("4_knockback")
+
+[node name="HitScaleReaction" type="Node" parent="."]
+script = ExtResource("7_hit_scale_reaction")

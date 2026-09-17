@@ -6,11 +6,11 @@
 [ext_resource type="Script" uid="uid://bgg80861140tt" path="res://enemy/spawner/spawn_area.gd" id="4_spawn_area"]
 [ext_resource type="Script" uid="uid://dfpoas8gomjqd" path="res://enemy/spawner/enemy_spawner.gd" id="5_enemy_spawner"]
 [ext_resource type="PackedScene" uid="uid://bxq2vprxoho0o" path="res://enemy/enemy.tscn" id="6_enemy"]
-[ext_resource type="Script" path="res://systems/audio/world_sound_output.gd" id="7_world_sound_output"]
-[ext_resource type="Script" path="res://systems/damage_number/damage_number_spawner.gd" id="8_damage_number_spawner"]
+[ext_resource type="Script" uid="uid://bsop2brtcjspr" path="res://systems/audio/world_sound_output.gd" id="7_world_sound_output"]
+[ext_resource type="Script" uid="uid://cbgahifjtheqi" path="res://systems/damage_number/damage_number_spawner.gd" id="8_damage_number_spawner"]
 [ext_resource type="PackedScene" path="res://components/visual/damage_number/damage_number.tscn" id="9_damage_number"]
-[ext_resource type="Script" path="res://systems/camera/camera_shake.gd" id="10_camera_shake"]
-[ext_resource type="Script" path="res://systems/camera/impact_camera_shake.gd" id="11_impact_camera_shake"]
+[ext_resource type="Script" uid="uid://bbbg0mjvptfxr" path="res://systems/camera/camera_shake.gd" id="10_camera_shake"]
+[ext_resource type="Script" uid="uid://4nnw1r2i1m1u" path="res://systems/camera/impact_camera_shake.gd" id="11_impact_camera_shake"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_spawn_area"]
 size = Vector2(1920, 1080)
@@ -19,13 +19,12 @@ size = Vector2(1920, 1080)
 script = ExtResource("1_main")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1954490448]
-position = Vector2(0, 0)
-offset = Vector2(0, 0)
-zoom = Vector2(1, 1)
-enabled = true
 
 [node name="CameraShake" type="Node" parent="Camera2D" unique_id=1954490449]
 script = ExtResource("10_camera_shake")
+max_offset = Vector2(12, 7)
+trauma_power = 1.0
+noise_speed = 10.0
 
 [node name="ImpactCameraShake" type="Node" parent="Camera2D/CameraShake" unique_id=1954490450]
 script = ExtResource("11_impact_camera_shake")
@@ -36,17 +35,15 @@ script = ExtResource("7_world_sound_output")
 [node name="DamageNumberLayer" type="CanvasLayer" parent="." unique_id=1176134946]
 layer = 10
 follow_viewport_enabled = true
-follow_viewport_scale = 1.0
 
 [node name="DamageNumberSpawner" type="Node2D" parent="DamageNumberLayer" unique_id=1110146965]
 script = ExtResource("8_damage_number_spawner")
 damage_number_scene = ExtResource("9_damage_number")
 
-[node name="Actors" type="Node2D" parent="."]
+[node name="Actors" type="Node2D" parent="." unique_id=137631151]
 y_sort_enabled = true
 
 [node name="Player" parent="Actors" unique_id=1133452163 instance=ExtResource("2_player")]
-position = Vector2(0, 0)
 
 [node name="Enemies" type="Node2D" parent="Actors" unique_id=512686501]
 y_sort_enabled = true
@@ -57,7 +54,6 @@ separation_speed = 300.0
 separation_power = 1.5
 
 [node name="SpawnArea" type="Area2D" parent="." unique_id=2074543112]
-position = Vector2(0, 0)
 monitoring = false
 monitorable = false
 script = ExtResource("4_spawn_area")
