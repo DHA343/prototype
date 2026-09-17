@@ -83,7 +83,7 @@ func _on_hurtbox_hit_received(hit: HitData) -> void:
 	var multiplier := 1.0 - knockback_resistance
 	var added_knockback := direction * hit.knockback * multiplier
 	knockback.apply(added_knockback)
-	hit_scale_reaction.play(hit.hit_direction)
+	hit_scale_reaction.play()
 	damaged.emit(hit.damage, hit.hit_position, knockback.velocity)
 
 
