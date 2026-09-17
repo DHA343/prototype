@@ -11,12 +11,16 @@
 [ext_resource type="PackedScene" path="res://components/visual/damage_number/damage_number.tscn" id="9_damage_number"]
 [ext_resource type="Script" uid="uid://bbbg0mjvptfxr" path="res://systems/camera/camera_shake.gd" id="10_camera_shake"]
 [ext_resource type="Script" uid="uid://4nnw1r2i1m1u" path="res://systems/camera/impact_camera_shake.gd" id="11_impact_camera_shake"]
+[ext_resource type="PackedScene" uid="uid://1cph7125gclc" path="res://systems/post_processing/post_processing.tscn" id="12_post_processing"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_spawn_area"]
 size = Vector2(1920, 1080)
 
 [node name="Main" type="Node2D" unique_id=1883962826]
 script = ExtResource("1_main")
+
+[node name="WorldSoundOutput" type="Node2D" parent="." unique_id=884794201]
+script = ExtResource("7_world_sound_output")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1954490448]
 
@@ -28,17 +32,6 @@ noise_speed = 10.0
 
 [node name="ImpactCameraShake" type="Node" parent="Camera2D/CameraShake" unique_id=1954490450]
 script = ExtResource("11_impact_camera_shake")
-
-[node name="WorldSoundOutput" type="Node2D" parent="." unique_id=884794201]
-script = ExtResource("7_world_sound_output")
-
-[node name="DamageNumberLayer" type="CanvasLayer" parent="." unique_id=1176134946]
-layer = 10
-follow_viewport_enabled = true
-
-[node name="DamageNumberSpawner" type="Node2D" parent="DamageNumberLayer" unique_id=1110146965]
-script = ExtResource("8_damage_number_spawner")
-damage_number_scene = ExtResource("9_damage_number")
 
 [node name="Actors" type="Node2D" parent="." unique_id=137631151]
 y_sort_enabled = true
@@ -64,3 +57,13 @@ shape = SubResource("RectangleShape2D_spawn_area")
 [node name="EnemySpawner" type="Node" parent="." unique_id=269176748]
 script = ExtResource("5_enemy_spawner")
 enemy_scene = ExtResource("6_enemy")
+
+[node name="PostProcessing" parent="." unique_id=1190863564 instance=ExtResource("12_post_processing")]
+
+[node name="UILayer" type="CanvasLayer" parent="." unique_id=1176134946]
+layer = 100
+follow_viewport_enabled = true
+
+[node name="DamageNumberSpawner" type="Node2D" parent="UILayer" unique_id=1110146965]
+script = ExtResource("8_damage_number_spawner")
+damage_number_scene = ExtResource("9_damage_number")

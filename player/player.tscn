@@ -5,9 +5,10 @@
 [ext_resource type="Script" uid="uid://dnyf0tl6ivkvh" path="res://components/combat/health.gd" id="3_health"]
 [ext_resource type="Script" uid="uid://di4xqdiuawg5d" path="res://components/movement/knockback.gd" id="4_knockback"]
 [ext_resource type="Script" uid="uid://v6duqyyix1lw" path="res://player/attack/punch_controller.gd" id="5_punch_controller"]
-[ext_resource type="PackedScene" path="res://player/attack/punch_attack.tscn" id="6_punch_attack"]
+[ext_resource type="PackedScene" uid="uid://rv5y16rxikdf" path="res://player/attack/punch_attack.tscn" id="6_punch_attack"]
 [ext_resource type="Resource" uid="uid://b2y1dd2ckns5s" path="res://player/player_crowd.tres" id="7_player_crowd"]
 [ext_resource type="PackedScene" path="res://components/visual/drop_shadow.tscn" id="8_drop_shadow"]
+[ext_resource type="Script" uid="uid://ca1mfik6kmv8x" path="res://player/player_input.gd" id="9_player_input"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_body"]
 radius = 24.0
@@ -16,22 +17,23 @@ radius = 24.0
 radius = 24.0
 
 [node name="Player" type="CharacterBody2D" unique_id=571282771]
-position = Vector2(0, 0)
 script = ExtResource("1_player")
 crowd = ExtResource("7_player_crowd")
 
-[node name="DropShadow" parent="." instance=ExtResource("8_drop_shadow")]
-position = Vector2(0, 4)
-size = Vector2(42, 16)
+[node name="PlayerInput" type="Node" parent="." unique_id=2118556935]
+script = ExtResource("9_player_input")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1372838565]
+position = Vector2(0, -24)
+shape = SubResource("CircleShape2D_body")
 
 [node name="Visual" type="Polygon2D" parent="." unique_id=1486397048]
 position = Vector2(0, -24)
 color = Color(0.26, 0.75, 1, 1)
 polygon = PackedVector2Array(-24, 0, -22.1731, -9.1844, -16.9706, -16.9706, -9.1844, -22.1731, 0, -24, 9.1844, -22.1731, 16.9706, -16.9706, 22.1731, -9.1844, 24, 0, 22.1731, 9.1844, 16.9706, 16.9706, 9.1844, 22.1731, 0, 24, -9.1844, 22.1731, -16.9706, 16.9706, -22.1731, 9.1844)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1372838565]
-position = Vector2(0, -24)
-shape = SubResource("CircleShape2D_body")
+[node name="DropShadow" parent="." unique_id=1724224861 instance=ExtResource("8_drop_shadow")]
+position = Vector2(0, 4)
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=1615724665]
 position = Vector2(0, -24)
@@ -50,8 +52,8 @@ script = ExtResource("3_health")
 script = ExtResource("4_knockback")
 
 [node name="AttackRoot" type="Node2D" parent="." unique_id=1909347542]
-position = Vector2(0, -24)
 z_index = 1
+position = Vector2(0, -24)
 
 [node name="PunchController" type="Node" parent="." unique_id=1374205450]
 script = ExtResource("5_punch_controller")

@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://1cph7125gclc"]
+
+[ext_resource type="Script" uid="uid://cdcn5i66x14bu" path="res://systems/post_processing/post_processing.gd" id="1_post_processing"]
+[ext_resource type="Script" uid="uid://d12uwcn8et7ym" path="res://systems/post_processing/post_process_effect.gd" id="2_effect"]
+[ext_resource type="Script" uid="uid://bnleqmtr4cnpy" path="res://systems/post_processing/effects/pixelation/pixelation.gd" id="3_pixelation"]
+[ext_resource type="Script" uid="uid://y31bf4o13c71" path="res://systems/post_processing/effects/blur/blur.gd" id="4_blur"]
+[ext_resource type="Script" uid="uid://du0elwyycowft" path="res://systems/post_processing/effects/color_grading/color_grading.gd" id="5_color_grading"]
+[ext_resource type="Script" uid="uid://bi87egye7reys" path="res://systems/post_processing/effects/chromatic_aberration/chromatic_aberration.gd" id="6_chromatic_aberration"]
+[ext_resource type="Script" uid="uid://0e4rd30wx0tl" path="res://systems/post_processing/effects/glow/glow.gd" id="7_glow"]
+[ext_resource type="Script" uid="uid://18q8kyypojvr" path="res://systems/post_processing/effects/shadow_mask/shadow_mask.gd" id="8_shadow_mask"]
+[ext_resource type="Script" uid="uid://gc4mt1ljdusy" path="res://systems/post_processing/effects/scanlines/scanlines.gd" id="9_scanlines"]
+[ext_resource type="Script" uid="uid://b6y73x0igwwoj" path="res://systems/post_processing/effects/vignette/vignette.gd" id="10_vignette"]
+
+[sub_resource type="Resource" id="Resource_pixelation"]
+script = ExtResource("3_pixelation")
+
+[sub_resource type="Resource" id="Resource_blur"]
+script = ExtResource("4_blur")
+strength = 0.15
+
+[sub_resource type="Resource" id="Resource_color_grading"]
+script = ExtResource("5_color_grading")
+
+[sub_resource type="Resource" id="Resource_chromatic_aberration"]
+script = ExtResource("6_chromatic_aberration")
+amount = 2.5
+
+[sub_resource type="Resource" id="Resource_glow"]
+script = ExtResource("7_glow")
+enabled = false
+
+[sub_resource type="Resource" id="Resource_shadow_mask"]
+script = ExtResource("8_shadow_mask")
+mask_dark = 0.4
+mask_light = 1.6
+
+[sub_resource type="Resource" id="Resource_scanlines"]
+script = ExtResource("9_scanlines")
+line_thickness = 0.15000000000000002
+edge_softness = 0.2
+
+[sub_resource type="Resource" id="Resource_vignette"]
+script = ExtResource("10_vignette")
+strength = 0.5
+radius = 0.3
+softness = 0.7
+falloff = 1.0
+
+[node name="PostProcessing" type="Node" unique_id=776314143]
+script = ExtResource("1_post_processing")
+world_effects = Array[ExtResource("2_effect")]([SubResource("Resource_pixelation"), SubResource("Resource_blur")])
+composite_effects = Array[ExtResource("2_effect")]([SubResource("Resource_color_grading"), SubResource("Resource_chromatic_aberration"), SubResource("Resource_glow"), SubResource("Resource_shadow_mask"), SubResource("Resource_scanlines"), SubResource("Resource_vignette")])

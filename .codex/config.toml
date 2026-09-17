@@ -1,3 +1,5 @@
+sandbox_mode = "workspace-write"
+
 [sandbox_workspace_write]
 writable_roots = [
     'C:\Users\tsumu\AppData\Roaming\Godot',

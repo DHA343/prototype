@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://ckpqhc1x4nwet" path="res://components/combat/hurtbox.gd" id="2_hurtbox"]
 [ext_resource type="Script" uid="uid://dnyf0tl6ivkvh" path="res://components/combat/health.gd" id="3_health"]
 [ext_resource type="Script" uid="uid://di4xqdiuawg5d" path="res://components/movement/knockback.gd" id="4_knockback"]
-[ext_resource type="Resource" path="res://enemy/enemy_crowd.tres" id="5_enemy_crowd"]
+[ext_resource type="Resource" uid="uid://c5227u0mmg3mn" path="res://enemy/enemy_crowd.tres" id="5_enemy_crowd"]
 [ext_resource type="PackedScene" path="res://components/visual/drop_shadow.tscn" id="6_drop_shadow"]
 [ext_resource type="Script" uid="uid://dswt8io4stc0j" path="res://components/visual/hit_scale_reaction.gd" id="7_hit_scale_reaction"]
 
@@ -15,23 +15,22 @@ radius = 20.0
 script = ExtResource("1_enemy")
 crowd = ExtResource("5_enemy_crowd")
 
-[node name="DropShadow" parent="." instance=ExtResource("6_drop_shadow")]
-position = Vector2(0, 4)
-size = Vector2(36, 14)
-
-[node name="VisualRoot" type="Node2D" parent="."]
+[node name="VisualRoot" type="Node2D" parent="." unique_id=1591302469]
 position = Vector2(0, -20)
 
 [node name="Visual" type="Polygon2D" parent="VisualRoot" unique_id=506864925]
 color = Color(1, 0.3, 0.32, 1)
 polygon = PackedVector2Array(-20, 0, -18.4776, -7.6537, -14.1421, -14.1421, -7.6537, -18.4776, 0, -20, 7.6537, -18.4776, 14.1421, -14.1421, 18.4776, -7.6537, 20, 0, 18.4776, 7.6537, 14.1421, 14.1421, 7.6537, 18.4776, 0, 20, -7.6537, 18.4776, -14.1421, 14.1421, -18.4776, 7.6537)
 
+[node name="DropShadow" parent="." unique_id=861247921 instance=ExtResource("6_drop_shadow")]
+position = Vector2(0, 4)
+size = Vector2(36, 14)
+
 [node name="Hurtbox" type="Area2D" parent="." unique_id=1731161422]
 position = Vector2(0, -20)
-monitoring = false
-monitorable = true
 collision_layer = 4
 collision_mask = 0
+monitoring = false
 script = ExtResource("2_hurtbox")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=152707756]
@@ -43,5 +42,6 @@ script = ExtResource("3_health")
 [node name="Knockback" type="Node" parent="." unique_id=534943770]
 script = ExtResource("4_knockback")
 
-[node name="HitScaleReaction" type="Node" parent="."]
+[node name="HitScaleReaction" type="Node" parent="." unique_id=1318649305]
 script = ExtResource("7_hit_scale_reaction")
+scale_pull = 0.4

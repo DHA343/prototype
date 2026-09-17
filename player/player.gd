@@ -15,6 +15,7 @@ extends CharacterBody2D
 @onready var hurtbox: Hurtbox = $Hurtbox
 @onready var health: Health = $Health
 @onready var knockback: Knockback = $Knockback
+@onready var player_input: PlayerInput = $PlayerInput
 
 
 func _ready() -> void:
@@ -22,8 +23,7 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	var input_direction := Input.get_vector("left", "right", "up", "down")
-	var movement_velocity := input_direction * move_speed
+	var movement_velocity := player_input.movement_direction * move_speed
 
 	knockback.update(delta)
 	velocity = movement_velocity + knockback.velocity
