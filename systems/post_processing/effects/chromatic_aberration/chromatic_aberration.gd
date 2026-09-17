@@ -18,7 +18,7 @@ const EFFECT_SHADER: Shader = preload("./chromatic_aberration.gdshader")
 		direction = value
 		notify_change()
 
-@export_range(0.0, 32.0, 0.5) var amount: float = 2.0:
+@export_range(0.0, 32.0, 0.1) var amount: float = 2.0:
 	set(value):
 		if is_equal_approx(amount, value):
 			return

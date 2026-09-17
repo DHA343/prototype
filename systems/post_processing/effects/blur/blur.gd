@@ -4,7 +4,7 @@ extends PostProcessEffect
 
 const EFFECT_SHADER: Shader = preload("./blur.gdshader")
 
-@export_range(0.0, 16.0, 0.5, "suffix:px") var radius: float = 4.0:
+@export_range(0.0, 16.0, 0.1, "suffix:px") var radius: float = 4.0:
 	set(value):
 		if is_equal_approx(radius, value):
 			return

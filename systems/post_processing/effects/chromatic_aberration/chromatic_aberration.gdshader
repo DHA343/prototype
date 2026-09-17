@@ -6,7 +6,7 @@ uniform sampler2D screen_texture
 
 uniform int direction
 	: hint_enum("Horizontal", "Vertical", "Radial") = 0;
-uniform float amount : hint_range(0.0, 32.0, 0.5) = 2.0;
+uniform float amount : hint_range(0.0, 32.0, 0.1) = 2.0;
 
 
 vec2 get_aberration_direction(vec2 uv) {

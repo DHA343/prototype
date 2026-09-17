@@ -18,7 +18,7 @@ enum AggregationScope {
 
 @export_group("Aggregation")
 @export var aggregation_scope: AggregationScope = AggregationScope.PER_SOURCE
-@export_range(0.0, 0.2, 0.005, "suffix:s") var aggregation_window: float = 0.0
+@export_range(0.0, 0.2, 0.01, "suffix:s") var aggregation_window: float = 0.0
 
 @export_group("Voice Limit")
 @export_range(0, 64, 1) var max_instances: int = 0

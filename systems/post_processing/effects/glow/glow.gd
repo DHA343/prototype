@@ -4,7 +4,7 @@ extends PostProcessEffect
 
 const EFFECT_SHADER: Shader = preload("./glow.gdshader")
 
-@export_range(0.0, 8.0, 0.05) var threshold: float = 1.0:
+@export_range(0.0, 8.0, 0.1) var threshold: float = 1.0:
 	set(value):
 		if is_equal_approx(threshold, value):
 			return
@@ -12,7 +12,7 @@ const EFFECT_SHADER: Shader = preload("./glow.gdshader")
 		threshold = value
 		notify_change()
 
-@export_range(0.01, 4.0, 0.05) var softness: float = 1.0:
+@export_range(0.01, 4.0, 0.1) var softness: float = 1.0:
 	set(value):
 		if is_equal_approx(softness, value):
 			return
@@ -20,7 +20,7 @@ const EFFECT_SHADER: Shader = preload("./glow.gdshader")
 		softness = value
 		notify_change()
 
-@export_range(0.0, 10.0, 0.05) var strength: float = 0.5:
+@export_range(0.0, 10.0, 0.1) var strength: float = 0.5:
 	set(value):
 		if is_equal_approx(strength, value):
 			return
@@ -28,7 +28,7 @@ const EFFECT_SHADER: Shader = preload("./glow.gdshader")
 		strength = value
 		notify_change()
 
-@export_range(0.0, 16.0, 0.5, "suffix:px") var radius: float = 4.0:
+@export_range(0.0, 16.0, 0.1, "suffix:px") var radius: float = 4.0:
 	set(value):
 		if is_equal_approx(radius, value):
 			return

@@ -60,10 +60,10 @@ enemy_scene = ExtResource("6_enemy")
 
 [node name="PostProcessing" parent="." unique_id=1190863564 instance=ExtResource("12_post_processing")]
 
-[node name="UILayer" type="CanvasLayer" parent="." unique_id=1176134946]
+[node name="WorldUILayer" type="CanvasLayer" parent="." unique_id=1176134946]
 layer = 100
 follow_viewport_enabled = true
 
-[node name="DamageNumberSpawner" type="Node2D" parent="UILayer" unique_id=1110146965]
+[node name="DamageNumberSpawner" type="Node2D" parent="WorldUILayer" unique_id=1110146965]
 script = ExtResource("8_damage_number_spawner")
 damage_number_scene = ExtResource("9_damage_number")

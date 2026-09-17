@@ -9,13 +9,13 @@ extends Node2D
 
 @export_group("Bounce")
 @export_range(0.0, 200.0, 1.0, "suffix:px") var bounce_height: float = 70.0
-@export_range(0.0, 1.0, 0.05) var bounce_height_variation: float = 0.25
+@export_range(0.0, 1.0, 0.01) var bounce_height_variation: float = 0.25
 @export_range(100.0, 10000.0, 100.0, "suffix:px/s²") var gravity: float = 5000.0
-@export_range(0.0, 1.0, 0.05) var restitution: float = 0.6
+@export_range(0.0, 1.0, 0.01) var restitution: float = 0.6
 
 @export_group("Lifetime")
-@export_range(0.1, 2.0, 0.05, "suffix:s") var lifetime: float = 0.7
-@export_range(0.0, 1.0, 0.05) var lifetime_variation: float = 0.2
+@export_range(0.1, 2.0, 0.01, "suffix:s") var lifetime: float = 0.7
+@export_range(0.0, 1.0, 0.01) var lifetime_variation: float = 0.2
 @export_range(0.01, 1.0, 0.01, "suffix:s") var fade_time: float = 0.15
 
 var _origin: Vector2 = Vector2.ZERO

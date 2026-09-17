@@ -11,7 +11,7 @@ extends Node
 	set(value):
 		solver_iterations = maxi(value, 1)
 
-@export_range(0.0, 1.0, 0.05) var stiffness: float = 0.8:
+@export_range(0.0, 1.0, 0.01) var stiffness: float = 0.8:
 	set(value):
 		stiffness = clampf(value, 0.0, 1.0)
 
