@@ -4,6 +4,7 @@ sandbox_mode = "workspace-write"
 writable_roots = [
     'C:\Users\tsumu\AppData\Roaming\Godot',
     'C:\Users\tsumu\AppData\Local\Godot',
+    'C:\Users\tsumu\AppData\Local\godot-ai',
 ]
 
 [mcp_servers."godot-ai"]
