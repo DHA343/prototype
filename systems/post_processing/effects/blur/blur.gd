@@ -10,7 +10,7 @@ const EFFECT_SHADER: Shader = preload("./blur.gdshader")
 			return
 
 		radius = value
-		notify_change()
+		emit_changed()
 
 @export_range(0.0, 1.0, 0.01) var strength: float = 1.0:
 	set(value):
@@ -18,13 +18,13 @@ const EFFECT_SHADER: Shader = preload("./blur.gdshader")
 			return
 
 		strength = value
-		notify_change()
+		emit_changed()
 
 
-func _get_shader() -> Shader:
+func get_shader() -> Shader:
 	return EFFECT_SHADER
 
 
 func _update_shader_parameters() -> void:
-	shader_parameters[&"radius"] = radius
-	shader_parameters[&"strength"] = strength
+	_shader_parameters[&"radius"] = radius
+	_shader_parameters[&"strength"] = strength

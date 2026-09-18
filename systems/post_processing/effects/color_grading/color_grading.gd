@@ -10,7 +10,7 @@ const EFFECT_SHADER: Shader = preload("./color_grading.gdshader")
 			return
 
 		brightness = value
-		notify_change()
+		emit_changed()
 
 @export_range(0.0, 2.0, 0.01) var contrast: float = 1.0:
 	set(value):
@@ -18,7 +18,7 @@ const EFFECT_SHADER: Shader = preload("./color_grading.gdshader")
 			return
 
 		contrast = value
-		notify_change()
+		emit_changed()
 
 @export_range(0.0, 2.0, 0.01) var saturation: float = 1.0:
 	set(value):
@@ -26,7 +26,7 @@ const EFFECT_SHADER: Shader = preload("./color_grading.gdshader")
 			return
 
 		saturation = value
-		notify_change()
+		emit_changed()
 
 @export_range(-180.0, 180.0, 1.0, "suffix:deg") var hue: float = 0.0:
 	set(value):
@@ -34,7 +34,7 @@ const EFFECT_SHADER: Shader = preload("./color_grading.gdshader")
 			return
 
 		hue = value
-		notify_change()
+		emit_changed()
 
 @export_range(0.1, 3.0, 0.01) var gamma: float = 1.0:
 	set(value):
@@ -42,16 +42,16 @@ const EFFECT_SHADER: Shader = preload("./color_grading.gdshader")
 			return
 
 		gamma = value
-		notify_change()
+		emit_changed()
 
 
-func _get_shader() -> Shader:
+func get_shader() -> Shader:
 	return EFFECT_SHADER
 
 
 func _update_shader_parameters() -> void:
-	shader_parameters[&"brightness"] = brightness
-	shader_parameters[&"contrast"] = contrast
-	shader_parameters[&"saturation"] = saturation
-	shader_parameters[&"hue"] = hue
-	shader_parameters[&"gamma"] = gamma
+	_shader_parameters[&"brightness"] = brightness
+	_shader_parameters[&"contrast"] = contrast
+	_shader_parameters[&"saturation"] = saturation
+	_shader_parameters[&"hue"] = hue
+	_shader_parameters[&"gamma"] = gamma

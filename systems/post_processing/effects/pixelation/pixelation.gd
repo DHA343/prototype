@@ -10,7 +10,7 @@ const EFFECT_SHADER: Shader = preload("./pixelation.gdshader")
 			return
 
 		pixel_size = value
-		notify_change()
+		emit_changed()
 
 @export var reference_resolution: Vector2 = Vector2(1920.0, 1080.0):
 	set(value):
@@ -19,13 +19,13 @@ const EFFECT_SHADER: Shader = preload("./pixelation.gdshader")
 			return
 
 		reference_resolution = safe_resolution
-		notify_change()
+		emit_changed()
 
 
-func _get_shader() -> Shader:
+func get_shader() -> Shader:
 	return EFFECT_SHADER
 
 
 func _update_shader_parameters() -> void:
-	shader_parameters[&"pixel_size"] = pixel_size
-	shader_parameters[&"reference_resolution"] = reference_resolution
+	_shader_parameters[&"pixel_size"] = pixel_size
+	_shader_parameters[&"reference_resolution"] = reference_resolution

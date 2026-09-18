@@ -16,7 +16,7 @@ const EFFECT_SHADER: Shader = preload("./chromatic_aberration.gdshader")
 			return
 
 		direction = value
-		notify_change()
+		emit_changed()
 
 @export_range(0.0, 32.0, 0.1) var amount: float = 2.0:
 	set(value):
@@ -24,13 +24,13 @@ const EFFECT_SHADER: Shader = preload("./chromatic_aberration.gdshader")
 			return
 
 		amount = value
-		notify_change()
+		emit_changed()
 
 
-func _get_shader() -> Shader:
+func get_shader() -> Shader:
 	return EFFECT_SHADER
 
 
 func _update_shader_parameters() -> void:
-	shader_parameters[&"direction"] = direction
-	shader_parameters[&"amount"] = amount
+	_shader_parameters[&"direction"] = direction
+	_shader_parameters[&"amount"] = amount

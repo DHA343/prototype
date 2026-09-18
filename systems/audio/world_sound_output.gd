@@ -12,11 +12,11 @@ enum DropReason {
 @export_range(1, 64, 1) var max_voices: int = 64
 
 var _players: Array[AudioStreamPlayer2D] = []
-var _active_players: Array[AudioStreamPlayer2D] = []
 var _available_players: Array[AudioStreamPlayer2D] = []
-var _pending_aggregations: Dictionary = {}
-var _cue_active_counts: Dictionary = {}
-var _player_cues: Dictionary = {}
+var _pending_aggregations: Dictionary[StringName, PendingAggregation] = {}
+var _cue_active_counts: Dictionary[int, int] = {}
+## This map is the source of truth for active voices and their owning cues.
+var _player_cues: Dictionary[AudioStreamPlayer2D, SoundCue] = {}
 var _cue_limit_drop_count: int = 0
 var _global_limit_drop_count: int = 0
 
@@ -33,6 +33,7 @@ func _process(_delta: float) -> void:
 	_flush_expired_aggregations()
 
 
+## True means queued for aggregation, not guaranteed playback; limits apply when flushed.
 func request(sound_request: SoundRequest) -> bool:
 	if sound_request == null:
 		return false
@@ -70,7 +71,7 @@ func request(sound_request: SoundRequest) -> bool:
 
 
 func get_active_voice_count() -> int:
-	return _active_players.size()
+	return _player_cues.size()
 
 
 func get_allocated_voice_count() -> int:
@@ -95,7 +96,7 @@ func _flush_expired_aggregations() -> void:
 
 	var current_frame := Engine.get_process_frames()
 	var current_time_usec := Time.get_ticks_usec()
-	var keys_to_flush: Array = []
+	var keys_to_flush: Array[StringName] = []
 	for aggregation_key in _pending_aggregations:
 		var pending: PendingAggregation = _pending_aggregations[aggregation_key]
 		if _should_flush_pending(pending, current_frame, current_time_usec):
@@ -111,6 +112,7 @@ func _should_flush_pending(
 	current_time_usec: int
 ) -> bool:
 	if pending.aggregation_window <= 0.0:
+		# A zero window still combines requests within one process frame.
 		return pending.first_frame < current_frame
 
 	var elapsed_usec := current_time_usec - pending.first_request_usec
@@ -133,7 +135,7 @@ func _play_aggregated(pending: PendingAggregation) -> void:
 		_register_drop(cue, DropReason.CUE_LIMIT)
 		return
 
-	if _active_players.size() >= max_voices:
+	if _player_cues.size() >= max_voices:
 		_register_drop(cue, DropReason.GLOBAL_LIMIT)
 		return
 
@@ -148,7 +150,6 @@ func _play_aggregated(pending: PendingAggregation) -> void:
 	player.bus = cue.bus
 	player.global_position = pending.get_average_position()
 
-	_active_players.append(player)
 	_player_cues[player] = cue
 	_set_cue_active_count(cue, active_cue_count + 1)
 	player.play()
@@ -177,14 +178,12 @@ func _create_player() -> AudioStreamPlayer2D:
 
 
 func _on_player_finished(player: AudioStreamPlayer2D) -> void:
-	if not _active_players.has(player):
+	if not _player_cues.has(player):
 		return
 
-	_active_players.erase(player)
-	var cue: SoundCue = _player_cues.get(player)
+	var cue: SoundCue = _player_cues[player]
 	_player_cues.erase(player)
-	if cue != null:
-		_set_cue_active_count(cue, _get_cue_active_count(cue) - 1)
+	_set_cue_active_count(cue, _get_cue_active_count(cue) - 1)
 
 	player.stream = null
 	if not _available_players.has(player):

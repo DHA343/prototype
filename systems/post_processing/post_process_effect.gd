@@ -9,22 +9,21 @@ extends Resource
 			return
 
 		enabled = value
-		notify_change()
+		emit_changed()
 
-var shader_parameters: Dictionary[StringName, Variant] = {}
+var _shader_parameters: Dictionary[StringName, Variant] = {}
 
 
 @abstract
-func _get_shader() -> Shader
+func get_shader() -> Shader
+
+
+func apply_to(material: ShaderMaterial) -> void:
+	_shader_parameters.clear()
+	_update_shader_parameters()
+	for parameter_name in _shader_parameters:
+		material.set_shader_parameter(parameter_name, _shader_parameters[parameter_name])
 
 
 @abstract
 func _update_shader_parameters() -> void
-
-
-func is_enabled() -> bool:
-	return enabled
-
-
-func notify_change() -> void:
-	emit_changed()

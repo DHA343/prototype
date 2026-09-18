@@ -15,7 +15,7 @@ const EFFECT_SHADER: Shader = preload("./vignette.gdshader")
 			return
 
 		strength = value
-		notify_change()
+		emit_changed()
 
 @export_range(0.0, 1.0, 0.01) var radius: float = 0.58:
 	set(value):
@@ -23,7 +23,7 @@ const EFFECT_SHADER: Shader = preload("./vignette.gdshader")
 			return
 
 		radius = value
-		notify_change()
+		emit_changed()
 
 @export_range(0.0, 1.0, 0.01) var softness: float = 0.35:
 	set(value):
@@ -31,7 +31,7 @@ const EFFECT_SHADER: Shader = preload("./vignette.gdshader")
 			return
 
 		softness = value
-		notify_change()
+		emit_changed()
 
 @export_range(0.1, 4.0, 0.01) var falloff: float = 1.8:
 	set(value):
@@ -39,7 +39,7 @@ const EFFECT_SHADER: Shader = preload("./vignette.gdshader")
 			return
 
 		falloff = value
-		notify_change()
+		emit_changed()
 
 @export var shape_mode: ShapeMode = ShapeMode.SCREEN_ELLIPSE:
 	set(value):
@@ -47,7 +47,7 @@ const EFFECT_SHADER: Shader = preload("./vignette.gdshader")
 			return
 
 		shape_mode = value
-		notify_change()
+		emit_changed()
 
 @export_range(0.25, 0.75, 0.01) var center_x: float = 0.5:
 	set(value):
@@ -55,7 +55,7 @@ const EFFECT_SHADER: Shader = preload("./vignette.gdshader")
 			return
 
 		center_x = value
-		notify_change()
+		emit_changed()
 
 @export_range(0.25, 0.75, 0.01) var center_y: float = 0.48:
 	set(value):
@@ -63,7 +63,7 @@ const EFFECT_SHADER: Shader = preload("./vignette.gdshader")
 			return
 
 		center_y = value
-		notify_change()
+		emit_changed()
 
 @export var vignette_color: Color = Color(0.008, 0.004, 0.02, 1.0):
 	set(value):
@@ -71,19 +71,19 @@ const EFFECT_SHADER: Shader = preload("./vignette.gdshader")
 			return
 
 		vignette_color = value
-		notify_change()
+		emit_changed()
 
 
-func _get_shader() -> Shader:
+func get_shader() -> Shader:
 	return EFFECT_SHADER
 
 
 func _update_shader_parameters() -> void:
-	shader_parameters[&"strength"] = strength
-	shader_parameters[&"radius"] = radius
-	shader_parameters[&"softness"] = softness
-	shader_parameters[&"falloff"] = falloff
-	shader_parameters[&"shape_mode"] = shape_mode
-	shader_parameters[&"center_x"] = center_x
-	shader_parameters[&"center_y"] = center_y
-	shader_parameters[&"vignette_color"] = vignette_color
+	_shader_parameters[&"strength"] = strength
+	_shader_parameters[&"radius"] = radius
+	_shader_parameters[&"softness"] = softness
+	_shader_parameters[&"falloff"] = falloff
+	_shader_parameters[&"shape_mode"] = shape_mode
+	_shader_parameters[&"center_x"] = center_x
+	_shader_parameters[&"center_y"] = center_y
+	_shader_parameters[&"vignette_color"] = vignette_color

@@ -33,6 +33,8 @@ func _ready() -> void:
 	set_process(false)
 
 
+## Call once after adding the number and assigning its world position.
+## Uses attack damage and the victim's total knockback velocity, not HP lost or impulse added.
 func launch(damage: float, knockback_velocity: Vector2) -> void:
 	_label.text = str(roundi(damage))
 	_lifetime = maxf(lifetime * _variation(lifetime_variation), 0.01)

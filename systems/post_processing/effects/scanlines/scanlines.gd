@@ -10,7 +10,7 @@ const EFFECT_SHADER: Shader = preload("./scanlines.gdshader")
 			return
 
 		line_count = value
-		notify_change()
+		emit_changed()
 
 @export_range(0.01, 1.0, 0.01) var line_thickness: float = 0.5:
 	set(value):
@@ -18,7 +18,7 @@ const EFFECT_SHADER: Shader = preload("./scanlines.gdshader")
 			return
 
 		line_thickness = value
-		notify_change()
+		emit_changed()
 
 @export_range(0.0, 0.5, 0.01) var edge_softness: float = 0.05:
 	set(value):
@@ -26,7 +26,7 @@ const EFFECT_SHADER: Shader = preload("./scanlines.gdshader")
 			return
 
 		edge_softness = value
-		notify_change()
+		emit_changed()
 
 @export_range(0.0, 1.0, 0.01) var strength: float = 0.3:
 	set(value):
@@ -34,15 +34,15 @@ const EFFECT_SHADER: Shader = preload("./scanlines.gdshader")
 			return
 
 		strength = value
-		notify_change()
+		emit_changed()
 
 
-func _get_shader() -> Shader:
+func get_shader() -> Shader:
 	return EFFECT_SHADER
 
 
 func _update_shader_parameters() -> void:
-	shader_parameters[&"line_count"] = line_count
-	shader_parameters[&"line_thickness"] = line_thickness
-	shader_parameters[&"edge_softness"] = edge_softness
-	shader_parameters[&"strength"] = strength
+	_shader_parameters[&"line_count"] = line_count
+	_shader_parameters[&"line_thickness"] = line_thickness
+	_shader_parameters[&"edge_softness"] = edge_softness
+	_shader_parameters[&"strength"] = strength

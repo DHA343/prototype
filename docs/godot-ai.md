@@ -24,5 +24,5 @@ Godot Editorの操作、状態確認、実行時の確認にはGodot AIを使用
 ## Editor session
 
 - Godot AIを使用する際は、現在の作業ディレクトリに対応するEditor sessionを使用する。
-- 対応するEditor sessionが存在しない場合は、`godot --editor --path .` で現在のプロジェクトを起動する。
+- 対応するEditor sessionが存在しない場合は、Sandbox外で `godot --editor --path .` を実行して現在のプロジェクトを起動する。
 - 複数のEditor sessionが存在する場合は、プロジェクトパスが現在の作業ディレクトリと一致するものを使用する。

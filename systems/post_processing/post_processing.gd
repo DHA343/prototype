@@ -2,9 +2,6 @@
 class_name PostProcessing
 extends Node
 
-const WORLD_EFFECT_LAYER: int = 50
-const COMPOSITE_EFFECT_LAYER: int = 150
-
 @export var enabled: bool = true:
 	set(value):
 		if enabled == value:
@@ -49,10 +46,10 @@ func rebuild_effects() -> void:
 
 	var registered_effects: Dictionary[int, bool] = {}
 
-	_build_effect_layer(&"WorldEffects", WORLD_EFFECT_LAYER, world_effects, registered_effects)
+	_build_effect_layer(&"WorldEffects", RenderLayers.WORLD_EFFECTS, world_effects, registered_effects)
 	_build_effect_layer(
 		&"CompositeEffects",
-		COMPOSITE_EFFECT_LAYER,
+		RenderLayers.COMPOSITE_EFFECTS,
 		composite_effects,
 		registered_effects,
 	)
@@ -71,8 +68,8 @@ func _on_effect_changed(binding: EffectBinding) -> void:
 	):
 		return
 
-	_set_binding_enabled(binding, binding.effect.is_enabled())
-	_apply_shader_parameters(binding.effect, binding.material)
+	_set_binding_enabled(binding, binding.effect.enabled)
+	binding.effect.apply_to(binding.material)
 
 
 func _build_effect_layer(
@@ -113,7 +110,7 @@ func _validate_effect(
 		push_warning("PostProcessing ignored a duplicate Resource at %s[%d]." % [layer_name, index])
 		return false
 
-	if effect._get_shader() == null:
+	if effect.get_shader() == null:
 		push_warning(
 			"PostProcessing ignored an effect without a Shader at %s[%d]."
 			% [layer_name, index]
@@ -134,7 +131,7 @@ func _create_effect_nodes(
 	canvas_layer.add_child(back_buffer_copy, false, Node.INTERNAL_MODE_BACK)
 
 	var material := ShaderMaterial.new()
-	material.shader = effect._get_shader()
+	material.shader = effect.get_shader()
 
 	var rect := ColorRect.new()
 	rect.name = "Effect%d" % index
@@ -151,22 +148,14 @@ func _create_effect_nodes(
 	binding.changed_callback = _on_effect_changed.bind(binding)
 	_effect_bindings.append(binding)
 
-	_set_binding_enabled(binding, effect.is_enabled())
-	_apply_shader_parameters(effect, material)
+	_set_binding_enabled(binding, effect.enabled)
+	effect.apply_to(material)
 	effect.changed.connect(binding.changed_callback, CONNECT_DEFERRED)
 
 
 func _set_binding_enabled(binding: EffectBinding, is_enabled: bool) -> void:
 	binding.back_buffer_copy.visible = is_enabled
 	binding.rect.visible = is_enabled
-
-
-func _apply_shader_parameters(effect: PostProcessEffect, material: ShaderMaterial) -> void:
-	effect.shader_parameters.clear()
-	effect._update_shader_parameters()
-
-	for parameter_name in effect.shader_parameters:
-		material.set_shader_parameter(parameter_name, effect.shader_parameters[parameter_name])
 
 
 func _disconnect_effects() -> void:

@@ -8,35 +8,28 @@ extends Node2D
 @onready var enemy_spawner: EnemySpawner = $EnemySpawner
 @onready var damage_number_spawner: DamageNumberSpawner = $WorldUILayer/DamageNumberSpawner
 @onready var world_sound_output: WorldSoundOutput = $WorldSoundOutput
-@onready var punch_controller: PunchController = $Actors/Player/PunchController
 @onready var impact_camera_shake: ImpactCameraShake = $Camera2D/CameraShake/ImpactCameraShake
+@onready var world_ui_layer: CanvasLayer = $WorldUILayer
 
 
 func _ready() -> void:
-	if player.crowd == null:
-		push_error("Player crowd settings are not assigned.")
-	else:
-		crowd_manager.register_member(
-			player,
-			player.crowd.radius,
-			player.crowd.avoidance_radius,
-			player.crowd.response
-		)
-
-	punch_controller.setup(world_sound_output)
-	punch_controller.camera_shake_requested.connect(impact_camera_shake.request_trauma)
+	world_ui_layer.layer = RenderLayers.WORLD_UI
+	crowd_manager.register_member(player, player.crowd)
+	player.sound_requested.connect(world_sound_output.request)
+	player.camera_shake_requested.connect(impact_camera_shake.request_trauma)
 	enemy_spawner.enemy_spawned.connect(_on_enemy_spawned)
-	enemy_spawner.setup(player, crowd_manager, enemies, spawn_area)
+	enemy_spawner.setup(player, enemies, spawn_area)
 	enemy_spawner.start()
 
 
 func _on_enemy_spawned(enemy: Enemy) -> void:
+	crowd_manager.register_member(enemy, enemy.crowd)
 	enemy.damaged.connect(_on_enemy_damaged)
 
 
 func _on_enemy_damaged(
-	damage: float,
+	requested_damage: float,
 	hit_position: Vector2,
-	knockback_velocity: Vector2
+	resulting_knockback_velocity: Vector2
 ) -> void:
-	damage_number_spawner.spawn(damage, knockback_velocity, hit_position)
+	damage_number_spawner.spawn(requested_damage, resulting_knockback_velocity, hit_position)

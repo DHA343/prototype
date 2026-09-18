@@ -2,6 +2,7 @@ class_name PunchAttack
 extends Node2D
 
 signal camera_shake_requested(trauma: float)
+signal sound_requested(request: SoundRequest)
 
 @export_group("Hit")
 @export_range(0.0, 1000.0, 0.1) var damage: float = 10.0
@@ -27,10 +28,9 @@ signal camera_shake_requested(trauma: float)
 @export_range(0.01, 1.0, 0.01, "suffix:s") var lifetime: float = 0.14
 
 var _attacker: Node = null
-var _world_sound_output: WorldSoundOutput
 var _direction: Vector2 = Vector2.RIGHT
 var _side_sign: float = -1.0
-var _hit_hurtbox_ids: Dictionary = {}
+var _hit_hurtbox_ids: Dictionary[int, bool] = {}
 
 @onready var _visual_root: Node2D = $VisualRoot
 @onready var _hitbox: Hitbox = $Hitbox
@@ -38,29 +38,26 @@ var _hit_hurtbox_ids: Dictionary = {}
 
 
 func _ready() -> void:
+	_hitbox.hurtbox_detected.connect(_on_hurtbox_detected)
+	_hitbox.monitoring = false
+
+
+## Call once after adding the attack to its scene parent.
+func launch(attacker: Node, direction: Vector2, side_sign: float) -> void:
+	_attacker = attacker
+	_direction = direction.normalized()
+	if _direction.is_zero_approx():
+		_direction = Vector2.RIGHT
+	_side_sign = -1.0 if side_sign < 0.0 else 1.0
+
 	global_rotation = _direction.angle()
 	_collision_shape.position = Vector2(hitbox_forward_offset, side_offset * _side_sign)
 	_collision_shape.rotation = PI * 0.5
-	_hitbox.hurtbox_detected.connect(_on_hurtbox_detected)
 	_hitbox.monitoring = true
 
 	_play_visual()
 	get_tree().create_timer(hit_active_duration).timeout.connect(_disable_hitbox)
 	get_tree().create_timer(lifetime).timeout.connect(queue_free)
-
-
-func setup(
-	attacker: Node,
-	direction: Vector2,
-	side_sign: float,
-	world_sound_output: WorldSoundOutput
-) -> void:
-	_attacker = attacker
-	_world_sound_output = world_sound_output
-	_direction = direction.normalized()
-	if _direction.is_zero_approx():
-		_direction = Vector2.RIGHT
-	_side_sign = -1.0 if side_sign < 0.0 else 1.0
 
 
 func _on_hurtbox_detected(hurtbox: Hurtbox) -> void:
@@ -76,20 +73,16 @@ func _on_hurtbox_detected(hurtbox: Hurtbox) -> void:
 	hit.hit_position = hurtbox.global_position
 	hit.hit_direction = _direction
 	hurtbox.receive_hit(hit)
-	_play_hit_sound(hit.hit_position)
+	_request_hit_sound(hit.hit_position)
 	if hit_camera_trauma > 0.0:
 		camera_shake_requested.emit(hit_camera_trauma)
 
 
-func _play_hit_sound(hit_position: Vector2) -> void:
+func _request_hit_sound(hit_position: Vector2) -> void:
 	if hit_sound == null:
 		return
-	if not is_instance_valid(_world_sound_output):
-		push_error("world_sound_output is not assigned.")
-		return
-
 	var sound_request := SoundRequest.new(hit_sound, hit_position, self)
-	_world_sound_output.request(sound_request)
+	sound_requested.emit(sound_request)
 
 
 func _play_visual() -> void:

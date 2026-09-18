@@ -28,6 +28,7 @@ extends Node
 	set(value):
 		separation_power = clampf(value, 0.1, 8.0)
 
+## Persistent member arrays share an index; scratch buffers are resized each tick.
 var _members: Array[Node2D] = []
 var _radii: Array[float] = []
 var _avoidance_radii: Array[float] = []
@@ -40,6 +41,7 @@ var _pairs: Array[Vector2i] = []
 
 
 func _ready() -> void:
+	# Resolve crowd spacing after actors have applied their movement and knockback.
 	process_physics_priority = 100
 
 
@@ -56,18 +58,16 @@ func _physics_process(delta: float) -> void:
 	_write_positions()
 
 
-func register_member(
-	member: Node2D,
-	radius: float,
-	avoidance_radius: float,
-	response: float
-) -> void:
+func register_member(member: Node2D, settings: CrowdSettings) -> void:
 	if not is_instance_valid(member):
 		return
+	if settings == null:
+		push_error("Crowd settings are not assigned.")
+		return
 
-	var safe_radius := maxf(radius, 0.0)
-	var safe_avoidance_radius := maxf(avoidance_radius, safe_radius)
-	var safe_response := clampf(response, 0.0, 10.0)
+	var safe_radius := maxf(settings.radius, 0.0)
+	var safe_avoidance_radius := maxf(settings.avoidance_radius, safe_radius)
+	var safe_response := clampf(settings.response, 0.0, 10.0)
 	var member_index := _members.find(member)
 	if member_index >= 0:
 		_radii[member_index] = safe_radius
@@ -79,6 +79,7 @@ func register_member(
 	_radii.append(safe_radius)
 	_avoidance_radii.append(safe_avoidance_radius)
 	_responses.append(safe_response)
+	member.tree_exiting.connect(_on_member_tree_exiting.bind(member))
 
 
 func unregister_member(member: Node2D) -> void:
@@ -86,6 +87,15 @@ func unregister_member(member: Node2D) -> void:
 	if member_index < 0:
 		return
 
+	member.tree_exiting.disconnect(_on_member_tree_exiting.bind(member))
+	_remove_member_at(member_index)
+
+
+func _on_member_tree_exiting(member: Node2D) -> void:
+	unregister_member(member)
+
+
+func _remove_member_at(member_index: int) -> void:
 	_members.remove_at(member_index)
 	_radii.remove_at(member_index)
 	_avoidance_radii.remove_at(member_index)
@@ -245,10 +255,7 @@ func _remove_invalid_members() -> void:
 		if is_instance_valid(_members[member_index]):
 			continue
 
-		_members.remove_at(member_index)
-		_radii.remove_at(member_index)
-		_avoidance_radii.remove_at(member_index)
-		_responses.remove_at(member_index)
+		_remove_member_at(member_index)
 
 
 func _world_to_cell(world_position: Vector2) -> Vector2i:

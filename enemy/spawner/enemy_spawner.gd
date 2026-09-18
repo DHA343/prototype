@@ -10,21 +10,14 @@ signal enemy_spawned(enemy: Enemy)
 @export_range(0.0, 10.0, 0.1, "suffix:s") var respawn_delay: float = 0.5
 
 var _target: Node2D = null
-var _crowd_manager: CrowdManager = null
 var _spawn_parent: Node = null
 var _spawn_area: SpawnArea = null
 var _is_started: bool = false
 var _alive_count: int = 0
 
 
-func setup(
-	target: Node2D,
-	crowd_manager: CrowdManager,
-	spawn_parent: Node,
-	spawn_area: SpawnArea
-) -> void:
+func setup(target: Node2D, spawn_parent: Node, spawn_area: SpawnArea) -> void:
 	_target = target
-	_crowd_manager = crowd_manager
 	_spawn_parent = spawn_parent
 	_spawn_area = spawn_area
 
@@ -51,7 +44,7 @@ func _spawn_enemy() -> Enemy:
 
 	_spawn_parent.add_child(enemy)
 	enemy.global_position = _spawn_area.random_point()
-	enemy.setup(_target, _crowd_manager)
+	enemy.start(_target)
 	enemy.died.connect(_on_enemy_died)
 
 	_alive_count += 1
@@ -77,9 +70,6 @@ func _has_valid_setup() -> bool:
 		return false
 	if not is_instance_valid(_target):
 		push_error("target is not assigned.")
-		return false
-	if not is_instance_valid(_crowd_manager):
-		push_error("crowd_manager is not assigned.")
 		return false
 	if not is_instance_valid(_spawn_parent):
 		push_error("spawn_parent is not assigned.")

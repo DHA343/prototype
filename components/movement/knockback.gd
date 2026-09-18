@@ -14,6 +14,11 @@ var _initial_velocity: Vector2 = Vector2.ZERO
 var _elapsed_time: float = 0.0
 
 
+func apply_hit(hit: HitData, resistance: float) -> void:
+	var direction := hit.hit_direction.normalized()
+	apply(direction * hit.knockback * (1.0 - resistance))
+
+
 func apply(new_velocity: Vector2) -> void:
 	_initial_velocity = (velocity + new_velocity).limit_length(maxf(max_speed, 0.0))
 	_elapsed_time = 0.0
