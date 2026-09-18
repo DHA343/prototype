@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://gd8jd5cy3bji"]
+
+[ext_resource type="Script" uid="uid://v6duqyyix1lw" path="res://player/ability/punch/punch_ability.gd" id="1_punch_ability"]
+[ext_resource type="PackedScene" uid="uid://rv5y16rxikdf" path="res://player/ability/punch/punch_attack.tscn" id="2_punch_attack"]
+
+[node name="PunchAbility" type="Node" unique_id=1531098578]
+script = ExtResource("1_punch_ability")
+punch_attack_scene = ExtResource("2_punch_attack")
+attack_interval = 0.08
+press_buffer_duration = 0.08

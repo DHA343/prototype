@@ -4,8 +4,9 @@
 [ext_resource type="Script" uid="uid://ckpqhc1x4nwet" path="res://components/combat/hurtbox.gd" id="2_hurtbox"]
 [ext_resource type="Script" uid="uid://dnyf0tl6ivkvh" path="res://components/combat/health.gd" id="3_health"]
 [ext_resource type="Script" uid="uid://di4xqdiuawg5d" path="res://components/movement/knockback.gd" id="4_knockback"]
-[ext_resource type="Script" uid="uid://v6duqyyix1lw" path="res://player/attack/punch_controller.gd" id="5_punch_controller"]
-[ext_resource type="PackedScene" uid="uid://rv5y16rxikdf" path="res://player/attack/punch_attack.tscn" id="6_punch_attack"]
+[ext_resource type="Script" path="res://player/ability/ability_controller.gd" id="5_ability_controller"]
+[ext_resource type="Script" path="res://player/ability/ability_slot.gd" id="6_ability_slot"]
+[ext_resource type="PackedScene" path="res://player/ability/punch/punch_ability.tscn" id="7_punch_ability"]
 [ext_resource type="Resource" uid="uid://b2y1dd2ckns5s" path="res://player/player_crowd.tres" id="7_player_crowd"]
 [ext_resource type="PackedScene" path="res://components/visual/drop_shadow.tscn" id="8_drop_shadow"]
 [ext_resource type="Script" uid="uid://ca1mfik6kmv8x" path="res://player/player_input.gd" id="9_player_input"]
@@ -55,6 +56,11 @@ script = ExtResource("4_knockback")
 z_index = 1
 position = Vector2(0, -24)
 
-[node name="PunchController" type="Node" parent="." unique_id=1374205450]
-script = ExtResource("5_punch_controller")
-punch_attack_scene = ExtResource("6_punch_attack")
+[node name="AbilityController" type="Node" parent="." unique_id=1374205450]
+script = ExtResource("5_ability_controller")
+
+[node name="PrimarySlot" type="Node" parent="AbilityController"]
+script = ExtResource("6_ability_slot")
+slot_id = &"primary"
+input_action = &"ability_primary"
+initial_ability_scene = ExtResource("7_punch_ability")

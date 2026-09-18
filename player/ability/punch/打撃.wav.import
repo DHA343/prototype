@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://5myqy4r2epl5"
-path="res://.godot/imported/打撃.wav-39bb864b50c206e944c1dd8d7ca4091a.sample"
+path="res://.godot/imported/打撃.wav-0128b9a7267453170edcfbdd6ec29b16.sample"
 
 [deps]
 
-source_file="res://player/attack/打撃.wav"
-dest_files=["res://.godot/imported/打撃.wav-39bb864b50c206e944c1dd8d7ca4091a.sample"]
+source_file="res://player/ability/punch/打撃.wav"
+dest_files=["res://.godot/imported/打撃.wav-0128b9a7267453170edcfbdd6ec29b16.sample"]
 
 [params]
 

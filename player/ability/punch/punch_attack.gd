@@ -23,9 +23,7 @@ signal sound_requested(request: SoundRequest)
 @export_range(0.0, 150.0, 1.0, "suffix:unit") var visual_start_distance: float = 30.0
 @export_range(0.0, 150.0, 1.0, "suffix:unit") var visual_end_distance: float = 56.0
 @export_range(0.01, 1.0, 0.01, "suffix:s") var move_duration: float = 0.10
-@export_range(0.0, 1.0, 0.01, "suffix:s") var fade_start: float = 0.09
 @export_range(0.01, 1.0, 0.01, "suffix:s") var fade_duration: float = 0.05
-@export_range(0.01, 1.0, 0.01, "suffix:s") var lifetime: float = 0.14
 
 var _attacker: Node = null
 var _direction: Vector2 = Vector2.RIGHT
@@ -57,7 +55,7 @@ func launch(attacker: Node, direction: Vector2, side_sign: float) -> void:
 
 	_play_visual()
 	get_tree().create_timer(hit_active_duration).timeout.connect(_disable_hitbox)
-	get_tree().create_timer(lifetime).timeout.connect(queue_free)
+	get_tree().create_timer(maxf(hit_active_duration, move_duration)).timeout.connect(queue_free)
 
 
 func _on_hurtbox_detected(hurtbox: Hurtbox) -> void:
@@ -99,7 +97,7 @@ func _play_visual() -> void:
 	).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
 	var fade_tween := create_tween()
-	fade_tween.tween_interval(fade_start)
+	fade_tween.tween_interval(maxf(move_duration - fade_duration, 0.0))
 	fade_tween.tween_property(_visual_root, "modulate:a", 0.0, fade_duration)
 
 

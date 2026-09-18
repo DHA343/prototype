@@ -19,15 +19,15 @@ signal camera_shake_requested(trauma: float)
 @onready var health: Health = $Health
 @onready var knockback: Knockback = $Knockback
 @onready var player_input: PlayerInput = $PlayerInput
-@onready var _punch_controller: PunchController = $PunchController
+@onready var _ability_controller: AbilityController = $AbilityController
 @onready var _attack_root: Node2D = $AttackRoot
 
 
 func _ready() -> void:
 	hurtbox.hit_received.connect(_on_hurtbox_hit_received)
-	_punch_controller.sound_requested.connect(_on_sound_requested)
-	_punch_controller.camera_shake_requested.connect(_on_camera_shake_requested)
-	_punch_controller.setup(self, player_input, _attack_root)
+	_ability_controller.sound_requested.connect(_on_sound_requested)
+	_ability_controller.camera_shake_requested.connect(_on_camera_shake_requested)
+	_ability_controller.setup(self, player_input, _attack_root)
 
 
 func _physics_process(delta: float) -> void:
