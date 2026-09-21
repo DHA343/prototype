@@ -93,7 +93,7 @@ func _check_feedback_relay() -> void:
 	var controller := AbilityController.new()
 	var slot := AbilitySlot.new()
 	var sound_count := [0]
-	var trauma := [0.0]
+	var received_camera_shake: Array[CameraShakeRequest] = []
 	slot.slot_id = &"primary"
 	slot.input_action = &"ability_primary"
 	slot.initial_ability_scene = PUNCH_ABILITY_SCENE
@@ -103,12 +103,20 @@ func _check_feedback_relay() -> void:
 	fixture_root.add_child(controller)
 	controller.add_child(slot)
 	controller.sound_requested.connect(func(_request: SoundRequest): sound_count[0] += 1)
-	controller.camera_shake_requested.connect(func(value: float): trauma[0] = value)
+	controller.camera_shake_requested.connect(
+		func(request: CameraShakeRequest): received_camera_shake.append(request)
+	)
 	controller.setup(fixture_root, player_input, attack_root)
 	var ability := controller.get_ability(&"primary")
 	ability.sound_requested.emit(SoundRequest.new(SoundCue.new(), Vector2.ZERO, ability))
-	ability.camera_shake_requested.emit(0.25)
-	_expect(sound_count[0] == 1 and is_equal_approx(trauma[0], 0.25), "Ability feedback relays through the controller.")
+	var camera_shake_request := CameraShakeRequest.new()
+	ability.camera_shake_requested.emit(camera_shake_request)
+	_expect(
+		sound_count[0] == 1
+			and received_camera_shake.size() == 1
+			and received_camera_shake[0].operation == CameraShakeRequest.Operation.PLAY,
+		"Ability feedback relays through the controller."
+	)
 	fixture_root.queue_free()
 
 

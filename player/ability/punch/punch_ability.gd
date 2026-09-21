@@ -29,8 +29,8 @@ func input_held(_delta: float, aim_direction: Vector2) -> void:
 	_try_punch(aim_direction)
 
 
-func _on_punch_camera_shake_requested(trauma: float) -> void:
-	camera_shake_requested.emit(trauma)
+func _on_punch_camera_shake_requested(request: CameraShakeRequest) -> void:
+	camera_shake_requested.emit(request)
 
 
 func _on_punch_sound_requested(request: SoundRequest) -> void:

@@ -2,7 +2,7 @@ class_name Player
 extends CharacterBody2D
 
 signal sound_requested(request: SoundRequest)
-signal camera_shake_requested(trauma: float)
+signal camera_shake_requested(request: CameraShakeRequest)
 
 @export_group("Movement")
 @export_range(0.0, 2000.0, 10.0, "suffix:unit/s") var move_speed: float = 360.0
@@ -48,5 +48,5 @@ func _on_sound_requested(request: SoundRequest) -> void:
 	sound_requested.emit(request)
 
 
-func _on_camera_shake_requested(trauma: float) -> void:
-	camera_shake_requested.emit(trauma)
+func _on_camera_shake_requested(request: CameraShakeRequest) -> void:
+	camera_shake_requested.emit(request)

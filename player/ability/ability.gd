@@ -4,7 +4,7 @@ extends Node
 @warning_ignore("unused_signal")
 signal sound_requested(request: SoundRequest)
 @warning_ignore("unused_signal")
-signal camera_shake_requested(trauma: float)
+signal camera_shake_requested(request: CameraShakeRequest)
 
 @export_range(0.0, 0.5, 0.01, "suffix:s") var press_buffer_duration: float = 0.0
 

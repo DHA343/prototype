@@ -8,7 +8,7 @@ extends Node2D
 @onready var enemy_spawner: EnemySpawner = $EnemySpawner
 @onready var damage_number_spawner: DamageNumberSpawner = $WorldUILayer/DamageNumberSpawner
 @onready var world_sound_output: WorldSoundOutput = $WorldSoundOutput
-@onready var impact_camera_shake: ImpactCameraShake = $Camera2D/CameraShake/ImpactCameraShake
+@onready var camera_shake: CameraShake = $Camera2D/CameraShake
 @onready var world_ui_layer: CanvasLayer = $WorldUILayer
 
 
@@ -16,7 +16,7 @@ func _ready() -> void:
 	world_ui_layer.layer = RenderLayers.WORLD_UI
 	crowd_manager.register_member(player, player.crowd)
 	player.sound_requested.connect(world_sound_output.request)
-	player.camera_shake_requested.connect(impact_camera_shake.request_trauma)
+	player.camera_shake_requested.connect(camera_shake.request)
 	enemy_spawner.enemy_spawned.connect(_on_enemy_spawned)
 	enemy_spawner.setup(player, enemies, spawn_area)
 	enemy_spawner.start()

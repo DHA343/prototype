@@ -45,6 +45,7 @@
 - 内容がファイル上で明確で、Godot Editorの現在の状態やGodot側のAPIを介した処理を必要としない変更は、直接編集を優先する。
 - Godot EditorやRuntimeの現在の状態を扱う場合、Godot側で解釈されたScene・Node・Resourceの構造を確認する場合、またはGodot Editor APIを介した操作が変更の安全性や正確性に必要な場合は、Godot AIを使用する。
 - Godot CLIで確認可能な機械的検証は、Godot CLIを優先する。
+- Computer Useは明示的な指示がない限り使用しない。
 
 ## 検証
 

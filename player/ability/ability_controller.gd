@@ -2,7 +2,7 @@ class_name AbilityController
 extends Node
 
 signal sound_requested(request: SoundRequest)
-signal camera_shake_requested(trauma: float)
+signal camera_shake_requested(request: CameraShakeRequest)
 
 var _slots: Dictionary[StringName, AbilitySlot] = {}
 var _ability_user: Node
@@ -95,5 +95,5 @@ func _on_ability_sound_requested(request: SoundRequest) -> void:
 	sound_requested.emit(request)
 
 
-func _on_ability_camera_shake_requested(trauma: float) -> void:
-	camera_shake_requested.emit(trauma)
+func _on_ability_camera_shake_requested(request: CameraShakeRequest) -> void:
+	camera_shake_requested.emit(request)

@@ -1,7 +1,7 @@
 class_name PunchAttack
 extends Node2D
 
-signal camera_shake_requested(trauma: float)
+signal camera_shake_requested(request: CameraShakeRequest)
 signal sound_requested(request: SoundRequest)
 
 @export_group("Hit")
@@ -10,7 +10,7 @@ signal sound_requested(request: SoundRequest)
 @export_range(0.01, 1.0, 0.01, "suffix:s") var hit_active_duration: float = 0.09
 
 @export_group("Feedback")
-@export_range(0.0, 1.0, 0.01) var hit_camera_trauma: float = 0.15
+@export var hit_camera_shake: CameraShakeCue
 
 @export_group("Audio")
 @export var hit_sound: SoundCue
@@ -29,6 +29,7 @@ var _attacker: Node = null
 var _direction: Vector2 = Vector2.RIGHT
 var _side_sign: float = -1.0
 var _hit_hurtbox_ids: Dictionary[int, bool] = {}
+var _has_requested_hit_camera_shake: bool = false
 
 @onready var _visual_root: Node2D = $VisualRoot
 @onready var _hitbox: Hitbox = $Hitbox
@@ -72,8 +73,21 @@ func _on_hurtbox_detected(hurtbox: Hurtbox) -> void:
 	hit.hit_direction = _direction
 	hurtbox.receive_hit(hit)
 	_request_hit_sound(hit.hit_position)
-	if hit_camera_trauma > 0.0:
-		camera_shake_requested.emit(hit_camera_trauma)
+	_request_hit_camera_shake()
+
+
+func _request_hit_camera_shake() -> void:
+	if _has_requested_hit_camera_shake:
+		return
+	_has_requested_hit_camera_shake = true
+	if hit_camera_shake == null:
+		return
+
+	var request := CameraShakeRequest.new()
+	request.cue = hit_camera_shake
+	request.operation = CameraShakeRequest.Operation.PLAY
+	request.impact_direction = _direction
+	camera_shake_requested.emit(request)
 
 
 func _request_hit_sound(hit_position: Vector2) -> void:

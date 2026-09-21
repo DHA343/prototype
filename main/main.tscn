@@ -10,7 +10,6 @@
 [ext_resource type="Script" uid="uid://cbgahifjtheqi" path="res://systems/damage_number/damage_number_spawner.gd" id="8_damage_number_spawner"]
 [ext_resource type="PackedScene" path="res://components/visual/damage_number/damage_number.tscn" id="9_damage_number"]
 [ext_resource type="Script" uid="uid://bbbg0mjvptfxr" path="res://systems/camera/camera_shake.gd" id="10_camera_shake"]
-[ext_resource type="Script" uid="uid://4nnw1r2i1m1u" path="res://systems/camera/impact_camera_shake.gd" id="11_impact_camera_shake"]
 [ext_resource type="PackedScene" uid="uid://1cph7125gclc" path="res://systems/post_processing/post_processing.tscn" id="12_post_processing"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_spawn_area"]
@@ -27,11 +26,6 @@ script = ExtResource("7_world_sound_output")
 [node name="CameraShake" type="Node" parent="Camera2D" unique_id=1954490449]
 script = ExtResource("10_camera_shake")
 max_offset = Vector2(12, 7)
-trauma_power = 1.0
-noise_speed = 10.0
-
-[node name="ImpactCameraShake" type="Node" parent="Camera2D/CameraShake" unique_id=1954490450]
-script = ExtResource("11_impact_camera_shake")
 
 [node name="Actors" type="Node2D" parent="." unique_id=137631151]
 y_sort_enabled = true
