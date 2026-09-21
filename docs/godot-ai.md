@@ -1,28 +1,86 @@
 # Godot AI
 
-Godot Editorの操作、状態確認、実行時の確認にはGodot AIを使用する。
+Godot AIを使用する際の対象プロジェクト、Editor session、Editor process、および問題発生時の扱いを定める。
 
-## 利用方針
+## 対象プロジェクト
 
-- Editorの状態確認や、Scene・Node・ResourceなどEditor上の操作には優先して使用する。
-- Scene構造、instance、ownership、NodePath、Resource参照など、直接編集では整合性を崩す可能性がある操作にはGodot AIを使用する。
-- 複数の関連するEditor操作は、可能であれば `batch_execute` でまとめて行う。
-- Godot AIを使用する利点が明確であれば、以下の方針に限定しない。
+- 操作対象は、現在の作業対象に含まれる `project.godot` のディレクトリを基準に特定する。
+- Worktreeを使用している場合は、元のcheckoutではなく現在のWorktreeを対象とする。
 
-## 直接編集
+## Session
 
-- GDScript、shader、Markdownなどのテキストファイルは通常のファイル編集を優先する。
-- 複数ファイルの変更、リファクタリング、一括置換、検索などEditorを必要としない処理にはGodot AIを使用しない。
-- `.tscn` や `.tres` の単純な値変更は直接編集してよい。構造や参照関係に影響する場合はGodot AIを優先する。
-- `filesystem_manage` は通常の読み書きや検索には使用せず、scanやreimportなどGodot側の処理が必要な場合に使用する。
+対象sessionは `project_path` を基準に特定する。
 
-## 確認・検証
+1. 対象プロジェクトの `project_path` と一致するsessionを確認する。
+2. 別のWorktreeや元のcheckoutに対応するsessionは除外する。
+3. 同じ `project_path` に複数のsessionがある場合は、Editor PIDなどの信頼できる情報で特定する。
 
-- 必要に応じて `editor_state`、`project_run`、`logs_read` でEditor状態、実行結果、エラーを確認する。
-- 見た目の確認には `editor_screenshot`、実行中の状態や入力に対する挙動の確認には `game_manage` を使用する。
+対象sessionを特定した後は、次に従う。
 
-## Editor session
+- `session_id` を指定できるGodot AIの呼び出しでは明示的に指定する。
+- sessionの指定が必要な操作では、active sessionに依存する `godot://` Resourceよりも、`session_id` を指定できるtoolを優先する。
+- 対象sessionが失われても、別のactive sessionへ切り替えない。
 
-- Godot AIを使用する際は、現在の作業ディレクトリに対応するEditor sessionを使用する。
-- 対応するEditor sessionが存在しない場合は、Sandbox外で `godot --editor --path .` を実行して現在のプロジェクトを起動する。
-- 複数のEditor sessionが存在する場合は、プロジェクトパスが現在の作業ディレクトリと一致するものを使用する。
+## Editorの起動
+
+対象sessionが存在しない場合は、Editorの起動状態を確認する。
+
+1. 対象プロジェクトを開いているEditor processが存在するか確認する。
+2. 対象Editorが起動中であれば、新しく起動せず、sessionの接続を数回確認する。
+3. 対象Editorが起動していなければ、プロジェクトrootを明示して一度だけ起動する。
+   - Codexが起動した場合は、そのPIDを保持する。
+   - そのprocessが生存している間は追加起動しない。
+4. 起動中かどうかを安全に判断できない場合は、追加起動しない。
+
+別のprojectやWorktreeを開いているEditor processは対象に含めない。
+
+Editor processは操作対象の特定には使わず、Editorが起動しているか、追加起動してよいかを判断するために使用する。
+
+## 利用可能状態の確認
+
+Editorが起動していても、Godot AIのsessionが利用できるとは限らない。
+
+1. 対象 `project_path` のsessionが存在するか確認する。
+2. 存在しない場合は、pluginやbackendの接続を考慮して数回再確認する。
+3. 対象sessionを確認できた時点で、Godot AIを利用可能と判断する。
+4. Editorが起動したままsessionを確立できない場合は、Editorを追加起動せず接続失敗として扱う。
+5. Codexが起動したEditorがsession確立前に終了した場合も、自動では再起動しない。
+
+session確立後のEditor状態確認は、予定している操作に必要な範囲に留める。
+
+## 実装開始前の確認
+
+Godot AIを必要とする変更では、実装前に対象sessionが利用可能であることを確認する。
+
+複数の変更が相互に依存し、一部だけでは整合性を保てない場合は、一連の変更として扱う。
+
+Godot AIを利用できない場合は、次に従う。
+
+- 相互依存する変更の一部だけを実施しない。
+- Godot AIを使わずに一連の変更を安全に完了できる場合は、実装前に操作手段を切り替える。
+- 代替手段で完了できない場合は、その変更を開始しない。
+
+Godot AIを補助的な確認にだけ使用する場合は、その確認ができないことを理由に、独立して完了できる変更まで中止しない。
+
+## Sessionが失われた場合
+
+作業中に対象sessionを利用できなくなった場合は、次の順で対応する。
+
+1. 対象sessionの回復を数回試みる。
+2. 回復した場合は、必要なEditor状態を確認する。
+3. 変更操作の応答が確認できなかった場合は、再実行する前に実際の状態を確認する。
+4. 適用済みか未適用かを確認したうえで、必要な処理だけを続ける。
+
+この状態では、次の操作を行わない。
+
+- 回復できないまま別の操作手段へ切り替える。
+- 結果を確認できなかった変更操作をそのまま再実行する。
+- 適用済みか判断できない変更を推測で重ねる。
+
+## 失敗時
+
+- 問題が発生した範囲を確認し、独立した変更まで不要に中止しない。
+- 今回の変更と変更前の状態を安全に特定できる場合に限り、その変更を元に戻す。
+- 作業開始前から存在する変更や、ユーザーが途中で行った変更は推測で巻き戻さない。
+- 結果が確認できない変更も、推測だけで元に戻さない。
+- 安全に完了または復旧できない場合は、確認できている状態と残っている作業を明示する。

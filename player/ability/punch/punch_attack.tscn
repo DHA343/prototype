@@ -18,6 +18,8 @@ height = 72.0
 
 [node name="PunchAttack" type="Node2D" unique_id=1588396361]
 script = ExtResource("1_punch_attack")
+damage = 20.0
+knockback = 800.0
 hit_sound = SubResource("Resource_6v1qx")
 
 [node name="VisualRoot" type="Node2D" parent="." unique_id=1527551148]

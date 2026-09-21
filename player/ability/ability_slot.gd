@@ -81,6 +81,7 @@ func update_input(
 	_ability.update(delta)
 	_update_buffer(delta)
 	if just_pressed:
+		_discard_buffered_press()
 		if _ability.can_activate():
 			_ability.input_pressed(aim_direction)
 		elif _ability.press_buffer_duration > 0.0:
