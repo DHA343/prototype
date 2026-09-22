@@ -10,7 +10,7 @@ signal sound_requested(request: SoundRequest)
 @export_range(0.01, 1.0, 0.01, "suffix:s") var hit_active_duration: float = 0.09
 
 @export_group("Feedback")
-@export var hit_camera_shake: CameraShakeCue
+@export var hit_camera_shake: OneShotCameraShakeCue
 
 @export_group("Audio")
 @export var hit_sound: SoundCue

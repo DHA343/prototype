@@ -58,21 +58,23 @@ func request(request: CameraShakeRequest) -> void:
 
 
 func _request_one_shot(request: CameraShakeRequest) -> void:
-	assert(request.cue != null, "A cue is required for PLAY.")
-	assert(request.cue.lifetime == CameraShakeCue.Lifetime.ONE_SHOT, "PLAY requires a one-shot cue.")
-	if request.cue.one_shot_duration <= 0.0:
+	var cue := request.cue as OneShotCameraShakeCue
+	assert(cue != null, "PLAY requires OneShotCameraShakeCue.")
+	if cue == null or cue.duration <= 0.0:
 		return
 
 	var state := OneShotState.new()
-	state.cue = request.cue
+	state.cue = cue
 	state.impact_direction = request.impact_direction
 	state.strength_scale = request.strength_scale
 	_one_shots.append(state)
 
 
 func _start_sustain(request: CameraShakeRequest) -> void:
-	assert(request.cue != null, "A cue is required for START.")
-	assert(request.cue.lifetime == CameraShakeCue.Lifetime.SUSTAIN, "START requires a sustain cue.")
+	var cue := request.cue as SustainCameraShakeCue
+	assert(cue != null, "START requires SustainCameraShakeCue.")
+	if cue == null:
+		return
 	assert(request.source_id != 0, "A sustain source_id is required.")
 	assert(request.source_reference != null, "A sustain source_reference is required.")
 
@@ -80,9 +82,8 @@ func _start_sustain(request: CameraShakeRequest) -> void:
 	if state == null:
 		state = SustainState.new()
 		_sustains[request.source_id] = state
-	state.cue = request.cue
+	state.cue = cue
 	state.source_reference = request.source_reference
-	state.impact_direction = request.impact_direction
 	state.strength_scale = request.strength_scale
 	state.is_releasing = false
 	state.release_elapsed = 0.0
@@ -95,7 +96,6 @@ func _update_sustain(request: CameraShakeRequest) -> void:
 	if state == null:
 		return
 
-	state.impact_direction = request.impact_direction
 	state.strength_scale = request.strength_scale
 
 
@@ -116,8 +116,8 @@ func _release_destroyed_sources() -> void:
 func _begin_release(state: SustainState) -> void:
 	if state.is_releasing:
 		return
+	state.release_scale = maxf(state.strength_scale, 0.0)
 	state.is_releasing = true
-	state.release_strength = _get_sustain_strength(state)
 	state.release_elapsed = 0.0
 
 
@@ -125,19 +125,9 @@ func _calculate_offset() -> Vector2:
 	var totals := ChannelStrengths.new()
 
 	for state: OneShotState in _one_shots:
-		_add_contribution(
-			state.cue,
-			_get_one_shot_strength(state),
-			state.impact_direction,
-			totals
-		)
+		_add_one_shot_contribution(state, totals)
 	for state: SustainState in _sustains.values():
-		_add_contribution(
-			state.cue,
-			_get_sustain_strength(state),
-			state.impact_direction,
-			totals
-		)
+		_add_sustain_contribution(state, totals)
 
 	var low_offset := _get_noise_vector(_low_noise, _low_noise_position) * totals.low_strength
 	var high_offset := _get_noise_vector(_high_noise, _high_noise_position) * totals.high_strength
@@ -147,59 +137,55 @@ func _calculate_offset() -> Vector2:
 	return normalized_offset * max_shake_offset
 
 
-func _add_contribution(
-	cue: CameraShakeCue,
-	strength: float,
-	impact_direction: Vector2,
-	totals: ChannelStrengths
-) -> void:
-	var weight_total := cue.kick_weight + cue.low_noise_weight + cue.high_noise_weight
-	if weight_total <= 0.0:
-		return
-
-	var kick_weight := cue.kick_weight / weight_total
-	var low_weight := cue.low_noise_weight / weight_total
-	var high_weight := cue.high_noise_weight / weight_total
-	var kick_contribution := strength * kick_weight
-	if kick_contribution > 0.0 and not impact_direction.is_zero_approx() \
+func _add_one_shot_contribution(state: OneShotState, totals: ChannelStrengths) -> void:
+	var scale := _get_one_shot_scale(state)
+	var kick_contribution := _scaled_channel_strength(state.cue.kick_strength, scale)
+	if kick_contribution > 0.0 and not state.impact_direction.is_zero_approx() \
 		and kick_contribution > totals.kick_strength:
-		var kick_direction: Vector2
-		match cue.kick_direction:
-			CameraShakeCue.KickDirection.WITH_IMPACT:
-				kick_direction = impact_direction.normalized()
-			CameraShakeCue.KickDirection.OPPOSITE_IMPACT:
-				kick_direction = -impact_direction.normalized()
+		var kick_direction := state.impact_direction.normalized()
+		if state.cue.kick_direction == OneShotCameraShakeCue.KickDirection.OPPOSITE_IMPACT:
+			kick_direction = -kick_direction
 		totals.kick_strength = kick_contribution
 		totals.kick_offset = kick_direction * kick_contribution
 
-	totals.low_strength = _saturated_add(totals.low_strength, strength * low_weight)
-	totals.high_strength = _saturated_add(totals.high_strength, strength * high_weight)
+	var low_contribution := _scaled_channel_strength(state.cue.low_noise_strength, scale)
+	var high_contribution := _scaled_channel_strength(state.cue.high_noise_strength, scale)
+	totals.low_strength = _saturated_add(totals.low_strength, low_contribution)
+	totals.high_strength = _saturated_add(totals.high_strength, high_contribution)
 
 
-func _get_one_shot_strength(state: OneShotState) -> float:
-	var progress := clampf(state.elapsed / state.cue.one_shot_duration, 0.0, 1.0)
-	return _get_effective_strength(state.cue, state.strength_scale) * pow(1.0 - progress, 2.0)
+func _add_sustain_contribution(state: SustainState, totals: ChannelStrengths) -> void:
+	var scale := _get_sustain_scale(state)
+	var low_contribution := _scaled_channel_strength(state.cue.low_noise_strength, scale)
+	var high_contribution := _scaled_channel_strength(state.cue.high_noise_strength, scale)
+	totals.low_strength = _saturated_add(totals.low_strength, low_contribution)
+	totals.high_strength = _saturated_add(totals.high_strength, high_contribution)
 
 
-func _get_sustain_strength(state: SustainState) -> float:
+func _scaled_channel_strength(base_strength: float, scale: float) -> float:
+	return clampf(base_strength * scale, 0.0, 1.0)
+
+
+func _get_one_shot_scale(state: OneShotState) -> float:
+	var progress := clampf(state.elapsed / state.cue.duration, 0.0, 1.0)
+	return maxf(state.strength_scale, 0.0) * pow(1.0 - progress, 2.0)
+
+
+func _get_sustain_scale(state: SustainState) -> float:
 	if not state.is_releasing:
-		return _get_effective_strength(state.cue, state.strength_scale)
-	if state.cue.sustain_release_duration <= 0.0:
+		return maxf(state.strength_scale, 0.0)
+	if state.cue.release_duration <= 0.0:
 		return 0.0
 
-	var progress := clampf(state.release_elapsed / state.cue.sustain_release_duration, 0.0, 1.0)
-	return state.release_strength * pow(1.0 - progress, 2.0)
-
-
-func _get_effective_strength(cue: CameraShakeCue, strength_scale: float) -> float:
-	return clampf(cue.base_strength * maxf(strength_scale, 0.0), 0.0, 1.0)
+	var progress := clampf(state.release_elapsed / state.cue.release_duration, 0.0, 1.0)
+	return state.release_scale * pow(1.0 - progress, 2.0)
 
 
 func _advance_states(delta: float) -> void:
 	for index: int in range(_one_shots.size() - 1, -1, -1):
 		var state := _one_shots[index]
 		state.elapsed += delta
-		if state.elapsed >= state.cue.one_shot_duration:
+		if state.elapsed >= state.cue.duration:
 			_one_shots.remove_at(index)
 
 	for source_id: int in _sustains.keys():
@@ -207,7 +193,7 @@ func _advance_states(delta: float) -> void:
 		if not state.is_releasing:
 			continue
 		state.release_elapsed += delta
-		if state.release_elapsed >= state.cue.sustain_release_duration:
+		if state.release_elapsed >= state.cue.release_duration:
 			_sustains.erase(source_id)
 
 
@@ -221,7 +207,10 @@ func _create_noise() -> FastNoiseLite:
 
 
 func _get_noise_vector(noise: FastNoiseLite, position: float) -> Vector2:
-	return Vector2(noise.get_noise_1d(position), noise.get_noise_1d(position + 1000.0))
+	var sample := Vector2(noise.get_noise_1d(position), noise.get_noise_1d(position + 1000.0))
+	if sample.length_squared() > 1.0:
+		return sample.normalized()
+	return sample
 
 
 func _saturated_add(first: float, second: float) -> float:
@@ -229,19 +218,18 @@ func _saturated_add(first: float, second: float) -> float:
 
 
 class OneShotState:
-	var cue: CameraShakeCue
+	var cue: OneShotCameraShakeCue
 	var impact_direction: Vector2
-	var strength_scale: float
+	var strength_scale: float = 1.0
 	var elapsed: float = 0.0
 
 
 class SustainState:
-	var cue: CameraShakeCue
+	var cue: SustainCameraShakeCue
 	var source_reference: WeakRef
-	var impact_direction: Vector2
-	var strength_scale: float
+	var strength_scale: float = 1.0
 	var is_releasing: bool = false
-	var release_strength: float = 0.0
+	var release_scale: float = 0.0
 	var release_elapsed: float = 0.0
 
 
