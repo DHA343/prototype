@@ -25,7 +25,6 @@ script = ExtResource("7_world_sound_output")
 
 [node name="CameraShake" type="Node" parent="Camera2D" unique_id=1954490449]
 script = ExtResource("10_camera_shake")
-max_offset = Vector2(12, 7)
 
 [node name="Actors" type="Node2D" parent="." unique_id=137631151]
 y_sort_enabled = true

@@ -9,10 +9,64 @@ func _initialize() -> void:
 
 
 func _run() -> void:
+	await _check_cue_defaults_and_composition()
 	await _check_one_shot_and_master_intensity()
 	await _check_sustain_release()
 	print("Camera shake regression: %d failure(s)." % _failures)
 	quit(1 if _failures > 0 else 0)
+
+
+func _check_cue_defaults_and_composition() -> void:
+	var cue := CameraShakeCue.new()
+	_expect(
+		cue.base_strength == 0.0
+			and cue.one_shot_duration == 0.0
+			and cue.sustain_release_duration == 0.0
+			and cue.kick_weight == 0.0
+			and cue.low_noise_weight == 0.0
+			and cue.high_noise_weight == 0.0,
+		"New cues have no shake contribution."
+	)
+	var fixture := await _create_fixture()
+	var camera: Camera2D = fixture[&"camera"]
+	var fixture_shake: CameraShake = fixture[&"shake"]
+	var request := CameraShakeRequest.new()
+	request.cue = cue
+	request.operation = CameraShakeRequest.Operation.PLAY
+	request.impact_direction = Vector2.RIGHT
+	fixture_shake.request(request)
+	await process_frame
+	_expect(camera.offset == Vector2.ZERO, "Default cues do not move the camera.")
+	fixture[&"root"].queue_free()
+
+	var shake := CameraShake.new()
+	cue.base_strength = 0.5
+	cue.kick_weight = 1.0
+	var totals := CameraShake.ChannelStrengths.new()
+	shake._add_contribution(cue, cue.base_strength, Vector2.RIGHT, totals)
+	_expect(totals.kick_offset.x > 0.0, "WITH_IMPACT kicks in the impact direction.")
+
+	cue.kick_direction = CameraShakeCue.KickDirection.OPPOSITE_IMPACT
+	totals = CameraShake.ChannelStrengths.new()
+	shake._add_contribution(cue, cue.base_strength, Vector2.RIGHT, totals)
+	_expect(totals.kick_offset.x < 0.0, "OPPOSITE_IMPACT kicks against the impact direction.")
+
+	cue.kick_weight = 0.0
+	cue.low_noise_weight = 1.0
+	totals = CameraShake.ChannelStrengths.new()
+	shake._add_contribution(cue, cue.base_strength, Vector2.RIGHT, totals)
+	_expect(
+		totals.kick_offset == Vector2.ZERO and totals.low_strength > 0.0,
+		"Zero kick weight leaves noise contributions active."
+	)
+	cue.low_noise_weight = 0.0
+	cue.high_noise_weight = 1.0
+	totals = CameraShake.ChannelStrengths.new()
+	shake._add_contribution(cue, cue.base_strength, Vector2.RIGHT, totals)
+	_expect(
+		totals.low_strength == 0.0 and totals.high_strength > 0.0,
+		"Zero low-noise weight leaves high-noise contributions active."
+	)
 
 
 func _check_one_shot_and_master_intensity() -> void:
@@ -20,12 +74,12 @@ func _check_one_shot_and_master_intensity() -> void:
 	var camera: Camera2D = fixture[&"camera"]
 	var shake: CameraShake = fixture[&"shake"]
 	var cue := CameraShakeCue.new()
-	cue.strength = 0.5
-	cue.duration = 0.2
+	cue.base_strength = 0.5
+	cue.one_shot_duration = 0.2
 	cue.kick_weight = 1.0
 	cue.low_noise_weight = 0.0
 	cue.high_noise_weight = 0.0
-	cue.kick_direction_mode = CameraShakeCue.KickDirectionMode.OPPOSITE_IMPACT
+	cue.kick_direction = CameraShakeCue.KickDirection.OPPOSITE_IMPACT
 	var request := CameraShakeRequest.new()
 	request.cue = cue
 	request.operation = CameraShakeRequest.Operation.PLAY
@@ -50,12 +104,12 @@ func _check_sustain_release() -> void:
 	fixture.root.add_child(source)
 	var cue := CameraShakeCue.new()
 	cue.lifetime = CameraShakeCue.Lifetime.SUSTAIN
-	cue.strength = 0.5
-	cue.release_duration = 0.05
+	cue.base_strength = 0.5
+	cue.sustain_release_duration = 0.05
 	cue.kick_weight = 1.0
 	cue.low_noise_weight = 0.0
 	cue.high_noise_weight = 0.0
-	cue.kick_direction_mode = CameraShakeCue.KickDirectionMode.OPPOSITE_IMPACT
+	cue.kick_direction = CameraShakeCue.KickDirection.OPPOSITE_IMPACT
 	var start_request := CameraShakeRequest.new()
 	start_request.cue = cue
 	start_request.operation = CameraShakeRequest.Operation.START

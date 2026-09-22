@@ -1,7 +1,7 @@
 class_name CameraShake
 extends Node
 
-@export var max_offset: Vector2 = Vector2(16.0, 9.0)
+@export var max_shake_offset: Vector2 = Vector2(16.0, 9.0)
 @export_range(0.0, 1.0, 0.01) var master_intensity: float = 1.0
 @export_range(0.0, 100.0, 1.0) var low_noise_speed: float = 8.0
 @export_range(0.0, 100.0, 1.0) var high_noise_speed: float = 36.0
@@ -60,7 +60,7 @@ func request(request: CameraShakeRequest) -> void:
 func _request_one_shot(request: CameraShakeRequest) -> void:
 	assert(request.cue != null, "A cue is required for PLAY.")
 	assert(request.cue.lifetime == CameraShakeCue.Lifetime.ONE_SHOT, "PLAY requires a one-shot cue.")
-	if request.cue.duration <= 0.0:
+	if request.cue.one_shot_duration <= 0.0:
 		return
 
 	var state := OneShotState.new()
@@ -144,7 +144,7 @@ func _calculate_offset() -> Vector2:
 	var normalized_offset := totals.kick_offset + low_offset + high_offset
 	if normalized_offset.length() > 1.0:
 		normalized_offset = normalized_offset.normalized()
-	return normalized_offset * max_offset
+	return normalized_offset * max_shake_offset
 
 
 func _add_contribution(
@@ -160,40 +160,46 @@ func _add_contribution(
 	var kick_weight := cue.kick_weight / weight_total
 	var low_weight := cue.low_noise_weight / weight_total
 	var high_weight := cue.high_noise_weight / weight_total
-	var contribution := strength * kick_weight
-	if cue.kick_direction_mode == CameraShakeCue.KickDirectionMode.OPPOSITE_IMPACT \
-		and not impact_direction.is_zero_approx() and contribution > totals.kick_strength:
-		totals.kick_strength = contribution
-		totals.kick_offset = -impact_direction.normalized() * contribution
+	var kick_contribution := strength * kick_weight
+	if kick_contribution > 0.0 and not impact_direction.is_zero_approx() \
+		and kick_contribution > totals.kick_strength:
+		var kick_direction: Vector2
+		match cue.kick_direction:
+			CameraShakeCue.KickDirection.WITH_IMPACT:
+				kick_direction = impact_direction.normalized()
+			CameraShakeCue.KickDirection.OPPOSITE_IMPACT:
+				kick_direction = -impact_direction.normalized()
+		totals.kick_strength = kick_contribution
+		totals.kick_offset = kick_direction * kick_contribution
 
 	totals.low_strength = _saturated_add(totals.low_strength, strength * low_weight)
 	totals.high_strength = _saturated_add(totals.high_strength, strength * high_weight)
 
 
 func _get_one_shot_strength(state: OneShotState) -> float:
-	var progress := clampf(state.elapsed / state.cue.duration, 0.0, 1.0)
+	var progress := clampf(state.elapsed / state.cue.one_shot_duration, 0.0, 1.0)
 	return _get_effective_strength(state.cue, state.strength_scale) * pow(1.0 - progress, 2.0)
 
 
 func _get_sustain_strength(state: SustainState) -> float:
 	if not state.is_releasing:
 		return _get_effective_strength(state.cue, state.strength_scale)
-	if state.cue.release_duration <= 0.0:
+	if state.cue.sustain_release_duration <= 0.0:
 		return 0.0
 
-	var progress := clampf(state.release_elapsed / state.cue.release_duration, 0.0, 1.0)
+	var progress := clampf(state.release_elapsed / state.cue.sustain_release_duration, 0.0, 1.0)
 	return state.release_strength * pow(1.0 - progress, 2.0)
 
 
 func _get_effective_strength(cue: CameraShakeCue, strength_scale: float) -> float:
-	return clampf(cue.strength * maxf(strength_scale, 0.0), 0.0, 1.0)
+	return clampf(cue.base_strength * maxf(strength_scale, 0.0), 0.0, 1.0)
 
 
 func _advance_states(delta: float) -> void:
 	for index: int in range(_one_shots.size() - 1, -1, -1):
 		var state := _one_shots[index]
 		state.elapsed += delta
-		if state.elapsed >= state.cue.duration:
+		if state.elapsed >= state.cue.one_shot_duration:
 			_one_shots.remove_at(index)
 
 	for source_id: int in _sustains.keys():
@@ -201,7 +207,7 @@ func _advance_states(delta: float) -> void:
 		if not state.is_releasing:
 			continue
 		state.release_elapsed += delta
-		if state.release_elapsed >= state.cue.release_duration:
+		if state.release_elapsed >= state.cue.sustain_release_duration:
 			_sustains.erase(source_id)
 
 

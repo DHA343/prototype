@@ -4,7 +4,13 @@
 [ext_resource type="Script" uid="uid://qrvsxwdr56gm" path="res://components/combat/hitbox.gd" id="2_hitbox"]
 [ext_resource type="Script" uid="uid://b3v0jytvki4sj" path="res://systems/audio/sound_cue.gd" id="2_nqmmw"]
 [ext_resource type="AudioStream" uid="uid://5myqy4r2epl5" path="res://player/ability/punch/打撃.wav" id="3_tkwyx"]
-[ext_resource type="Script" path="res://systems/camera/camera_shake_cue.gd" id="4_camera_shake_cue"]
+[ext_resource type="Script" uid="uid://ceb8kt06p3ard" path="res://systems/camera/camera_shake_cue.gd" id="4_camera_shake_cue"]
+
+[sub_resource type="Resource" id="Resource_hit_camera_shake"]
+script = ExtResource("4_camera_shake_cue")
+one_shot_duration = 0.6
+kick_weight = 4.0
+kick_direction = 1
 
 [sub_resource type="Resource" id="Resource_6v1qx"]
 script = ExtResource("2_nqmmw")
@@ -16,14 +22,6 @@ metadata/_custom_type_script = "uid://b3v0jytvki4sj"
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hitbox"]
 radius = 18.0
 height = 72.0
-
-[sub_resource type="Resource" id="Resource_hit_camera_shake"]
-script = ExtResource("4_camera_shake_cue")
-strength = 0.2
-duration = 0.08
-kick_weight = 0.9
-low_noise_weight = 0.1
-kick_direction_mode = 1
 
 [node name="PunchAttack" type="Node2D" unique_id=1588396361]
 script = ExtResource("1_punch_attack")
