@@ -1,6 +1,8 @@
 class_name Main
 extends Node2D
 
+var _feedback: Feedback = Feedback.new()
+
 @onready var player: Player = $Actors/Player
 @onready var enemies: Node2D = $Actors/Enemies
 @onready var crowd_manager: CrowdManager = $CrowdManager
@@ -15,8 +17,9 @@ extends Node2D
 func _ready() -> void:
 	world_ui_layer.layer = RenderLayers.WORLD_UI
 	crowd_manager.register_member(player, player.crowd)
-	player.sound_requested.connect(world_sound_output.request)
-	player.camera_shake_requested.connect(camera_shake.request)
+	_feedback.sound_requested.connect(world_sound_output.request)
+	_feedback.camera_shake_requested.connect(camera_shake.request)
+	player.setup(_feedback)
 	enemy_spawner.enemy_spawned.connect(_on_enemy_spawned)
 	enemy_spawner.setup(player, enemies, spawn_area)
 	enemy_spawner.start()

@@ -14,6 +14,7 @@ enum DropReason {
 var _players: Array[AudioStreamPlayer2D] = []
 var _available_players: Array[AudioStreamPlayer2D] = []
 var _pending_aggregations: Dictionary[StringName, PendingAggregation] = {}
+var _suppressed_frames: Dictionary[StringName, int] = {}
 var _cue_active_counts: Dictionary[int, int] = {}
 ## This map is the source of truth for active voices and their owning cues.
 var _player_cues: Dictionary[AudioStreamPlayer2D, SoundCue] = {}
@@ -31,9 +32,14 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	_flush_expired_aggregations()
+	var current_frame := Engine.get_process_frames()
+	for key: StringName in _suppressed_frames.keys():
+		if _suppressed_frames[key] < current_frame:
+			_suppressed_frames.erase(key)
 
 
-## True means queued for aggregation, not guaranteed playback; limits apply when flushed.
+## True means playback was requested or aggregation was queued, not that audio is audible.
+## Aggregated requests are subject to voice limits when flushed. Suppressed requests return false.
 func request(sound_request: SoundRequest) -> bool:
 	if sound_request == null:
 		return false
@@ -47,8 +53,17 @@ func request(sound_request: SoundRequest) -> bool:
 		push_error("SoundCue references an unknown audio bus: %s" % cue.bus)
 		return false
 
+	if cue.playback_mode == SoundCue.PlaybackMode.IMMEDIATE:
+		return _play(cue, sound_request.world_position)
+
 	var aggregation_key := _get_aggregation_key(cue, sound_request.source_id)
 	var current_frame := Engine.get_process_frames()
+	if cue.playback_mode == SoundCue.PlaybackMode.SUPPRESS_FRAME:
+		if _suppressed_frames.get(aggregation_key, -1) == current_frame:
+			return false
+		_suppressed_frames[aggregation_key] = current_frame
+		return _play(cue, sound_request.world_position)
+
 	var current_time_usec := Time.get_ticks_usec()
 	var pending: PendingAggregation = _pending_aggregations.get(aggregation_key)
 	if pending != null and _should_flush_pending(pending, current_frame, current_time_usec):
@@ -56,12 +71,15 @@ func request(sound_request: SoundRequest) -> bool:
 		pending = null
 
 	if pending == null:
+		var window := 0.0
+		if cue.playback_mode == SoundCue.PlaybackMode.AGGREGATE_WINDOW:
+			window = maxf(cue.aggregation_window, 0.01)
 		pending = PendingAggregation.new(
 			cue,
 			sound_request.world_position,
 			current_frame,
 			current_time_usec,
-			maxf(cue.aggregation_window, 0.0)
+			window
 		)
 		_pending_aggregations[aggregation_key] = pending
 	else:
@@ -125,34 +143,34 @@ func _flush_pending_aggregation(aggregation_key: StringName) -> void:
 		return
 
 	_pending_aggregations.erase(aggregation_key)
-	_play_aggregated(pending)
+	_play(pending.cue, pending.get_average_position())
 
 
-func _play_aggregated(pending: PendingAggregation) -> void:
-	var cue := pending.cue
+func _play(cue: SoundCue, world_position: Vector2) -> bool:
 	var active_cue_count := _get_cue_active_count(cue)
 	if cue.max_instances > 0 and active_cue_count >= cue.max_instances:
 		_register_drop(cue, DropReason.CUE_LIMIT)
-		return
+		return false
 
 	if _player_cues.size() >= max_voices:
 		_register_drop(cue, DropReason.GLOBAL_LIMIT)
-		return
+		return false
 
 	var player := _acquire_player()
 	if player == null:
 		push_error("WorldSoundOutput could not acquire a voice from its pool.")
-		return
+		return false
 
 	player.stream = cue.stream
 	player.volume_db = cue.volume_db
 	player.pitch_scale = cue.roll_pitch_scale()
 	player.bus = cue.bus
-	player.global_position = pending.get_average_position()
+	player.global_position = world_position
 
 	_player_cues[player] = cue
 	_set_cue_active_count(cue, active_cue_count + 1)
 	player.play()
+	return true
 
 
 func _acquire_player() -> AudioStreamPlayer2D:

@@ -1,9 +1,6 @@
 class_name PunchAttack
 extends Node2D
 
-signal camera_shake_requested(request: CameraShakeRequest)
-signal sound_requested(request: SoundRequest)
-
 @export_group("Hit")
 @export_range(0.0, 1000.0, 0.1) var damage: float = 10.0
 @export_range(0.0, 2000.0, 10.0, "suffix:unit/s") var knockback: float = 300.0
@@ -26,6 +23,7 @@ signal sound_requested(request: SoundRequest)
 @export_range(0.01, 1.0, 0.01, "suffix:s") var fade_duration: float = 0.05
 
 var _attacker: Node = null
+var _feedback: Feedback
 var _direction: Vector2 = Vector2.RIGHT
 var _side_sign: float = -1.0
 var _hit_hurtbox_ids: Dictionary[int, bool] = {}
@@ -42,8 +40,15 @@ func _ready() -> void:
 
 
 ## Call once after adding the attack to its scene parent.
-func launch(attacker: Node, direction: Vector2, side_sign: float) -> void:
+func launch(
+	attacker: Node,
+	direction: Vector2,
+	side_sign: float,
+	feedback: Feedback
+) -> void:
+	assert(feedback != null, "A scene feedback service is required.")
 	_attacker = attacker
+	_feedback = feedback
 	_direction = direction.normalized()
 	if _direction.is_zero_approx():
 		_direction = Vector2.RIGHT
@@ -83,18 +88,14 @@ func _request_hit_camera_shake() -> void:
 	if hit_camera_shake == null:
 		return
 
-	var request := CameraShakeRequest.new()
-	request.cue = hit_camera_shake
-	request.operation = CameraShakeRequest.Operation.PLAY
-	request.impact_direction = _direction
-	camera_shake_requested.emit(request)
+	_feedback.camera_shake_requested.emit(CameraShakeRequest.play(hit_camera_shake, _direction))
 
 
 func _request_hit_sound(hit_position: Vector2) -> void:
 	if hit_sound == null:
 		return
 	var sound_request := SoundRequest.new(hit_sound, hit_position, self)
-	sound_requested.emit(sound_request)
+	_feedback.sound_requested.emit(sound_request)
 
 
 func _play_visual() -> void:

@@ -6,21 +6,24 @@ signal ability_changed(previous_ability: Ability, current_ability: Ability)
 @export var slot_id: StringName
 @export var input_action: StringName
 @export var initial_ability_scene: PackedScene
+@export_range(0, 10, 1) var input_priority: int = 0
 
 var _ability: Ability
 var _ability_user: Node
 var _attack_root: Node2D
+var _feedback: Feedback
 var _is_setup: bool = false
 var _has_buffered_press: bool = false
 var _buffer_remaining: float = 0.0
 
 
-func setup(ability_user: Node, attack_root: Node2D) -> void:
+func setup(ability_user: Node, attack_root: Node2D, feedback: Feedback) -> void:
 	_ability_user = ability_user
 	_attack_root = attack_root
+	_feedback = feedback
 	_is_setup = true
 	if _ability != null:
-		_ability.setup(_ability_user, _attack_root)
+		_ability.setup(_ability_user, _attack_root, _feedback)
 	elif initial_ability_scene != null:
 		set_ability(initial_ability_scene)
 
@@ -45,7 +48,7 @@ func set_ability(ability_scene: PackedScene) -> bool:
 
 	add_child(next_ability)
 	if _is_setup:
-		next_ability.setup(_ability_user, _attack_root)
+		next_ability.setup(_ability_user, _attack_root, _feedback)
 	ability_changed.emit(previous_ability, next_ability)
 	if previous_ability != null:
 		previous_ability.queue_free()
@@ -68,18 +71,30 @@ func get_ability() -> Ability:
 	return _ability
 
 
+func blocks_other_abilities() -> bool:
+	return _ability != null and _ability.blocks_other_abilities()
+
+
+func get_movement_multiplier() -> float:
+	return _ability.get_movement_multiplier() if _ability != null else 1.0
+
+
 func update_input(
 	delta: float,
 	just_pressed: bool,
 	is_pressed: bool,
 	just_released: bool,
-	aim_direction: Vector2
+	aim_direction: Vector2,
+	allow_input: bool = true
 ) -> void:
 	if _ability == null:
 		return
 
-	_ability.update(delta)
+	_ability.update(delta, aim_direction)
 	_update_buffer(delta)
+	if not allow_input:
+		_discard_buffered_press()
+		return
 	if just_pressed:
 		_discard_buffered_press()
 		if _ability.can_activate():

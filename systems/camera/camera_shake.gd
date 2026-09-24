@@ -12,91 +12,79 @@ var _low_noise_position: float = 0.0
 var _high_noise_position: float = 0.0
 var _low_noise: FastNoiseLite
 var _high_noise: FastNoiseLite
-var _camera: Camera2D
 
 
 func _ready() -> void:
-	_camera = get_parent() as Camera2D
-	assert(_camera != null, "CameraShake must be a child of Camera2D.")
-
 	_low_noise = _create_noise()
 	_high_noise = _create_noise()
-	_camera.offset = Vector2.ZERO
-	set_process(false)
 
 
-func _exit_tree() -> void:
-	if _camera != null:
-		_camera.offset = Vector2.ZERO
+## Called once per frame by the camera before composing its offset.
+func update(delta: float) -> Vector2:
+	if _one_shots.is_empty() and _sustains.is_empty():
+		return Vector2.ZERO
 
-
-func _process(delta: float) -> void:
 	_release_destroyed_sources()
-	_camera.offset = _calculate_offset() * master_intensity
+	var offset := _calculate_offset() * master_intensity
 	_advance_states(delta)
 	_low_noise_position += low_noise_speed * delta
 	_high_noise_position += high_noise_speed * delta
-
-	if _one_shots.is_empty() and _sustains.is_empty():
-		_camera.offset = Vector2.ZERO
-		set_process(false)
+	# Preserve this sample even if its state expires before the frame is drawn.
+	return offset
 
 
-func request(request: CameraShakeRequest) -> void:
-	match request.operation:
+func request(shake_request: CameraShakeRequest) -> void:
+	match shake_request.operation:
 		CameraShakeRequest.Operation.PLAY:
-			_request_one_shot(request)
+			_request_one_shot(shake_request)
 		CameraShakeRequest.Operation.START:
-			_start_sustain(request)
+			_start_sustain(shake_request)
 		CameraShakeRequest.Operation.UPDATE:
-			_update_sustain(request)
+			_update_sustain(shake_request)
 		CameraShakeRequest.Operation.STOP:
-			_stop_sustain(request.source_id)
-
-	if not _one_shots.is_empty() or not _sustains.is_empty():
-		set_process(true)
+			_stop_sustain(shake_request.source_id)
 
 
-func _request_one_shot(request: CameraShakeRequest) -> void:
-	var cue := request.cue as OneShotCameraShakeCue
+func _request_one_shot(shake_request: CameraShakeRequest) -> void:
+	var cue := shake_request.cue as OneShotCameraShakeCue
 	assert(cue != null, "PLAY requires OneShotCameraShakeCue.")
 	if cue == null or cue.duration <= 0.0:
 		return
 
 	var state := OneShotState.new()
 	state.cue = cue
-	state.impact_direction = request.impact_direction
-	state.strength_scale = request.strength_scale
+	state.impact_direction = shake_request.impact_direction
+	state.strength_scale = shake_request.strength_scale
 	_one_shots.append(state)
 
 
-func _start_sustain(request: CameraShakeRequest) -> void:
-	var cue := request.cue as SustainCameraShakeCue
+func _start_sustain(shake_request: CameraShakeRequest) -> void:
+	var cue := shake_request.cue as SustainCameraShakeCue
 	assert(cue != null, "START requires SustainCameraShakeCue.")
 	if cue == null:
 		return
-	assert(request.source_id != 0, "A sustain source_id is required.")
-	assert(request.source_reference != null, "A sustain source_reference is required.")
+	assert(shake_request.source_id != 0, "A sustain source_id is required.")
+	assert(shake_request.source_reference != null, "A sustain source_reference is required.")
 
-	var state := _sustains.get(request.source_id) as SustainState
+	var state := _sustains.get(shake_request.source_id) as SustainState
 	if state == null:
 		state = SustainState.new()
-		_sustains[request.source_id] = state
+		_sustains[shake_request.source_id] = state
 	state.cue = cue
-	state.source_reference = request.source_reference
-	state.strength_scale = request.strength_scale
+	state.source_reference = shake_request.source_reference
+	state.strength_scale = shake_request.strength_scale
 	state.is_releasing = false
 	state.release_elapsed = 0.0
 
 
-func _update_sustain(request: CameraShakeRequest) -> void:
-	assert(request.source_id != 0, "A sustain source_id is required.")
-	var state := _sustains.get(request.source_id) as SustainState
+func _update_sustain(shake_request: CameraShakeRequest) -> void:
+	assert(shake_request.source_id != 0, "A sustain source_id is required.")
+	var state := _sustains.get(shake_request.source_id) as SustainState
 	assert(state != null, "UPDATE requires an active sustain.")
 	if state == null:
 		return
 
-	state.strength_scale = request.strength_scale
+	state.strength_scale = shake_request.strength_scale
 
 
 func _stop_sustain(source_id: int) -> void:

@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://cbgahifjtheqi" path="res://systems/damage_number/damage_number_spawner.gd" id="8_damage_number_spawner"]
 [ext_resource type="PackedScene" path="res://components/visual/damage_number/damage_number.tscn" id="9_damage_number"]
 [ext_resource type="Script" uid="uid://bbbg0mjvptfxr" path="res://systems/camera/camera_shake.gd" id="10_camera_shake"]
+[ext_resource type="Script" uid="uid://c1nacv0dkbn1i" path="res://systems/camera/game_camera.gd" id="11_game_camera"]
 [ext_resource type="PackedScene" uid="uid://1cph7125gclc" path="res://systems/post_processing/post_processing.tscn" id="12_post_processing"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_spawn_area"]
@@ -22,6 +23,7 @@ script = ExtResource("1_main")
 script = ExtResource("7_world_sound_output")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1954490448]
+script = ExtResource("11_game_camera")
 
 [node name="CameraShake" type="Node" parent="Camera2D" unique_id=1954490449]
 script = ExtResource("10_camera_shake")

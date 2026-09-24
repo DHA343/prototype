@@ -1,10 +1,8 @@
 class_name AbilityController
 extends Node
 
-signal sound_requested(request: SoundRequest)
-signal camera_shake_requested(request: CameraShakeRequest)
-
 var _slots: Dictionary[StringName, AbilitySlot] = {}
+var _ordered_slots: Array[AbilitySlot] = []
 var _ability_user: Node
 var _player_input: PlayerInput
 var _attack_root: Node2D
@@ -17,24 +15,30 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	_update_aim_direction()
-	for slot: AbilitySlot in _slots.values():
+	for slot: AbilitySlot in _ordered_slots:
 		var action := slot.input_action
 		slot.update_input(
 			delta,
 			_player_input.is_action_just_pressed(action),
 			_player_input.is_action_pressed(action),
 			_player_input.is_action_just_released(action),
-			_aim_direction
+			_aim_direction,
+			not _is_blocked_by_other_slot(slot)
 		)
 
 
-func setup(ability_user: Node, player_input: PlayerInput, attack_root: Node2D) -> void:
+func setup(
+	ability_user: Node,
+	player_input: PlayerInput,
+	attack_root: Node2D,
+	feedback: Feedback
+) -> void:
 	_ability_user = ability_user
 	_player_input = player_input
 	_attack_root = attack_root
 	_collect_slots()
 	for slot: AbilitySlot in _slots.values():
-		slot.setup(_ability_user, _attack_root)
+		slot.setup(_ability_user, _attack_root, feedback)
 	set_process(true)
 
 
@@ -54,8 +58,16 @@ func get_ability(slot_id: StringName) -> Ability:
 	return slot.get_ability() if slot != null else null
 
 
+func get_movement_multiplier() -> float:
+	var multiplier := 1.0
+	for slot: AbilitySlot in _ordered_slots:
+		multiplier = minf(multiplier, slot.get_movement_multiplier())
+	return multiplier
+
+
 func _collect_slots() -> void:
 	_slots.clear()
+	_ordered_slots.clear()
 	for child: Node in get_children():
 		var slot := child as AbilitySlot
 		if slot == null:
@@ -64,7 +76,15 @@ func _collect_slots() -> void:
 		assert(not _slots.has(slot.slot_id), "Ability slot_id must be unique.")
 		assert(InputMap.has_action(slot.input_action), "Ability input action is missing.")
 		_slots[slot.slot_id] = slot
-		slot.ability_changed.connect(_on_slot_ability_changed)
+		_ordered_slots.append(slot)
+	_ordered_slots.sort_custom(func(a: AbilitySlot, b: AbilitySlot) -> bool: return a.input_priority > b.input_priority)
+
+
+func _is_blocked_by_other_slot(current_slot: AbilitySlot) -> bool:
+	for slot: AbilitySlot in _ordered_slots:
+		if slot != current_slot and slot.blocks_other_abilities():
+			return true
+	return false
 
 
 func _get_slot(slot_id: StringName) -> AbilitySlot:
@@ -78,22 +98,3 @@ func _update_aim_direction() -> void:
 	var aim_offset := _player_input.get_aim_offset(_attack_root)
 	if not aim_offset.is_zero_approx():
 		_aim_direction = aim_offset.normalized()
-
-
-func _on_slot_ability_changed(previous_ability: Ability, current_ability: Ability) -> void:
-	if previous_ability != null:
-		if previous_ability.sound_requested.is_connected(_on_ability_sound_requested):
-			previous_ability.sound_requested.disconnect(_on_ability_sound_requested)
-		if previous_ability.camera_shake_requested.is_connected(_on_ability_camera_shake_requested):
-			previous_ability.camera_shake_requested.disconnect(_on_ability_camera_shake_requested)
-	if current_ability != null:
-		current_ability.sound_requested.connect(_on_ability_sound_requested)
-		current_ability.camera_shake_requested.connect(_on_ability_camera_shake_requested)
-
-
-func _on_ability_sound_requested(request: SoundRequest) -> void:
-	sound_requested.emit(request)
-
-
-func _on_ability_camera_shake_requested(request: CameraShakeRequest) -> void:
-	camera_shake_requested.emit(request)

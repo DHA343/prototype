@@ -1,6 +1,14 @@
 @tool
 class_name SoundCue
 extends Resource
+## Treat cue settings as immutable while requests or voices are active.
+
+enum PlaybackMode {
+	IMMEDIATE,
+	SUPPRESS_FRAME,
+	AGGREGATE_FRAME,
+	AGGREGATE_WINDOW,
+}
 
 enum AggregationScope {
 	PER_SOURCE,
@@ -17,8 +25,12 @@ enum AggregationScope {
 @export_range(0.0, 12.0, 0.1, "suffix:semitones") var random_pitch_semitones: float = 0.0
 
 @export_group("Aggregation")
+@export var playback_mode: PlaybackMode = PlaybackMode.AGGREGATE_FRAME:
+	set(value):
+		playback_mode = value
+		notify_property_list_changed()
 @export var aggregation_scope: AggregationScope = AggregationScope.PER_SOURCE
-@export_range(0.0, 0.2, 0.01, "suffix:s") var aggregation_window: float = 0.0
+@export_range(0.01, 0.2, 0.01, "suffix:s") var aggregation_window: float = 0.05
 
 @export_group("Voice Limit")
 @export_range(0, 64, 1) var max_instances: int = 0
@@ -43,6 +55,10 @@ func roll_pitch_scale() -> float:
 
 
 func _validate_property(property: Dictionary) -> void:
+	if property.name == &"aggregation_window" and playback_mode != PlaybackMode.AGGREGATE_WINDOW:
+		property.usage &= ~PROPERTY_USAGE_EDITOR
+	if property.name == &"aggregation_scope" and playback_mode == PlaybackMode.IMMEDIATE:
+		property.usage &= ~PROPERTY_USAGE_EDITOR
 	if property.name != &"bus":
 		return
 

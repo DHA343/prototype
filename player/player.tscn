@@ -10,6 +10,7 @@
 [ext_resource type="Resource" uid="uid://b2y1dd2ckns5s" path="res://player/player_crowd.tres" id="7_player_crowd"]
 [ext_resource type="PackedScene" path="res://components/visual/drop_shadow.tscn" id="8_drop_shadow"]
 [ext_resource type="Script" uid="uid://ca1mfik6kmv8x" path="res://player/player_input.gd" id="9_player_input"]
+[ext_resource type="PackedScene" path="res://player/ability/slam/slam_ability.tscn" id="10_slam_ability"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_body"]
 radius = 24.0
@@ -64,3 +65,10 @@ script = ExtResource("6_ability_slot")
 slot_id = &"primary"
 input_action = &"ability_primary"
 initial_ability_scene = ExtResource("7_punch_ability")
+
+[node name="SecondarySlot" type="Node" parent="AbilityController"]
+script = ExtResource("6_ability_slot")
+slot_id = &"secondary"
+input_action = &"ability_secondary"
+initial_ability_scene = ExtResource("10_slam_ability")
+input_priority = 1

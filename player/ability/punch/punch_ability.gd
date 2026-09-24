@@ -13,7 +13,7 @@ func _ready() -> void:
 	set_process(false)
 
 
-func update(delta: float) -> void:
+func update(delta: float, _aim_direction: Vector2) -> void:
 	_cooldown = maxf(_cooldown - maxf(delta, 0.0), 0.0)
 
 
@@ -29,14 +29,6 @@ func input_held(_delta: float, aim_direction: Vector2) -> void:
 	_try_punch(aim_direction)
 
 
-func _on_punch_camera_shake_requested(request: CameraShakeRequest) -> void:
-	camera_shake_requested.emit(request)
-
-
-func _on_punch_sound_requested(request: SoundRequest) -> void:
-	sound_requested.emit(request)
-
-
 func _try_punch(aim_direction: Vector2) -> void:
 	if not can_activate():
 		return
@@ -48,9 +40,7 @@ func _try_punch(aim_direction: Vector2) -> void:
 		instance.queue_free()
 		return
 
-	punch_attack.camera_shake_requested.connect(_on_punch_camera_shake_requested)
-	punch_attack.sound_requested.connect(_on_punch_sound_requested)
 	_attack_root.add_child(punch_attack)
-	punch_attack.launch(_ability_user, aim_direction, _next_side_sign)
+	punch_attack.launch(_ability_user, aim_direction, _next_side_sign, _feedback)
 	_next_side_sign *= -1.0
 	_cooldown = attack_interval

@@ -1,0 +1,9 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://player/ability/slam/hammer_visual.gd" id="1_hammer_visual"]
+
+[node name="HammerVisual" type="Node2D"]
+z_index = 2
+script = ExtResource("1_hammer_visual")
+
+[node name="ChargeSound" type="AudioStreamPlayer2D" parent="."]

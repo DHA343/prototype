@@ -18,6 +18,7 @@ script = ExtResource("2_nqmmw")
 stream = ExtResource("3_tkwyx")
 pitch_semitones = 14.6
 random_pitch_semitones = 4.0
+playback_mode = 1
 metadata/_custom_type_script = "uid://b3v0jytvki4sj"
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hitbox"]
