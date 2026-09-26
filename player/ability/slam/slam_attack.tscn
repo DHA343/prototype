@@ -2,31 +2,12 @@
 
 [ext_resource type="Script" uid="uid://0ekekxsug6ri" path="res://player/ability/slam/slam_attack.gd" id="1_slam_attack"]
 [ext_resource type="Script" uid="uid://qrvsxwdr56gm" path="res://components/combat/hitbox.gd" id="2_hitbox"]
-[ext_resource type="Script" uid="uid://b3v0jytvki4sj" path="res://systems/audio/sound_cue.gd" id="3_sound_cue"]
-[ext_resource type="AudioStream" uid="uid://bcuh4mtkmttjc" path="res://player/ability/slam/audio/slam.wav" id="4_slam_sound"]
-[ext_resource type="AudioStream" uid="uid://b73ny5kg4falc" path="res://player/ability/slam/audio/hit.wav" id="5_hit_sound"]
-
-[sub_resource type="Resource" id="SoundCue_slam"]
-script = ExtResource("3_sound_cue")
-stream = ExtResource("4_slam_sound")
-volume_db = -2.0
-playback_mode = 0
-
-[sub_resource type="Resource" id="SoundCue_hit"]
-script = ExtResource("3_sound_cue")
-stream = ExtResource("5_hit_sound")
-volume_db = -3.0
-playback_mode = 0
-max_instances = 12
-
 [sub_resource type="CircleShape2D" id="CircleShape2D_slam"]
 radius = 0.01
 
 [node name="SlamAttack" type="Node2D" unique_id=1070007904]
 z_index = 1
 script = ExtResource("1_slam_attack")
-slam_sound = SubResource("SoundCue_slam")
-hit_sound = SubResource("SoundCue_hit")
 
 [node name="Hitbox" type="Area2D" parent="." unique_id=1422372997]
 collision_layer = 8

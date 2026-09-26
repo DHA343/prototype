@@ -10,20 +10,20 @@ signal ability_changed(previous_ability: Ability, current_ability: Ability)
 
 var _ability: Ability
 var _ability_user: Node
-var _attack_root: Node2D
+var _ability_origin: Node2D
 var _feedback: Feedback
 var _is_setup: bool = false
 var _has_buffered_press: bool = false
 var _buffer_remaining: float = 0.0
 
 
-func setup(ability_user: Node, attack_root: Node2D, feedback: Feedback) -> void:
+func setup(ability_user: Node, ability_origin: Node2D, feedback: Feedback) -> void:
 	_ability_user = ability_user
-	_attack_root = attack_root
+	_ability_origin = ability_origin
 	_feedback = feedback
 	_is_setup = true
 	if _ability != null:
-		_ability.setup(_ability_user, _attack_root, _feedback)
+		_ability.setup(_ability_user, _ability_origin, _feedback)
 	elif initial_ability_scene != null:
 		set_ability(initial_ability_scene)
 
@@ -48,7 +48,7 @@ func set_ability(ability_scene: PackedScene) -> bool:
 
 	add_child(next_ability)
 	if _is_setup:
-		next_ability.setup(_ability_user, _attack_root, _feedback)
+		next_ability.setup(_ability_user, _ability_origin, _feedback)
 	ability_changed.emit(previous_ability, next_ability)
 	if previous_ability != null:
 		previous_ability.queue_free()

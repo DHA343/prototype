@@ -9,6 +9,7 @@ enum Phase {
 
 const MAX_CHARGE_STAGE: int = 3
 
+@export_group("Dependencies")
 @export var slam_attack_scene: PackedScene
 @export var hammer_visual_scene: PackedScene
 
@@ -28,9 +29,16 @@ const MAX_CHARGE_STAGE: int = 3
 @export_range(0.0, 2000.0, 10.0, "suffix:unit/s") var base_knockback: float = 300.0
 @export_range(0.0, 2000.0, 10.0, "suffix:unit/s") var knockback_per_stage: float = 100.0
 
+@export_group("Visual")
+@export var fill_color: Color = Color(0.85, 0.95, 1.0, 0.18)
+@export var outline_color: Color = Color(0.95, 1.0, 1.0, 0.9)
+@export_range(0.5, 12.0, 0.5, "suffix:unit") var outline_width: float = 4.0
+
 @export_group("Audio")
 @export var charge_sound: SoundCue
 @export var charge_stage_sound: SoundCue
+@export var slam_sound: SoundCue
+@export var hit_sound: SoundCue
 
 var _phase: Phase = Phase.IDLE
 var _charge_time: float = 0.0
@@ -82,7 +90,7 @@ func input_pressed(aim_direction: Vector2) -> void:
 		instance.queue_free()
 		return
 
-	_attack_root.add_child(_hammer_visual)
+	_ability_origin.add_child(_hammer_visual)
 	_hammer_visual.begin_charge(aim_direction, charge_sound)
 	_charge_time = 0.0
 	_charge_stage = 0
@@ -98,7 +106,7 @@ func input_held(delta: float, aim_direction: Vector2) -> void:
 	while _charge_stage < next_stage:
 		_charge_stage += 1
 		if charge_stage_sound != null:
-			_feedback.sound_requested.emit(SoundRequest.new(charge_stage_sound, _attack_root.global_position, self))
+			_feedback.sound_requested.emit(SoundRequest.new(charge_stage_sound, _ability_origin.global_position, self))
 
 
 func input_released(aim_direction: Vector2) -> void:
@@ -121,7 +129,7 @@ func _get_charge_stage(elapsed: float) -> int:
 func _launch_slam(aim_direction: Vector2) -> void:
 	if not aim_direction.is_zero_approx():
 		_slam_direction = aim_direction.normalized()
-	var slam_position := _attack_root.global_position + _slam_direction * slam_distance
+	var slam_position := _ability_origin.global_position + _slam_direction * slam_distance
 	var instance := slam_attack_scene.instantiate()
 	var slam_attack := instance as SlamAttack
 	if slam_attack == null:
@@ -139,6 +147,11 @@ func _launch_slam(aim_direction: Vector2) -> void:
 		base_damage + damage_per_stage * _charge_stage,
 		base_knockback + knockback_per_stage * _charge_stage,
 		expand_duration,
+		slam_sound,
+		hit_sound,
+		fill_color,
+		outline_color,
+		outline_width,
 		_feedback
 	)
 	if is_instance_valid(_hammer_visual):

@@ -4,13 +4,13 @@ extends Node
 @export_range(0.0, 0.5, 0.01, "suffix:s") var press_buffer_duration: float = 0.0
 
 var _ability_user: Node
-var _attack_root: Node2D
+var _ability_origin: Node2D
 var _feedback: Feedback
 
 
-func setup(ability_user: Node, attack_root: Node2D, feedback: Feedback) -> void:
+func setup(ability_user: Node, ability_origin: Node2D, feedback: Feedback) -> void:
 	_ability_user = ability_user
-	_attack_root = attack_root
+	_ability_origin = ability_origin
 	_feedback = feedback
 
 

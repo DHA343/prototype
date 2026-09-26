@@ -17,7 +17,7 @@ extends CharacterBody2D
 @onready var knockback: Knockback = $Knockback
 @onready var player_input: PlayerInput = $PlayerInput
 @onready var _ability_controller: AbilityController = $AbilityController
-@onready var _attack_root: Node2D = $AttackRoot
+@onready var _ability_origin: Node2D = $AbilityOrigin
 
 
 func _ready() -> void:
@@ -34,7 +34,7 @@ func _physics_process(delta: float) -> void:
 
 
 func setup(feedback: Feedback) -> void:
-	_ability_controller.setup(self, player_input, _attack_root, feedback)
+	_ability_controller.setup(self, player_input, _ability_origin, feedback)
 
 
 func _on_hurtbox_hit_received(hit: HitData) -> void:

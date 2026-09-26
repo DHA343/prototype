@@ -6,6 +6,8 @@
 [ext_resource type="Script" uid="uid://b3v0jytvki4sj" path="res://systems/audio/sound_cue.gd" id="4_sound_cue"]
 [ext_resource type="AudioStream" uid="uid://06v6p5oeprvb" path="res://_temp/0214.wav" id="5_idqsn"]
 [ext_resource type="AudioStream" uid="uid://3ybqiqqg6g1g" path="res://_temp/0613.wav" id="6_divic"]
+[ext_resource type="AudioStream" uid="uid://bcuh4mtkmttjc" path="res://player/ability/slam/audio/slam.wav" id="7_slam_sound"]
+[ext_resource type="AudioStream" uid="uid://b73ny5kg4falc" path="res://player/ability/slam/audio/hit.wav" id="8_hit_sound"]
 
 [sub_resource type="Resource" id="SoundCue_charge"]
 script = ExtResource("4_sound_cue")
@@ -18,6 +20,19 @@ stream = ExtResource("6_divic")
 volume_db = -2.0
 playback_mode = 0
 
+[sub_resource type="Resource" id="SoundCue_slam"]
+script = ExtResource("4_sound_cue")
+stream = ExtResource("7_slam_sound")
+volume_db = -2.0
+playback_mode = 0
+
+[sub_resource type="Resource" id="SoundCue_hit"]
+script = ExtResource("4_sound_cue")
+stream = ExtResource("8_hit_sound")
+volume_db = -3.0
+playback_mode = 0
+max_instances = 12
+
 [node name="SlamAbility" type="Node" unique_id=1486335389]
 script = ExtResource("1_slam_ability")
 slam_attack_scene = ExtResource("2_slam_attack")
@@ -26,5 +41,10 @@ radius_per_stage = 50.0
 damage_per_stage = 12.0
 base_knockback = 1000.0
 knockback_per_stage = 2000.0
+fill_color = Color(0.85, 0.95, 1, 0.18)
+outline_color = Color(0.95, 1, 1, 0.9)
+outline_width = 4.0
 charge_sound = SubResource("SoundCue_charge")
 charge_stage_sound = SubResource("SoundCue_stage")
+slam_sound = SubResource("SoundCue_slam")
+hit_sound = SubResource("SoundCue_hit")

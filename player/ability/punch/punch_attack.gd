@@ -1,26 +1,19 @@
 class_name PunchAttack
 extends Node2D
 
-@export_group("Hit")
-@export_range(0.0, 1000.0, 0.1) var damage: float = 10.0
-@export_range(0.0, 2000.0, 10.0, "suffix:unit/s") var knockback: float = 300.0
-@export_range(0.01, 1.0, 0.01, "suffix:s") var hit_active_duration: float = 0.09
-
-@export_group("Feedback")
-@export var hit_camera_shake: OneShotCameraShakeCue
-
-@export_group("Audio")
-@export var hit_sound: SoundCue
-
-@export_group("Layout")
-@export_range(0.0, 100.0, 1.0, "suffix:unit") var side_offset: float = 14.0
-@export_range(0.0, 150.0, 1.0, "suffix:unit") var hitbox_forward_offset: float = 46.0
-
-@export_group("Visual")
-@export_range(0.0, 150.0, 1.0, "suffix:unit") var visual_start_distance: float = 30.0
-@export_range(0.0, 150.0, 1.0, "suffix:unit") var visual_end_distance: float = 56.0
-@export_range(0.01, 1.0, 0.01, "suffix:s") var move_duration: float = 0.10
-@export_range(0.01, 1.0, 0.01, "suffix:s") var fade_duration: float = 0.05
+var damage: float
+var knockback: float
+var hit_active_duration: float
+var hit_camera_shake: OneShotCameraShakeCue
+var hit_sound: SoundCue
+var side_offset: float
+var hitbox_forward_offset: float
+var hitbox_radius: float
+var hitbox_height: float
+var visual_start_distance: float
+var visual_end_distance: float
+var move_duration: float
+var fade_duration: float
 
 var _attacker: Node = null
 var _feedback: Feedback
@@ -35,6 +28,9 @@ var _has_requested_hit_camera_shake: bool = false
 
 
 func _ready() -> void:
+	var capsule_shape := _collision_shape.shape.duplicate() as CapsuleShape2D
+	assert(capsule_shape != null, "Punch hitbox must use a CapsuleShape2D.")
+	_collision_shape.shape = capsule_shape
 	_hitbox.hurtbox_detected.connect(_on_hurtbox_detected)
 	_hitbox.monitoring = false
 
@@ -55,6 +51,9 @@ func launch(
 	_side_sign = -1.0 if side_sign < 0.0 else 1.0
 
 	global_rotation = _direction.angle()
+	var capsule_shape := _collision_shape.shape as CapsuleShape2D
+	capsule_shape.radius = hitbox_radius
+	capsule_shape.height = hitbox_height
 	_collision_shape.position = Vector2(hitbox_forward_offset, side_offset * _side_sign)
 	_collision_shape.rotation = PI * 0.5
 	_hitbox.monitoring = true

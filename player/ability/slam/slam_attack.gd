@@ -1,18 +1,14 @@
 class_name SlamAttack
 extends Node2D
 
-@export_group("Audio")
-@export var slam_sound: SoundCue
-@export var hit_sound: SoundCue
-
-@export_group("Visual")
-@export var fill_color: Color = Color(0.85, 0.95, 1.0, 0.18)
-@export var outline_color: Color = Color(0.95, 1.0, 1.0, 0.9)
-@export_range(0.5, 12.0, 0.5, "suffix:unit") var outline_width: float = 4.0
-
 var _attacker: Node
 var _feedback: Feedback
 var _direction: Vector2 = Vector2.RIGHT
+var _slam_sound: SoundCue
+var _hit_sound: SoundCue
+var _fill_color: Color
+var _outline_color: Color
+var _outline_width: float
 var _target_radius: float = 0.0
 var _damage: float = 0.0
 var _knockback: float = 0.0
@@ -37,8 +33,8 @@ func _ready() -> void:
 func _draw() -> void:
 	if _radius <= 0.0:
 		return
-	draw_circle(Vector2.ZERO, _radius, fill_color)
-	draw_arc(Vector2.ZERO, _radius, 0.0, TAU, 64, outline_color, outline_width, true)
+	draw_circle(Vector2.ZERO, _radius, _fill_color)
+	draw_arc(Vector2.ZERO, _radius, 0.0, TAU, 64, _outline_color, _outline_width, true)
 
 
 func _physics_process(delta: float) -> void:
@@ -63,6 +59,11 @@ func launch(
 	damage: float,
 	knockback: float,
 	expand_duration: float,
+	slam_sound: SoundCue,
+	hit_sound: SoundCue,
+	fill_color: Color,
+	outline_color: Color,
+	outline_width: float,
 	feedback: Feedback
 ) -> void:
 	_attacker = attacker
@@ -71,14 +72,19 @@ func launch(
 	_damage = damage
 	_knockback = knockback
 	_expand_duration = maxf(expand_duration, 0.01)
+	_slam_sound = slam_sound
+	_hit_sound = hit_sound
+	_fill_color = fill_color
+	_outline_color = outline_color
+	_outline_width = outline_width
 	_feedback = feedback
 	_radius = 0.01
 	var circle := _collision_shape.shape as CircleShape2D
 	circle.radius = _radius
 	_hitbox.monitoring = true
 	set_physics_process(true)
-	if slam_sound != null:
-		_feedback.sound_requested.emit(SoundRequest.new(slam_sound, global_position, self))
+	if _slam_sound != null:
+		_feedback.sound_requested.emit(SoundRequest.new(_slam_sound, global_position, self))
 
 
 func _on_hurtbox_detected(hurtbox: Hurtbox) -> void:
@@ -99,10 +105,10 @@ func _on_hurtbox_detected(hurtbox: Hurtbox) -> void:
 
 
 func _request_hit_sound(hit_position: Vector2) -> void:
-	if hit_sound == null:
+	if _hit_sound == null:
 		return
 	var now_usec := Time.get_ticks_usec()
 	if now_usec - _last_hit_sound_usec < 50000:
 		return
 	_last_hit_sound_usec = now_usec
-	_feedback.sound_requested.emit(SoundRequest.new(hit_sound, hit_position, self))
+	_feedback.sound_requested.emit(SoundRequest.new(_hit_sound, hit_position, self))

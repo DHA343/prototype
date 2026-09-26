@@ -53,7 +53,7 @@ script = ExtResource("3_health")
 [node name="Knockback" type="Node" parent="." unique_id=1590308592]
 script = ExtResource("4_knockback")
 
-[node name="AttackRoot" type="Node2D" parent="." unique_id=1909347542]
+[node name="AbilityOrigin" type="Node2D" parent="." unique_id=1909347542]
 z_index = 1
 position = Vector2(0, -24)
 

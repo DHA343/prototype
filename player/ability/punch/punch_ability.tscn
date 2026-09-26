@@ -2,9 +2,40 @@
 
 [ext_resource type="Script" uid="uid://v6duqyyix1lw" path="res://player/ability/punch/punch_ability.gd" id="1_punch_ability"]
 [ext_resource type="PackedScene" uid="uid://rv5y16rxikdf" path="res://player/ability/punch/punch_attack.tscn" id="2_punch_attack"]
+[ext_resource type="Script" uid="uid://dp0mafdex0o6l" path="res://systems/camera/one_shot_camera_shake_cue.gd" id="3_camera_shake_cue"]
+[ext_resource type="Script" uid="uid://b3v0jytvki4sj" path="res://systems/audio/sound_cue.gd" id="4_sound_cue"]
+[ext_resource type="AudioStream" uid="uid://5myqy4r2epl5" path="res://player/ability/punch/打撃.wav" id="5_hit_sound"]
+
+[sub_resource type="Resource" id="Resource_hit_camera_shake"]
+script = ExtResource("3_camera_shake_cue")
+duration = 0.2
+kick_strength = 0.4
+kick_direction = 1
+high_noise_strength = 0.2
+
+[sub_resource type="Resource" id="Resource_hit_sound"]
+script = ExtResource("4_sound_cue")
+stream = ExtResource("5_hit_sound")
+pitch_semitones = 14.6
+random_pitch_semitones = 4.0
+playback_mode = 1
+metadata/_custom_type_script = "uid://b3v0jytvki4sj"
 
 [node name="PunchAbility" type="Node" unique_id=1531098578]
 script = ExtResource("1_punch_ability")
 punch_attack_scene = ExtResource("2_punch_attack")
 attack_interval = 0.08
+hit_active_duration = 0.09
+damage = 20.0
+knockback = 800.0
+side_offset = 14.0
+hitbox_forward_offset = 46.0
+hitbox_radius = 18.0
+hitbox_height = 72.0
+visual_start_distance = 30.0
+visual_end_distance = 56.0
+move_duration = 0.1
+fade_duration = 0.05
+hit_camera_shake = SubResource("Resource_hit_camera_shake")
+hit_sound = SubResource("Resource_hit_sound")
 press_buffer_duration = 0.08

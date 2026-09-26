@@ -5,7 +5,7 @@ var _slots: Dictionary[StringName, AbilitySlot] = {}
 var _ordered_slots: Array[AbilitySlot] = []
 var _ability_user: Node
 var _player_input: PlayerInput
-var _attack_root: Node2D
+var _ability_origin: Node2D
 var _aim_direction: Vector2 = Vector2.RIGHT
 
 
@@ -30,15 +30,15 @@ func _process(delta: float) -> void:
 func setup(
 	ability_user: Node,
 	player_input: PlayerInput,
-	attack_root: Node2D,
+	ability_origin: Node2D,
 	feedback: Feedback
 ) -> void:
 	_ability_user = ability_user
 	_player_input = player_input
-	_attack_root = attack_root
+	_ability_origin = ability_origin
 	_collect_slots()
 	for slot: AbilitySlot in _slots.values():
-		slot.setup(_ability_user, _attack_root, feedback)
+		slot.setup(_ability_user, _ability_origin, feedback)
 	set_process(true)
 
 
@@ -95,6 +95,6 @@ func _get_slot(slot_id: StringName) -> AbilitySlot:
 
 
 func _update_aim_direction() -> void:
-	var aim_offset := _player_input.get_aim_offset(_attack_root)
+	var aim_offset := _player_input.get_aim_offset(_ability_origin)
 	if not aim_offset.is_zero_approx():
 		_aim_direction = aim_offset.normalized()
