@@ -1,74 +1,107 @@
 [gd_scene format=3 uid="uid://dntlcrcd1rsf"]
 
-[ext_resource type="Script" uid="uid://dllmoyl0ui85t" path="res://player/player.gd" id="1_player"]
-[ext_resource type="Script" uid="uid://ckpqhc1x4nwet" path="res://components/combat/hurtbox.gd" id="2_hurtbox"]
-[ext_resource type="Script" uid="uid://dnyf0tl6ivkvh" path="res://components/combat/health.gd" id="3_health"]
-[ext_resource type="Script" uid="uid://di4xqdiuawg5d" path="res://components/movement/knockback.gd" id="4_knockback"]
-[ext_resource type="Script" path="res://player/ability/ability_controller.gd" id="5_ability_controller"]
-[ext_resource type="Script" path="res://player/ability/ability_slot.gd" id="6_ability_slot"]
-[ext_resource type="PackedScene" path="res://player/ability/punch/punch_ability.tscn" id="7_punch_ability"]
-[ext_resource type="Resource" uid="uid://b2y1dd2ckns5s" path="res://player/player_crowd.tres" id="7_player_crowd"]
-[ext_resource type="PackedScene" path="res://components/visual/drop_shadow.tscn" id="8_drop_shadow"]
-[ext_resource type="Script" uid="uid://ca1mfik6kmv8x" path="res://player/player_input.gd" id="9_player_input"]
-[ext_resource type="PackedScene" path="res://player/ability/slam/slam_ability.tscn" id="10_slam_ability"]
+[ext_resource type="Script" path="res://player/player.gd" id="1_pwunn"]
+[ext_resource type="Script" path="res://player/sweep_hit.gd" id="2_0p2w7"]
+[ext_resource type="Script" path="res://components/visual/circle.gd" id="2_biv8x"]
+[ext_resource type="Script" path="res://player/ball_movement.gd" id="3_biv8x"]
+[ext_resource type="PackedScene" path="res://components/visual/drop_shadow.tscn" id="3_shadow"]
+[ext_resource type="Script" path="res://player/hitstop.gd" id="4_6xd6y"]
+[ext_resource type="Script" path="res://player/boost/ball_boost.gd" id="5_boost"]
+[ext_resource type="Resource" path="res://systems/audio/cues/boost.tres" id="6_boost_cue"]
+[ext_resource type="Resource" path="res://systems/audio/cues/ball_hit.tres" id="6_hit_cue"]
+[ext_resource type="Script" path="res://player/brake/ball_brake.gd" id="7_brake"]
+[ext_resource type="Script" path="res://player/boost/boost_trail.gd" id="8_boost_trail"]
+[ext_resource type="Script" path="res://components/visual/trail.gd" id="9_trail"]
+[ext_resource type="Script" path="res://player/charge/ball_charge.gd" id="10_charge"]
+[ext_resource type="Script" path="res://player/charge/charge_lines.gd" id="11_charge_lines"]
+[ext_resource type="Script" path="res://player/charge/abilities/charge_ability_slot.gd" id="12_ability_slot"]
+[ext_resource type="Resource" path="res://player/charge/abilities/homing_missiles/homing_missile_definition.tres" id="16_ljm2s"]
+[ext_resource type="Script" path="res://player/player_input.gd" id="17_input"]
+[ext_resource type="Resource" path="res://player/impact_shake.tres" id="18_shake"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_body"]
-radius = 24.0
+[sub_resource type="Curve" id="Curve_boost_width"]
+_data = [Vector2(0, 0.02), 0.0, 1.6744026, 0, 0, Vector2(0.95412844, 1), 0.48712453, 0.0, 0, 0]
+point_count = 2
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_hurtbox"]
-radius = 24.0
+[sub_resource type="Gradient" id="Gradient_boost_color"]
+offsets = PackedFloat32Array(0, 0.99115044)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1)
 
-[node name="Player" type="CharacterBody2D" unique_id=571282771]
-script = ExtResource("1_player")
-crowd = ExtResource("7_player_crowd")
+[node name="Player" type="Node2D" unique_id=856940219]
+physics_interpolation_mode = 1
+script = ExtResource("1_pwunn")
+radius = 32.0
+damage = 10.0
+damage_per_speed = 0.005
+impulse_strength = 100.0
+impulse_per_speed = 0.2
+hit_cue = ExtResource("6_hit_cue")
+impact_shake = ExtResource("18_shake")
 
-[node name="PlayerInput" type="Node" parent="." unique_id=2118556935]
-script = ExtResource("9_player_input")
+[node name="PlayerInput" type="Node" parent="."]
+script = ExtResource("17_input")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1372838565]
-position = Vector2(0, -24)
-shape = SubResource("CircleShape2D_body")
+[node name="Visual" type="Node2D" parent="." unique_id=56320389]
+position = Vector2(0, -32)
+script = ExtResource("2_biv8x")
+color = Color(0.31332, 0.84, 0.28559998, 1)
+outline_width = 3.0
+outline_color = Color(0.45, 1, 0.5141667, 1)
 
-[node name="Visual" type="Polygon2D" parent="." unique_id=1486397048]
-position = Vector2(0, -24)
-color = Color(0.26, 0.75, 1, 1)
-polygon = PackedVector2Array(-24, 0, -22.1731, -9.1844, -16.9706, -16.9706, -9.1844, -22.1731, 0, -24, 9.1844, -22.1731, 16.9706, -16.9706, 22.1731, -9.1844, 24, 0, 22.1731, 9.1844, 16.9706, 16.9706, 9.1844, 22.1731, 0, 24, -9.1844, 22.1731, -16.9706, 16.9706, -22.1731, 9.1844)
-
-[node name="DropShadow" parent="." unique_id=1724224861 instance=ExtResource("8_drop_shadow")]
+[node name="DropShadow" parent="." instance=ExtResource("3_shadow")]
 position = Vector2(0, 4)
+size = Vector2(48, 19.2)
 
-[node name="Hurtbox" type="Area2D" parent="." unique_id=1615724665]
-position = Vector2(0, -24)
-collision_layer = 2
-collision_mask = 0
-monitoring = false
-script = ExtResource("2_hurtbox")
+[node name="SweepHit" type="ShapeCast2D" parent="." unique_id=844842823]
+position = Vector2(0, -32)
+collision_mask = 4
+enabled = false
+collide_with_areas = true
+collide_with_bodies = false
+script = ExtResource("2_0p2w7")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=644716962]
-shape = SubResource("CircleShape2D_hurtbox")
+[node name="Movement" type="Node" parent="." unique_id=625000254]
+script = ExtResource("3_biv8x")
 
-[node name="Health" type="Node" parent="." unique_id=941473666]
-script = ExtResource("3_health")
+[node name="Hitstop" type="Node" parent="." unique_id=674999762]
+script = ExtResource("4_6xd6y")
 
-[node name="Knockback" type="Node" parent="." unique_id=1590308592]
-script = ExtResource("4_knockback")
+[node name="Boost" type="Node" parent="." unique_id=97173434]
+script = ExtResource("5_boost")
+activation_cue = ExtResource("6_boost_cue")
 
-[node name="AbilityOrigin" type="Node2D" parent="." unique_id=1909347542]
-z_index = 1
-position = Vector2(0, -24)
+[node name="BoostTrail" type="Node2D" parent="Boost" unique_id=1164119297]
+physics_interpolation_mode = 2
+top_level = true
+z_index = -1
+z_as_relative = false
+script = ExtResource("8_boost_trail")
 
-[node name="AbilityController" type="Node" parent="." unique_id=1374205450]
-script = ExtResource("5_ability_controller")
+[node name="Trail" type="Line2D" parent="Boost/BoostTrail" unique_id=524637173]
+width = 68.0
+width_curve = SubResource("Curve_boost_width")
+gradient = SubResource("Gradient_boost_color")
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+script = ExtResource("9_trail")
+source_position_mode = 1
+point_lifetime = 0.0
 
-[node name="PrimarySlot" type="Node" parent="AbilityController"]
-script = ExtResource("6_ability_slot")
-slot_id = &"primary"
-input_action = &"ability_primary"
-initial_ability_scene = ExtResource("7_punch_ability")
+[node name="Brake" type="Node" parent="." unique_id=1901534348]
+script = ExtResource("7_brake")
 
-[node name="SecondarySlot" type="Node" parent="AbilityController"]
-script = ExtResource("6_ability_slot")
-slot_id = &"secondary"
-input_action = &"ability_secondary"
-initial_ability_scene = ExtResource("10_slam_ability")
-input_priority = 1
+[node name="Charge" type="Node" parent="." unique_id=1836847860]
+script = ExtResource("10_charge")
+
+[node name="ChargeLines" type="GPUParticles2D" parent="." unique_id=1323563361]
+position = Vector2(0, -32)
+show_behind_parent = true
+z_index = -1
+script = ExtResource("11_charge_lines")
+start_line_count = 12
+end_line_count = 30
+
+[node name="ChargeAbilitySlot" type="Node" parent="." unique_id=514585616]
+script = ExtResource("12_ability_slot")
+initial_definition = ExtResource("16_ljm2s")

@@ -1,0 +1,4 @@
+class_name ShockwaveChargeAbilityDefinition
+extends ChargeAbilityDefinition
+
+@export var shockwave_scene: PackedScene

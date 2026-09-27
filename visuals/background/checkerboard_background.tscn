@@ -1,0 +1,17 @@
+[gd_scene format=3]
+
+[ext_resource type="Shader" path="res://visuals/background/checkerboard_background.gdshader" id="1_shader"]
+[ext_resource type="Script" path="res://visuals/background/checkerboard_background.gd" id="2_script"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_checkerboard"]
+resource_local_to_scene = true
+shader = ExtResource("1_shader")
+shader_parameter/dark_color = Color(0.05, 0.055, 0.07, 1)
+shader_parameter/light_color = Color(0.075, 0.08, 0.1, 1)
+shader_parameter/cell_size = 96.0
+
+[node name="CheckerboardBackground" type="ColorRect"]
+z_index = -100
+material = SubResource("ShaderMaterial_checkerboard")
+mouse_filter = 2
+script = ExtResource("2_script")

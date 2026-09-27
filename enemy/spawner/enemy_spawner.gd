@@ -9,15 +9,13 @@ signal enemy_spawned(enemy: Enemy)
 @export_range(0, 1000, 1) var target_count: int = 30
 @export_range(0.0, 10.0, 0.1, "suffix:s") var respawn_delay: float = 0.5
 
-var _target: Node2D = null
 var _spawn_parent: Node = null
 var _spawn_area: SpawnArea = null
 var _is_started: bool = false
 var _alive_count: int = 0
 
 
-func setup(target: Node2D, spawn_parent: Node, spawn_area: SpawnArea) -> void:
-	_target = target
+func setup(spawn_parent: Node, spawn_area: SpawnArea) -> void:
 	_spawn_parent = spawn_parent
 	_spawn_area = spawn_area
 
@@ -44,7 +42,7 @@ func _spawn_enemy() -> Enemy:
 
 	_spawn_parent.add_child(enemy)
 	enemy.global_position = _spawn_area.random_point()
-	enemy.start(_target)
+	enemy.start(_spawn_area)
 	enemy.died.connect(_on_enemy_died)
 
 	_alive_count += 1
@@ -67,9 +65,6 @@ func _on_respawn_timer_timeout() -> void:
 func _has_valid_setup() -> bool:
 	if enemy_scene == null:
 		push_error("enemy_scene is not assigned.")
-		return false
-	if not is_instance_valid(_target):
-		push_error("target is not assigned.")
 		return false
 	if not is_instance_valid(_spawn_parent):
 		push_error("spawn_parent is not assigned.")

@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="OneShotCameraShakeCue" format=3]
+
+[ext_resource type="Script" path="res://systems/camera/one_shot_camera_shake_cue.gd" id="1_cue"]
+
+[resource]
+script = ExtResource("1_cue")
+duration = 0.26
+high_noise_strength = 0.67

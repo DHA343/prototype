@@ -4,5 +4,5 @@
 
 [resource]
 script = ExtResource("1_gayw4")
-radius = 12.0
-avoidance_radius = 24.0
+radius = 24.0
+avoidance_radius = 60.0

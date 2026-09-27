@@ -12,12 +12,18 @@
 [ext_resource type="Script" uid="uid://bbbg0mjvptfxr" path="res://systems/camera/camera_shake.gd" id="10_camera_shake"]
 [ext_resource type="Script" uid="uid://c1nacv0dkbn1i" path="res://systems/camera/game_camera.gd" id="11_game_camera"]
 [ext_resource type="PackedScene" uid="uid://1cph7125gclc" path="res://systems/post_processing/post_processing.tscn" id="12_post_processing"]
+[ext_resource type="PackedScene" path="res://visuals/background/checkerboard_background.tscn" id="13_background"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_spawn_area"]
 size = Vector2(1920, 1080)
 
 [node name="Main" type="Node2D" unique_id=1883962826]
+physics_interpolation_mode = 2
 script = ExtResource("1_main")
+
+[node name="CheckerboardBackground" parent="." instance=ExtResource("13_background")]
+dark_color = Color(0.2992, 0.30396, 0.34, 1)
+light_color = Color(0.34440002, 0.34440002, 0.41, 1)
 
 [node name="WorldSoundOutput" type="Node2D" parent="." unique_id=884794201]
 script = ExtResource("7_world_sound_output")
@@ -45,6 +51,7 @@ separation_power = 1.5
 monitoring = false
 monitorable = false
 script = ExtResource("4_spawn_area")
+margin = 80.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SpawnArea" unique_id=1071120249]
 shape = SubResource("RectangleShape2D_spawn_area")
@@ -52,6 +59,7 @@ shape = SubResource("RectangleShape2D_spawn_area")
 [node name="EnemySpawner" type="Node" parent="." unique_id=269176748]
 script = ExtResource("5_enemy_spawner")
 enemy_scene = ExtResource("6_enemy")
+target_count = 100
 
 [node name="PostProcessing" parent="." unique_id=1190863564 instance=ExtResource("12_post_processing")]
 

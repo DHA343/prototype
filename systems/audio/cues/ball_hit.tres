@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SoundCue" format=3]
+
+[ext_resource type="Script" path="res://systems/audio/sound_cue.gd" id="1_cue"]
+[ext_resource type="AudioStream" path="res://systems/audio/clips/DSGNMisc_HIT-Hit Rattle_HY_PC-003.wav" id="2_focyt"]
+
+[resource]
+script = ExtResource("1_cue")
+stream = ExtResource("2_focyt")
+pitch_semitones = 9.299999999999997
+random_pitch_semitones = 2.9
+aggregation_window = 0.02
+
+playback_mode = 3

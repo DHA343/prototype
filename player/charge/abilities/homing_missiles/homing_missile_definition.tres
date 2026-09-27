@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="HomingMissileDefinition" format=3]
+
+[ext_resource type="Script" path="res://player/charge/abilities/homing_missiles/homing_missile_definition.gd" id="1_definition"]
+[ext_resource type="PackedScene" path="res://player/charge/abilities/homing_missiles/homing_missile_charge_ability.tscn" id="2_ability"]
+[ext_resource type="PackedScene" path="res://player/charge/abilities/homing_missiles/homing_missile.tscn" id="3_missile"]
+[ext_resource type="Resource" path="res://systems/audio/cues/homing_hit.tres" id="4_hit_cue"]
+
+[resource]
+script = ExtResource("1_definition")
+missile_scene = ExtResource("3_missile")
+max_missile_count = 26
+hit_cue = ExtResource("4_hit_cue")
+id = &"homing_missiles"
+display_name = "Homing Missiles"
+description = "チャージレベルに応じた数のミサイルを放ち、最寄りの敵を追尾する。"
+ability_scene = ExtResource("2_ability")

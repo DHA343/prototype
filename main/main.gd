@@ -16,18 +16,18 @@ var _feedback: Feedback = Feedback.new()
 
 func _ready() -> void:
 	world_ui_layer.layer = RenderLayers.WORLD_UI
-	crowd_manager.register_member(player, player.crowd)
 	_feedback.sound_requested.connect(world_sound_output.request)
 	_feedback.camera_shake_requested.connect(camera_shake.request)
 	player.setup(_feedback)
 	enemy_spawner.enemy_spawned.connect(_on_enemy_spawned)
-	enemy_spawner.setup(player, enemies, spawn_area)
+	enemy_spawner.setup(enemies, spawn_area)
 	enemy_spawner.start()
 
 
 func _on_enemy_spawned(enemy: Enemy) -> void:
 	crowd_manager.register_member(enemy, enemy.crowd)
 	enemy.damaged.connect(_on_enemy_damaged)
+	enemy.sound_requested.connect(_feedback.sound_requested.emit)
 
 
 func _on_enemy_damaged(
