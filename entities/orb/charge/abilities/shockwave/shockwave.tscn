@@ -1,0 +1,23 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://entities/orb/charge/abilities/shockwave/shockwave.gd" id="1_yccnn"]
+[ext_resource type="Script" path="res://components/combat/hitbox.gd" id="2_ew3vu"]
+[ext_resource type="Script" path="res://entities/orb/charge/abilities/shockwave/shockwave_visual.gd" id="2_yv332"]
+[ext_resource type="Resource" path="res://entities/orb/charge/abilities/shockwave/shockwave_start.tres" id="3_start_cue"]
+[ext_resource type="Resource" path="res://entities/orb/charge/abilities/shockwave/shockwave_hit.tres" id="4_hit_cue"]
+
+[node name="Shockwave" type="Node2D" unique_id=506130737]
+z_index = 30
+script = ExtResource("1_yccnn")
+start_cue = ExtResource("3_start_cue")
+hit_cue = ExtResource("4_hit_cue")
+
+[node name="ShockwaveVisual" type="Node2D" parent="." unique_id=1971419384]
+script = ExtResource("2_yv332")
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=960494391]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("2_ew3vu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=1465394059]
