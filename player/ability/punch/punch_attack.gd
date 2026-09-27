@@ -35,7 +35,6 @@ func _ready() -> void:
 	_hitbox.monitoring = false
 
 
-## Call once after adding the attack to its scene parent.
 func launch(
 	attacker: Node,
 	direction: Vector2,

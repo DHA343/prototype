@@ -19,7 +19,6 @@ const MAX_CHARGE_STAGE: int = 3
 @export_range(0.1, 1.0, 0.01) var charge_movement_multiplier: float = 0.5
 
 @export_group("Slam")
-@export_range(0.0, 500.0, 1.0, "suffix:unit") var slam_distance: float = 50.0
 @export_range(0.01, 1.0, 0.01, "suffix:s") var windup_duration: float = 0.1
 @export_range(0.01, 1.0, 0.01, "suffix:s") var expand_duration: float = 0.2
 @export_range(1.0, 500.0, 1.0, "suffix:unit") var base_radius: float = 55.0
@@ -44,6 +43,7 @@ var _phase: Phase = Phase.IDLE
 var _charge_time: float = 0.0
 var _charge_stage: int = 0
 var _windup_remaining: float = 0.0
+var _slam_position: Vector2 = Vector2.ZERO
 var _slam_direction: Vector2 = Vector2.RIGHT
 var _hammer_visual: HammerVisual
 
@@ -59,13 +59,12 @@ func _exit_tree() -> void:
 		_hammer_visual.queue_free()
 
 
-func update(delta: float, aim_direction: Vector2) -> void:
+func update(delta: float, _aim_direction: Vector2) -> void:
 	if _phase != Phase.WINDUP:
 		return
-	_hammer_visual.set_aim_direction(aim_direction)
 	_windup_remaining -= maxf(delta, 0.0)
 	if _windup_remaining <= 0.0:
-		_launch_slam(aim_direction)
+		_launch_slam()
 
 
 func can_activate() -> bool:
@@ -80,7 +79,7 @@ func get_movement_multiplier() -> float:
 	return charge_movement_multiplier if _phase != Phase.IDLE else 1.0
 
 
-func input_pressed(aim_direction: Vector2) -> void:
+func input_pressed(_aim_direction: Vector2) -> void:
 	if not can_activate():
 		return
 	var instance := hammer_visual_scene.instantiate()
@@ -90,17 +89,20 @@ func input_pressed(aim_direction: Vector2) -> void:
 		instance.queue_free()
 		return
 
-	_ability_origin.add_child(_hammer_visual)
-	_hammer_visual.begin_charge(aim_direction, charge_sound)
+	get_tree().current_scene.add_child(_hammer_visual)
+	_hammer_visual.global_position = _ability_origin.get_global_mouse_position()
+	_hammer_visual.set_charge_sound_position(_ability_origin.global_position)
+	_hammer_visual.begin_charge(charge_sound)
 	_charge_time = 0.0
 	_charge_stage = 0
 	_phase = Phase.CHARGING
 
 
-func input_held(delta: float, aim_direction: Vector2) -> void:
+func input_held(delta: float, _aim_direction: Vector2) -> void:
 	if _phase != Phase.CHARGING:
 		return
-	_hammer_visual.set_aim_direction(aim_direction)
+	_hammer_visual.global_position = _ability_origin.get_global_mouse_position()
+	_hammer_visual.set_charge_sound_position(_ability_origin.global_position)
 	_charge_time += maxf(delta, 0.0)
 	var next_stage := _get_charge_stage(_charge_time)
 	while _charge_stage < next_stage:
@@ -112,12 +114,16 @@ func input_held(delta: float, aim_direction: Vector2) -> void:
 func input_released(aim_direction: Vector2) -> void:
 	if _phase != Phase.CHARGING:
 		return
-	_slam_direction = aim_direction.normalized()
+	_slam_position = _ability_origin.get_global_mouse_position()
+	_slam_direction = (_slam_position - _ability_origin.global_position).normalized()
 	if _slam_direction.is_zero_approx():
-		_slam_direction = Vector2.RIGHT
+		_slam_direction = aim_direction.normalized()
+		if _slam_direction.is_zero_approx():
+			_slam_direction = Vector2.RIGHT
 	_windup_remaining = windup_duration
 	_phase = Phase.WINDUP
-	_hammer_visual.begin_windup(_slam_direction, windup_duration)
+	_hammer_visual.global_position = _slam_position
+	_hammer_visual.begin_windup(windup_duration)
 
 
 func _get_charge_stage(elapsed: float) -> int:
@@ -126,10 +132,7 @@ func _get_charge_stage(elapsed: float) -> int:
 	return mini(1 + int((elapsed - first_charge_time) / charge_step_time), MAX_CHARGE_STAGE)
 
 
-func _launch_slam(aim_direction: Vector2) -> void:
-	if not aim_direction.is_zero_approx():
-		_slam_direction = aim_direction.normalized()
-	var slam_position := _ability_origin.global_position + _slam_direction * slam_distance
+func _launch_slam() -> void:
 	var instance := slam_attack_scene.instantiate()
 	var slam_attack := instance as SlamAttack
 	if slam_attack == null:
@@ -139,7 +142,7 @@ func _launch_slam(aim_direction: Vector2) -> void:
 		return
 
 	get_tree().current_scene.add_child(slam_attack)
-	slam_attack.global_position = slam_position
+	slam_attack.global_position = _slam_position
 	slam_attack.launch(
 		_ability_user,
 		_slam_direction,
