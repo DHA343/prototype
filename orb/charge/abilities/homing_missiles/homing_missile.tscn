@@ -1,0 +1,49 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://orb/charge/abilities/homing_missiles/homing_missile.gd" id="1_missile"]
+[ext_resource type="Script" path="res://components/visual/circle.gd" id="2_visual"]
+[ext_resource type="Script" path="res://components/combat/hitbox.gd" id="3_hitbox"]
+[ext_resource type="Script" path="res://components/visual/trail.gd" id="4_trail"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hit"]
+radius = 11.0
+
+[sub_resource type="Curve" id="Curve_width"]
+_data = [Vector2(0, 0.05), 0.0, 1.0, 0, 0, Vector2(1, 1), 1.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_color"]
+colors = PackedColorArray(0.2, 0.75, 1, 0, 0.5, 0.95, 1, 0.9)
+
+[node name="HomingMissile" type="Node2D"]
+z_index = 15
+script = ExtResource("1_missile")
+
+[node name="Visual" type="Node2D" parent="."]
+script = ExtResource("2_visual")
+radius = 11.0
+color = Color(0.4, 0.9, 1, 1)
+outline_width = 2.0
+outline_color = Color(0.8, 0.98, 1, 1)
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("3_hitbox")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("CircleShape2D_hit")
+
+[node name="Trail" type="Line2D" parent="."]
+top_level = true
+z_index = -1
+width = 14.0
+width_curve = SubResource("Curve_width")
+gradient = SubResource("Gradient_color")
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+antialiased = true
+script = ExtResource("4_trail")
+min_distance = 6.0
+point_lifetime = 0.22

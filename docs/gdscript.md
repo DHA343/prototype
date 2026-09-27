@@ -112,8 +112,8 @@
 型が異なる可能性のある値を、特定の型として扱えるか確認する必要がある場合は、`as` による型キャストを使用してよい。
 
 ```gdscript
-var player := body as Player
-if player == null:
+var orb := body as Orb
+if orb == null:
     return
 ```
 

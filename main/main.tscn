@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://baqffgy3irfa3"]
 
 [ext_resource type="Script" uid="uid://7yg3dj6q5n2s" path="res://main/main.gd" id="1_main"]
-[ext_resource type="PackedScene" uid="uid://dntlcrcd1rsf" path="res://player/player.tscn" id="2_player"]
+[ext_resource type="PackedScene" uid="uid://dntlcrcd1rsf" path="res://orb/orb.tscn" id="2_orb"]
 [ext_resource type="Script" uid="uid://l1psa7fkd7uc" path="res://systems/crowd/crowd_manager.gd" id="3_crowd_manager"]
 [ext_resource type="Script" uid="uid://bgg80861140tt" path="res://enemy/spawner/spawn_area.gd" id="4_spawn_area"]
 [ext_resource type="Script" uid="uid://dfpoas8gomjqd" path="res://enemy/spawner/enemy_spawner.gd" id="5_enemy_spawner"]
@@ -37,7 +37,7 @@ script = ExtResource("10_camera_shake")
 [node name="Actors" type="Node2D" parent="." unique_id=137631151]
 y_sort_enabled = true
 
-[node name="Player" parent="Actors" unique_id=1133452163 instance=ExtResource("2_player")]
+[node name="Orb" parent="Actors" unique_id=1133452163 instance=ExtResource("2_orb")]
 
 [node name="Enemies" type="Node2D" parent="Actors" unique_id=512686501]
 y_sort_enabled = true

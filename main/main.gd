@@ -3,7 +3,7 @@ extends Node2D
 
 var _feedback: Feedback = Feedback.new()
 
-@onready var player: Player = $Actors/Player
+@onready var orb: Orb = $Actors/Orb
 @onready var enemies: Node2D = $Actors/Enemies
 @onready var crowd_manager: CrowdManager = $CrowdManager
 @onready var spawn_area: SpawnArea = $SpawnArea
@@ -18,7 +18,7 @@ func _ready() -> void:
 	world_ui_layer.layer = RenderLayers.WORLD_UI
 	_feedback.sound_requested.connect(world_sound_output.request)
 	_feedback.camera_shake_requested.connect(camera_shake.request)
-	player.setup(_feedback)
+	orb.setup(_feedback)
 	enemy_spawner.enemy_spawned.connect(_on_enemy_spawned)
 	enemy_spawner.setup(enemies, spawn_area)
 	enemy_spawner.start()
