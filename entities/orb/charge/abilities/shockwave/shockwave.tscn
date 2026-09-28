@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://components/combat/hitbox.gd" id="2_ew3vu"]
 [ext_resource type="Script" path="res://entities/orb/charge/abilities/shockwave/shockwave_visual.gd" id="2_yv332"]
 [ext_resource type="Resource" path="res://entities/orb/charge/abilities/shockwave/shockwave_start.tres" id="3_start_cue"]
-[ext_resource type="Resource" path="res://entities/orb/charge/abilities/shockwave/shockwave_hit.tres" id="4_hit_cue"]
+[ext_resource type="Resource" path="res://_temp/shockwave_hit.tres" id="4_hit_cue"]
 
 [node name="Shockwave" type="Node2D" unique_id=506130737]
 z_index = 30

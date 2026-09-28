@@ -1,13 +1,12 @@
-[gd_resource type="Resource" script_class="SoundCue" format=3]
+[gd_resource type="Resource" script_class="SoundCue" format=3 uid="uid://56jji4y4kdn8"]
 
-[ext_resource type="Script" path="res://presentation/audio/sound_cue.gd" id="1_cue"]
-[ext_resource type="AudioStream" path="res://presentation/audio/clips/DSGNMisc_HIT-Hit Rattle_HY_PC-003.wav" id="2_focyt"]
+[ext_resource type="Script" uid="uid://b3v0jytvki4sj" path="res://presentation/audio/sound_cue.gd" id="1_cue"]
+[ext_resource type="AudioStream" uid="uid://bg47vpxnsktgk" path="res://_temp/DSGNMisc_HIT-Hit Rattle_HY_PC-003.wav" id="2_focyt"]
 
 [resource]
 script = ExtResource("1_cue")
 stream = ExtResource("2_focyt")
-pitch_semitones = 9.299999999999997
+pitch_semitones = 9.299999999999995
 random_pitch_semitones = 2.9
-aggregation_window = 0.02
-
 playback_mode = 3
+aggregation_window = 0.02

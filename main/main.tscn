@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://7yg3dj6q5n2s" path="res://main/main.gd" id="1_main"]
 [ext_resource type="PackedScene" uid="uid://dntlcrcd1rsf" path="res://entities/orb/orb.tscn" id="2_orb"]
+[ext_resource type="Shader" uid="uid://cq5kuj1mqum2y" path="res://presentation/background/checkerboard_background.gdshader" id="3_73k8k"]
 [ext_resource type="Script" uid="uid://l1psa7fkd7uc" path="res://systems/crowd/crowd_manager.gd" id="3_crowd_manager"]
 [ext_resource type="Script" uid="uid://bgg80861140tt" path="res://entities/enemy/spawner/spawn_area.gd" id="4_spawn_area"]
 [ext_resource type="Script" uid="uid://dfpoas8gomjqd" path="res://entities/enemy/spawner/enemy_spawner.gd" id="5_enemy_spawner"]
@@ -14,6 +15,13 @@
 [ext_resource type="PackedScene" uid="uid://1cph7125gclc" path="res://presentation/post_processing/post_processing.tscn" id="12_post_processing"]
 [ext_resource type="PackedScene" path="res://presentation/background/checkerboard_background.tscn" id="13_background"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_73k8k"]
+resource_local_to_scene = true
+shader = ExtResource("3_73k8k")
+shader_parameter/dark_color = Color(0.2992, 0.30396, 0.34, 1)
+shader_parameter/light_color = Color(0.34440002, 0.34440002, 0.41, 1)
+shader_parameter/cell_size = 96.0
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_spawn_area"]
 size = Vector2(1920, 1080)
 
@@ -21,7 +29,12 @@ size = Vector2(1920, 1080)
 physics_interpolation_mode = 2
 script = ExtResource("1_main")
 
-[node name="CheckerboardBackground" parent="." instance=ExtResource("13_background")]
+[node name="CheckerboardBackground" parent="." unique_id=1707052795 instance=ExtResource("13_background")]
+material = SubResource("ShaderMaterial_73k8k")
+offset_left = -1504.0
+offset_top = -1007.0
+offset_right = 1504.0
+offset_bottom = 1007.0
 dark_color = Color(0.2992, 0.30396, 0.34, 1)
 light_color = Color(0.34440002, 0.34440002, 0.41, 1)
 
@@ -30,6 +43,8 @@ script = ExtResource("7_world_sound_output")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1954490448]
 script = ExtResource("11_game_camera")
+max_offset_x = 40.0
+max_offset_y = 24.0
 
 [node name="CameraShake" type="Node" parent="Camera2D" unique_id=1954490449]
 script = ExtResource("10_camera_shake")

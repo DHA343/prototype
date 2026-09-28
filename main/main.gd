@@ -10,6 +10,7 @@ var _feedback: Feedback = Feedback.new()
 @onready var enemy_spawner: EnemySpawner = $EnemySpawner
 @onready var damage_number_spawner: DamageNumberSpawner = $WorldUILayer/DamageNumberSpawner
 @onready var world_sound_output: WorldSoundOutput = $WorldSoundOutput
+@onready var camera: GameCamera = $Camera2D
 @onready var camera_shake: CameraShake = $Camera2D/CameraShake
 @onready var world_ui_layer: CanvasLayer = $WorldUILayer
 
@@ -19,6 +20,7 @@ func _ready() -> void:
 	_feedback.sound_requested.connect(world_sound_output.request)
 	_feedback.camera_shake_requested.connect(camera_shake.request)
 	orb.setup(_feedback)
+	camera.setup_follow(orb)
 	enemy_spawner.enemy_spawned.connect(_on_enemy_spawned)
 	enemy_spawner.setup(enemies, spawn_area)
 	enemy_spawner.start()

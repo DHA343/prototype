@@ -1,0 +1,78 @@
+[gd_scene format=3 uid="uid://dnvqtymm727k0"]
+
+[ext_resource type="Script" uid="uid://3rqi8ig8w3dq" path="res://tests/edge_membrane/edge_membrane.gd" id="1"]
+[ext_resource type="Script" uid="uid://bicn7jrjde6ik" path="res://tests/edge_membrane/membrane.gd" id="2"]
+[ext_resource type="Shader" uid="uid://e01kw6erml11" path="res://tests/edge_membrane/membrane.gdshader" id="3"]
+[ext_resource type="Shader" uid="uid://cq5kuj1mqum2y" path="res://presentation/background/checkerboard_background.gdshader" id="4"]
+[ext_resource type="PackedScene" uid="uid://dntlcrcd1rsf" path="res://entities/orb/orb.tscn" id="5"]
+
+[sub_resource type="ShaderMaterial" id="BackgroundMaterial"]
+shader = ExtResource("4")
+shader_parameter/dark_color = Color(0.2, 0.24, 0.29, 1)
+shader_parameter/light_color = Color(0.3, 0.35, 0.4, 1)
+shader_parameter/cell_size = 64.0
+
+[sub_resource type="ShaderMaterial" id="MembraneMaterial"]
+resource_local_to_scene = true
+shader = ExtResource("3")
+shader_parameter/edge_amplitudes = PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+shader_parameter/depth = 110.0
+shader_parameter/wavelength = 75.0
+shader_parameter/wave_phase = 0.0
+
+[node name="EdgeMembrane" type="Node2D" unique_id=740265274]
+physics_interpolation_mode = 2
+script = ExtResource("1")
+
+[node name="Background" type="CanvasLayer" parent="." unique_id=423168784]
+layer = -10
+
+[node name="Checkerboard" type="ColorRect" parent="Background" unique_id=1962917818]
+material = SubResource("BackgroundMaterial")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Distortion" type="CanvasLayer" parent="." unique_id=1339189943]
+layer = -5
+
+[node name="Membrane" type="ColorRect" parent="Distortion" unique_id=511910873 node_paths=PackedStringArray("target")]
+process_priority = 10
+material = SubResource("MembraneMaterial")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("2")
+target = NodePath("../../Actors/Orb/Visual")
+
+[node name="Actors" type="CanvasLayer" parent="." unique_id=839472572]
+layer = 0
+
+[node name="Orb" parent="Actors" unique_id=804108559 instance=ExtResource("5")]
+
+[node name="Interface" type="CanvasLayer" parent="." unique_id=1576410812]
+layer = 10
+
+[node name="Panel" type="PanelContainer" parent="Interface" unique_id=409649115]
+offset_left = 32.0
+offset_top = 32.0
+mouse_filter = 2
+
+[node name="Margin" type="MarginContainer" parent="Interface/Panel" unique_id=604498058]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 12
+
+[node name="Controls" type="VBoxContainer" parent="Interface/Panel/Margin" unique_id=253186163]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 6

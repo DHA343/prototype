@@ -2,7 +2,7 @@ class_name CrowdManager
 extends Node
 
 @export_group("Grid")
-@export_range(1.0, 512.0, 1.0, "suffix:unit") var cell_size: float = 80.0:
+@export_range(1.0, 512.0, 1.0, "suffix:px") var cell_size: float = 80.0:
 	set(value):
 		cell_size = maxf(value, 0.01)
 
@@ -15,12 +15,12 @@ extends Node
 	set(value):
 		stiffness = clampf(value, 0.0, 1.0)
 
-@export_range(0.0, 1000.0, 10.0, "suffix:unit/s") var max_correction_speed: float = 300.0:
+@export_range(0.0, 1000.0, 10.0, "suffix:px/s") var max_correction_speed: float = 300.0:
 	set(value):
 		max_correction_speed = maxf(value, 0.0)
 
 @export_group("Separation")
-@export_range(0.0, 1000.0, 10.0, "suffix:unit/s") var separation_speed: float = 100.0:
+@export_range(0.0, 1000.0, 10.0, "suffix:px/s") var separation_speed: float = 100.0:
 	set(value):
 		separation_speed = maxf(value, 0.0)
 

@@ -1,7 +1,7 @@
 class_name Knockback
 extends Node
 
-@export_range(0.0, 10000.0, 10.0, "suffix:unit/s") var max_speed: float = 1200.0
+@export_range(0.0, 10000.0, 10.0, "suffix:px/s") var max_speed: float = 1200.0
 @export_range(0.01, 5.0, 0.01, "suffix:s") var duration: float = 0.24
 @export var transition_type: Tween.TransitionType = Tween.TRANS_QUAD
 @export var ease_type: Tween.EaseType = Tween.EASE_OUT

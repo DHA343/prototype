@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="SoundCue" format=3]
 
 [ext_resource type="Script" path="res://presentation/audio/sound_cue.gd" id="1_cue"]
-[ext_resource type="AudioStream" path="res://presentation/audio/clips/USER_INTERFACE_Light_On_Click_02.mp3" id="2_jc5f8"]
+[ext_resource type="AudioStream" path="res://_temp/USER_INTERFACE_Light_On_Click_02.mp3" id="2_jc5f8"]
 
 [resource]
 script = ExtResource("1_cue")

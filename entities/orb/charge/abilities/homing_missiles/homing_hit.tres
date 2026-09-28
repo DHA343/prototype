@@ -1,12 +1,11 @@
-[gd_resource type="Resource" script_class="SoundCue" format=3]
+[gd_resource type="Resource" script_class="SoundCue" format=3 uid="uid://ulidfmsbtkct"]
 
-[ext_resource type="Script" path="res://presentation/audio/sound_cue.gd" id="1_05l8e"]
-[ext_resource type="AudioStream" path="res://presentation/audio/clips/foley_footstep_vinyl_1.wav" id="2_ktjxc"]
+[ext_resource type="Script" uid="uid://b3v0jytvki4sj" path="res://presentation/audio/sound_cue.gd" id="1_05l8e"]
+[ext_resource type="AudioStream" uid="uid://01mmctro3adg" path="res://_temp/foley_footstep_vinyl_1.wav" id="2_ktjxc"]
 
 [resource]
 script = ExtResource("1_05l8e")
 stream = ExtResource("2_ktjxc")
+playback_mode = 3
 aggregation_scope = 1
 aggregation_window = 0.035
-
-playback_mode = 3

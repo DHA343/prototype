@@ -127,6 +127,10 @@ func get_equipped_charge_ability() -> ChargeAbilityDefinition:
 	return charge_ability_slot.get_equipped_definition()
 
 
+func get_interpolated_visual_position() -> Vector2:
+	return _position_interpolator.get_interpolated_global_position()
+
+
 func reset_position_interpolation() -> void:
 	reset_physics_interpolation()
 	_position_interpolator.reset(sweep_hit.global_position)

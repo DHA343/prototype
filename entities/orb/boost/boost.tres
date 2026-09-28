@@ -1,9 +1,8 @@
-[gd_resource type="Resource" script_class="SoundCue" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="SoundCue" format=3 uid="uid://dyvdl2nucrp4c"]
 
-[ext_resource type="Script" path="res://presentation/audio/sound_cue.gd" id="1_cue"]
-[ext_resource type="AudioStream" path="res://presentation/audio/clips/DSGNMisc_HIT-Synth Hit_HY_PC-001.wav" id="2_stream"]
+[ext_resource type="Script" uid="uid://b3v0jytvki4sj" path="res://presentation/audio/sound_cue.gd" id="1_cue"]
+[ext_resource type="AudioStream" uid="uid://dqvauesdynfme" path="res://_temp/DSGNMisc_HIT-Synth Hit_HY_PC-001.wav" id="2_stream"]
 
 [resource]
 script = ExtResource("1_cue")
 stream = ExtResource("2_stream")
-bus = &"SFX"
