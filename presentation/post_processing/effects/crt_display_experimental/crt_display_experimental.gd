@@ -9,7 +9,7 @@ enum MaskStyle {
 
 const EFFECT_SHADER: Shader = preload("./crt_display_experimental.gdshader")
 
-@export_group("Signal", "signal_")
+@export_group("Scanline")
 @export var signal_enabled: bool = true:
 	set(value):
 		if signal_enabled == value:
@@ -18,20 +18,12 @@ const EFFECT_SHADER: Shader = preload("./crt_display_experimental.gdshader")
 		signal_enabled = value
 		emit_changed()
 
-@export_range(180, 720, 1, "suffix:lines") var signal_height: int = 360:
+@export_range(180, 720, 1, "suffix:lines") var scanline_count: int = 360:
 	set(value):
-		if signal_height == value:
+		if scanline_count == value:
 			return
 
-		signal_height = value
-		emit_changed()
-
-@export_range(1.0, 4.0, 0.1) var signal_sharpness: float = 3.0:
-	set(value):
-		if is_equal_approx(signal_sharpness, value):
-			return
-
-		signal_sharpness = value
+		scanline_count = value
 		emit_changed()
 
 @export_group("Beam", "beam_")
@@ -84,8 +76,7 @@ func get_shader() -> Shader:
 
 func _update_shader_parameters() -> void:
 	_shader_parameters[&"signal_enabled"] = signal_enabled
-	_shader_parameters[&"signal_height"] = signal_height
-	_shader_parameters[&"signal_sharpness"] = signal_sharpness
+	_shader_parameters[&"scanline_count"] = scanline_count
 	_shader_parameters[&"beam_min_width"] = beam_min_width
 	_shader_parameters[&"beam_max_width"] = beam_max_width
 	_shader_parameters[&"mask_style"] = mask_style

@@ -96,7 +96,7 @@ func _draw() -> void:
 
 
 func _create_labels() -> void:
-	_add_label("CRT Display Experimental  |  virtual signal: 360 lines", Vector2(40.0, 15.0), 28)
+	_add_label("CRT Display Experimental  |  virtual scanlines: 360", Vector2(40.0, 15.0), 28)
 	_mode_label = _add_label("", Vector2(40.0, 62.0), 20, Color(0.8, 0.95, 1.0))
 	_add_label("F1 OFF   F2 SIGNAL   F3 MASK   F4 BOTH   F5 MASK STYLE   SPACE DAMAGE", Vector2(40.0, 91.0), 16)
 	_add_label("COARSE CHECKER", Vector2(40.0, 135.0), 17)
