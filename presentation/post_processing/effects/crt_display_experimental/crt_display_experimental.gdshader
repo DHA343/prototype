@@ -2,17 +2,19 @@ shader_type canvas_item;
 render_mode unshaded;
 
 uniform sampler2D screen_texture
-	: hint_screen_texture, source_color, repeat_disable, filter_linear_mipmap;
+	: hint_screen_texture, source_color, repeat_disable, filter_linear;
 
 uniform bool signal_enabled = true;
 uniform int scanline_count : hint_range(180, 720, 1) = 360;
-uniform float mipmap_strength : hint_range(0.0, 0.5, 0.01) = 0.08;
-uniform float mipmap_level : hint_range(0.0, 2.0, 0.01) = 0.5;
-uniform float horizontal_strength : hint_range(0.0, 0.5, 0.01) = 0.1;
+uniform float chroma_softness : hint_range(0.0, 1.0, 0.01) = 0.25;
+uniform float convergence : hint_range(0.0, 0.5, 0.01) = 0.15;
 uniform float beam_min_width : hint_range(0.2, 0.55, 0.01) = 0.34;
 uniform float beam_max_width : hint_range(0.2, 0.55, 0.01) = 0.42;
 uniform int mask_style : hint_enum("Stretched VGA", "VGA") = 0;
 uniform float mask_strength : hint_range(0.0, 1.0, 0.01) = 0.5;
+uniform float halation_strength : hint_range(0.0, 0.5, 0.01) = 0.08;
+uniform float halation_radius : hint_range(0.5, 4.0, 0.1) = 1.5;
+uniform float halation_threshold : hint_range(0.0, 2.0, 0.01) = 0.8;
 uniform float brightness_compensation : hint_range(0.5, 2.0, 0.01) = 1.0;
 
 const float HALF_PI = 1.57079632679;
@@ -24,17 +26,24 @@ vec3 condition_signal(vec2 sample_uv, float pixel_width) {
 	vec3 base_color = textureLod(screen_texture, sample_uv, 0.0).rgb;
 	vec3 signal_color = base_color;
 
-	if (mipmap_strength > 0.0) {
-		vec3 mipmap_color = textureLod(screen_texture, sample_uv, mipmap_level).rgb;
-		signal_color += mipmap_strength * (mipmap_color - base_color);
-	}
-
-	if (horizontal_strength > 0.0) {
+	if (chroma_softness > 0.0 || convergence > 0.0) {
 		vec2 offset = vec2(pixel_width, 0.0);
 		vec3 left_color = textureLod(screen_texture, sample_uv - offset, 0.0).rgb;
 		vec3 right_color = textureLod(screen_texture, sample_uv + offset, 0.0).rgb;
-		vec3 horizontal_color = left_color * 0.25 + base_color * 0.5 + right_color * 0.25;
-		signal_color += horizontal_strength * (horizontal_color - base_color);
+
+		if (chroma_softness > 0.0) {
+			vec3 center_chroma = base_color - vec3(dot(base_color, LUMA_WEIGHTS));
+			vec3 left_chroma = left_color - vec3(dot(left_color, LUMA_WEIGHTS));
+			vec3 right_chroma = right_color - vec3(dot(right_color, LUMA_WEIGHTS));
+			vec3 filtered_chroma = left_chroma * 0.25 + center_chroma * 0.5 + right_chroma * 0.25;
+			signal_color += chroma_softness * (filtered_chroma - center_chroma);
+		}
+
+		if (convergence > 0.0) {
+			vec3 gradient = (right_color - left_color) * 0.5;
+			signal_color.r -= gradient.r * convergence;
+			signal_color.b += gradient.b * convergence;
+		}
 	}
 
 	return signal_color;
@@ -101,6 +110,15 @@ vec3 apply_phosphor_mask(vec3 color, vec3 active_phosphor) {
 }
 
 
+vec3 sample_halation(vec2 sample_uv) {
+	vec3 light_color = max(textureLod(screen_texture, sample_uv, 0.0).rgb, vec3(0.0));
+	// Peak RGB also lets saturated HDR colors contribute to the glow.
+	float peak = max(max(light_color.r, light_color.g), light_color.b);
+	float bright_weight = smoothstep(halation_threshold, halation_threshold + 0.5, peak);
+	return light_color * bright_weight;
+}
+
+
 void fragment() {
 	vec4 screen_color = textureLod(screen_texture, SCREEN_UV, 0.0);
 	vec3 scanline_color = screen_color.rgb;
@@ -130,5 +148,17 @@ void fragment() {
 	vec2 mask_position = floor(1.000001 * FRAGCOORD.xy + vec2(0.5));
 	vec3 active_phosphor = get_active_phosphor(get_vga_phase(mask_position));
 	vec3 output_color = apply_phosphor_mask(scanline_color, active_phosphor);
+	if (halation_strength > 0.0) {
+		vec2 radius_uv = SCREEN_PIXEL_SIZE * halation_radius;
+		vec3 cardinal_light = sample_halation(SCREEN_UV + vec2(-radius_uv.x, 0.0))
+			+ sample_halation(SCREEN_UV + vec2(radius_uv.x, 0.0))
+			+ sample_halation(SCREEN_UV + vec2(0.0, -radius_uv.y))
+			+ sample_halation(SCREEN_UV + vec2(0.0, radius_uv.y));
+		vec3 diagonal_light = sample_halation(SCREEN_UV + vec2(-radius_uv.x, -radius_uv.y))
+			+ sample_halation(SCREEN_UV + vec2(radius_uv.x, -radius_uv.y))
+			+ sample_halation(SCREEN_UV + vec2(-radius_uv.x, radius_uv.y))
+			+ sample_halation(SCREEN_UV + vec2(radius_uv.x, radius_uv.y));
+		output_color += halation_strength * (cardinal_light + diagonal_light * 0.5) / 6.0;
+	}
 	COLOR = vec4(output_color * brightness_compensation, screen_color.a);
 }

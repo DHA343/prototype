@@ -26,29 +26,21 @@ const EFFECT_SHADER: Shader = preload("./crt_display_experimental.gdshader")
 		scanline_count = value
 		emit_changed()
 
-@export_group("Signal Softness")
-@export_range(0.0, 0.5, 0.01) var mipmap_strength: float = 0.08:
+@export_group("Signal")
+@export_range(0.0, 1.0, 0.01) var chroma_softness: float = 0.25:
 	set(value):
-		if is_equal_approx(mipmap_strength, value):
+		if is_equal_approx(chroma_softness, value):
 			return
 
-		mipmap_strength = value
+		chroma_softness = value
 		emit_changed()
 
-@export_range(0.0, 2.0, 0.01) var mipmap_level: float = 0.5:
+@export_range(0.0, 0.5, 0.01, "suffix:px") var convergence: float = 0.15:
 	set(value):
-		if is_equal_approx(mipmap_level, value):
+		if is_equal_approx(convergence, value):
 			return
 
-		mipmap_level = value
-		emit_changed()
-
-@export_range(0.0, 0.5, 0.01) var horizontal_strength: float = 0.1:
-	set(value):
-		if is_equal_approx(horizontal_strength, value):
-			return
-
-		horizontal_strength = value
+		convergence = value
 		emit_changed()
 
 @export_group("Beam", "beam_")
@@ -85,6 +77,31 @@ const EFFECT_SHADER: Shader = preload("./crt_display_experimental.gdshader")
 		mask_strength = value
 		emit_changed()
 
+@export_group("Halation", "halation_")
+@export_range(0.0, 0.5, 0.01) var halation_strength: float = 0.08:
+	set(value):
+		if is_equal_approx(halation_strength, value):
+			return
+
+		halation_strength = value
+		emit_changed()
+
+@export_range(0.5, 4.0, 0.1, "suffix:px") var halation_radius: float = 1.5:
+	set(value):
+		if is_equal_approx(halation_radius, value):
+			return
+
+		halation_radius = value
+		emit_changed()
+
+@export_range(0.0, 2.0, 0.01) var halation_threshold: float = 0.8:
+	set(value):
+		if is_equal_approx(halation_threshold, value):
+			return
+
+		halation_threshold = value
+		emit_changed()
+
 @export_group("Output")
 @export_range(0.5, 2.0, 0.01) var brightness_compensation: float = 1.0:
 	set(value):
@@ -102,11 +119,13 @@ func get_shader() -> Shader:
 func _update_shader_parameters() -> void:
 	_shader_parameters[&"signal_enabled"] = signal_enabled
 	_shader_parameters[&"scanline_count"] = scanline_count
-	_shader_parameters[&"mipmap_strength"] = mipmap_strength
-	_shader_parameters[&"mipmap_level"] = mipmap_level
-	_shader_parameters[&"horizontal_strength"] = horizontal_strength
+	_shader_parameters[&"chroma_softness"] = chroma_softness
+	_shader_parameters[&"convergence"] = convergence
 	_shader_parameters[&"beam_min_width"] = beam_min_width
 	_shader_parameters[&"beam_max_width"] = beam_max_width
 	_shader_parameters[&"mask_style"] = mask_style
 	_shader_parameters[&"mask_strength"] = mask_strength
+	_shader_parameters[&"halation_strength"] = halation_strength
+	_shader_parameters[&"halation_radius"] = halation_radius
+	_shader_parameters[&"halation_threshold"] = halation_threshold
 	_shader_parameters[&"brightness_compensation"] = brightness_compensation

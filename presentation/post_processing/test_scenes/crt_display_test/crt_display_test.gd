@@ -13,10 +13,11 @@ const DAMAGE_VALUES = [7, 42, 128, 999]
 var _effect: CRTDisplayExperimental
 var _mode_label: Label
 var _mode: int = 3
-var _softness_mode: int = 3
+var _crt_mode: int = 4
 var _base_mask_strength: float = 0.5
-var _base_mipmap_strength: float = 0.08
-var _base_horizontal_strength: float = 0.1
+var _base_chroma_softness: float = 0.25
+var _base_convergence: float = 0.15
+var _base_halation_strength: float = 0.08
 var _damage_elapsed: float = 0.0
 var _damage_index: int = 0
 var _motion_elapsed: float = 0.0
@@ -25,8 +26,9 @@ var _motion_elapsed: float = 0.0
 func _ready() -> void:
 	_effect = _post_processing.composite_effects[0] as CRTDisplayExperimental
 	_base_mask_strength = _effect.mask_strength
-	_base_mipmap_strength = _effect.mipmap_strength
-	_base_horizontal_strength = _effect.horizontal_strength
+	_base_chroma_softness = _effect.chroma_softness
+	_base_convergence = _effect.convergence
+	_base_halation_strength = _effect.halation_strength
 	_fit_canvas()
 	get_viewport().size_changed.connect(_fit_canvas)
 	_orb.position = Vector2(1515.0, 925.0)
@@ -36,7 +38,7 @@ func _ready() -> void:
 	_enemy.set_physics_process(true)
 	_create_labels()
 	_set_mode(3)
-	_set_softness_mode(3)
+	_set_crt_mode(4)
 	_spawn_damage()
 
 
@@ -84,7 +86,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			) else CRTDisplayExperimental.MaskStyle.STRETCHED_VGA
 			_update_mode_label()
 		KEY_F6:
-			_set_softness_mode((_softness_mode + 1) % 4)
+			_set_crt_mode((_crt_mode + 1) % 5)
 		KEY_SPACE:
 			_spawn_damage()
 
@@ -106,7 +108,7 @@ func _draw() -> void:
 func _create_labels() -> void:
 	_add_label("CRT Display Experimental  |  virtual scanlines: 360", Vector2(40.0, 15.0), 28)
 	_mode_label = _add_label("", Vector2(40.0, 62.0), 20, Color(0.8, 0.95, 1.0))
-	_add_label("F1 OFF   F2 SIGNAL   F3 MASK   F4 BOTH   F5 MASK STYLE   F6 SOFTNESS   SPACE DAMAGE", Vector2(40.0, 91.0), 16)
+	_add_label("F1 OFF   F2 SIGNAL   F3 MASK   F4 BOTH   F5 MASK STYLE   F6 CRT FEATURES   SPACE DAMAGE", Vector2(40.0, 91.0), 16)
 	_add_label("COARSE CHECKER", Vector2(40.0, 135.0), 17)
 	_add_label("FINE CHECKER / MOIRE", Vector2(480.0, 135.0), 17)
 	_add_label("GRAYSCALE RAMP", Vector2(920.0, 135.0), 17)
@@ -155,18 +157,19 @@ func _set_mode(mode: int) -> void:
 	_update_mode_label()
 
 
-func _set_softness_mode(mode: int) -> void:
-	_softness_mode = mode
-	_effect.mipmap_strength = _base_mipmap_strength if mode == 1 or mode == 3 else 0.0
-	_effect.horizontal_strength = _base_horizontal_strength if mode == 2 or mode == 3 else 0.0
+func _set_crt_mode(mode: int) -> void:
+	_crt_mode = mode
+	_effect.chroma_softness = _base_chroma_softness if mode == 1 or mode == 4 else 0.0
+	_effect.convergence = _base_convergence if mode == 2 or mode == 4 else 0.0
+	_effect.halation_strength = _base_halation_strength if mode == 3 or mode == 4 else 0.0
 	_update_mode_label()
 
 
 func _update_mode_label() -> void:
 	var names := ["OFF", "SIGNAL / BEAM", "SHADOW MASK", "BOTH"]
-	var softness_names := ["OFF", "MIPMAP", "HORIZONTAL", "BOTH"]
+	var crt_names := ["OFF", "CHROMA", "CONVERGENCE", "HALATION", "ALL"]
 	var style := "VGA" if _effect.mask_style == CRTDisplayExperimental.MaskStyle.VGA else "Stretched VGA"
-	_mode_label.text = "Mode: %s    Mask: %s    Softness: %s" % [names[_mode], style, softness_names[_softness_mode]]
+	_mode_label.text = "Mode: %s    Mask: %s    CRT: %s" % [names[_mode], style, crt_names[_crt_mode]]
 
 
 func _spawn_damage() -> void:
