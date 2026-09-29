@@ -94,46 +94,87 @@ vec3 get_active_phosphor(float phase) {
 }
 
 
-vec3 mask_pattern(vec2 position) {
+// Additional pattern cells and averages follow https://godotshaders.com/shader/crt-with-luminance-preservation/
+vec4 generate_mask(vec2 fragcoord) {
 	if (mask_style < 2) {
-		return get_active_phosphor(get_vga_phase(position));
+		vec2 vga_position = floor(1.000001 * fragcoord + vec2(0.5));
+		return vec4(get_active_phosphor(get_vga_phase(vga_position)), 1.0 / 3.0);
 	}
 
-	float column = floor(position.x);
-	float row = floor(position.y);
+	int column = int(floor(fragcoord.x));
+	int row = int(floor(fragcoord.y));
 	if (mask_style == 2) {
-		// Two-pixel cells alternate their phosphor order; neutral edge pixels separate the dots.
-		float cell = floor(column / 2.0) + floor(row / 3.0);
-		vec3 phosphor = get_active_phosphor(fract(cell / 3.0));
-		return mix(phosphor, vec3(1.0 / 3.0), step(2.0, mod(row, 3.0)) * 0.65);
+		int phase = (row * 2 + column) % 4;
+		if (phase == 0) {
+			return vec4(1.0, 0.0, 0.0, 0.25);
+		} else if (phase == 1) {
+			return vec4(0.0, 1.0, 0.0, 0.25);
+		} else if (phase == 2) {
+			return vec4(0.0, 0.0, 1.0, 0.25);
+		}
+		return vec4(0.0, 0.0, 0.0, 0.25);
 	}
 	if (mask_style == 3) {
-		return get_active_phosphor(fract(column / 3.0));
+		return column % 2 == 0
+			? vec4(0.0, 1.0, 0.0, 0.5) : vec4(1.0, 0.0, 1.0, 0.5);
 	}
 	if (mask_style == 4) {
-		return get_active_phosphor(fract(floor(column / 2.0) / 3.0));
+		int phase = column % 4;
+		if (phase == 0) {
+			return vec4(1.0, 0.0, 0.0, 0.25);
+		} else if (phase == 1) {
+			return vec4(0.0, 1.0, 0.0, 0.25);
+		} else if (phase == 2) {
+			return vec4(0.0, 0.0, 1.0, 0.25);
+		}
+		return vec4(0.0, 0.0, 0.0, 0.25);
 	}
 	if (mask_style == 5) {
-		float stripe = floor(column / 2.0);
-		vec3 current = get_active_phosphor(fract(stripe / 3.0));
-		vec3 adjacent = get_active_phosphor(fract((stripe + (mod(column, 2.0) < 1.0 ? -1.0 : 1.0)) / 3.0));
-		return mix(current, adjacent, 0.22);
+		int phase = column % 4;
+		if (phase == 0) {
+			return vec4(1.0, 0.125, 0.0, 0.3125);
+		} else if (phase == 1) {
+			return vec4(0.125, 1.0, 0.125, 0.3125);
+		} else if (phase == 2) {
+			return vec4(0.0, 0.125, 1.0, 0.3125);
+		}
+		return vec4(0.125, 0.0, 0.125, 0.3125);
 	}
 
-	float staggered_column = floor(column / 2.0) + mod(floor(row / 2.0), 2.0);
-	vec3 slot = get_active_phosphor(fract(staggered_column / 3.0));
-	return mix(slot, vec3(1.0 / 3.0), step(1.0, mod(row, 2.0)) * 0.35);
+	int slot_row = row % 4;
+	int slot_column = column % 4;
+	if (slot_row == 0 || slot_row == 2) {
+		return slot_column % 2 == 0
+			? vec4(1.0, 0.0, 1.0, 0.375) : vec4(0.0, 1.0, 0.0, 0.375);
+	}
+	if (slot_row == 1) {
+		if (slot_column == 0) {
+			return vec4(0.0, 0.0, 1.0, 0.375);
+		} else if (slot_column == 1) {
+			return vec4(0.0, 1.0, 0.0, 0.375);
+		} else if (slot_column == 2) {
+			return vec4(1.0, 0.0, 0.0, 0.375);
+		}
+		return vec4(0.0, 0.0, 0.0, 0.375);
+	}
+	if (slot_column == 0) {
+		return vec4(1.0, 0.0, 0.0, 0.375);
+	} else if (slot_column == 2) {
+		return vec4(0.0, 0.0, 1.0, 0.375);
+	} else if (slot_column == 3) {
+		return vec4(0.0, 1.0, 0.0, 0.375);
+	}
+	return vec4(0.0, 0.0, 0.0, 0.375);
 }
 
 
-vec3 apply_phosphor_mask(vec3 color, vec3 active_phosphor) {
+vec3 apply_phosphor_mask(vec3 color, vec4 mask_sample) {
 	vec3 positive_color = max(color, vec3(0.0));
-	vec3 target_energy = positive_color * 3.0;
-	// The active phosphor reaches full output first; highlights spread to the others.
-	vec3 primary_energy = min(target_energy, max(positive_color, vec3(1.0)));
-	vec3 secondary_energy = (target_energy - primary_energy) * 0.5;
-	vec3 phosphor_color = primary_energy * active_phosphor
-		+ secondary_energy * (vec3(1.0) - active_phosphor);
+	vec3 target_color = positive_color / mask_sample.a;
+	vec3 primary_color = clamp(target_color, vec3(0.0), vec3(1.0));
+	vec3 secondary_color = (target_color - primary_color) / (1.0 / mask_sample.a - 1.0);
+	vec3 phosphor_color = primary_color * mask_sample.rgb
+		+ secondary_color * (vec3(1.0) - mask_sample.rgb);
 	return mix(positive_color, phosphor_color, mask_strength) + min(color, vec3(0.0));
 }
 
@@ -158,7 +199,6 @@ void fragment() {
 		scanline_color = upper_color * upper_beam + lower_color * lower_beam;
 	}
 
-	vec2 mask_position = floor(1.000001 * FRAGCOORD.xy + vec2(0.5));
-	vec3 output_color = apply_phosphor_mask(scanline_color, mask_pattern(mask_position));
+	vec3 output_color = apply_phosphor_mask(scanline_color, generate_mask(FRAGCOORD.xy));
 	COLOR = vec4(output_color * brightness_compensation, screen_color.a);
 }
