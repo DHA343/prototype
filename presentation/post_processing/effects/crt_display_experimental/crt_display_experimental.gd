@@ -26,6 +26,31 @@ const EFFECT_SHADER: Shader = preload("./crt_display_experimental.gdshader")
 		scanline_count = value
 		emit_changed()
 
+@export_group("Signal Softness")
+@export_range(0.0, 0.5, 0.01) var mipmap_strength: float = 0.08:
+	set(value):
+		if is_equal_approx(mipmap_strength, value):
+			return
+
+		mipmap_strength = value
+		emit_changed()
+
+@export_range(0.0, 2.0, 0.01) var mipmap_level: float = 0.5:
+	set(value):
+		if is_equal_approx(mipmap_level, value):
+			return
+
+		mipmap_level = value
+		emit_changed()
+
+@export_range(0.0, 0.5, 0.01) var horizontal_strength: float = 0.1:
+	set(value):
+		if is_equal_approx(horizontal_strength, value):
+			return
+
+		horizontal_strength = value
+		emit_changed()
+
 @export_group("Beam", "beam_")
 @export_range(0.2, 0.55, 0.01) var beam_min_width: float = 0.34:
 	set(value):
@@ -77,6 +102,9 @@ func get_shader() -> Shader:
 func _update_shader_parameters() -> void:
 	_shader_parameters[&"signal_enabled"] = signal_enabled
 	_shader_parameters[&"scanline_count"] = scanline_count
+	_shader_parameters[&"mipmap_strength"] = mipmap_strength
+	_shader_parameters[&"mipmap_level"] = mipmap_level
+	_shader_parameters[&"horizontal_strength"] = horizontal_strength
 	_shader_parameters[&"beam_min_width"] = beam_min_width
 	_shader_parameters[&"beam_max_width"] = beam_max_width
 	_shader_parameters[&"mask_style"] = mask_style

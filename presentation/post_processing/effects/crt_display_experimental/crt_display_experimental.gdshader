@@ -2,10 +2,13 @@ shader_type canvas_item;
 render_mode unshaded;
 
 uniform sampler2D screen_texture
-	: hint_screen_texture, source_color, repeat_disable, filter_linear;
+	: hint_screen_texture, source_color, repeat_disable, filter_linear_mipmap;
 
 uniform bool signal_enabled = true;
 uniform int scanline_count : hint_range(180, 720, 1) = 360;
+uniform float mipmap_strength : hint_range(0.0, 0.5, 0.01) = 0.08;
+uniform float mipmap_level : hint_range(0.0, 2.0, 0.01) = 0.5;
+uniform float horizontal_strength : hint_range(0.0, 0.5, 0.01) = 0.1;
 uniform float beam_min_width : hint_range(0.2, 0.55, 0.01) = 0.34;
 uniform float beam_max_width : hint_range(0.2, 0.55, 0.01) = 0.42;
 uniform int mask_style : hint_enum("Stretched VGA", "VGA") = 0;
@@ -17,10 +20,31 @@ const float BEAM_WIDEST_WIDTH = 0.55;
 const vec3 LUMA_WEIGHTS = vec3(0.2126, 0.7152, 0.0722);
 
 
-vec3 sample_scanline(float row, float row_count, vec2 screen_uv) {
+vec3 condition_signal(vec2 sample_uv, float pixel_width) {
+	vec3 base_color = textureLod(screen_texture, sample_uv, 0.0).rgb;
+	vec3 signal_color = base_color;
+
+	if (mipmap_strength > 0.0) {
+		vec3 mipmap_color = textureLod(screen_texture, sample_uv, mipmap_level).rgb;
+		signal_color += mipmap_strength * (mipmap_color - base_color);
+	}
+
+	if (horizontal_strength > 0.0) {
+		vec2 offset = vec2(pixel_width, 0.0);
+		vec3 left_color = textureLod(screen_texture, sample_uv - offset, 0.0).rgb;
+		vec3 right_color = textureLod(screen_texture, sample_uv + offset, 0.0).rgb;
+		vec3 horizontal_color = left_color * 0.25 + base_color * 0.5 + right_color * 0.25;
+		signal_color += horizontal_strength * (horizontal_color - base_color);
+	}
+
+	return signal_color;
+}
+
+
+vec3 sample_scanline(float row, float row_count, vec2 screen_uv, float pixel_width) {
 	float clamped_row = clamp(row, 0.0, row_count - 1.0);
 	vec2 sample_uv = vec2(screen_uv.x, (clamped_row + 0.5) / row_count);
-	return texture(screen_texture, sample_uv).rgb;
+	return condition_signal(sample_uv, pixel_width);
 }
 
 
@@ -78,7 +102,7 @@ vec3 apply_phosphor_mask(vec3 color, vec3 active_phosphor) {
 
 
 void fragment() {
-	vec4 screen_color = texture(screen_texture, SCREEN_UV);
+	vec4 screen_color = textureLod(screen_texture, SCREEN_UV, 0.0);
 	vec3 scanline_color = screen_color.rgb;
 
 	if (signal_enabled) {
@@ -86,8 +110,8 @@ void fragment() {
 		float scanline_position = SCREEN_UV.y * row_count - 0.5;
 		float upper_row = floor(scanline_position);
 		float lower_row = upper_row + 1.0;
-		vec3 upper_color = sample_scanline(upper_row, row_count, SCREEN_UV);
-		vec3 lower_color = sample_scanline(lower_row, row_count, SCREEN_UV);
+		vec3 upper_color = sample_scanline(upper_row, row_count, SCREEN_UV, SCREEN_PIXEL_SIZE.x);
+		vec3 lower_color = sample_scanline(lower_row, row_count, SCREEN_UV, SCREEN_PIXEL_SIZE.x);
 		float min_width = min(beam_min_width, beam_max_width);
 		float max_width = max(beam_min_width, beam_max_width);
 		float upper_luma = clamp(dot(max(upper_color, vec3(0.0)), LUMA_WEIGHTS), 0.0, 1.0);
