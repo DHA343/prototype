@@ -7,9 +7,8 @@
 [ext_resource type="Script" uid="uid://du0elwyycowft" path="res://presentation/post_processing/effects/color_grading/color_grading.gd" id="5_color_grading"]
 [ext_resource type="Script" uid="uid://bi87egye7reys" path="res://presentation/post_processing/effects/chromatic_aberration/chromatic_aberration.gd" id="6_chromatic_aberration"]
 [ext_resource type="Script" uid="uid://0e4rd30wx0tl" path="res://presentation/post_processing/effects/glow/glow.gd" id="7_glow"]
-[ext_resource type="Script" uid="uid://18q8kyypojvr" path="res://presentation/post_processing/effects/shadow_mask/shadow_mask.gd" id="8_shadow_mask"]
-[ext_resource type="Script" uid="uid://gc4mt1ljdusy" path="res://presentation/post_processing/effects/scanlines/scanlines.gd" id="9_scanlines"]
 [ext_resource type="Script" uid="uid://b6y73x0igwwoj" path="res://presentation/post_processing/effects/vignette/vignette.gd" id="10_vignette"]
+[ext_resource type="Script" uid="uid://cxe5nraotfv21" path="res://presentation/post_processing/effects/display_texture/display_texture.gd" id="11_display_texture"]
 
 [sub_resource type="Resource" id="Resource_pixelation"]
 script = ExtResource("3_pixelation")
@@ -23,24 +22,13 @@ strength = 0.15
 script = ExtResource("5_color_grading")
 contrast = 1.08
 
-[sub_resource type="Resource" id="Resource_chromatic_aberration"]
-script = ExtResource("6_chromatic_aberration")
-amount = 3.0
-
 [sub_resource type="Resource" id="Resource_glow"]
 script = ExtResource("7_glow")
 enabled = false
 
-[sub_resource type="Resource" id="Resource_shadow_mask"]
-script = ExtResource("8_shadow_mask")
-mask_dark = 0.2
-
-[sub_resource type="Resource" id="Resource_scanlines"]
-script = ExtResource("9_scanlines")
-line_count = 169.0
-line_thickness = 0.4
-strength = 0.2
-enabled = false
+[sub_resource type="Resource" id="Resource_chromatic_aberration"]
+script = ExtResource("6_chromatic_aberration")
+amount = 3.0
 
 [sub_resource type="Resource" id="Resource_vignette"]
 script = ExtResource("10_vignette")
@@ -49,7 +37,12 @@ radius = 0.3
 softness = 0.7
 falloff = 1.0
 
+[sub_resource type="Resource" id="Resource_display_texture"]
+script = ExtResource("11_display_texture")
+scanline_strength = 0.5
+scanline_size = 5.0
+
 [node name="PostProcessing" type="Node" unique_id=776314143]
 script = ExtResource("1_post_processing")
 world_effects = Array[ExtResource("2_effect")]([SubResource("Resource_pixelation"), SubResource("Resource_blur")])
-composite_effects = Array[ExtResource("2_effect")]([SubResource("Resource_color_grading"), SubResource("Resource_chromatic_aberration"), SubResource("Resource_glow"), SubResource("Resource_shadow_mask"), SubResource("Resource_scanlines"), SubResource("Resource_vignette")])
+composite_effects = Array[ExtResource("2_effect")]([SubResource("Resource_color_grading"), SubResource("Resource_glow"), SubResource("Resource_chromatic_aberration"), SubResource("Resource_vignette"), SubResource("Resource_display_texture")])
