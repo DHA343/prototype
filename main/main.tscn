@@ -63,6 +63,7 @@ separation_speed = 300.0
 separation_power = 1.5
 
 [node name="SpawnArea" type="Area2D" parent="." unique_id=2074543112]
+position = Vector2(0, 40)
 monitoring = false
 monitorable = false
 script = ExtResource("4_spawn_area")
