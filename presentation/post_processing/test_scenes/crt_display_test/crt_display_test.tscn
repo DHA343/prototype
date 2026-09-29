@@ -4,76 +4,16 @@
 [ext_resource type="Script" uid="uid://cdcn5i66x14bu" path="res://presentation/post_processing/post_processing.gd" id="2_post_processing"]
 [ext_resource type="Script" uid="uid://d12uwcn8et7ym" path="res://presentation/post_processing/post_process_effect.gd" id="3_effect"]
 [ext_resource type="Script" uid="uid://4kmsj3ju6w87" path="res://presentation/post_processing/effects/crt_display_experimental/crt_display_experimental.gd" id="4_crt"]
-[ext_resource type="PackedScene" uid="uid://dntlcrcd1rsf" path="res://entities/orb/orb.tscn" id="5_orb"]
-[ext_resource type="Script" uid="uid://cbgahifjtheqi" path="res://presentation/damage_number/damage_number_spawner.gd" id="6_damage_spawner"]
-[ext_resource type="PackedScene" path="res://presentation/damage_number/damage_number.tscn" id="7_damage_number"]
-[ext_resource type="PackedScene" uid="uid://bxq2vprxoho0o" path="res://entities/enemy/enemy.tscn" id="8_enemy"]
-[ext_resource type="Script" uid="uid://l1psa7fkd7uc" path="res://systems/crowd/crowd_manager.gd" id="9_crowd"]
-[ext_resource type="Script" uid="uid://bgg80861140tt" path="res://entities/enemy/spawner/spawn_area.gd" id="10_spawn_area"]
-[ext_resource type="Script" uid="uid://dfpoas8gomjqd" path="res://entities/enemy/spawner/enemy_spawner.gd" id="11_enemy_spawner"]
-[ext_resource type="Script" uid="uid://bsop2brtcjspr" path="res://presentation/audio/world_sound_output.gd" id="12_sound"]
-[ext_resource type="PackedScene" path="res://presentation/post_processing/test_scenes/crt_display_test/crt_reference_set.tscn" id="13_references"]
+[ext_resource type="PackedScene" path="res://presentation/post_processing/test_scenes/crt_display_test/crt_reference_set.tscn" id="5_references"]
 
 [sub_resource type="Resource" id="Resource_crt"]
 script = ExtResource("4_crt")
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_spawn"]
-size = Vector2(1760, 900)
-
 [node name="CRTDisplayTest" type="Node2D" unique_id=682829650]
 script = ExtResource("1_test")
 
-[node name="SolidReferences" parent="." instance=ExtResource("13_references")]
-
-[node name="CheckerReferences" parent="." instance=ExtResource("13_references")]
-position = Vector2(640, 0)
-
-[node name="GradientReferences" parent="." instance=ExtResource("13_references")]
-position = Vector2(1280, 0)
-
-[node name="Actors" type="Node2D" parent="."]
-y_sort_enabled = true
-
-[node name="Orb" parent="Actors" unique_id=1283905026 instance=ExtResource("5_orb")]
-
-[node name="Enemies" type="Node2D" parent="Actors"]
-y_sort_enabled = true
-
-[node name="CrowdManager" type="Node" parent="."]
-script = ExtResource("9_crowd")
-separation_speed = 220.0
-
-[node name="SpawnArea" type="Area2D" parent="."]
-position = Vector2(960, 540)
-monitoring = false
-monitorable = false
-script = ExtResource("10_spawn_area")
-margin = 30.0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SpawnArea"]
-shape = SubResource("RectangleShape2D_spawn")
-
-[node name="SweepTargetA" type="Node2D" parent="."]
-position = Vector2(960, 360)
-
-[node name="SweepTargetB" type="Node2D" parent="."]
-position = Vector2(960, 720)
-
-[node name="EnemySpawner" type="Node" parent="."]
-script = ExtResource("11_enemy_spawner")
-enemy_scene = ExtResource("8_enemy")
-target_count = 8
-
-[node name="WorldSoundOutput" type="Node2D" parent="."]
-script = ExtResource("12_sound")
+[node name="ReferencePatterns" parent="." instance=ExtResource("5_references")]
 
 [node name="PostProcessing" type="Node" parent="." unique_id=399131554]
 script = ExtResource("2_post_processing")
 composite_effects = Array[ExtResource("3_effect")]([SubResource("Resource_crt")])
-
-[node name="WorldUILayer" type="CanvasLayer" parent="." unique_id=532917310]
-layer = 100
-
-[node name="DamageNumberSpawner" type="Node2D" parent="WorldUILayer" unique_id=1942229659]
-script = ExtResource("6_damage_spawner")
-damage_number_scene = ExtResource("7_damage_number")
