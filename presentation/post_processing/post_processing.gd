@@ -61,15 +61,21 @@ func _on_effect_changed(binding: EffectBinding) -> void:
 	if not _effect_bindings.has(binding):
 		return
 
-	if (
-		not is_instance_valid(binding.back_buffer_copy)
-		or not is_instance_valid(binding.rect)
-		or not is_instance_valid(binding.material)
-	):
-		return
+	for effect_binding in _effect_bindings:
+		if effect_binding.effect != binding.effect:
+			continue
+		if (
+			not is_instance_valid(effect_binding.back_buffer_copy)
+			or not is_instance_valid(effect_binding.rect)
+			or not is_instance_valid(effect_binding.material)
+		):
+			continue
 
-	_set_binding_enabled(binding, binding.effect.enabled)
-	binding.effect.apply_to(binding.material)
+		_set_binding_enabled(
+			effect_binding,
+			effect_binding.effect.enabled and effect_binding.effect.is_pass_enabled(effect_binding.pass_index),
+		)
+		effect_binding.effect.apply_to_pass(effect_binding.material, effect_binding.pass_index)
 
 
 func _build_effect_layer(
@@ -110,12 +116,16 @@ func _validate_effect(
 		push_warning("PostProcessing ignored a duplicate Resource at %s[%d]." % [layer_name, index])
 		return false
 
-	if effect.get_shader() == null:
-		push_warning(
-			"PostProcessing ignored an effect without a Shader at %s[%d]."
-			% [layer_name, index]
-		)
+	if effect.get_pass_count() < 1:
+		push_warning("PostProcessing ignored an effect without passes at %s[%d]." % [layer_name, index])
 		return false
+	for pass_index in effect.get_pass_count():
+		if effect.get_pass_shader(pass_index) == null:
+			push_warning(
+				"PostProcessing ignored an effect without a Shader at %s[%d], pass %d."
+				% [layer_name, index, pass_index]
+			)
+			return false
 
 	return true
 
@@ -125,32 +135,36 @@ func _create_effect_nodes(
 	effect: PostProcessEffect,
 	index: int,
 ) -> void:
-	var back_buffer_copy := BackBufferCopy.new()
-	back_buffer_copy.name = "BackBufferCopy%d" % index
-	back_buffer_copy.copy_mode = BackBufferCopy.COPY_MODE_VIEWPORT
-	canvas_layer.add_child(back_buffer_copy, false, Node.INTERNAL_MODE_BACK)
+	for pass_index in effect.get_pass_count():
+		var pass_suffix := "" if pass_index == 0 else "Pass%d" % pass_index
+		var back_buffer_copy := BackBufferCopy.new()
+		back_buffer_copy.name = "BackBufferCopy%d%s" % [index, pass_suffix]
+		back_buffer_copy.copy_mode = BackBufferCopy.COPY_MODE_VIEWPORT
+		canvas_layer.add_child(back_buffer_copy, false, Node.INTERNAL_MODE_BACK)
 
-	var material := ShaderMaterial.new()
-	material.shader = effect.get_shader()
+		var material := ShaderMaterial.new()
+		material.shader = effect.get_pass_shader(pass_index)
 
-	var rect := ColorRect.new()
-	rect.name = "Effect%d" % index
-	rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	rect.material = material
-	canvas_layer.add_child(rect, false, Node.INTERNAL_MODE_BACK)
-	rect.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		var rect := ColorRect.new()
+		rect.name = "Effect%d%s" % [index, pass_suffix]
+		rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		rect.material = material
+		canvas_layer.add_child(rect, false, Node.INTERNAL_MODE_BACK)
+		rect.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 
-	var binding := EffectBinding.new()
-	binding.effect = effect
-	binding.back_buffer_copy = back_buffer_copy
-	binding.rect = rect
-	binding.material = material
-	binding.changed_callback = _on_effect_changed.bind(binding)
-	_effect_bindings.append(binding)
+		var binding := EffectBinding.new()
+		binding.effect = effect
+		binding.pass_index = pass_index
+		binding.back_buffer_copy = back_buffer_copy
+		binding.rect = rect
+		binding.material = material
+		_effect_bindings.append(binding)
 
-	_set_binding_enabled(binding, effect.enabled)
-	effect.apply_to(material)
-	effect.changed.connect(binding.changed_callback, CONNECT_DEFERRED)
+		_set_binding_enabled(binding, effect.enabled and effect.is_pass_enabled(pass_index))
+		effect.apply_to_pass(material, pass_index)
+		if pass_index == 0:
+			binding.changed_callback = _on_effect_changed.bind(binding)
+			effect.changed.connect(binding.changed_callback, CONNECT_DEFERRED)
 
 
 func _set_binding_enabled(binding: EffectBinding, is_enabled: bool) -> void:
@@ -161,7 +175,9 @@ func _set_binding_enabled(binding: EffectBinding, is_enabled: bool) -> void:
 func _disconnect_effects() -> void:
 	for binding in _effect_bindings:
 		if (
-			is_instance_valid(binding.effect)
+			binding.pass_index == 0
+			and binding.changed_callback.is_valid()
+			and is_instance_valid(binding.effect)
 			and binding.effect.changed.is_connected(binding.changed_callback)
 		):
 			binding.effect.changed.disconnect(binding.changed_callback)
@@ -195,6 +211,7 @@ func _apply_enabled_state() -> void:
 
 class EffectBinding:
 	var effect: PostProcessEffect
+	var pass_index: int
 	var back_buffer_copy: BackBufferCopy
 	var rect: ColorRect
 	var material: ShaderMaterial
