@@ -50,36 +50,12 @@ const BLOOM_SHADER: Shader = preload("./crt_display_experimental_bloom.gdshader"
 		emit_changed()
 
 @export_group("Beam", "beam_")
-@export_range(0.2, 0.55, 0.01) var beam_min_width: float = 0.34:
+@export_range(0.2, 0.55, 0.01) var beam_width: float = 0.42:
 	set(value):
-		if is_equal_approx(beam_min_width, value):
+		if is_equal_approx(beam_width, value):
 			return
 
-		beam_min_width = value
-		emit_changed()
-
-@export_range(0.2, 0.55, 0.01) var beam_max_width: float = 0.42:
-	set(value):
-		if is_equal_approx(beam_max_width, value):
-			return
-
-		beam_max_width = value
-		emit_changed()
-
-@export_range(0.0, 2.0, 0.01) var beam_bloom_strength: float = 0.25:
-	set(value):
-		if is_equal_approx(beam_bloom_strength, value):
-			return
-
-		beam_bloom_strength = value
-		emit_changed()
-
-@export_range(0.0, 0.25, 0.01) var beam_bloom_limit: float = 0.12:
-	set(value):
-		if is_equal_approx(beam_bloom_limit, value):
-			return
-
-		beam_bloom_limit = value
+		beam_width = value
 		emit_changed()
 
 @export_group("Shadow Mask", "mask_")
@@ -175,10 +151,7 @@ func _update_shader_parameters() -> void:
 	_shader_parameters[&"scanline_count"] = scanline_count
 	_shader_parameters[&"sharpness"] = sharpness
 	_shader_parameters[&"signal_pitch"] = signal_pitch
-	_shader_parameters[&"beam_min_width"] = beam_min_width
-	_shader_parameters[&"beam_max_width"] = beam_max_width
-	_shader_parameters[&"beam_bloom_strength"] = beam_bloom_strength
-	_shader_parameters[&"beam_bloom_limit"] = beam_bloom_limit
+	_shader_parameters[&"beam_width"] = beam_width
 	_shader_parameters[&"mask_style"] = mask_style
 	_shader_parameters[&"mask_strength"] = mask_strength
 	_shader_parameters[&"brightness_compensation"] = brightness_compensation

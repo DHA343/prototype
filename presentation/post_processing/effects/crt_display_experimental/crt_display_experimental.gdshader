@@ -8,10 +8,7 @@ uniform bool signal_enabled = true;
 uniform int scanline_count : hint_range(180, 720, 1) = 360;
 uniform float sharpness : hint_range(0.5, 1.0, 0.01) = 0.67;
 uniform float signal_pitch : hint_range(0.5, 3.0, 0.1) = 1.5;
-uniform float beam_min_width : hint_range(0.2, 0.55, 0.01) = 0.34;
-uniform float beam_max_width : hint_range(0.2, 0.55, 0.01) = 0.42;
-uniform float beam_bloom_strength : hint_range(0.0, 2.0, 0.01) = 0.25;
-uniform float beam_bloom_limit : hint_range(0.0, 0.25, 0.01) = 0.12;
+uniform float beam_width : hint_range(0.2, 0.55, 0.01) = 0.42;
 uniform int mask_style : hint_enum("Stretched VGA", "VGA", "Dots", "Aperture Grille", "Wide Grille", "Wide Soft Grille", "Slot Mask") = 0;
 uniform float mask_strength : hint_range(0.0, 1.0, 0.01) = 0.5;
 uniform float brightness_compensation : hint_range(0.5, 2.0, 0.01) = 1.0;
@@ -71,19 +68,6 @@ float beam_light_compensation(float power) {
 		)
 	);
 	return 1.0 / mean_light;
-}
-
-
-float beam_width(vec3 color) {
-	vec3 positive_color = max(color, vec3(0.0));
-	float beam_signal = max(positive_color.r, max(positive_color.g, positive_color.b));
-	float base_intensity = clamp(beam_signal, 0.0, 1.0);
-	float base_width = mix(min(beam_min_width, beam_max_width),
-		max(beam_min_width, beam_max_width), base_intensity);
-	float hdr_excess = max(beam_signal - 1.0, 0.0);
-	float bloom_factor = 1.0 - exp(-hdr_excess * beam_bloom_strength);
-	float bloom_width = beam_bloom_limit * bloom_factor;
-	return base_width + bloom_width;
 }
 
 
@@ -201,12 +185,10 @@ void fragment() {
 		float lower_row = upper_row + 1.0;
 		vec3 upper_color = sample_scanline(upper_row, row_count, SCREEN_UV, SCREEN_PIXEL_SIZE.x);
 		vec3 lower_color = sample_scanline(lower_row, row_count, SCREEN_UV, SCREEN_PIXEL_SIZE.x);
-		float upper_power = beam_power(beam_width(upper_color));
-		float lower_power = beam_power(beam_width(lower_color));
-		float upper_beam = beam_profile(abs(scanline_position - upper_row), upper_power)
-			* beam_light_compensation(upper_power);
-		float lower_beam = beam_profile(abs(scanline_position - lower_row), lower_power)
-			* beam_light_compensation(lower_power);
+		float power = beam_power(beam_width);
+		float compensation = beam_light_compensation(power);
+		float upper_beam = beam_profile(abs(scanline_position - upper_row), power) * compensation;
+		float lower_beam = beam_profile(abs(scanline_position - lower_row), power) * compensation;
 		scanline_color = upper_color * upper_beam + lower_color * lower_beam;
 	}
 
