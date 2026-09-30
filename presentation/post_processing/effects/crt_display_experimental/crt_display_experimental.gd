@@ -92,8 +92,8 @@ const BLOOM_SHADER: Shader = preload("./phosphor_bloom.gdshader")
 		cell_scale = value
 		emit_changed()
 
-## Common RGB emission multiplier, without automatic light compensation.
-@export_range(0.5, 3.0, 0.1) var phosphor_brightness: float = 1.5:
+## Common RGB multiplier after cell occupancy and profile normalization.
+@export_range(0.5, 3.0, 0.1) var phosphor_brightness: float = 1.0:
 	set(value):
 		if is_equal_approx(phosphor_brightness, value):
 			return

@@ -45,7 +45,6 @@
 - 内容がファイル上で明確で、Godot Editorの現在の状態やGodot側のAPIを介した処理を必要としない変更は、直接編集を優先する。
 - Godot EditorやRuntimeの現在の状態を扱う場合、Godot側で解釈されたScene・Node・Resourceの構造を確認する場合、またはGodot Editor APIを介した操作が変更の安全性や正確性に必要な場合は、Godot AIを使用する。
 - Godot CLIで確認可能な機械的検証は、Godot CLIを優先する。
-- Computer Useは明示的な指示がない限り使用しない。
 
 ## 検証
 
@@ -53,3 +52,8 @@
 
 - 機械的な検証には、Godot CLIを使用する。
 - Godot Editorや実行時の確認には、Godot AIを使用する。
+
+## 報告
+
+- 実装時には各工程の所要時間を記録する。
+- 実装完了後、「工程・内容・未解決の問題・解決済みの問題・所要時間」の表を `docs/work-reports/<作業名>.md` に保存し、完了報告にそのファイルへのリンクを記載する。
