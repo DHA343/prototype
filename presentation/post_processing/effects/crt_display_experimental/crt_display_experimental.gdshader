@@ -9,12 +9,14 @@ uniform int scanline_count : hint_range(180, 720, 1) = 360;
 uniform float sharpness : hint_range(0.5, 1.0, 0.01) = 0.67;
 uniform float signal_pitch : hint_range(0.5, 3.0, 0.1) = 1.5;
 uniform float beam_width : hint_range(0.75, 1.25, 0.01) = 1.0;
-uniform int mask_style : hint_enum("Stretched VGA", "VGA", "Dots", "Aperture Grille", "Wide Grille", "Wide Soft Grille", "Slot Mask", "Stretched VGA Gap", "VGA Gap", "Aperture Grille Gap") = 0;
+uniform int mask_style : hint_enum("Stretched VGA", "VGA", "Dots", "Aperture Grille", "Wide Grille", "Wide Soft Grille", "Slot Mask", "Stretched VGA Gap", "VGA Gap", "Aperture Grille Gap", "Stretched VGA Phosphor", "VGA Phosphor") = 0;
 uniform float mask_strength : hint_range(0.0, 1.0, 0.01) = 0.5;
 uniform float mask_gap_strength : hint_range(0.0, 1.0, 0.01) = 1.0;
 uniform float brightness_compensation : hint_range(0.5, 2.0, 0.01) = 1.0;
 
 const float HALF_PI = 1.57079632679;
+
+#include "phosphor_cells.gdshaderinc"
 
 
 float signal_weight(float distance) {
@@ -190,7 +192,7 @@ vec3 apply_phosphor_mask(vec3 color, vec4 mask_sample) {
 	vec3 secondary_color = (target_color - primary_color) / (1.0 / mask_sample.a - 1.0);
 	vec3 phosphor_color = primary_color * mask_sample.rgb
 		+ secondary_color * (vec3(1.0) - mask_sample.rgb);
-	if (mask_style >= 7) {
+	if (mask_style >= 7 && mask_style <= 9) {
 		float base_average = mask_style == 9 ? 0.5 : 1.0 / 3.0;
 		float emission_fraction = mask_sample.a / base_average;
 		// Redistribute both primary and excess HDR light within emitting cells.
@@ -223,6 +225,12 @@ void fragment() {
 		scanline_color = upper_color * upper_beam + lower_color * lower_beam;
 	}
 
-	vec3 output_color = apply_phosphor_mask(scanline_color, generate_mask(FRAGCOORD.xy));
+	vec3 output_color;
+	if (mask_style == 10 || mask_style == 11) {
+		output_color = apply_phosphor_cells(scanline_color, FRAGCOORD.xy,
+			1.0 / SCREEN_PIXEL_SIZE.y, mask_style == 11);
+	} else {
+		output_color = apply_phosphor_mask(scanline_color, generate_mask(FRAGCOORD.xy));
+	}
 	COLOR = vec4(output_color * brightness_compensation, screen_color.a);
 }

@@ -8,13 +8,14 @@
 
 [sub_resource type="Resource" id="Resource_color_grading"]
 script = ExtResource("5_color_grading")
-brightness = -0.020000000000000018
+brightness = -0.02000000000000001
 contrast = 1.08
 saturation = 1.08
 
 [sub_resource type="Resource" id="Resource_crt"]
 script = ExtResource("8_crt")
-mask_strength = 1.0
+mask_style = 1
+mask_strength = 0.6
 
 [sub_resource type="Resource" id="Resource_vignette"]
 script = ExtResource("10_vignette")

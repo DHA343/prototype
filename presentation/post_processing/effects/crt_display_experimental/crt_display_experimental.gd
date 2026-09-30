@@ -13,6 +13,8 @@ enum MaskStyle {
 	STRETCHED_VGA_GAP,
 	VGA_GAP,
 	APERTURE_GRILLE_GAP,
+	STRETCHED_VGA_PHOSPHOR,
+	VGA_PHOSPHOR,
 }
 
 const EFFECT_SHADER: Shader = preload("./crt_display_experimental.gdshader")
@@ -72,6 +74,7 @@ const BLOOM_SHADER: Shader = preload("./phosphor_bloom.gdshader")
 		mask_style = value
 		emit_changed()
 
+## Original and Gap styles only. Phosphor styles always use the full cell output.
 @export_range(0.0, 1.0, 0.01) var mask_strength: float = 0.5:
 	set(value):
 		if is_equal_approx(mask_strength, value):
@@ -80,7 +83,7 @@ const BLOOM_SHADER: Shader = preload("./phosphor_bloom.gdshader")
 		mask_strength = value
 		emit_changed()
 
-## Separator darkness for Gap styles. Ignored by the original mask styles.
+## Separator darkness for Gap styles. Ignored by the original and Phosphor styles.
 @export_range(0.0, 1.0, 0.01) var mask_gap_strength: float = 1.0:
 	set(value):
 		if is_equal_approx(mask_gap_strength, value):
