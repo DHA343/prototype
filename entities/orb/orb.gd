@@ -39,8 +39,6 @@ var _feedback: Feedback
 @onready var boost: OrbBoost = $Boost
 @onready var brake: OrbBrake = $Brake
 @onready var charge: OrbCharge = $Charge
-@onready var charge_lines: ChargeLines = $ChargeLines
-@onready var charge_ability_slot: ChargeAbilitySlot = $ChargeAbilitySlot
 @onready var orb_input: OrbInput = $OrbInput
 
 
@@ -48,7 +46,6 @@ func _ready() -> void:
 	visual.radius = radius
 	visual.position.y = -radius
 	sweep_hit.position.y = -radius
-	charge_lines.position.y = -radius
 	_shape.radius = radius
 	sweep_hit.shape = _shape
 	global_position = get_global_mouse_position() + Vector2(0.0, radius)
@@ -69,12 +66,10 @@ func _ready() -> void:
 	charge.started.connect(charge_started.emit)
 	charge.level_changed.connect(charge_level_changed.emit)
 	charge.released.connect(charge_released.emit)
-	charge_lines.setup(charge)
-	charge_ability_slot.ability_equipped.connect(charge_ability_equipped.emit)
-	charge_ability_slot.ability_unequipped.connect(charge_ability_unequipped.emit)
-	charge_ability_slot.ability_activated.connect(charge_ability_activated.emit)
-	charge_ability_slot.sound_requested.connect(sound_requested.emit)
-	charge_ability_slot.setup(self)
+	charge.ability_equipped.connect(charge_ability_equipped.emit)
+	charge.ability_unequipped.connect(charge_ability_unequipped.emit)
+	charge.ability_activated.connect(charge_ability_activated.emit)
+	charge.sound_requested.connect(sound_requested.emit)
 
 
 func _physics_process(delta: float) -> void:
@@ -103,6 +98,13 @@ func _physics_process(delta: float) -> void:
 func setup(feedback: Feedback) -> void:
 	_feedback = feedback
 	sound_requested.connect(_feedback.sound_requested.emit)
+	charge.setup(
+		radius,
+		get_parent(),
+		sweep_hit.get_global_position,
+		get_global_position,
+		_feedback.sound_requested.emit
+	)
 	orb_input.boost_requested.connect(request_boost)
 	orb_input.brake_pressed_changed.connect(set_brake_pressed)
 
@@ -116,15 +118,15 @@ func set_brake_pressed(is_pressed: bool) -> void:
 
 
 func equip_charge_ability(definition: ChargeAbilityDefinition) -> bool:
-	return charge_ability_slot.equip(definition)
+	return charge.equip_ability(definition)
 
 
 func unequip_charge_ability() -> void:
-	charge_ability_slot.unequip()
+	charge.unequip_ability()
 
 
 func get_equipped_charge_ability() -> ChargeAbilityDefinition:
-	return charge_ability_slot.get_equipped_definition()
+	return charge.get_equipped_definition()
 
 
 func get_interpolated_visual_position() -> Vector2:

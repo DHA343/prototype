@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://presentation/post_processing/test_scenes/crt_display_test/phosphor_bloom_test.gd" id="1_test"]
+[ext_resource type="Script" path="res://presentation/post_processing/post_processing.gd" id="2_post"]
+[ext_resource type="Script" path="res://presentation/post_processing/post_process_effect.gd" id="3_effect"]
+[ext_resource type="Script" path="res://presentation/post_processing/effects/crt_display_experimental/crt_display_experimental.gd" id="4_crt"]
+
+[sub_resource type="Resource" id="Resource_crt"]
+script = ExtResource("4_crt")
+
+[node name="PhosphorBloomTest" type="Node2D"]
+script = ExtResource("1_test")
+
+[node name="PostProcessing" type="Node" parent="."]
+script = ExtResource("2_post")
+composite_effects = Array[ExtResource("3_effect")]([SubResource("Resource_crt")])

@@ -12,7 +12,13 @@ enum MaskStyle {
 	SLOT_MASK,
 }
 
+enum BloomMode {
+	LINEAR,
+	LIMITED,
+}
+
 const EFFECT_SHADER: Shader = preload("./crt_display_experimental.gdshader")
+const BLOOM_SHADER: Shader = preload("./phosphor_bloom.gdshader")
 
 @export_group("Scanline")
 @export var signal_enabled: bool = true:
@@ -85,8 +91,106 @@ const EFFECT_SHADER: Shader = preload("./crt_display_experimental.gdshader")
 		emit_changed()
 
 
+@export_group("Phosphor Bloom", "phosphor_bloom_")
+@export var phosphor_bloom_enabled: bool = true:
+	set(value):
+		if phosphor_bloom_enabled == value:
+			return
+
+		phosphor_bloom_enabled = value
+		emit_changed()
+
+@export var phosphor_bloom_mode: BloomMode = BloomMode.LIMITED:
+	set(value):
+		if phosphor_bloom_mode == value:
+			return
+
+		phosphor_bloom_mode = value
+		emit_changed()
+
+@export_range(0.5, 8.0, 0.1, "suffix:px @1080p") var phosphor_bloom_near_width: float = 2.0:
+	set(value):
+		if is_equal_approx(phosphor_bloom_near_width, value):
+			return
+
+		phosphor_bloom_near_width = value
+		emit_changed()
+
+@export_range(4.0, 64.0, 0.5, "suffix:px @1080p") var phosphor_bloom_far_width: float = 16.0:
+	set(value):
+		if is_equal_approx(phosphor_bloom_far_width, value):
+			return
+
+		phosphor_bloom_far_width = value
+		emit_changed()
+
+@export_range(0.0, 0.25, 0.005) var phosphor_bloom_near_strength: float = 0.06:
+	set(value):
+		if is_equal_approx(phosphor_bloom_near_strength, value):
+			return
+
+		phosphor_bloom_near_strength = value
+		emit_changed()
+
+@export_range(0.0, 0.1, 0.001) var phosphor_bloom_far_strength: float = 0.01:
+	set(value):
+		if is_equal_approx(phosphor_bloom_far_strength, value):
+			return
+
+		phosphor_bloom_far_strength = value
+		emit_changed()
+
+@export_range(1.01, 16.0, 0.01) var phosphor_bloom_hdr_limit: float = 2.0:
+	set(value):
+		if is_equal_approx(phosphor_bloom_hdr_limit, value):
+			return
+
+		phosphor_bloom_hdr_limit = value
+		emit_changed()
+
+
 func get_shader() -> Shader:
 	return EFFECT_SHADER
+
+
+func get_pass_count() -> int:
+	return 2
+
+
+func get_pass_shader(pass_index: int) -> Shader:
+	return EFFECT_SHADER if pass_index == 0 else BLOOM_SHADER
+
+
+func apply_to_pass(material: ShaderMaterial, pass_index: int) -> void:
+	if pass_index == 0:
+		apply_to(material)
+		return
+
+	material.set_shader_parameter(&"bloom_mode", phosphor_bloom_mode)
+	material.set_shader_parameter(&"bloom_hdr_limit", phosphor_bloom_hdr_limit)
+	material.set_shader_parameter(&"near_strength", phosphor_bloom_near_strength)
+	material.set_shader_parameter(&"far_strength", phosphor_bloom_far_strength)
+
+
+func is_pass_enabled(pass_index: int) -> bool:
+	return pass_index == 0 or (
+		phosphor_bloom_enabled
+		and (phosphor_bloom_near_strength > 0.0 or phosphor_bloom_far_strength > 0.0)
+	)
+
+
+func create_pass_source(
+	pass_index: int,
+	main_viewport: Viewport,
+	layer_index: int,
+	material: ShaderMaterial,
+) -> Node:
+	if pass_index != 1:
+		return null
+
+	var bloom := CRTPhosphorBloom.new()
+	bloom.initialize(self, main_viewport, layer_index, material)
+	return bloom
 
 
 func _update_shader_parameters() -> void:

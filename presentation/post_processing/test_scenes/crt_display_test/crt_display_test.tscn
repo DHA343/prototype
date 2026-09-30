@@ -7,6 +7,13 @@
 
 [sub_resource type="Resource" id="Resource_crt"]
 script = ExtResource("4_crt")
+phosphor_bloom_enabled = null
+phosphor_bloom_mode = null
+phosphor_bloom_near_width = null
+phosphor_bloom_far_width = null
+phosphor_bloom_near_strength = null
+phosphor_bloom_far_strength = null
+phosphor_bloom_hdr_limit = null
 
 [node name="CRTDisplayTest" type="Node2D" unique_id=682829650]
 script = ExtResource("1_test")

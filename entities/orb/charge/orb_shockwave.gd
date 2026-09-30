@@ -9,9 +9,11 @@ func activate(charge_level: float) -> bool:
 	assert(shockwave != null, "Shockwave scene root must use the Shockwave script.")
 
 	shockwave.set_charge_level(charge_level)
-	shockwave.sound_requested.connect(_orb.sound_requested.emit)
-	shockwave.position = _orb.get_parent().to_local(_orb.sweep_hit.global_position)
-	_orb.add_sibling(shockwave)
+	# Spawned shockwaves outlive the equipped ability and the Orb.
+	shockwave.sound_requested.connect(_request_sound)
+	var spawn_position: Vector2 = _get_spawn_position.call()
+	shockwave.position = _spawn_parent.to_local(spawn_position)
+	_spawn_parent.add_child(shockwave)
 	return true
 
 

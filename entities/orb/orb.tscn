@@ -91,10 +91,10 @@ point_lifetime = 0.0
 [node name="Brake" type="Node" parent="." unique_id=1901534348]
 script = ExtResource("7_brake")
 
-[node name="Charge" type="Node" parent="." unique_id=1836847860]
+[node name="Charge" type="Node2D" parent="." unique_id=1836847860]
 script = ExtResource("10_charge")
 
-[node name="ChargeLines" type="GPUParticles2D" parent="." unique_id=1323563361]
+[node name="ChargeLines" type="GPUParticles2D" parent="Charge" unique_id=1323563361]
 position = Vector2(0, -32)
 show_behind_parent = true
 z_index = -1
@@ -102,6 +102,6 @@ script = ExtResource("11_charge_lines")
 start_line_count = 12
 end_line_count = 30
 
-[node name="ChargeAbilitySlot" type="Node" parent="." unique_id=514585616]
+[node name="ChargeAbilitySlot" type="Node" parent="Charge" unique_id=514585616]
 script = ExtResource("12_ability_slot")
 initial_definition = ExtResource("16_ljm2s")

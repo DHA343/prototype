@@ -268,8 +268,10 @@ func _draw_hdr_objects() -> void:
 	for index in levels.size():
 		var x := 1002.0 + float(index) * 51.0
 		var level := levels[index]
-		draw_rect(Rect2(x, 335.0, 42.0, 42.0), Color(1.0, 1.0, 1.0) * level)
-		draw_rect(Rect2(x, 420.0, 42.0, 42.0), Color(1.0, 0.3, 0.1) * level)
+		var gray := Color(level, level, level, 1.0)
+		var color := Color(level, 0.3 * level, 0.1 * level, 1.0)
+		draw_rect(Rect2(x, 335.0, 42.0, 42.0), gray)
+		draw_rect(Rect2(x, 420.0, 42.0, 42.0), color)
 		_draw_caption("%dx" % int(level), Vector2(x + 7.0, 380.0))
 		_draw_caption("%dx" % int(level), Vector2(x + 7.0, 465.0))
 

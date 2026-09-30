@@ -8,16 +8,32 @@ signal sound_requested(request: SoundRequest)
 
 @export var initial_definition: ChargeAbilityDefinition
 
-var _orb: Orb
+var _spawn_parent: Node2D
+var _get_spawn_position: Callable
+var _get_sound_position: Callable
+var _request_sound: Callable
 var _ability: ChargeAbility
 
 
-func setup(orb: Orb) -> void:
-	assert(orb != null, "orb must not be null.")
-	assert(_orb == null, "ChargeAbilitySlot must not be setup more than once.")
+func setup(
+	charge: OrbCharge,
+	spawn_parent: Node2D,
+	get_spawn_position: Callable,
+	get_sound_position: Callable,
+	request_sound: Callable
+) -> void:
+	assert(charge != null, "charge must not be null.")
+	assert(spawn_parent != null, "spawn_parent must not be null.")
+	assert(get_spawn_position.is_valid(), "get_spawn_position must be valid.")
+	assert(get_sound_position.is_valid(), "get_sound_position must be valid.")
+	assert(request_sound.is_valid(), "request_sound must be valid.")
+	assert(_spawn_parent == null, "Setup must not be called more than once.")
 
-	_orb = orb
-	orb.charge_released.connect(_on_charge_released)
+	_spawn_parent = spawn_parent
+	_get_spawn_position = get_spawn_position
+	_get_sound_position = get_sound_position
+	_request_sound = request_sound
+	charge.released.connect(_on_charge_released)
 
 	if initial_definition != null:
 		var was_equipped := equip(initial_definition)
@@ -25,7 +41,7 @@ func setup(orb: Orb) -> void:
 
 
 func equip(definition: ChargeAbilityDefinition) -> bool:
-	assert(_orb != null, "ChargeAbilitySlot must be setup before equipping an ability.")
+	assert(_spawn_parent != null, "Setup must be called before equipping an ability.")
 
 	if not _is_definition_valid(definition):
 		return false
@@ -41,7 +57,13 @@ func equip(definition: ChargeAbilityDefinition) -> bool:
 	_ability = instance as ChargeAbility
 	add_child(_ability)
 	_ability.sound_requested.connect(sound_requested.emit)
-	_ability.setup(_orb, definition)
+	_ability.setup(
+		definition,
+		_spawn_parent,
+		_get_spawn_position,
+		_get_sound_position,
+		_request_sound
+	)
 	ability_equipped.emit(definition.id)
 	return true
 

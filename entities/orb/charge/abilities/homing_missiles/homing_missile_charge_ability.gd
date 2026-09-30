@@ -14,12 +14,15 @@ func activate(charge_level: float) -> bool:
 
 		var angle := angle_offset + TAU * float(index) / float(missile_count)
 		missile.configure(Vector2.from_angle(angle), _missile_definition)
-		missile.sound_requested.connect(_orb.sound_requested.emit)
-		missile.position = _orb.get_parent().to_local(_orb.sweep_hit.global_position)
-		_orb.add_sibling(missile)
+		# Spawned missiles outlive the equipped ability and the Orb.
+		missile.sound_requested.connect(_request_sound)
+		var spawn_position: Vector2 = _get_spawn_position.call()
+		missile.position = _spawn_parent.to_local(spawn_position)
+		_spawn_parent.add_child(missile)
 
 	if _missile_definition.activation_cue != null:
-		sound_requested.emit(SoundRequest.new(_missile_definition.activation_cue, _orb.global_position, self))
+		var sound_position: Vector2 = _get_sound_position.call()
+		sound_requested.emit(SoundRequest.new(_missile_definition.activation_cue, sound_position, self))
 
 	return true
 
