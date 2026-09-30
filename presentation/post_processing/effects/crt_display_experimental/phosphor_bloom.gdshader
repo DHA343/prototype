@@ -9,8 +9,7 @@ uniform sampler2D near_texture : repeat_disable, filter_linear;
 uniform sampler2D far_texture : repeat_disable, filter_linear;
 
 uniform int pass_stage = 3;
-uniform int bloom_mode : hint_enum("Linear", "Limited") = 1;
-uniform float bloom_hdr_limit : hint_range(1.01, 16.0, 0.01) = 2.0;
+uniform float bloom_hdr_limit : hint_range(1.0, 16.0, 0.1) = 2.0;
 uniform float near_strength : hint_range(0.0, 0.25, 0.005) = 0.06;
 uniform float far_strength : hint_range(0.0, 0.1, 0.001) = 0.01;
 uniform float gaussian_fwhm = 2.0;
@@ -21,8 +20,12 @@ const float FWHM_TO_SIGMA = 0.42466090014;
 
 vec3 bloom_source(vec3 color) {
 	float intensity = max(color.r, max(color.g, color.b));
-	if (bloom_mode == 0 || intensity <= 1.0) {
+	if (intensity <= 1.0) {
 		return color;
+	}
+	// Limit = 1 is the zero-headroom case; avoid dividing by zero below.
+	if (bloom_hdr_limit <= 1.0) {
+		return color / intensity;
 	}
 
 	float headroom = bloom_hdr_limit - 1.0;

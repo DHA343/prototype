@@ -165,13 +165,27 @@ func _create_effect_nodes(
 
 		_set_binding_enabled(binding, effect.enabled and effect.is_pass_enabled(pass_index))
 		effect.apply_to_pass(material, pass_index)
-		var source := effect.create_pass_source(pass_index, get_viewport(), canvas_layer.layer, material)
+		var context := _create_pass_source_context(canvas_layer.layer, rect)
+		var source := effect.create_pass_source(pass_index, context, material)
 		if source != null:
 			add_child(source, false, Node.INTERNAL_MODE_BACK)
 			_generated_sources.append(source)
 		if pass_index == 0:
 			binding.changed_callback = _on_effect_changed.bind(binding)
 			effect.changed.connect(binding.changed_callback, CONNECT_DEFERRED)
+
+
+func _create_pass_source_context(layer_index: int, rect: ColorRect) -> PassSourceContext:
+	var preceding: Array[PassSourceContext.Pass] = []
+	for binding in _effect_bindings:
+		if binding.rect == rect:
+			break
+		var layer := binding.rect.get_parent() as CanvasLayer
+		if layer.layer == layer_index:
+			preceding.append(PassSourceContext.Pass.new(
+				binding.material, binding.rect.is_visible_in_tree
+			))
+	return PassSourceContext.new(get_viewport(), layer_index, preceding, rect.is_visible_in_tree)
 
 
 func _set_binding_enabled(binding: EffectBinding, is_enabled: bool) -> void:

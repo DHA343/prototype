@@ -1,31 +1,36 @@
 # Phosphor Bloom
 
 Core の Signal Reconstruction → Beam → Phosphor Mask の後に適用する。
-Near/Far の Gaussian と光量再配分は共通で、A/B で変わるのは source の HDR 応答だけ。
+Bloom source の HDR 応答を制限する方式（旧 Limited）に一本化した。
+Near/Far の Gaussian と光量再配分は比較時から変更していない。
 
 ## 初期値
 
 | 項目 | 値 |
 | --- | --- |
-| Mode | Limited (A) |
 | Near Width | 2.0 px FWHM @1080p |
 | Far Width | 16.0 px FWHM @1080p |
 | Near Strength | 0.06 |
 | Far Strength | 0.01 |
 | Bloom HDR Limit | 2.0 |
 
+HDR Limit の設定範囲は 1.0〜16.0、step は 0.1。
+これは Bloom source の代表強度の漸近値で、入力 HDR の最大値とは別。
+16 はアルゴリズムの上限ではない。32 などに広げると制限が弱まり、
+大きな Limit ほど線形応答に近づく。現段階では調整範囲を 16 までに留める。
+
 Width は Viewport の高さ / 1080 を掛けて pixel 幅に換算する。
 Gaussian は σ = FWHM / √(8 ln 2)、片側 3σ までの離散 kernel を正規化する。
 画面端は反射境界を使用し、均一面と端の輝点の光量を保つ。
 
-## A/B
+## HDR 応答と合成
 
-- Linear (B): `S = original.rgb`。HDR Limit を無視する。
-- Limited (A): 最大 RGB 成分を代表強度 I とし、I ≤ 1 はそのまま通す。
-  I > 1 では `I' = 1 + (L - 1) * (1 - exp(-(I - 1) / (L - 1)))`。
-  `S = original.rgb * (I' / I)` として RGB 比率を保つ。
+最大 RGB 成分を代表強度 I とし、I ≤ 1 はそのまま通す。
+I > 1 かつ L > 1 では `I' = 1 + (L - 1) * (1 - exp(-(I - 1) / (L - 1)))`。
+`S = original.rgb * (I' / I)` として RGB 比率を保つ。
+L = 1 は余裕がゼロになる極限として `I' = 1` に分岐し、ゼロ除算を避ける。
 
-L は Bloom HDR Limit。白付近の傾きは 1、強度が上がると L に漸近する。
+L は Bloom HDR Limit。L > 1 では白付近の傾きは 1、強度が上がると L に漸近する。
 調整項目は Limit のみに絞り、Threshold と Response は持たせていない。
 Core 自体の HDR RGB は変更しない。
 
@@ -33,22 +38,20 @@ Core 自体の HDR RGB は変更しない。
 指定された再配分式と等価で、均一面での相殺誤差を抑える。
 Gaussian も中心との差分で計算し、合成ではぼかしに使った同じ S を参照する。
 
-## 比較シーン
+## 確認シーン
 
-`res://presentation/post_processing/test_scenes/crt_display_test/phosphor_bloom_test.tscn`
+`res://presentation/post_processing/test_scenes/crt_display_test/crt_display_test.tscn`
 
-- `1`: Limited / Linear
-- `2`: Bloom ON / OFF
-- `3`: 輝点の移動を一時停止 / 再開
+専用 Bloom シーンと A/B 切替は削除し、既存 CRT test に一本化した。
+Inspector の Phosphor Bloom から ON/OFF と各パラメータを調整する。
 
-線形 HDR 1x / 2x / 4x / 8x / 16x、1px 線、10 / 12 / 16px の文字、
-白い輝点、RGB 単色、均一な明部、移動する輝点、Viewport の左右端を含む。
+線形 HDR 1x / 2x / 4x / 8x / 16x、細線、文字、色、階調などを既存パターンで確認する。
 CanvasItem の描画色を linear_to_srgb() で渡し、HDR バッファの値が意図した倍率になるようにする。
-1px の横線は走査線に対する複数の位相で比較する。
 
 ## 検証記録
 
-Godot 4.7.2 / Forward+ / D3D12 / HDR 2D、上記初期値で確認。
+以下は一本化前の A/B 比較時の記録。Godot 4.7.2 / Forward+ / D3D12 / HDR 2D、
+上記初期値で確認した。A は現在と同じ HDR 制限、B は旧線形応答。
 数値検証では Signal と Mask を無効にした独立 Viewport も使用した。
 
 | 検証 | 結果 |
@@ -66,7 +69,25 @@ Godot 4.7.2 / Forward+ / D3D12 / HDR 2D、上記初期値で確認。
 Near は低解像度で 1px 前後になるため離散化の影響があり、
 実測 FWHM の1080p換算は約1.90〜2.13px。
 線形 HDR 16x の比較では Linear でも図形の輪郭は保たれた。
-Limited は周辺光を抑えるが、必須とは判断していない。両方を残して比較する。
+Limited は周辺光を抑えるが、当時の検証だけで制限が必須とは判断していない。
+比較後、周辺光を抑える方式を採用し、現在は A/B 切替を保持していない。
+
+## Pass source の API
+
+`create_pass_source(pass_index, context: PassSourceContext, material)` を拡張点とする。
+context は main_viewport、layer_index、preceding_passes、is_enabled() を提供する。
+preceding_passes は同じ CanvasLayer 上の先行 pass のみを描画順に含み、現在の pass は含まない。
+配列は読み取り専用で、各 pass は共有 ShaderMaterial と is_enabled() のみを公開する。
+有効状態は現在の状態を取得し、前段の ON/OFF や PostProcessing 全体の ON/OFF に追従する。
+context と source の寿命は一回の生成から次の再構築まで。
+Bloom は PostProcessing 内部の EffectBinding や描画ノード、親 PostProcessing の型を参照しない。
+
+移行後の確認では、World / Composite の前段処理を含む 256×1080 の HDR 画像が
+移行前と全ピクセル完全一致した。前段・Bloom・Effect・PostProcessing 全体の ON/OFF と
+Resource 変更後の再構築も確認した。
+Limit = 1.0 / 1.1 / 2.0 / 16.0 で値は有限、均一面は OFF と完全一致。
+既存 CRT test の入力は線形 1 / 約1.999 / 4 / 8 / 16 と alpha = 1 を確認した。
+約1.999 は HDR バッファの半精度丸めによる。
 
 ## 描画構成と負荷
 
@@ -74,7 +95,11 @@ Limited は周辺光を抑えるが、必須とは判断していない。両方
 Core を前段処理ごと再描画した Emission、共通 Source、Near の縦横、Far の縦横で構成する。
 元画像に戻る循環依存を作らず、同じフレームの Core 出力を取得する。
 無効時は中間 Viewport の描画を止める。確保したテクスチャは保持する。
-比較の正確さを優先した初期版で、メモリと描画負荷の最適化は未実施。
+メモリと描画負荷の最適化は未実施。
 
-既存 Beam shader、Glow、共通 PostProcessing の構造は変更していない。
-比較後の mode 削除は source 関数と Resource の mode / Limit の項目に集約できる。
+TODO: 見た目とパラメータの確定後に 1080p / 1440p / 2160p で GPU 時間を計測する。
+重い場合は Near を全解像度のまま、Far だけ 1/2 または 1/4 解像度化を検討する。
+低解像度化時には FWHM 換算、正規化、光量保存、画面端を再検証する。
+
+既存 Beam shader と Glow は変更していない。
+共通 PostProcessing の変更は pass source の context 提供に限る。

@@ -268,8 +268,9 @@ func _draw_hdr_objects() -> void:
 	for index in levels.size():
 		var x := 1002.0 + float(index) * 51.0
 		var level := levels[index]
-		var gray := Color(level, level, level, 1.0)
-		var color := Color(level, 0.3 * level, 0.1 * level, 1.0)
+		# CanvasItem draw colors are sRGB inputs; keep the intended linear HDR levels.
+		var gray := Color(level, level, level, 1.0).linear_to_srgb()
+		var color := Color(level, 0.3 * level, 0.1 * level, 1.0).linear_to_srgb()
 		draw_rect(Rect2(x, 335.0, 42.0, 42.0), gray)
 		draw_rect(Rect2(x, 420.0, 42.0, 42.0), color)
 		_draw_caption("%dx" % int(level), Vector2(x + 7.0, 380.0))

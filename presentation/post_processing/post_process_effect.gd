@@ -43,8 +43,7 @@ func is_pass_enabled(_pass_index: int) -> bool:
 
 func create_pass_source(
 	_pass_index: int,
-	_main_viewport: Viewport,
-	_layer_index: int,
+	_context: PassSourceContext,
 	_material: ShaderMaterial,
 ) -> Node:
 	return null

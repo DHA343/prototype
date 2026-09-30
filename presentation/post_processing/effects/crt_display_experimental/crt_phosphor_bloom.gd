@@ -5,6 +5,7 @@ extends Node
 const REFERENCE_HEIGHT: float = 1080.0
 
 var _effect: PostProcessEffect
+var _context: PassSourceContext
 var _main_viewport: Viewport
 var _layer_index: int
 var _bloom_material: ShaderMaterial
@@ -12,18 +13,18 @@ var _core_viewport: SubViewport
 var _viewports: Array[SubViewport] = []
 var _materials: Array[ShaderMaterial] = []
 var _attached_canvases: Dictionary[RID, bool] = {}
-var _replayed_rects: Dictionary[ColorRect, ColorRect] = {}
+var _replayed_passes: Dictionary[PassSourceContext.Pass, ColorRect] = {}
 
 
 func initialize(
 	effect: PostProcessEffect,
-	main_viewport: Viewport,
-	layer_index: int,
+	context: PassSourceContext,
 	bloom_material: ShaderMaterial,
 ) -> void:
 	_effect = effect
-	_main_viewport = main_viewport
-	_layer_index = layer_index
+	_context = context
+	_main_viewport = context.main_viewport
+	_layer_index = context.layer_index
 	_bloom_material = bloom_material
 
 
@@ -50,8 +51,8 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	_sync_viewports()
 	_update_enabled_state()
-	for original: ColorRect in _replayed_rects:
-		_replayed_rects[original].visible = original.visible
+	for preceding: PassSourceContext.Pass in _replayed_passes:
+		_replayed_passes[preceding].visible = preceding.is_enabled()
 
 
 func _exit_tree() -> void:
@@ -93,23 +94,17 @@ func _replay_core() -> void:
 
 	# Replay only the passes up to this Core, including preceding effects on its layer.
 	# The current-frame dependency chain avoids feeding yesterday's Bloom back into itself.
-	var post_processing := get_parent() as PostProcessing
-	for binding: PostProcessing.EffectBinding in post_processing._effect_bindings:
-		if binding.effect == _effect and binding.pass_index == 1:
-			break
-		var original_layer := binding.rect.get_parent() as CanvasLayer
-		if original_layer.layer != _layer_index:
-			continue
+	for preceding: PassSourceContext.Pass in _context.preceding_passes:
 		var copy := BackBufferCopy.new()
 		copy.copy_mode = BackBufferCopy.COPY_MODE_VIEWPORT
 		layer.add_child(copy)
 		var rect := ColorRect.new()
 		rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		rect.material = binding.material
-		rect.visible = binding.rect.visible
+		rect.material = preceding.material
+		rect.visible = preceding.is_enabled()
 		layer.add_child(rect)
 		rect.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		_replayed_rects[binding.rect] = rect
+		_replayed_passes[preceding] = rect
 
 
 func _create_filter(
@@ -184,8 +179,7 @@ func _sync_viewports() -> void:
 
 
 func _update_enabled_state() -> void:
-	var post_processing := get_parent() as PostProcessing
-	var is_enabled := post_processing.enabled and _effect.enabled and _effect.is_pass_enabled(1)
+	var is_enabled := _context.is_enabled()
 	for viewport: SubViewport in _viewports:
 		viewport.render_target_update_mode = (
 			SubViewport.UPDATE_ALWAYS if is_enabled else SubViewport.UPDATE_DISABLED
