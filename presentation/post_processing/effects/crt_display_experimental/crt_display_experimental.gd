@@ -14,6 +14,16 @@ enum MaskStyle {
 	VGA_PHOSPHOR,
 }
 
+enum CellSampling {
+	REFERENCE,
+	INTEGRATED,
+}
+
+enum SignalSampling {
+	TWO_SAMPLES,
+	FOUR_SAMPLES,
+}
+
 const EFFECT_SHADER: Shader = preload("./crt_display_experimental.gdshader")
 const CELL_SHADER: Shader = preload("./phosphor_cells.gdshader")
 const BLOOM_SHADER: Shader = preload("./phosphor_bloom.gdshader")
@@ -83,13 +93,40 @@ const BLOOM_SHADER: Shader = preload("./phosphor_bloom.gdshader")
 		emit_changed()
 
 @export_group("Phosphor Cell")
-## Integer output-pixel multiplier. Resizing never changes this value.
+@export var cell_sampling: CellSampling = CellSampling.INTEGRATED:
+	set(value):
+		if cell_sampling == value:
+			return
+
+		cell_sampling = value
+		notify_property_list_changed()
+		emit_changed()
+
+## Reference only. Integer output-pixel multiplier with a 6px base triad.
 @export_range(1, 4, 1) var cell_scale: int = 1:
 	set(value):
 		if cell_scale == value:
 			return
 
 		cell_scale = value
+		emit_changed()
+
+## Integrated only. Output pixels per RGB triad; the cell row height stays 2px.
+@export_range(2.0, 6.0, 0.1, "suffix:px") var triad_pitch: float = 2.5:
+	set(value):
+		if is_equal_approx(triad_pitch, value):
+			return
+
+		triad_pitch = value
+		emit_changed()
+
+## Integrated only. Signal samples across one pixel; aperture coverage is analytic.
+@export var signal_sampling: SignalSampling = SignalSampling.TWO_SAMPLES:
+	set(value):
+		if signal_sampling == value:
+			return
+
+		signal_sampling = value
 		emit_changed()
 
 ## Common RGB multiplier after cell occupancy and profile normalization.
@@ -165,7 +202,16 @@ const BLOOM_SHADER: Shader = preload("./phosphor_bloom.gdshader")
 func _validate_property(property: Dictionary) -> void:
 	if property.name == "legacy_mask_strength" and _is_phosphor_style():
 		property.usage |= PROPERTY_USAGE_READ_ONLY
-	elif property.name in ["cell_scale", "phosphor_brightness"] and not _is_phosphor_style():
+	elif property.name in [
+		"cell_sampling", "cell_scale", "triad_pitch", "signal_sampling", "phosphor_brightness",
+	] and not _is_phosphor_style():
+		property.usage |= PROPERTY_USAGE_READ_ONLY
+	elif property.name == "cell_scale" and cell_sampling != CellSampling.REFERENCE:
+		property.usage |= PROPERTY_USAGE_READ_ONLY
+	elif (
+		property.name in ["triad_pitch", "signal_sampling"]
+		and cell_sampling != CellSampling.INTEGRATED
+	):
 		property.usage |= PROPERTY_USAGE_READ_ONLY
 
 
@@ -190,7 +236,11 @@ func apply_to_pass(material: ShaderMaterial, pass_index: int) -> void:
 
 	if pass_index == 1:
 		material.set_shader_parameter(&"mask_style", mask_style)
+		material.set_shader_parameter(&"cell_sampling", cell_sampling)
 		material.set_shader_parameter(&"cell_scale", cell_scale)
+		material.set_shader_parameter(&"triad_pitch", triad_pitch)
+		var sample_count := 2 if signal_sampling == SignalSampling.TWO_SAMPLES else 4
+		material.set_shader_parameter(&"integration_samples", sample_count)
 		material.set_shader_parameter(&"phosphor_brightness", phosphor_brightness)
 		material.set_shader_parameter(&"brightness_compensation", brightness_compensation)
 		return

@@ -16,7 +16,7 @@ saturation = 1.08
 script = ExtResource("8_crt")
 mask_style = 7
 legacy_mask_strength = 0.6
-phosphor_brightness = 1.0
+triad_pitch = 6.0
 
 [sub_resource type="Resource" id="Resource_vignette"]
 script = ExtResource("10_vignette")
