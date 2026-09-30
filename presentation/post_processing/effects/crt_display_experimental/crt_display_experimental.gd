@@ -58,6 +58,22 @@ const BLOOM_SHADER: Shader = preload("./crt_display_experimental_bloom.gdshader"
 		beam_width = value
 		emit_changed()
 
+@export_range(1.0, 2.0, 0.01) var beam_hdr_limit: float = 1.25:
+	set(value):
+		if is_equal_approx(beam_hdr_limit, value):
+			return
+
+		beam_hdr_limit = value
+		emit_changed()
+
+@export_range(0.05, 2.0, 0.05) var beam_hdr_response: float = 0.5:
+	set(value):
+		if is_equal_approx(beam_hdr_response, value):
+			return
+
+		beam_hdr_response = value
+		emit_changed()
+
 @export_group("Shadow Mask", "mask_")
 @export var mask_style: MaskStyle = MaskStyle.STRETCHED_VGA:
 	set(value):
@@ -146,12 +162,28 @@ func is_pass_enabled(pass_index: int) -> bool:
 	)
 
 
+func create_pass_source(
+	pass_index: int,
+	main_viewport: Viewport,
+	layer_index: int,
+	material: ShaderMaterial,
+) -> Node:
+	if pass_index != 1:
+		return null
+
+	var source := CRTBloomSource.new()
+	source.initialize(self, main_viewport, layer_index, material)
+	return source
+
+
 func _update_shader_parameters() -> void:
 	_shader_parameters[&"signal_enabled"] = signal_enabled
 	_shader_parameters[&"scanline_count"] = scanline_count
 	_shader_parameters[&"sharpness"] = sharpness
 	_shader_parameters[&"signal_pitch"] = signal_pitch
 	_shader_parameters[&"beam_width"] = beam_width
+	_shader_parameters[&"beam_hdr_limit"] = beam_hdr_limit
+	_shader_parameters[&"beam_hdr_response"] = beam_hdr_response
 	_shader_parameters[&"mask_style"] = mask_style
 	_shader_parameters[&"mask_strength"] = mask_strength
 	_shader_parameters[&"brightness_compensation"] = brightness_compensation

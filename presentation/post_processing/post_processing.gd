@@ -27,6 +27,7 @@ extends Node
 var _is_initialized: bool = false
 var _effect_bindings: Array[EffectBinding] = []
 var _generated_layers: Array[CanvasLayer] = []
+var _generated_sources: Array[Node] = []
 
 
 func _ready() -> void:
@@ -36,12 +37,14 @@ func _ready() -> void:
 
 func _exit_tree() -> void:
 	_disconnect_effects()
+	_clear_pass_sources(true)
 	_clear_generated_layers(true)
 	_is_initialized = false
 
 
 func rebuild_effects() -> void:
 	_disconnect_effects()
+	_clear_pass_sources()
 	_clear_generated_layers()
 
 	var registered_effects: Dictionary[int, bool] = {}
@@ -162,6 +165,10 @@ func _create_effect_nodes(
 
 		_set_binding_enabled(binding, effect.enabled and effect.is_pass_enabled(pass_index))
 		effect.apply_to_pass(material, pass_index)
+		var source := effect.create_pass_source(pass_index, get_viewport(), canvas_layer.layer, material)
+		if source != null:
+			add_child(source, false, Node.INTERNAL_MODE_BACK)
+			_generated_sources.append(source)
 		if pass_index == 0:
 			binding.changed_callback = _on_effect_changed.bind(binding)
 			effect.changed.connect(binding.changed_callback, CONNECT_DEFERRED)
@@ -201,6 +208,21 @@ func _clear_generated_layers(is_immediate: bool = false) -> void:
 			canvas_layer.queue_free()
 
 	_generated_layers.clear()
+
+
+func _clear_pass_sources(is_immediate: bool = false) -> void:
+	for source in _generated_sources:
+		if not is_instance_valid(source):
+			continue
+		if source.get_parent() == self:
+			remove_child(source)
+
+		if is_immediate:
+			source.free()
+		else:
+			source.queue_free()
+
+	_generated_sources.clear()
 
 
 func _apply_enabled_state() -> void:
