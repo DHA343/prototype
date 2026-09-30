@@ -1,6 +1,7 @@
 # Phosphor Bloom
 
-Core の Signal Reconstruction → Beam → Phosphor Mask の後に適用する。
+Pass 0のSignal Reconstruction → Beamと、Legacy MaskまたはPass 1のPhosphor Cellの後に適用する。
+BloomはPass 2で、Phosphor Styleの場合はCell適用後のHDR出力をsourceにする。
 Bloom source の HDR 応答を制限する方式（旧 Limited）に一本化した。
 Near/Far の Gaussian と光量再配分は比較時から変更していない。
 

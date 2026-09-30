@@ -15,7 +15,7 @@ saturation = 1.08
 [sub_resource type="Resource" id="Resource_crt"]
 script = ExtResource("8_crt")
 mask_style = 1
-mask_strength = 0.6
+legacy_mask_strength = 0.6
 
 [sub_resource type="Resource" id="Resource_vignette"]
 script = ExtResource("10_vignette")

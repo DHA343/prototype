@@ -10,8 +10,9 @@ Scene に保存された値は初期値を上書きする。
 | Sharpness | 0.5〜1.0 | 0.67 | 0.01 | 横方向のkernelを広げるほど低い値。範囲は半径2〜1サンプル間隔に対応 |
 | Signal Pitch | 0.5〜3.0 px | 1.5 px | 0.1 | 横方向の信号サンプル間隔。見た目の調整値で、解像度による自動換算なし |
 | Beam Width | 0.75〜1.25 lines | 1.0 line | 0.01 | FWHMが走査線間隔と一致し、均一信号の隣接Beam合計が一定になる基準。範囲は光量補正近似に合わせて絞った |
-| Mask Strength | 0〜1 | 0.5 | 0.01 | 既存・Gap版でのMaskなしと完全適用の混合比。Phosphor版は無視し、常にCellを100%適用 |
-| Gap Strength | 0〜1 | 1.0 | 0.01 | Gap版のみ。0はseparatorを暗くしない、1は非発光セル。Phosphor版のGapは常に非発光 |
+| Legacy Mask Strength | 0〜1 | 0.5 | 0.01 | Legacy Maskなしと完全適用の混合比。Phosphor版では無効・編集不可 |
+| Cell Scale | 1〜4 | 1 | 1 | Phosphor Cell寸法の整数倍率。リサイズによる自動変更なし。Legacy版では編集不可 |
+| Phosphor Brightness | 0.5〜3.0 | 1.5 | 0.1 | 全RGB共通の発光倍率。自動光量補償なし。Legacy版では編集不可 |
 | Brightness Compensation | 0.5〜2.0 | 1.0 | 0.01 | 最終RGBの倍率。1は追加補正なし。範囲は半分〜2倍の調整用 |
 | Near Width | 0.5〜8.0 px @1080p | 4.0 px | 0.1 | すぐ周囲のにじみ。現在のCRT testで使用する調整値を初期値に採用 |
 | Far Width | 4.0〜64.0 px @1080p | 32.0 px | 0.1 | 広いhalo。現在のCRT testで使用する調整値を初期値に採用 |

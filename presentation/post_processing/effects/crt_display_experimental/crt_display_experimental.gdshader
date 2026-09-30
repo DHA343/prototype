@@ -9,14 +9,11 @@ uniform int scanline_count : hint_range(180, 720, 1) = 360;
 uniform float sharpness : hint_range(0.5, 1.0, 0.01) = 0.67;
 uniform float signal_pitch : hint_range(0.5, 3.0, 0.1) = 1.5;
 uniform float beam_width : hint_range(0.75, 1.25, 0.01) = 1.0;
-uniform int mask_style : hint_enum("Stretched VGA", "VGA", "Dots", "Aperture Grille", "Wide Grille", "Wide Soft Grille", "Slot Mask", "Stretched VGA Gap", "VGA Gap", "Aperture Grille Gap", "Stretched VGA Phosphor", "VGA Phosphor") = 0;
+uniform int mask_style : hint_enum("Stretched VGA", "VGA", "Dots", "Aperture Grille", "Wide Grille", "Wide Soft Grille", "Slot Mask", "Stretched VGA Phosphor", "VGA Phosphor") = 0;
 uniform float mask_strength : hint_range(0.0, 1.0, 0.01) = 0.5;
-uniform float mask_gap_strength : hint_range(0.0, 1.0, 0.01) = 1.0;
 uniform float brightness_compensation : hint_range(0.5, 2.0, 0.01) = 1.0;
 
 const float HALF_PI = 1.57079632679;
-
-#include "phosphor_cells.gdshaderinc"
 
 
 float signal_weight(float distance) {
@@ -76,7 +73,7 @@ float beam_light_compensation(float power) {
 
 
 float get_vga_phase(vec2 position) {
-	if (mask_style == 1 || mask_style == 8) {
+	if (mask_style == 1) {
 		position = floor(position * vec2(1.0, 0.5));
 	}
 	return fract((position.x + position.y * 3.0) / 6.0);
@@ -102,24 +99,6 @@ vec4 generate_mask(vec2 fragcoord) {
 
 	int column = int(floor(fragcoord.x));
 	int row = int(floor(fragcoord.y));
-	if (mask_style == 7 || mask_style == 8) {
-		vec2 vga_position = floor(1.000001 * fragcoord + vec2(0.5));
-		vec3 phosphor = get_active_phosphor(get_vga_phase(vga_position));
-		if (mask_style == 8) {
-			vga_position = floor(vga_position * vec2(1.0, 0.5));
-		}
-		// Follow the staggered VGA phase, rather than fixed screen columns.
-		int phase_pixel = (int(vga_position.x) + int(vga_position.y) * 3) % 6;
-		float gap_attenuation = 1.0 - mask_gap_strength;
-		float emission = phase_pixel % 2 == 0 ? 1.0 : gap_attenuation;
-		return vec4(phosphor * emission, (1.0 + gap_attenuation) / 6.0);
-	}
-	if (mask_style == 9) {
-		vec3 phosphor = column % 4 < 2 ? vec3(0.0, 1.0, 0.0) : vec3(1.0, 0.0, 1.0);
-		float gap_attenuation = 1.0 - mask_gap_strength;
-		float emission = column % 2 == 0 ? 1.0 : gap_attenuation;
-		return vec4(phosphor * emission, (1.0 + gap_attenuation) / 4.0);
-	}
 	if (mask_style == 2) {
 		int phase = (row * 2 + column) % 4;
 		if (phase == 0) {
@@ -192,17 +171,6 @@ vec3 apply_phosphor_mask(vec3 color, vec4 mask_sample) {
 	vec3 secondary_color = (target_color - primary_color) / (1.0 / mask_sample.a - 1.0);
 	vec3 phosphor_color = primary_color * mask_sample.rgb
 		+ secondary_color * (vec3(1.0) - mask_sample.rgb);
-	if (mask_style >= 7 && mask_style <= 9) {
-		float base_average = mask_style == 9 ? 0.5 : 1.0 / 3.0;
-		float emission_fraction = mask_sample.a / base_average;
-		// Redistribute both primary and excess HDR light within emitting cells.
-		// At Gap Strength 0 this retains the original mask's response.
-		primary_color = clamp(target_color, vec3(0.0), vec3(1.0 / emission_fraction));
-		secondary_color = (target_color - primary_color) / (1.0 / base_average - 1.0);
-		float cell_emission = max(mask_sample.r, max(mask_sample.g, mask_sample.b));
-		phosphor_color = primary_color * mask_sample.rgb
-			+ secondary_color * (vec3(cell_emission) - mask_sample.rgb);
-	}
 	return mix(positive_color, phosphor_color, mask_strength) + min(color, vec3(0.0));
 }
 
@@ -226,11 +194,12 @@ void fragment() {
 	}
 
 	vec3 output_color;
-	if (mask_style == 10 || mask_style == 11) {
-		output_color = apply_phosphor_cells(scanline_color, FRAGCOORD.xy,
-			1.0 / SCREEN_PIXEL_SIZE.y, mask_style == 11);
+	if (mask_style == 7 || mask_style == 8) {
+		// Pass 1 samples this reconstructed HDR signal once per logical triad.
+		output_color = scanline_color;
 	} else {
-		output_color = apply_phosphor_mask(scanline_color, generate_mask(FRAGCOORD.xy));
+		output_color = apply_phosphor_mask(scanline_color, generate_mask(FRAGCOORD.xy))
+			* brightness_compensation;
 	}
-	COLOR = vec4(output_color * brightness_compensation, screen_color.a);
+	COLOR = vec4(output_color, screen_color.a);
 }

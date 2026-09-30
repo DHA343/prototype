@@ -1,66 +1,67 @@
-# Phosphor Cell Mask prototype
+# Phosphor Cell
 
-`Stretched VGA Phosphor` / `VGA Phosphor` を追加する。
-既存StyleのID 0〜9を維持し、追加Styleは10と11とする。
-ResourceとSceneの初期Styleは変更しない。CRT testのShadow Mask / Styleで比較する。
+## 構成
 
-## 処理
+既存試作を独立Passへ置き換えた。StyleはStretched VGA Phosphor（7）とVGA Phosphor（8）。
+LegacyのID 0〜6は維持する。Gap系3 Style、Gap Strength、Gap用処理・ドキュメントは削除する。
 
-Signal Reconstruction → Beam → Phosphor Cell → Phosphor Bloom。
-新Styleだけ `phosphor_cells.gdshaderinc` の独立した処理へ分岐する。
-既存の `generate_mask()` / `apply_phosphor_mask()` とGap版の補償は使用しない。
-Beam、Signal Reconstruction、Bloomの式・設定は変更しない。
+- Pass 0: Signal Reconstruction → Beam → Legacy Mask（Legacyのみ）。
+- Pass 1: Phosphor Cell（Phosphorのみ）。Pass 0のlinear HDRをsampleし、Beamは再計算しない。
+- Pass 2: Phosphor Bloom。既存Gaussian、HDR source制限、光量再配分の式は維持する。
 
-- 1080pでは各channelの発光幅2出力px、separator幅1出力px、triad幅9出力px。
-- 矩形profileのweight合計はchannelごとに2。共通gainはgeometryから9/2 = 4.5。
-- 出力は `input.rgb * one_hot_cell_profile * gain`。非選択channelとGapは0。
-- RGB間の光量移動、HDR clamp、primary / secondaryへの分割は行わない。
-- Mask Strength / Gap Strengthは無視し、Cell出力を常に100%使用する。
-- 既存Brightness Compensationは従来通りCore出力全体へ適用される。
-- Bloom sourceはCell適用後のCore HDR出力。Gapへ直接光を足さず、Bloomによる散乱だけが入る。
+Cell Scaleはint 1〜4、初期値1。ViewportやCameraからは自動変更しない。
+Scale 1のsubpixel pitchは4px、発光幅3px、非発光幅1px、row pitchは3px、triad幅は12px。
+Staggerは正確なhalf-triadの6pxで、Scaleを全寸法へ整数倍する。
+Stretched VGAはrowごと、VGAは2 rowごとにphaseを切り替える。
 
-## 整数geometryとstagger
+## Excitationとprofile
 
-倍率は `max(1, floor(viewport_height / 1080 + 0.5))`。
-1080pでは1倍、2160pでは2倍となり、発光幅4px / separator幅2px / triad幅18pxになる。
-rowの高さも同じ倍率で拡大する。1440pは1倍で、倍率切替は整数単位となる。
-形状調整parameterやfractional pixelは使用しない。
+各triad / rowの中心から、X方向±triad幅/4、Y方向±row pitch/4の4点を等重みで平均する。
+同一triadのR/G/Bが、この共通RGBを使う。現在fragmentのRGBへmaskを掛けない。
+Source座標だけpixel centerの範囲へClampし、HDR RGBはClampしない。
 
-Stretched VGAはcell rowごとにphase 0 / 4を交互に使用する。
-VGAは同じphaseを連続2 cell rowで共有する。
-4pxは9px triadの半周期4.5pxを整数化した試作用のstagger。
-3pxずつのwhole-cell移動ではseparator列が揃うため使用しない。
-Gapもrowのoffsetと一緒に移動し、画面固定の黒い縦線にならない。
-画面端ではcellが切れることがあり、phaseをずらしたrowでは先頭の完全なRGB cellはBとなる。
+発光領域の横・縦profileはsin(π * local_pixel_center / emission_size)の積。
+Scale 1では各軸が0.5 / 1 / 0.5、非発光幅は厳密に0となる。
+Emissionは励起値の選択channel × profile × Phosphor Brightness。
+Phosphor Brightnessは0.5〜3.0、step 0.1、初期値1.5。自動光量補償は行わない。
+既存Output Brightness CompensationはLegacyではPass 0、PhosphorではPass 1の出力に適用する。
 
-## 検証
+Legacy Mask StrengthはLegacy専用とし、Phosphor選択時はInspectorで編集不可。
+Cell Scale / Phosphor BrightnessはLegacy選択時に編集不可。元画像とのmixは使用しない。
 
-Godot 4.7.2 / Forward+ / D3D12でHDR bufferを読み戻して確認した。
-検証Nodeと比較用shaderは一時的に生成し、専用test Sceneは追加していない。
+## 保存値の移行
 
-- 既存10 Style × Mask Strength 0 / 0.5 / 1 × Gap Strength 0 / 0.5 / 1の90ケースは、
-  変更前shaderと全画素のデータが完全一致。Signal / Beamも有効にして比較。
-- 1920×1080と3840×2160で白・R / G / Bのlinear HDR 1 / 2 / 4 / 8 / 16、SDR 0.18を確認。
-  全セルが独立に計算した整数geometryと一致し、channel平均の最大相対誤差は約0.087%。
-- Bloom OFFではGapと非選択channelは厳密に0。HDR 16の発光セルは72まで出力される。
-- 新2 Style × Mask Strength 0 / 0.5 / 1 × Gap Strength 0 / 0.5 / 1の18ケースは、
-  各Styleの出力と完全一致。両Strengthが新方式に影響しないことを確認。
-- Bloom ONでも両解像度で白・R / G / BのHDR 1 / 2 / 4 / 8 / 16を確認。
-  channel平均の最大相対誤差は約0.156%。単色入力の他channelは厳密に0。
-- 初期Bloom設定で均一な白のGap / 発光cellのRGB合計比は、1xで約9.6%、16xで約2.23%。
-  Gapに散乱光が入る一方、Cellとの差は維持される。
-- CRT testで旧VGA系との比較を行い、HDR矩形、暗い背景、1px / 2px線、小さい文字を表示確認。
-  1080pと2160pではCRT testをHDR SubViewport内でも描画して整数倍率を確認。
+mask_strengthをlegacy_mask_strengthへ改名し、保存済みのmain用ResourceとCRT testを移行した。
+mainはLegacy VGA / Strength 0.6を維持。CRT testの旧Aperture Grille GapはLegacy Aperture Grilleへ移行する。
+既存試作のShaderIncludeは削除し、phosphor_cells.gdshaderへ置き換える。
 
-## 比較上の制約
+## 検証結果
 
-平均光量の保存はlinear HDRと、triadの整数周期を含む均一領域についての結果。
-SDR表示でのclippingやsRGB変換後の明るさの平均を保存するという意味ではない。
-小さい図形や色が変化する領域ではCellの位置と信号の相関があり、同じ平均にはならない。
+Godot 4.7.2 / Forward+ / D3D12 / HDR2Dで検証。専用test Sceneは追加していない。
 
-実表示では旧方式よりRGB CellとGapが強く見え、細線と小さい文字に欠けや色の縁取りが出る。
-2160pで文字の出力pixelサイズを拡大しない場合、2倍のCellと既存Beamに対して文字が小さくなり、
-12px文字などの読みやすさは特に低下する。Bloomはこの細部損失を完全には補わない。
-試作段階では元画像とのmix、Beamの変更、他Styleへの展開で補正せず、方式の比較対象として残す。
+- Legacy 7 Style × Strength 0 / 0.5 / 1の21ケースは、変更前shaderと全画素が完全一致。
+- Cell Scale 1 / 2、両Styleで白、linear 50% gray、RGB単色、HDR 1 / 2 / 4 / 8 / 16を確認。
+- RGB gradient、高コントラストRGB edge、画面端で、Pass 0 HDR画像から独立に計算した
+  4点samplingとCell profileを比較。最大相対誤差は約0.10%。
+- Bloom OFFの非選択channelと固定非発光領域は厳密に0。
+  HDR 16の最大EmissionはScale 1で24、Scale 2で約22.39。1でClampされていない。
+- 共通scalarとprofileから求めた均一面平均の最大相対誤差は約0.049%。
+  初期Brightnessでの入力に対する平均倍率はScale 1で1/6、Scale 2で約0.1555。
+  平均光量保存は要求せず、旧方式より暗くなることは仕様通り。
+- 両Style × Scale 1 / 2の4ケースで、Cell出力とBloom用Emission画像が全画素完全一致。
+- fractional Camera transform変更と1080p→1440pリサイズ後も、均一面のCell画像は全画素完全一致。
+  Scaleは1のままで、自動倍率変更やgeometryのphase移動はない。
+- CRT testで旧VGA系との比較、Scale 1 / 2、Bloom ON / OFF、細線、小さい文字、HDR矩形を確認。
+  拡大表示で中心が明るく端が弱いCellと非発光領域が識別できる。
+- mainの起動と保存値0.6、Cell Pass無効・Bloom有効を確認し、最終起動のgame logにエラーなし。
 
-Gap系Styleと実装を共有しないため、Gap版は後から別に削除できる。
+## 合格条件の評価
+
+Cell形状、共通RGB sampling、HDR維持、固定integer grid、Bloomの処理順は確認できた。
+可読性は未達。12px幅のtriadに共通励起値を1つ割り当てるため、細線や文字が量子化される。
+特に12px〜18px文字は大きく潰れ、Scale 2ではさらに悪化する。Bloomは細部を復元しない。
+白・grayの空間平均に強い色偏りはないが、通常表示ではCell模様と色の縁取りが目立つ。
+現段階でLegacyよりゲーム画面に適しているとは判断しない。
+
+ユーザー指定に従い今回の寸法は維持し、縮小やsampling変更は比較結果を見て別途判断する。
+Legacy StyleとLegacy luminance preservationは保持する。
