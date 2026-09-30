@@ -10,12 +10,14 @@ uniform float sharpness : hint_range(0.5, 1.0, 0.01) = 0.67;
 uniform float signal_pitch : hint_range(0.5, 3.0, 0.1) = 1.5;
 uniform float beam_min_width : hint_range(0.2, 0.55, 0.01) = 0.34;
 uniform float beam_max_width : hint_range(0.2, 0.55, 0.01) = 0.42;
+uniform float beam_bloom_strength : hint_range(0.0, 2.0, 0.01) = 0.25;
+uniform float beam_bloom_limit : hint_range(0.0, 0.25, 0.01) = 0.12;
 uniform int mask_style : hint_enum("Stretched VGA", "VGA", "Dots", "Aperture Grille", "Wide Grille", "Wide Soft Grille", "Slot Mask") = 0;
 uniform float mask_strength : hint_range(0.0, 1.0, 0.01) = 0.5;
 uniform float brightness_compensation : hint_range(0.5, 2.0, 0.01) = 1.0;
 
 const float HALF_PI = 1.57079632679;
-const float BEAM_WIDEST_WIDTH = 0.55;
+const float BEAM_REFERENCE_WIDTH = 0.55;
 
 
 float signal_weight(float distance) {
@@ -48,31 +50,40 @@ vec3 sample_scanline(float row, float row_count, vec2 screen_uv, float pixel_wid
 }
 
 
-vec3 beam_power(vec3 width) {
-	return vec3(2.0) + 0.5 * (vec3(1.0) / width - vec3(1.0 / BEAM_WIDEST_WIDTH));
+float beam_power(float width) {
+	return 2.0 + 0.5 * (1.0 / width - 1.0 / BEAM_REFERENCE_WIDTH);
 }
 
 
-vec3 beam_profile(float distance, vec3 power) {
+float beam_profile(float distance, float power) {
 	float cosine = max(cos(HALF_PI * clamp(distance, 0.0, 1.0)), 0.0);
-	return pow(vec3(cosine), power);
+	return pow(cosine, power);
 }
 
 
-vec3 beam_light_compensation(vec3 power) {
-	vec3 excess_power = power - vec3(2.0);
-	// Fit of 2 * integral(profile, 0..1); error stays below 0.04% for widths 0.2..0.55.
-	vec3 mean_light = vec3(1.0) + excess_power * (
-		vec3(-0.19181469) + excess_power * (vec3(0.04864666) - 0.00797780 * excess_power)
+float beam_light_compensation(float power) {
+	float excess_power = power - 2.0;
+	float mean_light = 1.0 + excess_power * (
+		-0.19329331 + excess_power * (
+			0.05479169 + excess_power * (
+				-0.01519815 + 0.00253758 * excess_power
+			)
+		)
 	);
-	return vec3(1.0) / mean_light;
+	return 1.0 / mean_light;
 }
 
 
-vec3 beam_width(vec3 color) {
-	vec3 intensity = clamp(max(color, vec3(0.0)), vec3(0.0), vec3(1.0));
-	return mix(vec3(min(beam_min_width, beam_max_width)),
-		vec3(max(beam_min_width, beam_max_width)), intensity);
+float beam_width(vec3 color) {
+	vec3 positive_color = max(color, vec3(0.0));
+	float beam_signal = max(positive_color.r, max(positive_color.g, positive_color.b));
+	float base_intensity = clamp(beam_signal, 0.0, 1.0);
+	float base_width = mix(min(beam_min_width, beam_max_width),
+		max(beam_min_width, beam_max_width), base_intensity);
+	float hdr_excess = max(beam_signal - 1.0, 0.0);
+	float bloom_factor = 1.0 - exp(-hdr_excess * beam_bloom_strength);
+	float bloom_width = beam_bloom_limit * bloom_factor;
+	return base_width + bloom_width;
 }
 
 
@@ -190,11 +201,11 @@ void fragment() {
 		float lower_row = upper_row + 1.0;
 		vec3 upper_color = sample_scanline(upper_row, row_count, SCREEN_UV, SCREEN_PIXEL_SIZE.x);
 		vec3 lower_color = sample_scanline(lower_row, row_count, SCREEN_UV, SCREEN_PIXEL_SIZE.x);
-		vec3 upper_power = beam_power(beam_width(upper_color));
-		vec3 lower_power = beam_power(beam_width(lower_color));
-		vec3 upper_beam = beam_profile(abs(scanline_position - upper_row), upper_power)
+		float upper_power = beam_power(beam_width(upper_color));
+		float lower_power = beam_power(beam_width(lower_color));
+		float upper_beam = beam_profile(abs(scanline_position - upper_row), upper_power)
 			* beam_light_compensation(upper_power);
-		vec3 lower_beam = beam_profile(abs(scanline_position - lower_row), lower_power)
+		float lower_beam = beam_profile(abs(scanline_position - lower_row), lower_power)
 			* beam_light_compensation(lower_power);
 		scanline_color = upper_color * upper_beam + lower_color * lower_beam;
 	}

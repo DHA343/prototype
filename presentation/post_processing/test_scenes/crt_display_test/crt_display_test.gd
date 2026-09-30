@@ -39,7 +39,7 @@ func _ready() -> void:
 func _exit_tree() -> void:
 	if Engine.is_editor_hint():
 		return
-	get_tree().root.content_scale_mode = _previous_content_scale_mode
+	get_tree().root.content_scale_mode = _previous_content_scale_mode as Window.ContentScaleMode
 
 
 func _draw() -> void:
@@ -69,7 +69,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	var key := event as InputEventKey
 	if key == null or not key.pressed or key.echo or key.keycode != KEY_1:
 		return
-	background_style = (background_style + 1) % BackgroundStyle.size()
+	background_style = ((background_style + 1) % BackgroundStyle.size()) as BackgroundStyle
 
 
 func _create_labels() -> void:
@@ -157,21 +157,21 @@ func _draw_stripes(rect: Rect2, width: int, direction: int) -> void:
 	var light := Color(0.76, 0.79, 0.83)
 	if direction == 0:
 		for x in int(rect.size.x):
-			if (x / width) % 2 == 0:
+			if floori(float(x) / float(width)) % 2 == 0:
 				draw_rect(Rect2(rect.position + Vector2(x, 0.0), Vector2(1.0, rect.size.y)), light)
 	elif direction == 1:
 		for y in int(rect.size.y):
-			if (y / width) % 2 == 0:
+			if floori(float(y) / float(width)) % 2 == 0:
 				draw_rect(Rect2(rect.position + Vector2(0.0, y), Vector2(rect.size.x, 1.0)), light)
 	else:
 		for y in int(rect.size.y):
 			for x in int(rect.size.x):
-				if ((x + y) / width) % 2 == 0:
+				if floori(float(x + y) / float(width)) % 2 == 0:
 					draw_rect(Rect2(rect.position + Vector2(x, y), Vector2.ONE), light)
 
 
-func _draw_caption(label_text: String, position: Vector2) -> void:
-	draw_string(ThemeDB.fallback_font, position + Vector2(0.0, 12.0), label_text, HORIZONTAL_ALIGNMENT_LEFT, -1.0, 12)
+func _draw_caption(label_text: String, caption_position: Vector2) -> void:
+	draw_string(ThemeDB.fallback_font, caption_position + Vector2(0.0, 12.0), label_text, HORIZONTAL_ALIGNMENT_LEFT, -1.0, 12)
 
 
 func _draw_grayscale_comparison(rect: Rect2) -> void:
@@ -222,10 +222,10 @@ func _draw_alpha_comparison() -> void:
 	_draw_caption("OVERLAP  50% + 50%", Vector2(418.0, 330.0))
 
 
-func _draw_polygon(center: Vector2, radius: float, sides: int, rotation: float, color: Color) -> void:
+func _draw_polygon(center: Vector2, radius: float, sides: int, angle_offset: float, color: Color) -> void:
 	var points := PackedVector2Array()
 	for index in sides:
-		var angle := rotation + TAU * float(index) / float(sides)
+		var angle := angle_offset + TAU * float(index) / float(sides)
 		points.append(center + Vector2.RIGHT.rotated(angle) * radius)
 	draw_colored_polygon(points, color)
 
@@ -302,13 +302,13 @@ func _draw_outline_polygon(
 	center: Vector2,
 	radius: float,
 	sides: int,
-	rotation: float,
+	angle_offset: float,
 	color: Color,
 	line_width: float,
 ) -> void:
 	for index in sides:
-		var angle := rotation + TAU * float(index) / float(sides)
-		var next_angle := rotation + TAU * float(index + 1) / float(sides)
+		var angle := angle_offset + TAU * float(index) / float(sides)
+		var next_angle := angle_offset + TAU * float(index + 1) / float(sides)
 		draw_line(
 			center + Vector2.RIGHT.rotated(angle) * radius,
 			center + Vector2.RIGHT.rotated(next_angle) * radius,
@@ -324,9 +324,9 @@ func _draw_color_polygons() -> void:
 		Color(0.84, 0.62, 0.64), Color(0.62, 0.74, 0.85), Color(0.58, 0.55, 0.43), Color(0.4, 0.56, 0.5),
 	]
 	for index in colors.size():
-		var center := Vector2(983.0 + float(index % 4) * 79.0, 592.0 + float(index / 4) * 70.0)
+		var center := Vector2(983.0 + float(index % 4) * 79.0, 592.0 + float(floori(float(index) / 4.0)) * 70.0)
 		var sides := 3 + index % 4
-		var rotation := -PI / 2.0
+		var angle_offset := -PI / 2.0
 		if index >= 4:
-			rotation += PI / 12.0
-		_draw_polygon(center, 25.0, sides, rotation, colors[index])
+			angle_offset += PI / 12.0
+		_draw_polygon(center, 25.0, sides, angle_offset, colors[index])

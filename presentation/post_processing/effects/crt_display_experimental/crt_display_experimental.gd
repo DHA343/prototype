@@ -65,6 +65,22 @@ const EFFECT_SHADER: Shader = preload("./crt_display_experimental.gdshader")
 		beam_max_width = value
 		emit_changed()
 
+@export_range(0.0, 2.0, 0.01) var beam_bloom_strength: float = 0.25:
+	set(value):
+		if is_equal_approx(beam_bloom_strength, value):
+			return
+
+		beam_bloom_strength = value
+		emit_changed()
+
+@export_range(0.0, 0.25, 0.01) var beam_bloom_limit: float = 0.12:
+	set(value):
+		if is_equal_approx(beam_bloom_limit, value):
+			return
+
+		beam_bloom_limit = value
+		emit_changed()
+
 @export_group("Shadow Mask", "mask_")
 @export var mask_style: MaskStyle = MaskStyle.STRETCHED_VGA:
 	set(value):
@@ -103,6 +119,8 @@ func _update_shader_parameters() -> void:
 	_shader_parameters[&"signal_pitch"] = signal_pitch
 	_shader_parameters[&"beam_min_width"] = beam_min_width
 	_shader_parameters[&"beam_max_width"] = beam_max_width
+	_shader_parameters[&"beam_bloom_strength"] = beam_bloom_strength
+	_shader_parameters[&"beam_bloom_limit"] = beam_bloom_limit
 	_shader_parameters[&"mask_style"] = mask_style
 	_shader_parameters[&"mask_strength"] = mask_strength
 	_shader_parameters[&"brightness_compensation"] = brightness_compensation
