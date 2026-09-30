@@ -8,16 +8,23 @@ Near/Far の Gaussian と光量再配分は比較時から変更していない�
 
 | 項目 | 値 |
 | --- | --- |
-| Near Width | 2.0 px FWHM @1080p |
-| Far Width | 16.0 px FWHM @1080p |
-| Near Strength | 0.06 |
-| Far Strength | 0.01 |
-| Bloom HDR Limit | 2.0 |
+| Near Width | 4.0 px FWHM @1080p |
+| Far Width | 32.0 px FWHM @1080p |
+| Near Strength | 0.1 |
+| Far Strength | 0.05 |
+| Bloom HDR Limit | 16.0 |
 
-HDR Limit の設定範囲は 1.0〜16.0、step は 0.1。
+CRT test で調整した値を初期値に採用した。
+旧初期値よりにじみを強く出す設定で、sourceの合計15%をNear/Farへ再配分する。
+Near 4pxは直近の発光としてやや広め、Far 32pxは広いhaloを出す。
+HDR Limit 16は旧初期値2より制限が弱く、高輝度ほど周辺光が強くなる。
+1080pでFarの各方向のサンプル数は16px時の23から32px時の43へ増える。
+この比率はGPU時間そのものの計測結果ではない。
+
+HDR Limit の設定範囲は 1.0〜32.0、step は 0.1。
 これは Bloom source の代表強度の漸近値で、入力 HDR の最大値とは別。
-16 はアルゴリズムの上限ではない。32 などに広げると制限が弱まり、
-大きな Limit ほど線形応答に近づく。現段階では調整範囲を 16 までに留める。
+32 はアルゴリズムの上限ではなく調整用の上限。
+大きな Limit ほど制限が弱まり、線形応答に近づく。
 
 Width は Viewport の高さ / 1080 を掛けて pixel 幅に換算する。
 Gaussian は σ = FWHM / √(8 ln 2)、片側 3σ までの離散 kernel を正規化する。
@@ -51,7 +58,9 @@ CanvasItem の描画色を linear_to_srgb() で渡し、HDR バッファの値�
 ## 検証記録
 
 以下は一本化前の A/B 比較時の記録。Godot 4.7.2 / Forward+ / D3D12 / HDR 2D、
-上記初期値で確認した。A は現在と同じ HDR 制限、B は旧線形応答。
+当時の初期値 Near Width = 2、Far Width = 16、Near Strength = 0.06、
+Far Strength = 0.01、HDR Limit = 2 で確認した。
+A は現在と同じ HDR 制限式、B は旧線形応答。
 数値検証では Signal と Mask を無効にした独立 Viewport も使用した。
 
 | 検証 | 結果 |

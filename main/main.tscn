@@ -14,6 +14,8 @@
 [ext_resource type="Script" uid="uid://c1nacv0dkbn1i" path="res://presentation/camera/game_camera.gd" id="11_game_camera"]
 [ext_resource type="PackedScene" uid="uid://1cph7125gclc" path="res://presentation/post_processing/post_processing.tscn" id="12_post_processing"]
 [ext_resource type="PackedScene" path="res://presentation/background/checkerboard_background.tscn" id="13_background"]
+[ext_resource type="Script" path="res://presentation/post_processing/effects/pixelation/pixelation.gd" id="14_pixelation"]
+[ext_resource type="Script" path="res://presentation/post_processing/effects/pixelation/pixelation_layer.gd" id="15_pixelation_layer"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_73k8k"]
 resource_local_to_scene = true
@@ -24,6 +26,9 @@ shader_parameter/cell_size = 96.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_spawn_area"]
 size = Vector2(1920, 1080)
+
+[sub_resource type="Resource" id="Resource_pixelation"]
+script = ExtResource("14_pixelation")
 
 [node name="Main" type="Node2D" unique_id=1883962826]
 physics_interpolation_mode = 2
@@ -49,12 +54,18 @@ max_offset_y = 24.0
 [node name="CameraShake" type="Node" parent="Camera2D" unique_id=1954490449]
 script = ExtResource("10_camera_shake")
 
-[node name="Actors" type="Node2D" parent="." unique_id=137631151]
+[node name="WorldLayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("post_processing")]
+layer = 0
+script = ExtResource("15_pixelation_layer")
+pixelation = SubResource("Resource_pixelation")
+post_processing = NodePath("../PostProcessing")
+
+[node name="Actors" type="Node2D" parent="WorldLayer" unique_id=137631151]
 y_sort_enabled = true
 
-[node name="Orb" parent="Actors" unique_id=1133452163 instance=ExtResource("2_orb")]
+[node name="Orb" parent="WorldLayer/Actors" unique_id=1133452163 instance=ExtResource("2_orb")]
 
-[node name="Enemies" type="Node2D" parent="Actors" unique_id=512686501]
+[node name="Enemies" type="Node2D" parent="WorldLayer/Actors" unique_id=512686501]
 y_sort_enabled = true
 
 [node name="CrowdManager" type="Node" parent="." unique_id=2104208583]

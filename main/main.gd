@@ -3,8 +3,8 @@ extends Node2D
 
 var _feedback: Feedback = Feedback.new()
 
-@onready var orb: Orb = $Actors/Orb
-@onready var enemies: Node2D = $Actors/Enemies
+@onready var orb: Orb = $WorldLayer/Actors/Orb
+@onready var enemies: Node2D = $WorldLayer/Actors/Enemies
 @onready var crowd_manager: CrowdManager = $CrowdManager
 @onready var spawn_area: SpawnArea = $SpawnArea
 @onready var enemy_spawner: EnemySpawner = $EnemySpawner

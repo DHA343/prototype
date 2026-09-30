@@ -51,7 +51,8 @@ const BLOOM_SHADER: Shader = preload("./phosphor_bloom.gdshader")
 
 @export_group("Beam", "beam_")
 ## Full width at half maximum, relative to the scanline spacing.
-@export_range(0.5, 1.25, 0.01, "suffix:lines") var beam_width: float = 0.94:
+## At 1.0, adjacent beams sum to a constant for a uniform signal.
+@export_range(0.75, 1.25, 0.01, "suffix:lines") var beam_width: float = 1.0:
 	set(value):
 		if is_equal_approx(beam_width, value):
 			return
@@ -95,7 +96,7 @@ const BLOOM_SHADER: Shader = preload("./phosphor_bloom.gdshader")
 		phosphor_bloom_enabled = value
 		emit_changed()
 
-@export_range(0.5, 8.0, 0.1, "suffix:px @1080p") var phosphor_bloom_near_width: float = 2.0:
+@export_range(0.5, 8.0, 0.1, "suffix:px @1080p") var phosphor_bloom_near_width: float = 4.0:
 	set(value):
 		if is_equal_approx(phosphor_bloom_near_width, value):
 			return
@@ -103,7 +104,7 @@ const BLOOM_SHADER: Shader = preload("./phosphor_bloom.gdshader")
 		phosphor_bloom_near_width = value
 		emit_changed()
 
-@export_range(4.0, 64.0, 0.5, "suffix:px @1080p") var phosphor_bloom_far_width: float = 16.0:
+@export_range(4.0, 64.0, 0.1, "suffix:px @1080p") var phosphor_bloom_far_width: float = 32.0:
 	set(value):
 		if is_equal_approx(phosphor_bloom_far_width, value):
 			return
@@ -111,7 +112,7 @@ const BLOOM_SHADER: Shader = preload("./phosphor_bloom.gdshader")
 		phosphor_bloom_far_width = value
 		emit_changed()
 
-@export_range(0.0, 0.25, 0.005) var phosphor_bloom_near_strength: float = 0.06:
+@export_range(0.0, 0.25, 0.01) var phosphor_bloom_near_strength: float = 0.1:
 	set(value):
 		if is_equal_approx(phosphor_bloom_near_strength, value):
 			return
@@ -119,7 +120,7 @@ const BLOOM_SHADER: Shader = preload("./phosphor_bloom.gdshader")
 		phosphor_bloom_near_strength = value
 		emit_changed()
 
-@export_range(0.0, 0.1, 0.001) var phosphor_bloom_far_strength: float = 0.01:
+@export_range(0.0, 0.1, 0.001) var phosphor_bloom_far_strength: float = 0.05:
 	set(value):
 		if is_equal_approx(phosphor_bloom_far_strength, value):
 			return
@@ -128,7 +129,7 @@ const BLOOM_SHADER: Shader = preload("./phosphor_bloom.gdshader")
 		emit_changed()
 
 ## Limits Bloom source intensity, without compressing the Core output.
-@export_range(1.0, 16.0, 0.1) var phosphor_bloom_hdr_limit: float = 2.0:
+@export_range(1.0, 32.0, 0.1) var phosphor_bloom_hdr_limit: float = 16.0:
 	set(value):
 		if is_equal_approx(phosphor_bloom_hdr_limit, value):
 			return

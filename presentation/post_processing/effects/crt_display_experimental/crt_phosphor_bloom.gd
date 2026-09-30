@@ -12,7 +12,7 @@ var _bloom_material: ShaderMaterial
 var _core_viewport: SubViewport
 var _viewports: Array[SubViewport] = []
 var _materials: Array[ShaderMaterial] = []
-var _attached_canvases: Dictionary[RID, bool] = {}
+var _attached_canvases: Dictionary[RID, WeakRef] = {}
 var _replayed_passes: Dictionary[PassSourceContext.Pass, ColorRect] = {}
 
 
@@ -59,7 +59,8 @@ func _exit_tree() -> void:
 	if _effect.changed.is_connected(_on_effect_changed):
 		_effect.changed.disconnect(_on_effect_changed)
 	for canvas: RID in _attached_canvases:
-		RenderingServer.viewport_remove_canvas(_core_viewport.get_viewport_rid(), canvas)
+		if _attached_canvases[canvas].get_ref() != null:
+			RenderingServer.viewport_remove_canvas(_core_viewport.get_viewport_rid(), canvas)
 	_attached_canvases.clear()
 
 
@@ -165,7 +166,7 @@ func _sync_viewports() -> void:
 		current_canvases[canvas] = true
 		if not _attached_canvases.has(canvas):
 			RenderingServer.viewport_attach_canvas(_core_viewport.get_viewport_rid(), canvas)
-			_attached_canvases[canvas] = true
+			_attached_canvases[canvas] = weakref(layer)
 		RenderingServer.viewport_set_canvas_stacking(
 			_core_viewport.get_viewport_rid(), canvas, layer.layer, 0
 		)
@@ -174,7 +175,8 @@ func _sync_viewports() -> void:
 		)
 	for canvas: RID in _attached_canvases.keys():
 		if not current_canvases.has(canvas):
-			RenderingServer.viewport_remove_canvas(_core_viewport.get_viewport_rid(), canvas)
+			if _attached_canvases[canvas].get_ref() != null:
+				RenderingServer.viewport_remove_canvas(_core_viewport.get_viewport_rid(), canvas)
 			_attached_canvases.erase(canvas)
 
 

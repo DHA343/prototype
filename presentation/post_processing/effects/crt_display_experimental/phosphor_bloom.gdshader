@@ -9,9 +9,9 @@ uniform sampler2D near_texture : repeat_disable, filter_linear;
 uniform sampler2D far_texture : repeat_disable, filter_linear;
 
 uniform int pass_stage = 3;
-uniform float bloom_hdr_limit : hint_range(1.0, 16.0, 0.1) = 2.0;
-uniform float near_strength : hint_range(0.0, 0.25, 0.005) = 0.06;
-uniform float far_strength : hint_range(0.0, 0.1, 0.001) = 0.01;
+uniform float bloom_hdr_limit : hint_range(1.0, 32.0, 0.1) = 16.0;
+uniform float near_strength : hint_range(0.0, 0.25, 0.01) = 0.1;
+uniform float far_strength : hint_range(0.0, 0.1, 0.001) = 0.05;
 uniform float gaussian_fwhm = 2.0;
 uniform vec2 gaussian_axis = vec2(1.0, 0.0);
 

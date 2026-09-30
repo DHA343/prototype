@@ -2,33 +2,19 @@
 
 [ext_resource type="Script" uid="uid://cdcn5i66x14bu" path="res://presentation/post_processing/post_processing.gd" id="1_post_processing"]
 [ext_resource type="Script" uid="uid://d12uwcn8et7ym" path="res://presentation/post_processing/post_process_effect.gd" id="2_effect"]
-[ext_resource type="Script" uid="uid://bnleqmtr4cnpy" path="res://presentation/post_processing/effects/pixelation/pixelation.gd" id="3_pixelation"]
-[ext_resource type="Script" uid="uid://y31bf4o13c71" path="res://presentation/post_processing/effects/blur/blur.gd" id="4_blur"]
 [ext_resource type="Script" uid="uid://du0elwyycowft" path="res://presentation/post_processing/effects/color_grading/color_grading.gd" id="5_color_grading"]
-[ext_resource type="Script" uid="uid://bi87egye7reys" path="res://presentation/post_processing/effects/chromatic_aberration/chromatic_aberration.gd" id="6_chromatic_aberration"]
-[ext_resource type="Script" uid="uid://0e4rd30wx0tl" path="res://presentation/post_processing/effects/glow/glow.gd" id="7_glow"]
+[ext_resource type="Script" uid="uid://4kmsj3ju6w87" path="res://presentation/post_processing/effects/crt_display_experimental/crt_display_experimental.gd" id="8_crt"]
 [ext_resource type="Script" uid="uid://b6y73x0igwwoj" path="res://presentation/post_processing/effects/vignette/vignette.gd" id="10_vignette"]
-[ext_resource type="Script" uid="uid://cxe5nraotfv21" path="res://presentation/post_processing/effects/display_texture/display_texture.gd" id="11_display_texture"]
-
-[sub_resource type="Resource" id="Resource_pixelation"]
-script = ExtResource("3_pixelation")
-
-[sub_resource type="Resource" id="Resource_blur"]
-script = ExtResource("4_blur")
-radius = 3.0
-strength = 0.15
 
 [sub_resource type="Resource" id="Resource_color_grading"]
 script = ExtResource("5_color_grading")
+brightness = -0.020000000000000018
 contrast = 1.08
+saturation = 1.08
 
-[sub_resource type="Resource" id="Resource_glow"]
-script = ExtResource("7_glow")
-enabled = false
-
-[sub_resource type="Resource" id="Resource_chromatic_aberration"]
-script = ExtResource("6_chromatic_aberration")
-amount = 3.0
+[sub_resource type="Resource" id="Resource_crt"]
+script = ExtResource("8_crt")
+mask_strength = 1.0
 
 [sub_resource type="Resource" id="Resource_vignette"]
 script = ExtResource("10_vignette")
@@ -37,12 +23,6 @@ radius = 0.3
 softness = 0.7
 falloff = 1.0
 
-[sub_resource type="Resource" id="Resource_display_texture"]
-script = ExtResource("11_display_texture")
-scanline_strength = 0.5
-scanline_size = 5.0
-
 [node name="PostProcessing" type="Node" unique_id=776314143]
 script = ExtResource("1_post_processing")
-world_effects = Array[ExtResource("2_effect")]([SubResource("Resource_pixelation"), SubResource("Resource_blur")])
-composite_effects = Array[ExtResource("2_effect")]([SubResource("Resource_color_grading"), SubResource("Resource_glow"), SubResource("Resource_chromatic_aberration"), SubResource("Resource_vignette"), SubResource("Resource_display_texture")])
+composite_effects = Array[ExtResource("2_effect")]([SubResource("Resource_color_grading"), SubResource("Resource_crt"), SubResource("Resource_vignette")])
