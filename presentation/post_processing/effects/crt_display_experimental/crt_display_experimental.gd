@@ -10,6 +10,9 @@ enum MaskStyle {
 	WIDE_GRILLE,
 	WIDE_SOFT_GRILLE,
 	SLOT_MASK,
+	STRETCHED_VGA_GAP,
+	VGA_GAP,
+	APERTURE_GRILLE_GAP,
 }
 
 const EFFECT_SHADER: Shader = preload("./crt_display_experimental.gdshader")
@@ -75,6 +78,15 @@ const BLOOM_SHADER: Shader = preload("./phosphor_bloom.gdshader")
 			return
 
 		mask_strength = value
+		emit_changed()
+
+## Separator darkness for Gap styles. Ignored by the original mask styles.
+@export_range(0.0, 1.0, 0.01) var mask_gap_strength: float = 1.0:
+	set(value):
+		if is_equal_approx(mask_gap_strength, value):
+			return
+
+		mask_gap_strength = value
 		emit_changed()
 
 @export_group("Output")
@@ -188,4 +200,5 @@ func _update_shader_parameters() -> void:
 	_shader_parameters[&"beam_width"] = beam_width
 	_shader_parameters[&"mask_style"] = mask_style
 	_shader_parameters[&"mask_strength"] = mask_strength
+	_shader_parameters[&"mask_gap_strength"] = mask_gap_strength
 	_shader_parameters[&"brightness_compensation"] = brightness_compensation
