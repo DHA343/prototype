@@ -49,28 +49,13 @@ const EFFECT_SHADER: Shader = preload("./crt_display_experimental.gdshader")
 		emit_changed()
 
 @export_group("Beam", "beam_")
-@export_range(0.2, 0.55, 0.01) var beam_width: float = 0.42:
+## Full width at half maximum, relative to the scanline spacing.
+@export_range(0.5, 1.25, 0.01, "suffix:lines") var beam_width: float = 0.94:
 	set(value):
 		if is_equal_approx(beam_width, value):
 			return
 
 		beam_width = value
-		emit_changed()
-
-@export_range(1.0, 2.0, 0.01) var beam_hdr_limit: float = 1.25:
-	set(value):
-		if is_equal_approx(beam_hdr_limit, value):
-			return
-
-		beam_hdr_limit = value
-		emit_changed()
-
-@export_range(0.05, 2.0, 0.05) var beam_hdr_response: float = 0.5:
-	set(value):
-		if is_equal_approx(beam_hdr_response, value):
-			return
-
-		beam_hdr_response = value
 		emit_changed()
 
 @export_group("Shadow Mask", "mask_")
@@ -110,8 +95,6 @@ func _update_shader_parameters() -> void:
 	_shader_parameters[&"sharpness"] = sharpness
 	_shader_parameters[&"signal_pitch"] = signal_pitch
 	_shader_parameters[&"beam_width"] = beam_width
-	_shader_parameters[&"beam_hdr_limit"] = beam_hdr_limit
-	_shader_parameters[&"beam_hdr_response"] = beam_hdr_response
 	_shader_parameters[&"mask_style"] = mask_style
 	_shader_parameters[&"mask_strength"] = mask_strength
 	_shader_parameters[&"brightness_compensation"] = brightness_compensation

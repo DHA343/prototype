@@ -8,16 +8,12 @@ uniform bool signal_enabled = true;
 uniform int scanline_count : hint_range(180, 720, 1) = 360;
 uniform float sharpness : hint_range(0.5, 1.0, 0.01) = 0.67;
 uniform float signal_pitch : hint_range(0.5, 3.0, 0.1) = 1.5;
-uniform float beam_width : hint_range(0.2, 0.55, 0.01) = 0.42;
-uniform float beam_hdr_limit : hint_range(1.0, 2.0, 0.01) = 1.25;
-uniform float beam_hdr_response : hint_range(0.05, 2.0, 0.05) = 0.5;
-uniform bool beam_hdr_compression_enabled = true;
+uniform float beam_width : hint_range(0.5, 1.25, 0.01) = 0.94;
 uniform int mask_style : hint_enum("Stretched VGA", "VGA", "Dots", "Aperture Grille", "Wide Grille", "Wide Soft Grille", "Slot Mask") = 0;
 uniform float mask_strength : hint_range(0.0, 1.0, 0.01) = 0.5;
 uniform float brightness_compensation : hint_range(0.5, 2.0, 0.01) = 1.0;
 
 const float HALF_PI = 1.57079632679;
-const float BEAM_REFERENCE_WIDTH = 0.55;
 
 
 float signal_weight(float distance) {
@@ -50,8 +46,10 @@ vec3 sample_scanline(float row, float row_count, vec2 screen_uv, float pixel_wid
 }
 
 
-float beam_power(float width) {
-	return 2.0 + 0.5 * (1.0 / width - 1.0 / BEAM_REFERENCE_WIDTH);
+float beam_power_from_fwhm(float width) {
+	float half_max_distance = width * 0.5;
+	float cosine_at_half = cos(HALF_PI * half_max_distance);
+	return log(0.5) / log(cosine_at_half);
 }
 
 
@@ -71,19 +69,6 @@ float beam_light_compensation(float power) {
 		)
 	);
 	return 1.0 / mean_light;
-}
-
-
-vec3 compress_beam_hdr(vec3 color) {
-	float intensity = max(color.r, max(color.g, color.b));
-	if (intensity <= 1.0) {
-		return color;
-	}
-
-	float excess = intensity - 1.0;
-	float compressed_intensity = 1.0
-		+ (beam_hdr_limit - 1.0) * (1.0 - exp(-excess * beam_hdr_response));
-	return color * (compressed_intensity / intensity);
 }
 
 
@@ -201,11 +186,7 @@ void fragment() {
 		float lower_row = upper_row + 1.0;
 		vec3 upper_color = sample_scanline(upper_row, row_count, SCREEN_UV, SCREEN_PIXEL_SIZE.x);
 		vec3 lower_color = sample_scanline(lower_row, row_count, SCREEN_UV, SCREEN_PIXEL_SIZE.x);
-		if (beam_hdr_compression_enabled) {
-			upper_color = compress_beam_hdr(upper_color);
-			lower_color = compress_beam_hdr(lower_color);
-		}
-		float power = beam_power(beam_width);
+		float power = beam_power_from_fwhm(beam_width);
 		float compensation = beam_light_compensation(power);
 		float upper_beam = beam_profile(abs(scanline_position - upper_row), power) * compensation;
 		float lower_beam = beam_profile(abs(scanline_position - lower_row), power) * compensation;
