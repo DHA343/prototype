@@ -18,6 +18,18 @@ const BACKGROUND_CHECKER_SIZE: float = 32.0
 		if is_inside_tree():
 			queue_redraw()
 
+@export var images: Array[Texture2D] = []:
+	set(value):
+		images = value
+		if is_node_ready():
+			if _image_index >= images.size() or (
+				_image_index >= 0 and images[_image_index] == null
+			):
+				_show_pattern()
+			else:
+				queue_redraw()
+
+var _image_index: int = -1
 var _previous_content_scale_mode: int
 
 @onready var _ui: Control = $WorldUILayer/UI
@@ -34,6 +46,7 @@ func _ready() -> void:
 	_fit_canvas()
 	call_deferred("_fit_canvas")
 	_create_labels()
+	_ui.visible = _image_index < 0
 
 
 func _exit_tree() -> void:
@@ -43,6 +56,12 @@ func _exit_tree() -> void:
 
 
 func _draw() -> void:
+	if _image_index >= 0:
+		if _image_index < images.size() and images[_image_index] != null:
+			draw_texture_rect(images[_image_index], Rect2(-position, get_viewport_rect().size), false)
+			return
+		_show_pattern()
+
 	match background_style:
 		BackgroundStyle.SOLID:
 			draw_rect(Rect2(Vector2.ZERO, CANVAS_SIZE), Color(0.035, 0.04, 0.055))
@@ -67,14 +86,47 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	if Engine.is_editor_hint():
 		return
 	var key := event as InputEventKey
-	if key == null or not key.pressed or key.echo or key.keycode != KEY_1:
+	if key == null or not key.pressed or key.echo:
 		return
-	background_style = ((background_style + 1) % BackgroundStyle.size()) as BackgroundStyle
+	match key.keycode:
+		KEY_1:
+			if _image_index >= 0:
+				_show_pattern()
+			else:
+				background_style = (
+					(background_style + 1) % BackgroundStyle.size()
+				) as BackgroundStyle
+		KEY_2:
+			_show_next_image()
+		_:
+			return
+	get_viewport().set_input_as_handled()
+
+
+func _show_pattern() -> void:
+	_image_index = -1
+	_ui.show()
+	queue_redraw()
+
+
+func _show_next_image() -> void:
+	for step in range(1, images.size() + 1):
+		var next_index := (_image_index + step) % images.size()
+		if images[next_index] != null:
+			_image_index = next_index
+			_ui.hide()
+			queue_redraw()
+			return
+	_show_pattern()
 
 
 func _create_labels() -> void:
 	_add_label("CRT Display Experimental", Vector2(20.0, 7.0), 22)
-	_add_label("1  BACKGROUND: SOLID / CHECKER / GRADIENT", Vector2(20.0, 38.0), 14)
+	_add_label(
+		"1  PATTERN / BACKGROUND: SOLID / CHECKER / GRADIENT   |   2  NEXT IMAGE",
+		Vector2(20.0, 38.0),
+		14
+	)
 	_add_label("STRIPES  |  COLUMNS: 2 / 3 / 4 / 5 / 6 / 7px   ROWS: V / H / DIAGONAL", Vector2(20.0, 73.0), 14)
 	_add_label("GRAYSCALE  |  SMOOTH / 16 STEPS", Vector2(620.0, 73.0), 14)
 	_add_label("COLOR  |  SMOOTH / 12 STEPS", Vector2(940.0, 73.0), 14)
@@ -121,6 +173,7 @@ func _fit_canvas() -> void:
 		Vector2.DOWN,
 		canvas_offset
 	)
+	queue_redraw()
 
 
 func _draw_background_checkerboard() -> void:

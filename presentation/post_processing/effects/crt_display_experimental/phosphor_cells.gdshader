@@ -8,9 +8,9 @@ uniform int cell_sampling : hint_enum("Reference", "Integrated", "Substrate") = 
 uniform int cell_scale : hint_range(1, 4, 1) = 1;
 uniform float triad_pitch : hint_range(2.0, 6.0, 0.1) = 2.5;
 uniform int integration_samples = 2;
-uniform int row_pitch : hint_range(2, 3, 1) = 3;
-uniform float horizontal_fill : hint_range(0.75, 1.0, 0.01) = 0.90;
-uniform float vertical_fill : hint_range(0.75, 1.0, 0.01) = 0.85;
+uniform int row_pitch : hint_range(2, 4, 1) = 3;
+uniform float horizontal_gap : hint_range(0.0, 1.0, 0.05) = 0.50;
+uniform float vertical_gap : hint_range(0.0, 1.0, 0.05) = 0.50;
 uniform float phosphor_brightness : hint_range(0.5, 3.0, 0.1) = 1.0;
 uniform float brightness_compensation : hint_range(0.5, 2.0, 0.01) = 1.0;
 
@@ -81,8 +81,15 @@ vec3 integrated_emission(vec2 fragment_position, vec2 screen_uv, vec2 pixel_size
 }
 
 
+vec2 substrate_active_size() {
+	// Protect the emitting area even when uniforms are assigned outside Inspector ranges.
+	return max(vec2(triad_pitch, float(row_pitch))
+		- max(vec2(horizontal_gap, vertical_gap), vec2(0.0)), vec2(0.001));
+}
+
+
 vec3 substrate_aperture_integral(float interval_left, float row_offset) {
-	float active_width = triad_pitch * horizontal_fill;
+	float active_width = substrate_active_size().x;
 	float channel_width = active_width / 3.0;
 	float margin = (triad_pitch - active_width) * 0.5;
 	vec3 channel_start = vec3(margin) + vec3(0.0, channel_width, 2.0 * channel_width);
@@ -98,7 +105,7 @@ vec3 substrate_aperture_integral(float interval_left, float row_offset) {
 
 float substrate_row_integral(float interval_top) {
 	float period = float(row_pitch);
-	float active_height = period * vertical_fill;
+	float active_height = substrate_active_size().y;
 	float margin = (period - active_height) * 0.5;
 	float local_top = mod(interval_top, period);
 	float local_bottom = local_top + 0.5;
@@ -127,7 +134,8 @@ vec3 substrate_emission(vec2 fragment_position, vec2 screen_uv, vec2 pixel_size)
 		}
 	}
 	// Every channel has the same emitting area. Coverage already includes sample area.
-	float normalization = 3.0 / (horizontal_fill * vertical_fill);
+	vec2 active_size = substrate_active_size();
+	float normalization = 3.0 * triad_pitch * float(row_pitch) / (active_size.x * active_size.y);
 	return emission * normalization * phosphor_brightness * brightness_compensation;
 }
 

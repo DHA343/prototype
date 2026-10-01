@@ -14,32 +14,57 @@
 [ext_resource type="Script" uid="uid://c1nacv0dkbn1i" path="res://presentation/camera/game_camera.gd" id="11_game_camera"]
 [ext_resource type="PackedScene" uid="uid://1cph7125gclc" path="res://presentation/post_processing/post_processing.tscn" id="12_post_processing"]
 [ext_resource type="PackedScene" path="res://presentation/background/checkerboard_background.tscn" id="13_background"]
-[ext_resource type="Script" path="res://presentation/post_processing/effects/pixelation/pixelation.gd" id="14_pixelation"]
-[ext_resource type="Script" path="res://presentation/post_processing/effects/pixelation/pixelation_layer.gd" id="15_pixelation_layer"]
+[ext_resource type="Script" uid="uid://bnleqmtr4cnpy" path="res://presentation/post_processing/effects/pixelation/pixelation.gd" id="14_pixelation"]
+[ext_resource type="Script" uid="uid://e6n5u5pvxfy8" path="res://presentation/post_processing/effects/pixelation/pixelation_layer.gd" id="15_pixelation_layer"]
+[ext_resource type="Script" uid="uid://d12uwcn8et7ym" path="res://presentation/post_processing/post_process_effect.gd" id="15_q0sk7"]
+[ext_resource type="Script" uid="uid://du0elwyycowft" path="res://presentation/post_processing/effects/color_grading/color_grading.gd" id="16_vapsy"]
+[ext_resource type="Script" uid="uid://4kmsj3ju6w87" path="res://presentation/post_processing/effects/crt_display_experimental/crt_display_experimental.gd" id="17_jofbb"]
+[ext_resource type="Script" uid="uid://b6y73x0igwwoj" path="res://presentation/post_processing/effects/vignette/vignette.gd" id="18_re7it"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_73k8k"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oagth"]
 resource_local_to_scene = true
 shader = ExtResource("3_73k8k")
 shader_parameter/dark_color = Color(0.2992, 0.30396, 0.34, 1)
 shader_parameter/light_color = Color(0.34440002, 0.34440002, 0.41, 1)
 shader_parameter/cell_size = 96.0
 
+[sub_resource type="Resource" id="Resource_pixelation"]
+script = ExtResource("14_pixelation")
+enabled = false
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_spawn_area"]
 size = Vector2(1920, 1080)
 
-[sub_resource type="Resource" id="Resource_pixelation"]
-script = ExtResource("14_pixelation")
+[sub_resource type="Resource" id="Resource_color_grading"]
+script = ExtResource("16_vapsy")
+brightness = -0.02000000000000001
+contrast = 1.08
+saturation = 1.08
+
+[sub_resource type="Resource" id="Resource_crt"]
+script = ExtResource("17_jofbb")
+mask_style = 7
+legacy_mask_strength = 0.75
+cell_sampling = 2
+triad_pitch = 3.0
+
+[sub_resource type="Resource" id="Resource_vignette"]
+script = ExtResource("18_re7it")
+strength = 0.5
+radius = 0.3
+softness = 0.7
+falloff = 1.0
 
 [node name="Main" type="Node2D" unique_id=1883962826]
 physics_interpolation_mode = 2
 script = ExtResource("1_main")
 
 [node name="CheckerboardBackground" parent="." unique_id=1707052795 instance=ExtResource("13_background")]
-material = SubResource("ShaderMaterial_73k8k")
-offset_left = -1504.0
-offset_top = -1007.0
-offset_right = 1504.0
-offset_bottom = 1007.0
+material = SubResource("ShaderMaterial_oagth")
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 2.0
+offset_bottom = 2.0
 dark_color = Color(0.2992, 0.30396, 0.34, 1)
 light_color = Color(0.34440002, 0.34440002, 0.41, 1)
 
@@ -54,7 +79,7 @@ max_offset_y = 24.0
 [node name="CameraShake" type="Node" parent="Camera2D" unique_id=1954490449]
 script = ExtResource("10_camera_shake")
 
-[node name="WorldLayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("post_processing")]
+[node name="WorldLayer" type="CanvasLayer" parent="." unique_id=1734096239 node_paths=PackedStringArray("post_processing")]
 layer = 0
 script = ExtResource("15_pixelation_layer")
 pixelation = SubResource("Resource_pixelation")
@@ -89,6 +114,7 @@ enemy_scene = ExtResource("6_enemy")
 target_count = 100
 
 [node name="PostProcessing" parent="." unique_id=1190863564 instance=ExtResource("12_post_processing")]
+composite_effects = Array[ExtResource("15_q0sk7")]([SubResource("Resource_color_grading"), SubResource("Resource_crt"), SubResource("Resource_vignette")])
 
 [node name="WorldUILayer" type="CanvasLayer" parent="." unique_id=1176134946]
 layer = 100

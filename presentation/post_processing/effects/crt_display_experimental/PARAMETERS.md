@@ -15,10 +15,10 @@ Scene に保存された値は初期値を上書きする。
 | Cell Scale | 1〜4 | 1 | 1 | Referenceのみ。6px triad基準の整数倍率。Integrated / Legacy版では編集不可 |
 | Triad Pitch | 2.0〜6.0 px | 2.5 px | 0.1 | Integrated / Substrate。RGB triadのoutput pixel幅。CRT testは2.0px。解像度による自動換算なし |
 | Signal Sampling | Two Samples / Four Samples | Two Samples | — | Integratedのみ。pixel内の横方向Signal sampling数。apertureは解析積分 |
-| Row Pitch | 2〜3 px | 3 px | 1 | Substrateのみ。行周期。2pxと3pxを比較するための範囲 |
-| Horizontal Fill | 0.75〜1.0 | 0.90 | 0.01 | Substrateのみ。Triad全体の発光幅の割合。発光領域をRGBへ等分し、RGB内部Gapは設けない |
-| Vertical Fill | 0.75〜1.0 | 0.85 | 0.01 | Substrateのみ。行周期に対する発光高さの割合 |
-| Phosphor Brightness | 0.5〜3.0 | 1.0 | 0.1 | 占有率を補償した後の全RGB共通倍率。Substrateの補償gainは3 / (Horizontal Fill × Vertical Fill)。Legacy版では編集不可 |
+| Row Pitch | 2〜4 px | 3 px | 1 | Substrateのみ。整数行周期。2 / 3 / 4pxで比較 |
+| Horizontal Gap | 0〜1 px | 0.50 px | 0.05 | Substrateのみ。Triad内の非発光総幅。両端へ半分ずつ配置し、RGB内部にはGapを設けない |
+| Vertical Gap | 0〜1 px | 0.50 px | 0.05 | Substrateのみ。Row内の非発光総高さ。上下へ半分ずつ配置 |
+| Phosphor Brightness | 0.5〜3.0 | 1.0 | 0.1 | 占有率を補償した後の全RGB共通倍率。Substrateのgainは3 × pitch × row / ((pitch − H Gap) × (row − V Gap))。Legacy版では編集不可 |
 | Brightness Compensation | 0.5〜2.0 | 1.0 | 0.01 | 最終RGBの倍率。1は追加補正なし。範囲は半分〜2倍の調整用 |
 | Near Width | 0.5〜8.0 px @1080p | 4.0 px | 0.1 | すぐ周囲のにじみ。現在のCRT testで使用する調整値を初期値に採用 |
 | Far Width | 4.0〜64.0 px @1080p | 32.0 px | 0.1 | 広いhalo。現在のCRT testで使用する調整値を初期値に採用 |
@@ -26,7 +26,7 @@ Scene に保存された値は初期値を上書きする。
 | Far Strength | 0〜0.1 | 0.05 | 0.001 | sourceからFarへ再配分する割合。初期値5%、上限10%は調整用 |
 | HDR Limit | 1.0〜32.0 | 16.0 | 0.1 | sourceの最大RGB成分の漸近値。1は意味のある端点、16と上限32は調整用 |
 
-step は 1 / 0.1 / 0.01 / 0.001 の10進刻みに統一する。
+stepは原則1 / 0.1 / 0.01 / 0.001。SubstrateのGapのみ、今回の指定に合わせて0.05px刻み。
 Far Strength は0.001刻みで微調整する。初期値0.05の2%ずつ調整できる。
 初期値・範囲・Scene保存値はstep変更に合わせて丸めない。
 

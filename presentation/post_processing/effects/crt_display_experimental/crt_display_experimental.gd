@@ -131,7 +131,7 @@ const BLOOM_SHADER: Shader = preload("./phosphor_bloom.gdshader")
 		emit_changed()
 
 ## Substrate only. Output pixels per cell row. Signal sampling is fixed at 2x2.
-@export_range(2, 3, 1, "suffix:px") var row_pitch: int = 3:
+@export_range(2, 4, 1, "suffix:px") var row_pitch: int = 3:
 	set(value):
 		if row_pitch == value:
 			return
@@ -139,22 +139,22 @@ const BLOOM_SHADER: Shader = preload("./phosphor_bloom.gdshader")
 		row_pitch = value
 		emit_changed()
 
-## Substrate only. Active RGB triad width; internal channel boundaries have no gap.
-@export_range(0.75, 1.0, 0.01) var horizontal_fill: float = 0.90:
+## Substrate only. Total non-emitting width per triad, split equally between both ends.
+@export_range(0.0, 1.0, 0.05, "suffix:px") var horizontal_gap: float = 0.50:
 	set(value):
-		if is_equal_approx(horizontal_fill, value):
+		if is_equal_approx(horizontal_gap, value):
 			return
 
-		horizontal_fill = value
+		horizontal_gap = value
 		emit_changed()
 
-## Substrate only. Active height within each cell row.
-@export_range(0.75, 1.0, 0.01) var vertical_fill: float = 0.85:
+## Substrate only. Total non-emitting height per row, split equally between both ends.
+@export_range(0.0, 1.0, 0.05, "suffix:px") var vertical_gap: float = 0.50:
 	set(value):
-		if is_equal_approx(vertical_fill, value):
+		if is_equal_approx(vertical_gap, value):
 			return
 
-		vertical_fill = value
+		vertical_gap = value
 		emit_changed()
 
 ## Common RGB multiplier after cell occupancy and profile normalization.
@@ -232,7 +232,7 @@ func _validate_property(property: Dictionary) -> void:
 		property.usage |= PROPERTY_USAGE_READ_ONLY
 	elif property.name in [
 		"cell_sampling", "cell_scale", "triad_pitch", "signal_sampling", "phosphor_brightness",
-		"row_pitch", "horizontal_fill", "vertical_fill",
+		"row_pitch", "horizontal_gap", "vertical_gap",
 	] and not _is_phosphor_style():
 		property.usage |= PROPERTY_USAGE_READ_ONLY
 	elif property.name == "cell_scale" and cell_sampling != CellSampling.REFERENCE:
@@ -245,7 +245,7 @@ func _validate_property(property: Dictionary) -> void:
 	elif property.name == "triad_pitch" and cell_sampling == CellSampling.REFERENCE:
 		property.usage |= PROPERTY_USAGE_READ_ONLY
 	elif (
-		property.name in ["row_pitch", "horizontal_fill", "vertical_fill"]
+		property.name in ["row_pitch", "horizontal_gap", "vertical_gap"]
 		and cell_sampling != CellSampling.SUBSTRATE
 	):
 		property.usage |= PROPERTY_USAGE_READ_ONLY
@@ -276,8 +276,8 @@ func apply_to_pass(material: ShaderMaterial, pass_index: int) -> void:
 		material.set_shader_parameter(&"cell_scale", cell_scale)
 		material.set_shader_parameter(&"triad_pitch", triad_pitch)
 		material.set_shader_parameter(&"row_pitch", row_pitch)
-		material.set_shader_parameter(&"horizontal_fill", horizontal_fill)
-		material.set_shader_parameter(&"vertical_fill", vertical_fill)
+		material.set_shader_parameter(&"horizontal_gap", horizontal_gap)
+		material.set_shader_parameter(&"vertical_gap", vertical_gap)
 		var sample_count := 2 if signal_sampling == SignalSampling.TWO_SAMPLES else 4
 		material.set_shader_parameter(&"integration_samples", sample_count)
 		material.set_shader_parameter(&"phosphor_brightness", phosphor_brightness)

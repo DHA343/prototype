@@ -47,30 +47,46 @@ Cell Samplingの初期値はIntegrated、Signal Samplingの初期値はTwo Sampl
 ReferenceではCell Scaleを編集でき、Triad Pitch / Signal Samplingは編集不可。
 Integratedでは逆にCell Scaleが編集不可。LegacyではCell関連項目をすべて編集不可とする。
 SubstrateではCell Scale / Signal Samplingが編集不可で、2×2 samplingを固定使用する。
-Row Pitch / Horizontal Fill / Vertical FillはSubstrateのみ編集可能。
+Row Pitch / Horizontal Gap / Vertical GapはSubstrateのみ編集可能。旧Fillの公開parameterは廃止した。
 Legacy Mask StrengthはPhosphor選択中に編集不可。元画像とのmixは追加しない。
 
-今回の試作はCRT testのみSubstrate / pitch 2.0 / row 3 / fill 0.90・0.85を保存した。
-mainの作業前設定（Reference / Triad Pitch保存値4.0）は変更していない。
+今回の比較条件はCRT testのみSubstrate / pitch 2.0 / row 3 / Gap 0.50・0.50を保存した。
+mainは作業前に既にSubstrate / pitch 4.0 / row 3 / Fill 1.0・0.75を使用していた。
+mainの見た目を保つため、保存値だけをGap 0.0・0.75へ等価換算した。CRT testの比較条件はmainへ適用しない。
 Phosphor BrightnessのResource初期値は1.0。
 CRT testはResource初期値1.0を使用する。mainの設定は作業前のまま維持する。
 
 ## Substrate geometry
 
 - Triad全体とCell rowの周囲に、左右上下対称の非発光領域を設ける。
-- Triadの発光幅はpitch × Horizontal Fill。これを等幅のR/G/Bへ分割し、channel内部境界にはGapを設けない。
-- 高さはRow Pitch × Vertical Fill。Row Pitchは2 / 3 output px、初期値3。
-- 両Fillは0.75〜1.0、step 0.01。初期値はHorizontal 0.90 / Vertical 0.85。
+- Triadの発光幅はpitch − Horizontal Gap。これを等幅のR/G/Bへ分割し、channel内部境界にはGapを設けない。
+- 高さはRow Pitch − Vertical Gap。Row Pitchは2 / 3 / 4 output px、初期値3。
+- 両Gapは0.0〜1.0 output px、step 0.05。初期値はHorizontal 0.50 / Vertical 0.50。
+- Gapは周期両端へ半分ずつ配置。pitchを変更してもGapの絶対幅は変わらない。小数境界を整数pixelへ丸めない。
+- Inspector範囲外の値にも対応するため、負のGapは0、発光幅・高さの下限は0.001pxとして防御する。RGB値をclampする処理ではない。
 - 矩形・hard edgeで、soft edgeは追加しない。
 - Stretched VGAは毎row、VGAは2row単位でhalf-triad staggerする。Gapもstaggerに追従する。
 - output pixelを2×2の4区間に分割し、各区間のX coverage × Y coverageを解析計算。その区間中心から入力信号をbilinear samplingする。
 - Row Pitchが整数でpixel境界に整列するため、1区間内で異なるrow phaseを跨がない。
-- 共通scalar gainは3 / (Horizontal Fill × Vertical Fill)。初期値では約3.9216、Integratedの3に対する追加補償は約1.3072倍。
+- 共通scalar gainは3 × pitch × row / (active_width × active_height)。比較基準pitch 2 / row 3 / Gap 0.50・0.50では4.8、Integratedの3に対する追加補償は1.6倍。
 - 完全な周期の均一入力で各RGB平均を維持する。HDR clamp・別channelへの再配分・元画像mixはしない。
-- 最小Fill 0.75 / 0.75では追加補償が約1.7778倍となる。調整時は局所peakとBloomも確認する。
+- pitch 2 / row 2 / Gap 1・1では追加補償が4倍となる。Gapを広げる場合は局所peakとBloomも確認する。
 - Alphaは中心の入力sampleを維持する。
 
-## Substrateの検証
+## Gap版の比較と検証
+
+- 基準はpitch 2 / row 3 / Gap 0.50・0.50。pitch 4、row 2/4、H Gap 0.25/0.75、V Gap 0.25/0.75を一項目ずつ変更して比較する。
+- 均一入力540条件で、平均誤差は最大約0.0570%、単色の別channelへの漏れ0。独立した矩形交差計算との最大誤差は約0.0806%（分母max(1, expected)）。
+- 2D信号積分24条件の最大誤差は約0.1002%（同じ分母）。
+- Reference / Integratedは24条件で変更前と完全一致。mainのFillからGapへの換算も両Styleで全pixel一致。
+- Inspector範囲外のGap 999pxでも、発光面積の防御によりRGBが有限であることを確認。
+- CRT testの比較画像ではpitch 4の方がRGB粒・色分離が強い。Row 3/4で緑にも明暗が出るが、行方向の構造として認識される傾向が残る。
+- ChromaticAberrationなどの追加effectは比較中だけruntimeで外し、終了時に復元。保存値は維持した。
+- HDRの空間平均保存はSDR表示での色相保存を保証しない。motion時のmoire / shimmer、GPU時間、全CRTの1080p / 2160p比較は未確定。
+
+詳細はdocs/work-reports/phosphor-substrate-gap.mdを参照。
+
+## 変更前Fill版の検証記録
 
 - 均一入力720条件（両Style、row 2/3、pitch 2/2.5/3/6、5組のFill、白/HDR 2/4/8/16/R/G/B/gray）で平均光量の最大誤差約0.0488%、別channelへの漏れ0。
 - 独立した矩形交差計算との最大誤差約0.0781%（分母max(1, expected)）。
