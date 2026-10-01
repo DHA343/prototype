@@ -12,7 +12,7 @@ Cell専用のSubViewportは追加しない。Optical SpreadとBloom Coreにも�
 
 ## Geometry
 
-- Triad Pitch：2.0〜6.0出力px、初期値2.5。各R/G/Bの発光幅は等しい。
+- Triad Pitch：2〜6出力px、1px刻み、初期値3。各R/G/Bの発光幅は等しい。
 - Row Pitch：1〜4出力px、初期値3。整数pixel境界に整列する。
 - Mask Pattern：Staggered RGBは毎row、Staggered RGB (Row Pairs)は2rowごとに半triadずらす。配置計算は共通。
 - Horizontal Gap：0〜1出力px、初期値0。triad両端へ等分し、RGB内部には隙間を作らない。

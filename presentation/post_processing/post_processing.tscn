@@ -22,7 +22,7 @@ script = ExtResource("8_crt")
 mask_pattern = 3
 mask_strength = 1.0
 cell_sampling = 2
-triad_pitch = 4.0
+triad_pitch = 4
 horizontal_gap = 0.0
 vertical_gap = 0.75
 

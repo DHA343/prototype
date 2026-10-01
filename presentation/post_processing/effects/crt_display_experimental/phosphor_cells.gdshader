@@ -4,7 +4,7 @@ render_mode unshaded, blend_disabled;
 uniform sampler2D screen_texture
 	: hint_screen_texture, source_color, repeat_disable, filter_linear;
 uniform int cell_sampling : hint_enum("Horizontal 4:1", "2x2:2") = 1;
-uniform float triad_pitch : hint_range(2.0, 6.0, 0.1) = 2.5;
+uniform float triad_pitch : hint_range(2.0, 6.0, 1.0) = 3.0;
 uniform int row_pitch : hint_range(1, 4, 1) = 3;
 uniform int mask_pattern : hint_enum("Staggered RGB:0", "Staggered RGB (Row Pairs):1") = 0;
 uniform float horizontal_gap : hint_range(0.0, 1.0, 0.05) = 0.0;

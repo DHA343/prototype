@@ -6,6 +6,7 @@ Scene に保存された値は初期値を上書きする。
 
 Mask Modelは描画モデル、Mask Patternは配置方式。行のずらし方はPatternの二つのRGB配置で選ぶ。
 Cell SamplingはHorizontal 4 / 2x2、出力の明るさ倍率はBrightness Compensationに一本化した。
+InspectorではModel / PatternからBrightness Compensationまでを一つのMaskグループへまとめ、内部の小グループは設けない。
 
 | 項目 | 範囲 | 初期値 | step | 意味・根拠 |
 | --- | --- | --- | --- | --- |
@@ -20,7 +21,7 @@ Cell SamplingはHorizontal 4 / 2x2、出力の明るさ倍率はBrightness Compe
 | Mask Pattern | Staggered RGB / Staggered RGB (Row Pairs) / RGB Pixel Pattern / Green / Magenta Stripes | Staggered RGB | — | 前二つは毎行 / 2行ごとに半triadずらすRGB配置。両Modelで使用可能。後二つはRedistribution専用 |
 | Mask Strength | 0〜1 | 0.5 | 0.01 | mask適用前の再構成信号と、完全適用の出力の混合比。両Model共通。0で模様を除去し、Brightness Compensationは維持 |
 | Cell Sampling | Horizontal 4 / 2x2 | Horizontal 4 | — | Cell Emissionの入力sampling。横4点はY中心、2x2は両軸±0.25px。両方式でGapを使用可能 |
-| Triad Pitch | 2.0〜6.0 px | 2.5 px | 0.1 | Staggered RGBの横周期。両Model共通。自動換算なし |
+| Triad Pitch | 2〜6 px | 3 px | 1 | Staggered RGBの横周期。両Model共通。整数pixel単位で調整し、自動換算なし |
 | Row Pitch | 1〜4 px | 3 px | 1 | Staggered RGBの整数行周期。両Model共通 |
 | Horizontal Gap | 0〜1 px | 0 px | 0.05 | Cell Emissionのみ。Triad両端に等分する非発光総幅。RGB内部にはGapを設けない |
 | Gap Alignment | Pixel Boundary / Pixel Center | Pixel Boundary | — | Cell Emissionの横triad全体を0 / 0.5pxへ移す。全samplingで使用可能 |

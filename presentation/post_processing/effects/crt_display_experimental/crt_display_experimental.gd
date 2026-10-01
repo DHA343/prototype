@@ -145,11 +145,10 @@ var mask_pattern: int = MaskPattern.STAGGERED_RGB:
 		mask_strength = value
 		emit_changed()
 
-@export_group("Mask Layout")
 ## RGB triad width in output pixels.
-@export_range(2.0, 6.0, 0.1, "suffix:px") var triad_pitch: float = 2.5:
+@export_range(2, 6, 1, "suffix:px") var triad_pitch: int = 3:
 	set(value):
-		if is_equal_approx(triad_pitch, value):
+		if triad_pitch == value:
 			return
 
 		triad_pitch = value
@@ -164,7 +163,6 @@ var mask_pattern: int = MaskPattern.STAGGERED_RGB:
 		row_pitch = value
 		emit_changed()
 
-@export_group("Cell Emission", "cell_")
 ## Horizontal modes keep the input's vertical center. 2x2 samples both axes.
 @export_enum("Horizontal 4:1", "2x2:2")
 var cell_sampling: int = CellSampling.HORIZONTAL_4:
@@ -177,7 +175,6 @@ var cell_sampling: int = CellSampling.HORIZONTAL_4:
 		cell_sampling = value
 		emit_changed()
 
-@export_group("Cell Layout")
 ## Total non-emitting width per triad, split equally between both ends.
 @export_range(0.0, 1.0, 0.05, "suffix:px") var horizontal_gap: float = 0.0:
 	set(value):
@@ -205,7 +202,6 @@ var cell_sampling: int = CellSampling.HORIZONTAL_4:
 		vertical_gap = value
 		emit_changed()
 
-@export_group("Output")
 ## Common gain after mask blending. One means no additional compensation.
 @export_range(0.25, 6.0, 0.01) var brightness_compensation: float = 1.0:
 	set(value):
@@ -380,7 +376,7 @@ func apply_to_pass(material: ShaderMaterial, pass_index: int) -> void:
 
 	if pass_index == 1:
 		material.set_shader_parameter(&"cell_sampling", cell_sampling)
-		material.set_shader_parameter(&"triad_pitch", triad_pitch)
+		material.set_shader_parameter(&"triad_pitch", float(triad_pitch))
 		material.set_shader_parameter(&"row_pitch", row_pitch)
 		material.set_shader_parameter(&"mask_pattern", mask_pattern)
 		material.set_shader_parameter(&"horizontal_gap", horizontal_gap)
@@ -447,7 +443,7 @@ func _update_shader_parameters() -> void:
 	_shader_parameters[&"beam_width"] = beam_width
 	_shader_parameters[&"mask_model"] = mask_model
 	_shader_parameters[&"mask_pattern"] = mask_pattern
-	_shader_parameters[&"triad_pitch"] = triad_pitch
+	_shader_parameters[&"triad_pitch"] = float(triad_pitch)
 	_shader_parameters[&"row_pitch"] = row_pitch
 	_shader_parameters[&"mask_strength"] = mask_strength
 	_shader_parameters[&"brightness_compensation"] = brightness_compensation
