@@ -4,7 +4,7 @@
 
 StyleはStretched VGA Phosphor（7）とVGA Phosphor（8）。Legacy ID 0〜6は維持する。
 Signal Reconstruction → Beam → Phosphor Cell → Phosphor Bloomの順序は変更しない。
-同じCell shader内のCell SamplingでReference / Integratedを比較する。追加SubViewportやOptical Spreadは使用しない。
+同じCell shader内のCell SamplingでReference / Integrated / Substrateを比較する。追加SubViewportやOptical Spreadは使用しない。
 
 ## Reference
 
@@ -46,11 +46,43 @@ Alphaは中心の入力sampleを維持する。
 Cell Samplingの初期値はIntegrated、Signal Samplingの初期値はTwo Samples。
 ReferenceではCell Scaleを編集でき、Triad Pitch / Signal Samplingは編集不可。
 Integratedでは逆にCell Scaleが編集不可。LegacyではCell関連項目をすべて編集不可とする。
+SubstrateではCell Scale / Signal Samplingが編集不可で、2×2 samplingを固定使用する。
+Row Pitch / Horizontal Fill / Vertical FillはSubstrateのみ編集可能。
 Legacy Mask StrengthはPhosphor選択中に編集不可。元画像とのmixは追加しない。
 
-mainとCRT testはIntegrated / pitch 2.5 / Two Samplesを保存した。
+今回の試作はCRT testのみSubstrate / pitch 2.0 / row 3 / fill 0.90・0.85を保存した。
+mainの作業前設定（Reference / Triad Pitch保存値4.0）は変更していない。
 Phosphor BrightnessのResource初期値は1.0。
-作業前のユーザー調整を維持し、mainは0.8、CRT testはResource初期値1.0を使用する。
+CRT testはResource初期値1.0を使用する。mainの設定は作業前のまま維持する。
+
+## Substrate geometry
+
+- Triad全体とCell rowの周囲に、左右上下対称の非発光領域を設ける。
+- Triadの発光幅はpitch × Horizontal Fill。これを等幅のR/G/Bへ分割し、channel内部境界にはGapを設けない。
+- 高さはRow Pitch × Vertical Fill。Row Pitchは2 / 3 output px、初期値3。
+- 両Fillは0.75〜1.0、step 0.01。初期値はHorizontal 0.90 / Vertical 0.85。
+- 矩形・hard edgeで、soft edgeは追加しない。
+- Stretched VGAは毎row、VGAは2row単位でhalf-triad staggerする。Gapもstaggerに追従する。
+- output pixelを2×2の4区間に分割し、各区間のX coverage × Y coverageを解析計算。その区間中心から入力信号をbilinear samplingする。
+- Row Pitchが整数でpixel境界に整列するため、1区間内で異なるrow phaseを跨がない。
+- 共通scalar gainは3 / (Horizontal Fill × Vertical Fill)。初期値では約3.9216、Integratedの3に対する追加補償は約1.3072倍。
+- 完全な周期の均一入力で各RGB平均を維持する。HDR clamp・別channelへの再配分・元画像mixはしない。
+- 最小Fill 0.75 / 0.75では追加補償が約1.7778倍となる。調整時は局所peakとBloomも確認する。
+- Alphaは中心の入力sampleを維持する。
+
+## Substrateの検証
+
+- 均一入力720条件（両Style、row 2/3、pitch 2/2.5/3/6、5組のFill、白/HDR 2/4/8/16/R/G/B/gray）で平均光量の最大誤差約0.0488%、別channelへの漏れ0。
+- 独立した矩形交差計算との最大誤差約0.0781%（分母max(1, expected)）。
+- Gradient、1pxのY方向輝度変化、HDR edgeを含む32条件で2×2 quadratureを照合。最大誤差約0.1049%（同じ分母）。
+- 変更前shaderとReference / Integratedを24条件で比較し、全pixelのRGBが完全一致。
+- 初期Fill・pitch 2の緑単色で、row 2は約0.9995〜1.0、row 3は約0.9116〜1.1758。row 3で明暗構造が現れることを確認。
+- 全41 pitch × 両Style × row 2/3の164条件を幅3840pxの左・中央・右端付近で確認。近ゼロcoverageの誤差を含むため、詳細数値は今回の作業記録を参照。
+- 小数Canvas移動で、中央の均一入力の画素値は差0。
+- CRT testで両Style・旧Integrated・row 2/3、Bloom ON/OFFを比較。緑にも行方向の構造が現れるが、白文字のRGB分離は残る。
+- 全色で同じ素子感になることや、moving signalのmoire / shimmerがなくなることは保証しない。GPU profilingとCRT全体の1080p / 2160p比較は未実施。
+
+上記より下の検証は、Substrate追加前のReference / Integrated実装時の記録。
 
 ## 検証
 

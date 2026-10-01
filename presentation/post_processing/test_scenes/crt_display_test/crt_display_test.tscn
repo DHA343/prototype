@@ -9,9 +9,11 @@
 script = ExtResource("4_crt")
 mask_style = 7
 legacy_mask_strength = 0.75
-triad_pitch = 4.0
-phosphor_brightness = 0.5
-brightness_compensation = 1.5
+cell_sampling = 2
+triad_pitch = 2.0
+row_pitch = 3
+horizontal_fill = 0.9
+vertical_fill = 0.85
 
 [node name="CRTDisplayTest" type="Node2D" unique_id=682829650]
 script = ExtResource("1_test")
