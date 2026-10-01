@@ -5,15 +5,23 @@ uniform sampler2D screen_texture
 	: hint_screen_texture, source_color, repeat_disable, filter_linear;
 
 uniform bool signal_enabled = true;
+uniform bool signal_prefilter_enabled = true;
 uniform int scanline_count : hint_range(180, 720, 1) = 360;
 uniform float sharpness : hint_range(0.5, 1.0, 0.01) = 0.67;
 uniform float signal_pitch : hint_range(0.5, 3.0, 0.1) = 1.5;
-uniform float beam_width : hint_range(0.75, 1.25, 0.01) = 1.0;
-uniform int mask_style : hint_enum("Stretched VGA", "VGA", "Dots", "Aperture Grille", "Wide Grille", "Wide Soft Grille", "Slot Mask", "Stretched VGA Phosphor", "VGA Phosphor") = 0;
+uniform float vertical_blur : hint_range(0.0, 1.0, 0.01) = 1.0;
+uniform float scanline_strength : hint_range(0.0, 1.0, 0.01) = 0.15;
+uniform float beam_width : hint_range(0.75, 1.25, 0.01) = 0.9;
+uniform float triad_pitch : hint_range(2.0, 6.0, 0.1) = 2.5;
+uniform int row_pitch : hint_range(1, 4, 1) = 3;
+uniform int mask_model : hint_enum("Mask Redistribution", "Cell Emission") = 0;
+uniform int mask_pattern : hint_enum("Staggered RGB:0", "Staggered RGB (Row Pairs):1", "RGB Pixel Pattern:2", "Green / Magenta Stripes:3") = 0;
 uniform float mask_strength : hint_range(0.0, 1.0, 0.01) = 0.5;
-uniform float brightness_compensation : hint_range(0.5, 2.0, 0.01) = 1.0;
+uniform float brightness_compensation : hint_range(0.25, 6.0, 0.01) = 1.0;
 
 const float HALF_PI = 1.57079632679;
+
+#include "rgb_aperture.gdshaderinc"
 
 
 float signal_weight(float distance) {
@@ -21,8 +29,49 @@ float signal_weight(float distance) {
 }
 
 
-vec3 reconstruct_signal(float row_y, float screen_x, float pixel_width) {
-	float signal_x = (screen_x / pixel_width - 0.5) / signal_pitch;
+vec3 sample_signal(vec2 sample_uv, vec2 pixel_size, vec2 footprint) {
+	if (!signal_prefilter_enabled) {
+		return textureLod(screen_texture, sample_uv, 0.0).rgb;
+	}
+
+	// Integrate source-pixel coverage before reducing the signal's sampling rate.
+	// Pair adjacent pixels into one bilinear read without skipping thin features.
+	vec2 footprint_start = sample_uv / pixel_size - footprint * 0.5;
+	vec2 footprint_end = footprint_start + footprint;
+	vec2 first_pixel = floor(footprint_start);
+	ivec2 pixel_count = ivec2(ceil(footprint_end) - first_pixel);
+	vec3 integrated_color = vec3(0.0);
+
+	for (int row = 0; row < pixel_count.y; row += 2) {
+		float pixel_y = first_pixel.y + float(row);
+		vec2 row_start = vec2(pixel_y, pixel_y + 1.0);
+		vec2 row_weights = max(
+			min(vec2(footprint_end.y), row_start + 1.0)
+			- max(vec2(footprint_start.y), row_start), vec2(0.0));
+		float row_weight = row_weights.x + row_weights.y;
+		float sample_y = pixel_y + 0.5 + row_weights.y / row_weight;
+
+		for (int column = 0; column < pixel_count.x; column += 2) {
+			float pixel_x = first_pixel.x + float(column);
+			vec2 column_start = vec2(pixel_x, pixel_x + 1.0);
+			vec2 column_weights = max(
+				min(vec2(footprint_end.x), column_start + 1.0)
+				- max(vec2(footprint_start.x), column_start), vec2(0.0));
+			float column_weight = column_weights.x + column_weights.y;
+			float sample_x = pixel_x + 0.5 + column_weights.y / column_weight;
+			vec2 filtered_uv = clamp(vec2(sample_x, sample_y) * pixel_size,
+				pixel_size * 0.5, vec2(1.0) - pixel_size * 0.5);
+			integrated_color += textureLod(screen_texture, filtered_uv, 0.0).rgb
+				* column_weight * row_weight;
+		}
+	}
+
+	return integrated_color / (footprint.x * footprint.y);
+}
+
+
+vec3 reconstruct_signal(float row_y, float screen_x, vec2 pixel_size, vec2 footprint) {
+	float signal_x = (screen_x / pixel_size.x - 0.5) / signal_pitch;
 	float center_index = floor(signal_x + 0.5);
 	vec3 weighted_color = vec3(0.0);
 	float total_weight = 0.0;
@@ -30,9 +79,11 @@ vec3 reconstruct_signal(float row_y, float screen_x, float pixel_width) {
 	for (int offset = -2; offset <= 2; offset++) {
 		float sample_index = center_index + float(offset);
 		float weight = signal_weight(abs(signal_x - sample_index));
-		float sample_x = clamp((sample_index * signal_pitch + 0.5) * pixel_width,
-			0.5 * pixel_width, 1.0 - 0.5 * pixel_width);
-		weighted_color += textureLod(screen_texture, vec2(sample_x, row_y), 0.0).rgb * weight;
+		if (weight > 0.0) {
+			float sample_x = clamp((sample_index * signal_pitch + 0.5) * pixel_size.x,
+				0.5 * pixel_size.x, 1.0 - 0.5 * pixel_size.x);
+			weighted_color += sample_signal(vec2(sample_x, row_y), pixel_size, footprint) * weight;
+		}
 		total_weight += weight;
 	}
 
@@ -40,9 +91,10 @@ vec3 reconstruct_signal(float row_y, float screen_x, float pixel_width) {
 }
 
 
-vec3 sample_scanline(float row, float row_count, vec2 screen_uv, float pixel_width) {
+vec3 sample_scanline(float row, float row_count, vec2 screen_uv, vec2 pixel_size) {
 	float row_y = (clamp(row, 0.0, row_count - 1.0) + 0.5) / row_count;
-	return reconstruct_signal(row_y, screen_uv.x, pixel_width);
+	vec2 footprint = max(vec2(signal_pitch, 1.0 / (row_count * pixel_size.y)), vec2(1.0));
+	return reconstruct_signal(row_y, screen_uv.x, pixel_size, footprint);
 }
 
 
@@ -72,34 +124,31 @@ float beam_light_compensation(float power) {
 }
 
 
-float get_vga_phase(vec2 position) {
-	if (mask_style == 1) {
-		position = floor(position * vec2(1.0, 0.5));
+float scanline_light(float position, float pixel_span) {
+	float power = beam_power_from_fwhm(beam_width);
+	float integrated_light = 0.0;
+	// Average the row profile across the output pixel to soften narrow bands.
+	for (int index = 0; index < 4; index++) {
+		float offset = (float(index) + 0.5) / 4.0 - 0.5;
+		float phase = fract(position + offset * pixel_span);
+		integrated_light += beam_profile(phase, power) + beam_profile(1.0 - phase, power);
 	}
-	return fract((position.x + position.y * 3.0) / 6.0);
-}
-
-
-vec3 get_active_phosphor(float phase) {
-	if (phase < 0.3333) {
-		return vec3(1.0, 0.0, 0.0);
-	} else if (phase < 0.6666) {
-		return vec3(0.0, 1.0, 0.0);
-	}
-	return vec3(0.0, 0.0, 1.0);
+	return integrated_light * 0.25 * beam_light_compensation(power);
 }
 
 
 // Additional pattern cells and averages follow https://godotshaders.com/shader/crt-with-luminance-preservation/
 vec4 generate_mask(vec2 fragcoord) {
-	if (mask_style < 2) {
-		vec2 vga_position = floor(1.000001 * fragcoord + vec2(0.5));
-		return vec4(get_active_phosphor(get_vga_phase(vga_position)), 1.0 / 3.0);
+	if (mask_pattern == 0 || mask_pattern == 1) {
+		float row_offset = rgb_row_offset(fragcoord.y, triad_pitch, float(row_pitch), mask_pattern);
+		vec3 coverage = rgb_aperture_integral(
+			fragcoord.x - 0.5, 1.0, row_offset, triad_pitch, triad_pitch, 0.0);
+		return vec4(coverage, 1.0 / 3.0);
 	}
 
 	int column = int(floor(fragcoord.x));
 	int row = int(floor(fragcoord.y));
-	if (mask_style == 2) {
+	if (mask_pattern == 2) {
 		int phase = (row * 2 + column) % 4;
 		if (phase == 0) {
 			return vec4(1.0, 0.0, 0.0, 0.25);
@@ -110,61 +159,16 @@ vec4 generate_mask(vec2 fragcoord) {
 		}
 		return vec4(0.0, 0.0, 0.0, 0.25);
 	}
-	if (mask_style == 3) {
+	if (mask_pattern == 3) {
 		return column % 2 == 0
 			? vec4(0.0, 1.0, 0.0, 0.5) : vec4(1.0, 0.0, 1.0, 0.5);
 	}
-	if (mask_style == 4) {
-		int phase = column % 4;
-		if (phase == 0) {
-			return vec4(1.0, 0.0, 0.0, 0.25);
-		} else if (phase == 1) {
-			return vec4(0.0, 1.0, 0.0, 0.25);
-		} else if (phase == 2) {
-			return vec4(0.0, 0.0, 1.0, 0.25);
-		}
-		return vec4(0.0, 0.0, 0.0, 0.25);
-	}
-	if (mask_style == 5) {
-		int phase = column % 4;
-		if (phase == 0) {
-			return vec4(1.0, 0.125, 0.0, 0.3125);
-		} else if (phase == 1) {
-			return vec4(0.125, 1.0, 0.125, 0.3125);
-		} else if (phase == 2) {
-			return vec4(0.0, 0.125, 1.0, 0.3125);
-		}
-		return vec4(0.125, 0.0, 0.125, 0.3125);
-	}
+	return vec4(1.0 / 3.0);
 
-	int slot_row = row % 4;
-	int slot_column = column % 4;
-	if (slot_row == 0 || slot_row == 2) {
-		return slot_column % 2 == 0
-			? vec4(1.0, 0.0, 1.0, 0.375) : vec4(0.0, 1.0, 0.0, 0.375);
-	}
-	if (slot_row == 1) {
-		if (slot_column == 0) {
-			return vec4(0.0, 0.0, 1.0, 0.375);
-		} else if (slot_column == 1) {
-			return vec4(0.0, 1.0, 0.0, 0.375);
-		} else if (slot_column == 2) {
-			return vec4(1.0, 0.0, 0.0, 0.375);
-		}
-		return vec4(0.0, 0.0, 0.0, 0.375);
-	}
-	if (slot_column == 0) {
-		return vec4(1.0, 0.0, 0.0, 0.375);
-	} else if (slot_column == 2) {
-		return vec4(0.0, 0.0, 1.0, 0.375);
-	} else if (slot_column == 3) {
-		return vec4(0.0, 1.0, 0.0, 0.375);
-	}
-	return vec4(0.0, 0.0, 0.0, 0.375);
 }
 
 
-vec3 apply_phosphor_mask(vec3 color, vec4 mask_sample) {
+vec3 redistribute_mask(vec3 color, vec4 mask_sample) {
 	vec3 positive_color = max(color, vec3(0.0));
 	vec3 target_color = positive_color / mask_sample.a;
 	vec3 primary_color = clamp(target_color, vec3(0.0), vec3(1.0));
@@ -178,27 +182,43 @@ vec3 apply_phosphor_mask(vec3 color, vec4 mask_sample) {
 void fragment() {
 	vec4 screen_color = textureLod(screen_texture, SCREEN_UV, 0.0);
 	vec3 scanline_color = screen_color.rgb;
+	float row_count = float(scanline_count);
+	float scanline_position = SCREEN_UV.y * row_count - 0.5;
 
 	if (signal_enabled) {
-		float row_count = float(scanline_count);
-		float scanline_position = SCREEN_UV.y * row_count - 0.5;
-		float upper_row = floor(scanline_position);
-		float lower_row = upper_row + 1.0;
-		vec3 upper_color = sample_scanline(upper_row, row_count, SCREEN_UV, SCREEN_PIXEL_SIZE.x);
-		vec3 lower_color = sample_scanline(lower_row, row_count, SCREEN_UV, SCREEN_PIXEL_SIZE.x);
-		float power = beam_power_from_fwhm(beam_width);
-		float compensation = beam_light_compensation(power);
-		float upper_beam = beam_profile(abs(scanline_position - upper_row), power) * compensation;
-		float lower_beam = beam_profile(abs(scanline_position - lower_row), power) * compensation;
-		scanline_color = upper_color * upper_beam + lower_color * lower_beam;
+		if (vertical_blur > 0.0) {
+			float upper_row = floor(scanline_position);
+			float lower_row = upper_row + 1.0;
+			vec3 upper_color = sample_scanline(upper_row, row_count, SCREEN_UV, SCREEN_PIXEL_SIZE);
+			vec3 lower_color = sample_scanline(lower_row, row_count, SCREEN_UV, SCREEN_PIXEL_SIZE);
+			float row_phase = fract(scanline_position);
+			float lower_weight = 0.5 - 0.5 * cos(2.0 * HALF_PI * row_phase);
+			scanline_color = mix(upper_color, lower_color, lower_weight);
+		}
+		if (vertical_blur < 1.0) {
+			vec2 horizontal_footprint = vec2(max(signal_pitch, 1.0), 1.0);
+			vec3 horizontal_color = reconstruct_signal(
+				SCREEN_UV.y, SCREEN_UV.x, SCREEN_PIXEL_SIZE, horizontal_footprint);
+			scanline_color = mix(horizontal_color, scanline_color, vertical_blur);
+		}
+	}
+
+	if (scanline_strength > 0.0) {
+		float pixel_span = row_count * SCREEN_PIXEL_SIZE.y;
+		// Fade unresolved row frequencies before they turn into aliasing patterns.
+		float visibility = 1.0 - smoothstep(0.4, 0.5, pixel_span);
+		if (visibility > 0.0) {
+			scanline_color *= mix(1.0, scanline_light(scanline_position, pixel_span),
+				scanline_strength * visibility);
+		}
 	}
 
 	vec3 output_color;
-	if (mask_style == 7 || mask_style == 8) {
-		// Pass 1 samples this reconstructed HDR signal once per logical triad.
+	if (mask_model == 1) {
+		// The Cell pass samples this reconstructed HDR signal before Bloom.
 		output_color = scanline_color;
 	} else {
-		output_color = apply_phosphor_mask(scanline_color, generate_mask(FRAGCOORD.xy))
+		output_color = redistribute_mask(scanline_color, generate_mask(FRAGCOORD.xy))
 			* brightness_compensation;
 	}
 	COLOR = vec4(output_color, screen_color.a);

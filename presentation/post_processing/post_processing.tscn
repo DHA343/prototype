@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cdcn5i66x14bu" path="res://presentation/post_processing/post_processing.gd" id="1_post_processing"]
 [ext_resource type="Script" uid="uid://d12uwcn8et7ym" path="res://presentation/post_processing/post_process_effect.gd" id="2_effect"]
+[ext_resource type="Script" uid="uid://bi87egye7reys" path="res://presentation/post_processing/effects/chromatic_aberration/chromatic_aberration.gd" id="4_h14q8"]
 [ext_resource type="Script" uid="uid://du0elwyycowft" path="res://presentation/post_processing/effects/color_grading/color_grading.gd" id="5_color_grading"]
 [ext_resource type="Script" uid="uid://4kmsj3ju6w87" path="res://presentation/post_processing/effects/crt_display_experimental/crt_display_experimental.gd" id="8_crt"]
 [ext_resource type="Script" uid="uid://b6y73x0igwwoj" path="res://presentation/post_processing/effects/vignette/vignette.gd" id="10_vignette"]
@@ -12,10 +13,14 @@ brightness = -0.02000000000000001
 contrast = 1.08
 saturation = 1.08
 
+[sub_resource type="Resource" id="Resource_6tupy"]
+script = ExtResource("4_h14q8")
+metadata/_custom_type_script = "uid://bi87egye7reys"
+
 [sub_resource type="Resource" id="Resource_crt"]
 script = ExtResource("8_crt")
-mask_style = 7
-legacy_mask_strength = 0.6
+mask_pattern = 3
+mask_strength = 1.0
 cell_sampling = 2
 triad_pitch = 4.0
 horizontal_gap = 0.0
@@ -30,4 +35,4 @@ falloff = 1.0
 
 [node name="PostProcessing" type="Node" unique_id=776314143]
 script = ExtResource("1_post_processing")
-composite_effects = Array[ExtResource("2_effect")]([SubResource("Resource_color_grading"), SubResource("Resource_crt"), SubResource("Resource_vignette")])
+composite_effects = Array[ExtResource("2_effect")]([SubResource("Resource_color_grading"), SubResource("Resource_6tupy"), SubResource("Resource_crt"), SubResource("Resource_vignette")])

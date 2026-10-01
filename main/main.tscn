@@ -19,9 +19,10 @@
 [ext_resource type="Script" uid="uid://d12uwcn8et7ym" path="res://presentation/post_processing/post_process_effect.gd" id="15_q0sk7"]
 [ext_resource type="Script" uid="uid://du0elwyycowft" path="res://presentation/post_processing/effects/color_grading/color_grading.gd" id="16_vapsy"]
 [ext_resource type="Script" uid="uid://4kmsj3ju6w87" path="res://presentation/post_processing/effects/crt_display_experimental/crt_display_experimental.gd" id="17_jofbb"]
+[ext_resource type="Script" uid="uid://bi87egye7reys" path="res://presentation/post_processing/effects/chromatic_aberration/chromatic_aberration.gd" id="17_vapsy"]
 [ext_resource type="Script" uid="uid://b6y73x0igwwoj" path="res://presentation/post_processing/effects/vignette/vignette.gd" id="18_re7it"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_oagth"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vapsy"]
 resource_local_to_scene = true
 shader = ExtResource("3_73k8k")
 shader_parameter/dark_color = Color(0.2992, 0.30396, 0.34, 1)
@@ -35,20 +36,27 @@ enabled = false
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_spawn_area"]
 size = Vector2(1920, 1080)
 
-[sub_resource type="Resource" id="Resource_color_grading"]
+[sub_resource type="Resource" id="Resource_jofbb"]
 script = ExtResource("16_vapsy")
 brightness = -0.02000000000000001
 contrast = 1.08
 saturation = 1.08
 
-[sub_resource type="Resource" id="Resource_crt"]
-script = ExtResource("17_jofbb")
-mask_style = 7
-legacy_mask_strength = 0.75
-cell_sampling = 2
-triad_pitch = 3.0
+[sub_resource type="Resource" id="Resource_re7it"]
+script = ExtResource("17_vapsy")
+metadata/_custom_type_script = "uid://bi87egye7reys"
 
-[sub_resource type="Resource" id="Resource_vignette"]
+[sub_resource type="Resource" id="Resource_oagth"]
+script = ExtResource("17_jofbb")
+beam_width = 0.75
+mask_pattern = 1
+mask_strength = 0.8
+triad_pitch = 4.0
+cell_sampling = 2
+horizontal_gap = 0.0
+vertical_gap = 0.75
+
+[sub_resource type="Resource" id="Resource_n53tw"]
 script = ExtResource("18_re7it")
 strength = 0.5
 radius = 0.3
@@ -60,7 +68,7 @@ physics_interpolation_mode = 2
 script = ExtResource("1_main")
 
 [node name="CheckerboardBackground" parent="." unique_id=1707052795 instance=ExtResource("13_background")]
-material = SubResource("ShaderMaterial_oagth")
+material = SubResource("ShaderMaterial_vapsy")
 offset_left = -2.0
 offset_top = -2.0
 offset_right = 2.0
@@ -114,7 +122,7 @@ enemy_scene = ExtResource("6_enemy")
 target_count = 100
 
 [node name="PostProcessing" parent="." unique_id=1190863564 instance=ExtResource("12_post_processing")]
-composite_effects = Array[ExtResource("15_q0sk7")]([SubResource("Resource_color_grading"), SubResource("Resource_crt"), SubResource("Resource_vignette")])
+composite_effects = Array[ExtResource("15_q0sk7")]([SubResource("Resource_jofbb"), SubResource("Resource_re7it"), SubResource("Resource_oagth"), SubResource("Resource_n53tw")])
 
 [node name="WorldUILayer" type="CanvasLayer" parent="." unique_id=1176134946]
 layer = 100

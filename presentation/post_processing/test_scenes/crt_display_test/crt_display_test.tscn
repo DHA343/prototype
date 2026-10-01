@@ -5,39 +5,32 @@
 [ext_resource type="Script" uid="uid://d12uwcn8et7ym" path="res://presentation/post_processing/post_process_effect.gd" id="3_effect"]
 [ext_resource type="Script" uid="uid://du0elwyycowft" path="res://presentation/post_processing/effects/color_grading/color_grading.gd" id="3_l4uol"]
 [ext_resource type="Script" uid="uid://4kmsj3ju6w87" path="res://presentation/post_processing/effects/crt_display_experimental/crt_display_experimental.gd" id="4_crt"]
-[ext_resource type="Script" uid="uid://0e4rd30wx0tl" path="res://presentation/post_processing/effects/glow/glow.gd" id="6_imu1g"]
 [ext_resource type="Script" uid="uid://bi87egye7reys" path="res://presentation/post_processing/effects/chromatic_aberration/chromatic_aberration.gd" id="7_33yvh"]
 [ext_resource type="Texture2D" uid="uid://b88bbiqbtds1n" path="res://_temp/0040997d99e7fc8ecebb4518ae97c9e9.png" id="7_image"]
 [ext_resource type="Texture2D" uid="uid://dsco3rqkupiql" path="res://_temp/img_art2.jpg" id="8_image"]
 
 [sub_resource type="Resource" id="Resource_l4uol"]
 script = ExtResource("3_l4uol")
-brightness = -0.06000000000000005
-contrast = 1.11
-saturation = 1.08
+brightness = -0.02000000000000001
+contrast = 1.03
+saturation = 1.1
 metadata/_custom_type_script = "uid://du0elwyycowft"
 
 [sub_resource type="Resource" id="Resource_0q2tp"]
 script = ExtResource("7_33yvh")
-amount = 32.0
 metadata/_custom_type_script = "uid://bi87egye7reys"
 
 [sub_resource type="Resource" id="Resource_imu1g"]
 script = ExtResource("4_crt")
 sharpness = 0.5
 signal_pitch = 2.0
-mask_style = 7
-legacy_mask_strength = 0.75
-cell_sampling = 2
+vertical_blur = 0.5
+mask_model = 1
+mask_strength = 1.0
 triad_pitch = 2.0
-row_pitch = 3
-horizontal_gap = 0.5
-vertical_gap = 0.5
-
-[sub_resource type="Resource" id="Resource_yncuq"]
-script = ExtResource("6_imu1g")
-enabled = false
-metadata/_custom_type_script = "uid://0e4rd30wx0tl"
+cell_sampling = 2
+gap_alignment = 1
+noise_enabled = false
 
 [node name="CRTDisplayTest" type="Node2D" unique_id=682829650]
 script = ExtResource("1_test")
@@ -45,7 +38,7 @@ images = Array[Texture2D]([ExtResource("7_image"), ExtResource("8_image")])
 
 [node name="PostProcessing" type="Node" parent="." unique_id=399131554]
 script = ExtResource("2_post_processing")
-composite_effects = Array[ExtResource("3_effect")]([SubResource("Resource_l4uol"), SubResource("Resource_0q2tp"), SubResource("Resource_imu1g"), SubResource("Resource_yncuq")])
+composite_effects = Array[ExtResource("3_effect")]([SubResource("Resource_l4uol"), SubResource("Resource_0q2tp"), SubResource("Resource_imu1g")])
 
 [node name="WorldUILayer" type="CanvasLayer" parent="." unique_id=642775055]
 layer = 100

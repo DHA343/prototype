@@ -9,23 +9,27 @@ var _context: PassSourceContext
 var _main_viewport: Viewport
 var _layer_index: int
 var _bloom_material: ShaderMaterial
+var _bloom_pass_index: int
 var _core_viewport: SubViewport
 var _viewports: Array[SubViewport] = []
 var _materials: Array[ShaderMaterial] = []
 var _attached_canvases: Dictionary[RID, WeakRef] = {}
 var _replayed_passes: Dictionary[PassSourceContext.Pass, ColorRect] = {}
+var _replayed_copies: Dictionary[PassSourceContext.Pass, BackBufferCopy] = {}
 
 
 func initialize(
 	effect: PostProcessEffect,
 	context: PassSourceContext,
 	bloom_material: ShaderMaterial,
+	bloom_pass_index: int,
 ) -> void:
 	_effect = effect
 	_context = context
 	_main_viewport = context.main_viewport
 	_layer_index = context.layer_index
 	_bloom_material = bloom_material
+	_bloom_pass_index = bloom_pass_index
 
 
 func _ready() -> void:
@@ -52,7 +56,9 @@ func _process(_delta: float) -> void:
 	_sync_viewports()
 	_update_enabled_state()
 	for preceding: PassSourceContext.Pass in _replayed_passes:
-		_replayed_passes[preceding].visible = preceding.is_enabled()
+		var is_enabled := preceding.is_enabled()
+		_replayed_passes[preceding].visible = is_enabled
+		_replayed_copies[preceding].visible = is_enabled
 
 
 func _exit_tree() -> void:
@@ -98,7 +104,9 @@ func _replay_core() -> void:
 	for preceding: PassSourceContext.Pass in _context.preceding_passes:
 		var copy := BackBufferCopy.new()
 		copy.copy_mode = BackBufferCopy.COPY_MODE_VIEWPORT
+		copy.visible = preceding.is_enabled()
 		layer.add_child(copy)
+		_replayed_copies[preceding] = copy
 		var rect := ColorRect.new()
 		rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		rect.material = preceding.material
@@ -131,7 +139,7 @@ func _create_filter(
 
 func _update_parameters() -> void:
 	for material: ShaderMaterial in _materials:
-		_effect.apply_to_pass(material, 1)
+		_effect.apply_to_pass(material, _bloom_pass_index)
 	var scale_factor := float(_core_viewport.size.y) / REFERENCE_HEIGHT
 	var near_width: float = _effect.get(&"phosphor_bloom_near_width") * scale_factor
 	var far_width: float = _effect.get(&"phosphor_bloom_far_width") * scale_factor

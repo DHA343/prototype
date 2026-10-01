@@ -1,9 +1,13 @@
 # Phosphor Bloom
 
-Pass 0のSignal Reconstruction → Beamと、Legacy MaskまたはPass 1のPhosphor Cellの後に適用する。
-BloomはPass 2で、Phosphor Styleの場合はCell適用後のHDR出力をsourceにする。
+Mask ModelがMask RedistributionならPass 0、Cell EmissionならPass 1でmaskを適用し、Pass 2のOptical Spreadを適用した後に使う。
+BloomはPass 3で、maskと狭い光の広がりを適用したHDR出力をsourceにする。NoiseはPass 4でBloomの後。
 Bloom source の HDR 応答を制限する方式（旧 Limited）に一本化した。
 Near/Far の Gaussian と光量再配分は比較時から変更していない。
+
+Coreの再描画にはOptical Spreadも含め、無効なpassはColorRectとBackBufferCopyをどちらも非表示にする。
+filterのparameter更新は、初期化時に渡されたBloom pass indexを使用する。
+以前の固定index 1ではCell用のparameterを送っていたため、HDR Limitの変更がfilterへ届かなかった。今回、Bloom用の値が反映されるよう修正した。
 
 ## 初期値
 
