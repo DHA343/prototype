@@ -8,7 +8,6 @@ uniform float triad_pitch : hint_range(2.0, 6.0, 1.0) = 3.0;
 uniform int row_pitch : hint_range(1, 4, 1) = 3;
 uniform int mask_pattern : hint_enum("Staggered RGB:0", "Staggered RGB (Row Pairs):1") = 0;
 uniform float horizontal_gap : hint_range(0.0, 1.0, 0.05) = 0.0;
-uniform int gap_alignment : hint_enum("Pixel Boundary", "Pixel Center") = 0;
 uniform float vertical_gap : hint_range(0.0, 1.0, 0.05) = 0.0;
 uniform float mask_strength : hint_range(0.0, 1.0, 0.01) = 0.5;
 uniform float brightness_compensation : hint_range(0.25, 6.0, 0.01) = 1.0;
@@ -54,7 +53,7 @@ vec3 cell_emission(vec2 fragment_position, vec2 screen_uv, vec2 pixel_size) {
 			vec3 screen_rgb = textureLod(screen_texture, screen_uv + sample_offset * pixel_size, 0.0).rgb;
 			vec3 coverage = rgb_aperture_integral(
 				pixel_corner.x + float(sample_x) * interval_size.x, interval_size.x, row_offset,
-				triad_pitch, active_size.x, gap_alignment == 1 ? 0.5 : 0.0) * vertical_coverage;
+				triad_pitch, active_size.x, 0.5) * vertical_coverage;
 			emission += screen_rgb * coverage;
 		}
 	}

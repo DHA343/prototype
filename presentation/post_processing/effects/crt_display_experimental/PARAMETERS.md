@@ -24,7 +24,6 @@ InspectorではModel / PatternからBrightness Compensationまでを一つのMas
 | Triad Pitch | 2〜6 px | 3 px | 1 | Staggered RGBの横周期。両Model共通。整数pixel単位で調整し、自動換算なし |
 | Row Pitch | 1〜4 px | 3 px | 1 | Staggered RGBの整数行周期。両Model共通 |
 | Horizontal Gap | 0〜1 px | 0 px | 0.05 | Cell Emissionのみ。Triad両端に等分する非発光総幅。RGB内部にはGapを設けない |
-| Gap Alignment | Pixel Boundary / Pixel Center | Pixel Boundary | — | Cell Emissionの横triad全体を0 / 0.5pxへ移す。全samplingで使用可能 |
 | Vertical Gap | 0〜1 px | 0 px | 0.05 | Cell Emissionのみ。Cell row上下に等分する非発光総高さ |
 | Brightness Compensation | 0.25〜6.0 | 1.0 | 0.01 | 両Model共通のmask混合後のRGB倍率。1は追加補正なし。旧Cell Brightness × Brightness Compensationの全範囲を保持する |
 | Optical Spread Strength | 0〜1 | 0.5 | 0.01 | mask適用後の光を隣接pixelへ移す量。0でpassと画面コピーを無効化。Mask Redistribution / Cell Emission共通 |
@@ -58,7 +57,8 @@ RGB Pixel PatternはRGBと黒の4pixel周期、Green / Magenta StripesはG列と
 名称はmaskの成分配置を表し、入力や明るさへの再配分により最終pixelが必ず緑・マゼンタになるわけではない。
 後二つはMask Redistributionだけで使う。Cell Emissionへ切り替えても対応RGB配置は保ち、未対応配置のみStaggered RGBへ変更する。
 
-Cell EmissionはHorizontal / Vertical GapとGap Alignmentを両samplingで使用する。
+Cell EmissionはHorizontal / Vertical Gapを両samplingで使用する。
+RGB配置全体の横位相はPixel Center（0.5px offset）に固定し、Gap Alignmentの設定は設けない。
 Horizontal 4は横4区間に分け、入力のY中心を読む。
 2x2は両軸2区間に分け、各区間の中心を読む。aperture coverageは各区間で解析計算する。
 Horizontal 2の実装・選択肢とMixed Pixel Patternの4×4配列は削除した。

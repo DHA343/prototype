@@ -28,7 +28,6 @@ vertical_blur = 0.5
 mask_model = 1
 mask_strength = 1.0
 row_pitch = 2
-gap_alignment = 1
 noise_enabled = false
 
 [node name="CRTDisplayTest" type="Node2D" unique_id=682829650]

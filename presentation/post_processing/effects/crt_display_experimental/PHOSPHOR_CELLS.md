@@ -17,11 +17,11 @@ Cell専用のSubViewportは追加しない。Optical SpreadとBloom Coreにも�
 - Mask Pattern：Staggered RGBは毎row、Staggered RGB (Row Pairs)は2rowごとに半triadずらす。配置計算は共通。
 - Horizontal Gap：0〜1出力px、初期値0。triad両端へ等分し、RGB内部には隙間を作らない。
 - Vertical Gap：0〜1出力px、初期値0。row上下へ等分する。
-- Gap Alignment：Pixel Boundary / Pixel Center。横triad全体を0 / 0.5pxへ移す。
+- 横位相：Pixel Center固定。Gapを含む横triad全体を0.5px移す。調整項目は設けない。
 - 共通関数は `rgb_aperture.gdshaderinc`。出力座標に固定し、解像度で自動換算しない。
 - 小数境界を整数へ丸めない。矩形のcoverageを解析計算し、soft edgeは後段のOptical Spreadで調整する。
 
-全samplingが同じGeometryを使う。横samplingでも両GapとAlignmentを編集できる。
+両samplingが同じGeometryを使う。横samplingでも両Gapを編集できる。
 Row Pitchが整数なので、各output pixelの範囲は1つのCell row内に収まる。
 Inspector範囲外のGapは負値を0、発光幅・高さの下限を0.001pxとして扱う。
 
@@ -69,10 +69,11 @@ Horizontal 2とMixed Pixel Patternも実装ごと削除した。
 | Cell Brightness＋Brightness Compensation、Cell使用中 | 積をBrightness Compensationへ保存 |
 | Cell Brightness、Redistribution使用中 | 使用されていなかったため削除し、Brightness Compensationを維持 |
 | Mixed Pixel Pattern | 削除。プロジェクト内の保存Resourceには使用箇所なし |
+| Gap Alignment | 設定を削除し、Cell Emissionの横位相をPixel Center（0.5px）に固定 |
 
 プロジェクト内の保存Resourceを確認し、mainのStagger Rows 2をPattern ID 1へ移した。
 二つの明るさ倍率を非初期値で使う保存Resourceはなかった。
-CRT testはCell Emission / Staggered RGB / 2x2、pitch 2 / row 3、Gap 0 / 0、Alignment 0.5px、Mask Strength 1。
+CRT testはCell Emission / Staggered RGB / 2x2、pitch 2 / row 3、Gap 0 / 0、Mask Strength 1。横位相は0.5px固定。
 現在のScene保存値を優先している。別途保存した旧Resourceは上表に沿った移行が必要。
 Horizontal 2→4は同一出力ではなく、横方向に変化する入力とapertureの積の近似精度を変える。
 

@@ -19,11 +19,6 @@ enum CellSampling {
 	AREA_2X2 = 2,
 }
 
-enum GapAlignment {
-	PIXEL_BOUNDARY,
-	PIXEL_CENTER,
-}
-
 const EFFECT_SHADER: Shader = preload("./crt_display_experimental.gdshader")
 const CELL_SHADER: Shader = preload("./phosphor_cells.gdshader")
 const SPREAD_SHADER: Shader = preload("./optical_spread.gdshader")
@@ -184,15 +179,6 @@ var cell_sampling: int = CellSampling.HORIZONTAL_4:
 		horizontal_gap = value
 		emit_changed()
 
-## Pixel Center shifts the complete triad, including its gaps, by half a pixel.
-@export var gap_alignment: GapAlignment = GapAlignment.PIXEL_BOUNDARY:
-	set(value):
-		if gap_alignment == value:
-			return
-
-		gap_alignment = value
-		emit_changed()
-
 ## Total non-emitting height per row, split equally between both ends.
 @export_range(0.0, 1.0, 0.05, "suffix:px") var vertical_gap: float = 0.0:
 	set(value):
@@ -346,7 +332,7 @@ func _validate_property(property: Dictionary) -> void:
 	):
 		property.usage |= PROPERTY_USAGE_READ_ONLY
 	elif property.name in [
-		"cell_sampling", "horizontal_gap", "gap_alignment", "vertical_gap",
+		"cell_sampling", "horizontal_gap", "vertical_gap",
 	] and not _is_cell_emission():
 		property.usage |= PROPERTY_USAGE_READ_ONLY
 
@@ -380,7 +366,6 @@ func apply_to_pass(material: ShaderMaterial, pass_index: int) -> void:
 		material.set_shader_parameter(&"row_pitch", row_pitch)
 		material.set_shader_parameter(&"mask_pattern", mask_pattern)
 		material.set_shader_parameter(&"horizontal_gap", horizontal_gap)
-		material.set_shader_parameter(&"gap_alignment", gap_alignment)
 		material.set_shader_parameter(&"vertical_gap", vertical_gap)
 		material.set_shader_parameter(&"mask_strength", mask_strength)
 		material.set_shader_parameter(&"brightness_compensation", brightness_compensation)
