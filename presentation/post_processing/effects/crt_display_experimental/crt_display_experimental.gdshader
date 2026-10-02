@@ -12,17 +12,15 @@ uniform float signal_pitch : hint_range(0.5, 3.0, 0.1) = 1.5;
 uniform float vertical_blur : hint_range(0.0, 1.0, 0.01) = 1.0;
 uniform float scanline_strength : hint_range(0.0, 1.0, 0.01) = 0.15;
 uniform float beam_width : hint_range(0.75, 1.25, 0.01) = 0.9;
-uniform float triad_pitch : hint_range(2.0, 6.0, 1.0) = 3.0;
-uniform int row_pitch : hint_range(1, 4, 1) = 3;
+uniform float mask_pitch : hint_range(2.0, 6.0, 1.0) = 3.0;
+uniform int grain_height : hint_range(1, 8, 1) = 3;
 uniform int mask_model : hint_enum("Mask Redistribution", "Cell Emission") = 0;
-uniform int mask_pattern : hint_enum("RGB Rows:0", "RGB Row Pairs:1", "RGB Pixel Pattern:2", "Green / Magenta Stripes:3") = 0;
-uniform int row_offset_mode : hint_enum("None:0", "Half Period:1", "Integer Half Period:2") = 1;
+uniform int mask_pattern : hint_enum("RGB Grain:0", "RGB Stripes:1", "Green / Magenta Stripes:2") = 0;
 uniform float mask_strength : hint_range(0.0, 1.0, 0.01) = 0.5;
-uniform float brightness_compensation : hint_range(0.25, 6.0, 0.01) = 1.0;
 
 const float HALF_PI = 1.57079632679;
 
-#include "rgb_aperture.gdshaderinc"
+#include "mask_geometry.gdshaderinc"
 
 
 float signal_weight(float distance) {
@@ -138,35 +136,12 @@ float scanline_light(float position, float pixel_span) {
 }
 
 
-// Additional pattern cells and averages follow https://godotshaders.com/shader/crt-with-luminance-preservation/
 vec4 generate_mask(vec2 fragcoord) {
-	if (mask_pattern == 0 || mask_pattern == 1) {
-		float row_offset = rgb_row_offset(
-			fragcoord.y, triad_pitch, float(row_pitch), mask_pattern, row_offset_mode);
-		vec3 coverage = rgb_aperture_integral(
-			fragcoord.x - 0.5, 1.0, row_offset, triad_pitch, triad_pitch, 0.0);
-		return vec4(coverage, 1.0 / 3.0);
-	}
-
-	int column = int(floor(fragcoord.x));
-	int row = int(floor(fragcoord.y));
-	if (mask_pattern == 2) {
-		int phase = (row * 2 + column) % 4;
-		if (phase == 0) {
-			return vec4(1.0, 0.0, 0.0, 0.25);
-		} else if (phase == 1) {
-			return vec4(0.0, 1.0, 0.0, 0.25);
-		} else if (phase == 2) {
-			return vec4(0.0, 0.0, 1.0, 0.25);
-		}
-		return vec4(0.0, 0.0, 0.0, 0.25);
-	}
-	if (mask_pattern == 3) {
-		return column % 2 == 0
-			? vec4(0.0, 1.0, 0.0, 0.5) : vec4(1.0, 0.0, 1.0, 0.5);
-	}
-	return vec4(1.0 / 3.0);
-
+	float row_offset = mask_row_offset(
+		fragcoord.y, mask_pitch, float(grain_height), mask_pattern);
+	vec3 coverage = mask_aperture_integral(
+		fragcoord.x - 0.5, 1.0, row_offset, mask_pitch, mask_pattern, 0.0);
+	return vec4(coverage, mask_occupancy(mask_pattern));
 }
 
 
@@ -220,8 +195,7 @@ void fragment() {
 		// The Cell pass samples this reconstructed HDR signal before Bloom.
 		output_color = scanline_color;
 	} else {
-		output_color = redistribute_mask(scanline_color, generate_mask(FRAGCOORD.xy))
-			* brightness_compensation;
+		output_color = redistribute_mask(scanline_color, generate_mask(FRAGCOORD.xy));
 	}
 	COLOR = vec4(output_color, screen_color.a);
 }

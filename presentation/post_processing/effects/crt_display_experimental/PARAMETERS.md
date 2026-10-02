@@ -4,9 +4,9 @@ Resource の初期値は見た目を調整するための出発点。
 実機計測から確定した値ではなく、以下の数式上の意味と調整方針を持つ。
 Scene に保存された値は初期値を上書きする。
 
-Mask Modelは描画モデル、Mask Patternは配置方式。RGB配置の段を切り替える間隔はPattern、ずれ幅はRow Offset Modeで選ぶ。
-Cell SamplingはHorizontal 4 / 2x2、出力の明るさ倍率はBrightness Compensationに一本化した。
-InspectorではModel / PatternからBrightness Compensationまでを一つのMaskグループへまとめ、内部の小グループは設けない。
+Maskは規則的な粒感と局所的な色・明るさの変化を作る。Mask Modelは描画モデル、Mask Patternは質感の配置。
+InspectorのMaskグループはModel / Pattern / Strength / Mask Pitch / Grain Heightの5項目。
+Gap・Sampling・段のずれ幅・明るさ倍率の設定は持たず、内部の小グループも設けない。
 
 | 項目 | 範囲 | 初期値 | step | 意味・根拠 |
 | --- | --- | --- | --- | --- |
@@ -17,16 +17,11 @@ InspectorではModel / PatternからBrightness Compensationまでを一つのMas
 | Vertical Blur | 0〜1 | 1 | 0.01 | 横方向だけ再構成した画像と、縦も再構成した画像の混合比。0で縦処理を無効、1で縦の再構成を完全適用。走査線の濃淡とは独立 |
 | Scanline Strength | 0〜1 | 0.15 | 0.01 | 行方向の明るさの濃淡。0で走査線模様を無効。Signal EnabledがOFFでも使用可能。低解像度では自動的に弱める |
 | Beam Width | 0.75〜1.25 lines | 0.9 line | 0.01 | 走査線の発光profileのFWHM。現在は模様だけに使用し、縦の補間へ影響しない。1.0では隣接profileの合計が一定になり、濃淡はほぼ生じない |
-| Mask Model | Mask Redistribution / Cell Emission | Mask Redistribution | — | 明るさに応じて色成分を配置へ再配分する方式と、apertureの占有面積から発光する方式 |
-| Mask Pattern | RGB Rows / RGB Row Pairs / RGB Pixel Pattern / Green / Magenta Stripes | RGB Rows | — | 前二つは毎行 / 2行ごとに段の位相を切り替えるRGB配置。両Modelで使用可能。後二つはRedistribution専用 |
-| Row Offset Mode | None / Half Period / Integer Half Period | Half Period | — | RGB配置の段のずれ幅。0 / Triad Pitchの半分 / その切り捨て。固定pixel配置では無効 |
-| Mask Strength | 0〜1 | 0.5 | 0.01 | mask適用前の再構成信号と、完全適用の出力の混合比。両Model共通。0で模様を除去し、Brightness Compensationは維持 |
-| Cell Sampling | Horizontal 4 / 2x2 | Horizontal 4 | — | Cell Emissionの入力sampling。横4点はY中心、2x2は両軸±0.25px。両方式でGapを使用可能 |
-| Triad Pitch | 2〜6 px | 3 px | 1 | RGB row配置の横周期。両Model共通。整数pixel単位で調整し、自動換算なし |
-| Row Pitch | 1〜4 px | 3 px | 1 | RGB row配置の整数行周期。両Model共通 |
-| Horizontal Gap | 0〜1 px | 0 px | 0.05 | Cell Emissionのみ。Triad両端に等分する非発光総幅。RGB内部にはGapを設けない |
-| Vertical Gap | 0〜1 px | 0 px | 0.05 | Cell Emissionのみ。Cell row上下に等分する非発光総高さ |
-| Brightness Compensation | 0.25〜6.0 | 1.0 | 0.01 | 両Model共通のmask混合後のRGB倍率。1は追加補正なし。旧Cell Brightness × Brightness Compensationの全範囲を保持する |
+| Mask Model | Mask Redistribution / Cell Emission | Mask Redistribution | — | 明るさに応じた色の再配分、またはHDR信号とaperture coverageからの発光。両Modelで全Patternを使用可能 |
+| Mask Pattern | RGB Grain / RGB Stripes / Green / Magenta Stripes | RGB Grain | — | 半周期ずつ交互にずらすRGB粒状配置、ずらさないRGB縦縞、GとR+Bの縦縞 |
+| Mask Strength | 0〜1 | 0.5 | 0.01 | mask適用前と完全適用の混合比。0でmaskを無効化 |
+| Mask Pitch | 2〜6 px | 3 px | 1 | RGB triadまたはG/Mの一組の横周期。全Pattern共通、出力pixelの整数単位 |
+| Grain Height | 1〜8 px | 3 px | 1 | RGB Grainが半周期ずつずれる段の高さ。縦縞では使用せず読取専用 |
 | Optical Spread Strength | 0〜1 | 0.5 | 0.01 | mask適用後の光を隣接pixelへ移す量。0でpassと画面コピーを無効化。Mask Redistribution / Cell Emission共通 |
 | Optical Spread Width | 0〜1 px | 0.75 px | 0.05 | 4つのbilinear sampleのfootprint幅。±Width / 2pxを読む。0で無効。GaussianのFWHMではない |
 | Near Width | 0.5〜8.0 px @1080p | 4.0 px | 0.1 | すぐ周囲のにじみ。現在のCRT testで使用する調整値を初期値に採用 |
@@ -37,46 +32,40 @@ InspectorではModel / PatternからBrightness Compensationまでを一つのMas
 | Noise Enabled | OFF / ON | ON | — | maskとBloomの後へノイズを重ねる。OFFならNoise passの描画と画面コピーを無効にする |
 | Noise Luma Strength | 0〜0.25 | 0.08 | 0.001 | 明るさの粒感。0でこの成分を無効。RGB比率を保ちながら明暗を揺らす |
 | Noise Chroma Strength | 0〜0.1 | 0.006 | 0.001 | Oklabの赤緑 / 青黄成分を揺らす色の粒感。0でこの成分を無効。明るさにも多少影響する |
-| Noise Size | 1〜8 px | 1.5 px | 0.1 | 粒の間隔。出力pixel基準でmaskのTriad Pitch / Row Pitchとは独立。解像度による自動換算なし |
+| Noise Size | 1〜8 px | 1.5 px | 0.1 | 粒の間隔。出力pixel基準でMask Pitch / Grain Heightとは独立。解像度による自動換算なし |
 | Noise Softness | 0〜1 | 0.6 | 0.01 | 硬い粒と、隣接する粒を滑らかに補間したノイズの混合比。大きな粒ほど差が見える |
 | Noise Rate | 0〜60 Hz | 30 Hz | 1 | 1秒あたりのノイズ更新回数。0で固定された粒になる。描画fps以上にしても見える更新回数は増えない |
 
-stepは原則1 / 0.1 / 0.01 / 0.001。Cell LayoutのGapは0.05px刻み。
+stepは原則1 / 0.1 / 0.01 / 0.001。Mask PitchとGrain Heightは整数。
 Far Strength は0.001刻みで微調整する。初期値0.05の2%ずつ調整できる。
 初期値・範囲・Scene保存値はstep変更に合わせて丸めない。
 
-## Mask ModelとLayout
+## Mask ModelとPattern
 
-Mask Redistributionは中心の再構成信号を使用し、各色成分をmask位置へ再配分する。
-Cell Emissionはaperture coverageと入力信号の積を近似積分し、占有面積で正規化する。
-両Modelの違いはsamplingだけでなく、明るさへの応答にもある。
+Mask Redistributionは中心の再構成信号を使い、明るさに応じて各色成分を配置へ再配分する。
+Cell Emissionは横4区間のHDR入力とaperture coverageの積を近似積分し、各channelの占有率で正規化する。
+両Modelの違いはsamplingだけでなく、明るさへの応答にもある。両Modelで全Patternを使用する。
 
-RGB Rowsは毎Cell row、RGB Row Pairsは2 Cell rowごとに位相を切り替える。
-Row Offset ModeはNoneなら0px、Half PeriodならPitch / 2px、Integer Half Periodならfloor(Pitch / 2)px。
-Pitch 3では0 / 1.5 / 1px、Pitch 6では0 / 3 / 3px。偶数Pitchでは後二つの出力が一致する。
-整数版は段のずれ幅だけを整数化する。RGB幅・Gap・Cellの0.5px固定位相は変更せず、混色をすべて除く機能ではない。
-Noneでは両RGB Patternの配置が同じになる。Vertical Gapが0ならRow Pitchも見た目へ作用しない。
-Triad Pitchは横周期、Row Pitchは1行の高さで、行をまとめる方式とは独立。
-両配置を両Modelで使用する。共通geometryは `rgb_aperture.gdshaderinc`。
-RGB Pixel PatternはRGBと黒の4pixel周期、Green / Magenta StripesはG列とR+B列の2pixel周期。
-名称はmaskの成分配置を表し、入力や明るさへの再配分により最終pixelが必ず緑・マゼンタになるわけではない。
-後二つはMask Redistributionだけで使う。Cell Emissionへ切り替えても対応RGB配置は保ち、未対応配置のみRGB Rowsへ変更する。
+RGB GrainはGrain Heightごとに横位相をMask Pitchの半分ずらす。
+RGB Stripesは同じRGB apertureを段のずれなしで使用する。
+Green / Magenta Stripesは前半G、後半R+B。Pitch 2は1pxずつの細かな変調、Pitchを広げると太い縞になる。
+Patternは成分配置を表す。coverageの重なり・入力色・Modelの応答により最終pixelが原色のみになるとは限らない。
+共通geometryは `mask_geometry.gdshaderinc`。出力座標に固定し、解像度で自動換算しない。
+黒い隙間は設けない。暗いpixelや低いchannel値は入力とcoverageの結果として生じる。
 
-Cell EmissionはHorizontal / Vertical Gapを両samplingで使用する。
-RGB配置全体の横位相はPixel Center（0.5px offset）に固定し、Gap Alignmentの設定は設けない。
-Horizontal 4は横4区間に分け、入力のY中心を読む。
-2x2は両軸2区間に分け、各区間の中心を読む。aperture coverageは各区間で解析計算する。
-Horizontal 2の実装・選択肢とMixed Pixel Patternの4×4配列は削除した。
-
-Gapなしの2x2は、入力のY方向に重み1/8・3/4・1/8の狭い平均を加える。
-HorizontalはこのY平均を加えない。2x2は単純な上位互換ではない。
-初期Gapは0 / 0。旧SubstrateのSceneは、旧初期値0.5 / 0.5も明示保存して移行した。
+Cell Emissionは横±0.125 / ±0.375px、Y中心に固定する。縦平均を追加しない。
+RGBは従来のPixel Center（0.5px）の横位相を維持する。
+G/Mは0pxの横位相とし、Pitch 2で両色が毎pixel平均されて模様が消えるのを防ぐ。
+これはPatternの固定geometryで、調整項目ではない。
 
 Mask Strength = 0はSignal / Scanline後の信号、1は完全なmask出力、中間は両者の混合。
-Brightness Compensationは両Modelの混合後に一度だけ適用する。
-0ではCell geometryの計算を省くが、gainを維持するためCell passと画面コピーは残す。
-Mask RedistributionのBrightness Compensationも混合後に適用する。
-Optical Spread、Bloom、NoiseはMask Strengthが0でも独立して使用可能。
+0ではCell passと画面コピーを無効にする。独立したOptical Spread・Bloom・Noiseは引き続き作用する。
+
+旧RGB RowsはRGB Grainへ、RGB Row PairsはGrain Heightを旧Row Pitchの2倍にして移す。
+旧Green / Magenta StripesはMask Pitch 2に移し、従来の固定2px周期を維持する。
+Sampling 2x2・Gap・Row Offset Mode・Brightness Compensation・RGB Pixel Patternの実装と旧名aliasは削除。
+現在のCRT testはCell Emission / RGB Grain / Mask Pitch 4 / Grain Height 2 / Strength 1。
+Signal・Optical Spread・Bloom・Noise・後段の色調整の保存値は変更していない。
 
 詳細は[Cell Emissionの仕様](PHOSPHOR_CELLS.md)を参照。
 

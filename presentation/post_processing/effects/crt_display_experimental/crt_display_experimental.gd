@@ -8,21 +8,9 @@ enum MaskModel {
 }
 
 enum MaskPattern {
-	RGB_ROWS = 0,
-	RGB_ROW_PAIRS = 1,
-	RGB_PIXEL_PATTERN = 2,
-	GREEN_MAGENTA_STRIPES = 3,
-}
-
-enum RowOffsetMode {
-	NONE,
-	HALF_PERIOD,
-	INTEGER_HALF_PERIOD,
-}
-
-enum CellSampling {
-	HORIZONTAL_4 = 1,
-	AREA_2X2 = 2,
+	RGB_GRAIN,
+	RGB_STRIPES,
+	GREEN_MAGENTA_STRIPES,
 }
 
 const EFFECT_SHADER: Shader = preload("./crt_display_experimental.gdshader")
@@ -105,47 +93,28 @@ const NOISE_SHADER: Shader = preload("./crt_noise.gdshader")
 		emit_changed()
 
 @export_group("Mask")
-## Cell Emission supports both RGB row layouts.
+## Brightness-dependent color redistribution, or HDR aperture emission.
 @export_enum("Mask Redistribution:0", "Cell Emission:1")
 var mask_model: int = MaskModel.REDISTRIBUTION:
 	set(value):
-		if mask_model == value:
+		if value not in MaskModel.values() or mask_model == value:
 			return
 
 		mask_model = value
-		if mask_model == MaskModel.CELL_EMISSION and not _is_rgb_layout():
-			mask_pattern = MaskPattern.RGB_ROWS
 		notify_property_list_changed()
 		emit_changed()
 
-@export_enum(
-	"RGB Rows:0", "RGB Row Pairs:1",
-	"RGB Pixel Pattern:2", "Green / Magenta Stripes:3",
-)
-var mask_pattern: int = MaskPattern.RGB_ROWS:
+## Grain alternates by half a period; stripes have no row offset. Both models support all patterns.
+@export_enum("RGB Grain:0", "RGB Stripes:1", "Green / Magenta Stripes:2")
+var mask_pattern: int = MaskPattern.RGB_GRAIN:
 	set(value):
 		if value not in MaskPattern.values():
-			return
-		if mask_model == MaskModel.CELL_EMISSION and value not in [
-			MaskPattern.RGB_ROWS, MaskPattern.RGB_ROW_PAIRS,
-		]:
 			return
 		if mask_pattern == value:
 			return
 
 		mask_pattern = value
 		notify_property_list_changed()
-		emit_changed()
-
-## Alternate rows (or row pairs) by zero, half a triad, or floor(half a triad) output pixels.
-## Integer offset does not round the RGB aperture boundaries or the Cell's center alignment.
-@export_enum("None:0", "Half Period:1", "Integer Half Period:2")
-var row_offset_mode: int = RowOffsetMode.HALF_PERIOD:
-	set(value):
-		if value not in RowOffsetMode.values() or row_offset_mode == value:
-			return
-
-		row_offset_mode = value
 		emit_changed()
 
 ## Blend the mask output with the reconstructed signal. Zero removes the mask.
@@ -157,61 +126,22 @@ var row_offset_mode: int = RowOffsetMode.HALF_PERIOD:
 		mask_strength = value
 		emit_changed()
 
-## RGB triad width in output pixels.
-@export_range(2, 6, 1, "suffix:px") var triad_pitch: int = 3:
+## Horizontal repeat width in output pixels: one RGB triad, or one G / M pair.
+@export_range(2, 6, 1, "suffix:px") var mask_pitch: int = 3:
 	set(value):
-		if triad_pitch == value:
+		if mask_pitch == value:
 			return
 
-		triad_pitch = value
+		mask_pitch = value
 		emit_changed()
 
-## Height of one cell row in output pixels.
-@export_range(1, 4, 1, "suffix:px") var row_pitch: int = 3:
+## Height of each alternating band in RGB Grain. Stripes do not use this setting.
+@export_range(1, 8, 1, "suffix:px") var grain_height: int = 3:
 	set(value):
-		if row_pitch == value:
+		if grain_height == value:
 			return
 
-		row_pitch = value
-		emit_changed()
-
-## Horizontal modes keep the input's vertical center. 2x2 samples both axes.
-@export_enum("Horizontal 4:1", "2x2:2")
-var cell_sampling: int = CellSampling.HORIZONTAL_4:
-	set(value):
-		if value not in CellSampling.values():
-			return
-		if cell_sampling == value:
-			return
-
-		cell_sampling = value
-		emit_changed()
-
-## Total non-emitting width per triad, split equally between both ends.
-@export_range(0.0, 1.0, 0.05, "suffix:px") var horizontal_gap: float = 0.0:
-	set(value):
-		if is_equal_approx(horizontal_gap, value):
-			return
-
-		horizontal_gap = value
-		emit_changed()
-
-## Total non-emitting height per row, split equally between both ends.
-@export_range(0.0, 1.0, 0.05, "suffix:px") var vertical_gap: float = 0.0:
-	set(value):
-		if is_equal_approx(vertical_gap, value):
-			return
-
-		vertical_gap = value
-		emit_changed()
-
-## Common gain after mask blending. One means no additional compensation.
-@export_range(0.25, 6.0, 0.01) var brightness_compensation: float = 1.0:
-	set(value):
-		if is_equal_approx(brightness_compensation, value):
-			return
-
-		brightness_compensation = value
+		grain_height = value
 		emit_changed()
 
 
@@ -341,16 +271,7 @@ var cell_sampling: int = CellSampling.HORIZONTAL_4:
 
 
 func _validate_property(property: Dictionary) -> void:
-	if property.name == "mask_pattern" and _is_cell_emission():
-		property.hint_string = "RGB Rows:0,RGB Row Pairs:1"
-	elif (
-		property.name in ["triad_pitch", "row_pitch", "row_offset_mode"]
-		and not _is_rgb_layout()
-	):
-		property.usage |= PROPERTY_USAGE_READ_ONLY
-	elif property.name in [
-		"cell_sampling", "horizontal_gap", "vertical_gap",
-	] and not _is_cell_emission():
+	if property.name == "grain_height" and mask_pattern != MaskPattern.RGB_GRAIN:
 		property.usage |= PROPERTY_USAGE_READ_ONLY
 
 
@@ -378,15 +299,10 @@ func apply_to_pass(material: ShaderMaterial, pass_index: int) -> void:
 		return
 
 	if pass_index == 1:
-		material.set_shader_parameter(&"cell_sampling", cell_sampling)
-		material.set_shader_parameter(&"triad_pitch", float(triad_pitch))
-		material.set_shader_parameter(&"row_pitch", row_pitch)
+		material.set_shader_parameter(&"mask_pitch", float(mask_pitch))
+		material.set_shader_parameter(&"grain_height", grain_height)
 		material.set_shader_parameter(&"mask_pattern", mask_pattern)
-		material.set_shader_parameter(&"row_offset_mode", row_offset_mode)
-		material.set_shader_parameter(&"horizontal_gap", horizontal_gap)
-		material.set_shader_parameter(&"vertical_gap", vertical_gap)
 		material.set_shader_parameter(&"mask_strength", mask_strength)
-		material.set_shader_parameter(&"brightness_compensation", brightness_compensation)
 		return
 
 	if pass_index == 2:
@@ -411,7 +327,7 @@ func is_pass_enabled(pass_index: int) -> bool:
 	if pass_index == 0:
 		return true
 	if pass_index == 1:
-		return _is_cell_emission()
+		return _is_cell_emission() and mask_strength > 0.0
 	if pass_index == 2:
 		return optical_spread_strength > 0.0 and optical_spread_width > 0.0
 	if pass_index == 3:
@@ -446,16 +362,10 @@ func _update_shader_parameters() -> void:
 	_shader_parameters[&"beam_width"] = beam_width
 	_shader_parameters[&"mask_model"] = mask_model
 	_shader_parameters[&"mask_pattern"] = mask_pattern
-	_shader_parameters[&"row_offset_mode"] = row_offset_mode
-	_shader_parameters[&"triad_pitch"] = float(triad_pitch)
-	_shader_parameters[&"row_pitch"] = row_pitch
+	_shader_parameters[&"mask_pitch"] = float(mask_pitch)
+	_shader_parameters[&"grain_height"] = grain_height
 	_shader_parameters[&"mask_strength"] = mask_strength
-	_shader_parameters[&"brightness_compensation"] = brightness_compensation
 
 
 func _is_cell_emission() -> bool:
 	return mask_model == MaskModel.CELL_EMISSION
-
-
-func _is_rgb_layout() -> bool:
-	return mask_pattern in [MaskPattern.RGB_ROWS, MaskPattern.RGB_ROW_PAIRS]
