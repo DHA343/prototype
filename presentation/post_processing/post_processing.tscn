@@ -10,7 +10,7 @@
 script = ExtResource("5_color_grading")
 metadata/_custom_type_script = "uid://du0elwyycowft"
 
-[sub_resource type="Resource" id="Resource_umxmu"]
+[sub_resource type="Resource" id="Resource_h14q8"]
 script = ExtResource("8_crt")
 rgb_red_offset = Vector2(-3, 0.5)
 rgb_blue_offset = Vector2(3, 0)
@@ -23,7 +23,6 @@ mask_strength = 0.75
 mask_pitch = 4
 row_height = 2
 texture_size = 1.8
-metadata/_custom_type_script = "uid://4kmsj3ju6w87"
 
 [sub_resource type="Resource" id="Resource_pq11d"]
 script = ExtResource("10_vignette")
@@ -35,4 +34,4 @@ metadata/_custom_type_script = "uid://b6y73x0igwwoj"
 
 [node name="PostProcessing" type="Node" unique_id=776314143]
 script = ExtResource("1_post_processing")
-composite_effects = Array[ExtResource("2_effect")]([SubResource("Resource_pvxqj"), SubResource("Resource_umxmu"), SubResource("Resource_pq11d")])
+composite_effects = Array[ExtResource("2_effect")]([SubResource("Resource_pvxqj"), SubResource("Resource_h14q8"), SubResource("Resource_pq11d")])

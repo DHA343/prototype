@@ -177,5 +177,3 @@ Inspectorで0相当に見えることと、新規Resourceの初期値は区別�
 - 新しい項目がnullなら、調整済みの値を引き継いだ新規Resourceへ置き換え、Sceneを保存する。
 - Sceneを開き直すだけではResource cacheが残る場合があるため、読み直したという応答だけで正常と判断しない。
 - 最後にInspector対象の実値と保存ファイルを確認する。正常な0 / falseを欠損値として補正しない。
-
-再現結果と対応例: [Grain比較の作業記録](work-reports/crt-grain-comparison.md)。

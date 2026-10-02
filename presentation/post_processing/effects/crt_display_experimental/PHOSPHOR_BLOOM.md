@@ -1,6 +1,6 @@
 # Phosphor Bloom
 
-RGB Separation / GhostはPass 0で元信号へ適用する。
+Chromatic Aberration / GhostはPass 0で元信号へ適用する。
 Mask ModelがMask RedistributionならPass 1、Cell EmissionならPass 2でmaskを適用し、Pass 3のTextureとPass 4のOptical Spreadを適用した後に使う。
 BloomはPass 5で、mask・固定の明暗乗算・狭い光の広がりを適用したHDR出力をsourceにする。
 Bloom source の HDR 応答を制限する方式（旧 Limited）に一本化した。

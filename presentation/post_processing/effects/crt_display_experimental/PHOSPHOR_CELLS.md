@@ -1,7 +1,7 @@
 # Cell Emission
 
 CRT ResourceのMask ModelをCell Emissionに設定する。
-RGB Separation / Ghost（pass 0）→ Signal / Scanline（pass 1）→ Cell Emission（pass 2）→ Texture（pass 3）→ Optical Spread（pass 4）→ Phosphor Bloom（pass 5）。
+Chromatic Aberration / Ghost（pass 0）→ Signal / Scanline（pass 1）→ Cell Emission（pass 2）→ Texture（pass 3）→ Optical Spread（pass 4）→ Phosphor Bloom（pass 5）。
 Mask Redistributionはpass 1でmaskを適用し、pass 2を止める。
 Cell専用のSubViewportは追加しない。Bloom Coreにも同じMask設定が反映される。
 
@@ -59,4 +59,11 @@ mainの旧Row Pairsはheight 6、post_processingの旧G/Mはpitch 2に移行。
 
 大きなPitchは色分離と規則性を増やす。光の広がりは後段のOptical SpreadとBloomで調整する。
 SDR表示の局所HDR飽和は残る。均一な平均光量の維持は、最終画面での色・明るさの不変を保証しない。
-検証結果は[作業報告](C:/GameDev/Projects/prototype/docs/work-reports/crt-mask-texture-cleanup.md)を参照。
+
+## 整理時の検証
+
+Godot 4.7.2のHDR描画で、整理前後のCell Emission / Pitch 4 / Row Height 2の出力は
+全pixelの生バイト列で一致した。
+両Model・Pitch 2〜6・高さ1〜4の40条件では31条件が一致し、残り9条件の最大差は
+0.0009765625だった。演算簡略化による16bit floatの微小差で、全設定の完全一致は保証しない。
+均一linear RGB 0.2の平均値、全Patternの描画、Strength 0でのpass / 画面コピー停止と復帰も確認した。

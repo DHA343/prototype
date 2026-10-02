@@ -2,6 +2,11 @@
 class_name CRTDisplayExperimental
 extends PostProcessEffect
 
+enum ChromaticMode {
+	FIXED,
+	RADIAL,
+}
+
 enum MaskModel {
 	REDISTRIBUTION,
 	CELL_EMISSION,
@@ -20,7 +25,17 @@ const SPREAD_SHADER: Shader = preload("./optical_spread.gdshader")
 const BLOOM_SHADER: Shader = preload("./phosphor_bloom.gdshader")
 const TEXTURE_SHADER: Shader = preload("./crt_texture.gdshader")
 
-@export_group("RGB Separation", "rgb_")
+@export_group("Chromatic Aberration", "rgb_")
+@export_enum("Fixed:0", "Radial:1")
+var rgb_mode: int = ChromaticMode.FIXED:
+	set(value):
+		if value not in ChromaticMode.values() or rgb_mode == value:
+			return
+
+		rgb_mode = value
+		notify_property_list_changed()
+		emit_changed()
+
 ## Visible red image offset in output pixels. Positive X / Y moves right / down.
 @export_custom(PROPERTY_HINT_RANGE, "-8,8,0.1,suffix:px")
 var rgb_red_offset: Vector2 = Vector2(-2.0, 0.5):
@@ -41,6 +56,26 @@ var rgb_blue_offset: Vector2 = Vector2(2.0, -0.5):
 		rgb_blue_offset = value
 		emit_changed()
 
+## Red image displacement at the screen corners. Positive expands, negative contracts.
+@export_range(-8.0, 8.0, 0.1, "suffix:px")
+var rgb_red_radial: float = -2.0:
+	set(value):
+		if is_equal_approx(rgb_red_radial, value):
+			return
+
+		rgb_red_radial = value
+		emit_changed()
+
+## Blue image displacement at the screen corners; green stays at the original position.
+@export_range(-8.0, 8.0, 0.1, "suffix:px")
+var rgb_blue_radial: float = 2.0:
+	set(value):
+		if is_equal_approx(rgb_blue_radial, value):
+			return
+
+		rgb_blue_radial = value
+		emit_changed()
+
 ## Weight of the RGB-separated image relative to the original (weight 1). Zero disables it.
 @export_range(0.0, 1.0, 0.01)
 var rgb_strength: float = 0.3:
@@ -52,14 +87,15 @@ var rgb_strength: float = 0.3:
 		emit_changed()
 
 @export_group("Ghost", "ghost_")
-## Full-color secondary image offset before Signal and Mask. Positive X / Y moves right / down.
-@export_custom(PROPERTY_HINT_RANGE, "-16,16,0.1,suffix:px")
-var ghost_offset: Vector2 = Vector2(5.0, 1.0):
+## Full-color image displacement at the corners. Zero aligns it with the original.
+## Positive expands about the screen center, negative contracts. No directional echo.
+@export_range(-16.0, 16.0, 0.1, "suffix:px")
+var ghost_radial: float = 5.0:
 	set(value):
-		if ghost_offset.is_equal_approx(value):
+		if is_equal_approx(ghost_radial, value):
 			return
 
-		ghost_offset = value
+		ghost_radial = value
 		emit_changed()
 
 ## Weight of the full-color secondary image relative to the original. Zero disables it.
@@ -297,6 +333,12 @@ var mask_pattern: int = MaskPattern.STAGGERED_RGB:
 
 
 func _validate_property(property: Dictionary) -> void:
+	if property.name in ["rgb_red_offset", "rgb_blue_offset"]:
+		if rgb_mode != ChromaticMode.FIXED:
+			property.usage &= ~PROPERTY_USAGE_EDITOR
+	if property.name in ["rgb_red_radial", "rgb_blue_radial"]:
+		if rgb_mode != ChromaticMode.RADIAL:
+			property.usage &= ~PROPERTY_USAGE_EDITOR
 	if property.name == "row_height" and mask_pattern != MaskPattern.STAGGERED_RGB:
 		property.usage |= PROPERTY_USAGE_READ_ONLY
 
@@ -323,10 +365,13 @@ func get_pass_shader(pass_index: int) -> Shader:
 
 func apply_to_pass(material: ShaderMaterial, pass_index: int) -> void:
 	if pass_index == 0:
+		material.set_shader_parameter(&"rgb_mode", rgb_mode)
 		material.set_shader_parameter(&"rgb_red_offset", rgb_red_offset)
 		material.set_shader_parameter(&"rgb_blue_offset", rgb_blue_offset)
+		material.set_shader_parameter(&"rgb_red_radial", rgb_red_radial)
+		material.set_shader_parameter(&"rgb_blue_radial", rgb_blue_radial)
 		material.set_shader_parameter(&"rgb_strength", rgb_strength)
-		material.set_shader_parameter(&"ghost_offset", ghost_offset)
+		material.set_shader_parameter(&"ghost_radial", ghost_radial)
 		material.set_shader_parameter(&"ghost_strength", ghost_strength)
 		return
 
@@ -360,10 +405,13 @@ func apply_to_pass(material: ShaderMaterial, pass_index: int) -> void:
 
 func is_pass_enabled(pass_index: int) -> bool:
 	if pass_index == 0:
-		return (
-			(rgb_strength > 0.0 and (rgb_red_offset != Vector2.ZERO or rgb_blue_offset != Vector2.ZERO))
-			or (ghost_strength > 0.0 and ghost_offset != Vector2.ZERO)
-		)
+		var has_chromatic_offset: bool
+		if rgb_mode == ChromaticMode.FIXED:
+			has_chromatic_offset = rgb_red_offset != Vector2.ZERO or rgb_blue_offset != Vector2.ZERO
+		else:
+			has_chromatic_offset = rgb_red_radial != 0.0 or rgb_blue_radial != 0.0
+		return (rgb_strength > 0.0 and has_chromatic_offset
+			or ghost_strength > 0.0 and ghost_radial != 0.0)
 	if pass_index == 1:
 		return true
 	if pass_index == 2:
