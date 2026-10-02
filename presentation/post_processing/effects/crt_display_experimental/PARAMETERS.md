@@ -4,7 +4,7 @@ Resource の初期値は見た目を調整するための出発点。
 実機計測から確定した値ではなく、以下の数式上の意味と調整方針を持つ。
 Scene に保存された値は初期値を上書きする。
 
-Mask Modelは描画モデル、Mask Patternは配置方式。行のずらし方はPatternの二つのRGB配置で選ぶ。
+Mask Modelは描画モデル、Mask Patternは配置方式。RGB配置の段を切り替える間隔はPattern、ずれ幅はRow Offset Modeで選ぶ。
 Cell SamplingはHorizontal 4 / 2x2、出力の明るさ倍率はBrightness Compensationに一本化した。
 InspectorではModel / PatternからBrightness Compensationまでを一つのMaskグループへまとめ、内部の小グループは設けない。
 
@@ -18,11 +18,12 @@ InspectorではModel / PatternからBrightness Compensationまでを一つのMas
 | Scanline Strength | 0〜1 | 0.15 | 0.01 | 行方向の明るさの濃淡。0で走査線模様を無効。Signal EnabledがOFFでも使用可能。低解像度では自動的に弱める |
 | Beam Width | 0.75〜1.25 lines | 0.9 line | 0.01 | 走査線の発光profileのFWHM。現在は模様だけに使用し、縦の補間へ影響しない。1.0では隣接profileの合計が一定になり、濃淡はほぼ生じない |
 | Mask Model | Mask Redistribution / Cell Emission | Mask Redistribution | — | 明るさに応じて色成分を配置へ再配分する方式と、apertureの占有面積から発光する方式 |
-| Mask Pattern | Staggered RGB / Staggered RGB (Row Pairs) / RGB Pixel Pattern / Green / Magenta Stripes | Staggered RGB | — | 前二つは毎行 / 2行ごとに半triadずらすRGB配置。両Modelで使用可能。後二つはRedistribution専用 |
+| Mask Pattern | RGB Rows / RGB Row Pairs / RGB Pixel Pattern / Green / Magenta Stripes | RGB Rows | — | 前二つは毎行 / 2行ごとに段の位相を切り替えるRGB配置。両Modelで使用可能。後二つはRedistribution専用 |
+| Row Offset Mode | None / Half Period / Integer Half Period | Half Period | — | RGB配置の段のずれ幅。0 / Triad Pitchの半分 / その切り捨て。固定pixel配置では無効 |
 | Mask Strength | 0〜1 | 0.5 | 0.01 | mask適用前の再構成信号と、完全適用の出力の混合比。両Model共通。0で模様を除去し、Brightness Compensationは維持 |
 | Cell Sampling | Horizontal 4 / 2x2 | Horizontal 4 | — | Cell Emissionの入力sampling。横4点はY中心、2x2は両軸±0.25px。両方式でGapを使用可能 |
-| Triad Pitch | 2〜6 px | 3 px | 1 | Staggered RGBの横周期。両Model共通。整数pixel単位で調整し、自動換算なし |
-| Row Pitch | 1〜4 px | 3 px | 1 | Staggered RGBの整数行周期。両Model共通 |
+| Triad Pitch | 2〜6 px | 3 px | 1 | RGB row配置の横周期。両Model共通。整数pixel単位で調整し、自動換算なし |
+| Row Pitch | 1〜4 px | 3 px | 1 | RGB row配置の整数行周期。両Model共通 |
 | Horizontal Gap | 0〜1 px | 0 px | 0.05 | Cell Emissionのみ。Triad両端に等分する非発光総幅。RGB内部にはGapを設けない |
 | Vertical Gap | 0〜1 px | 0 px | 0.05 | Cell Emissionのみ。Cell row上下に等分する非発光総高さ |
 | Brightness Compensation | 0.25〜6.0 | 1.0 | 0.01 | 両Model共通のmask混合後のRGB倍率。1は追加補正なし。旧Cell Brightness × Brightness Compensationの全範囲を保持する |
@@ -50,12 +51,16 @@ Mask Redistributionは中心の再構成信号を使用し、各色成分をmask
 Cell Emissionはaperture coverageと入力信号の積を近似積分し、占有面積で正規化する。
 両Modelの違いはsamplingだけでなく、明るさへの応答にもある。
 
-Staggered RGBは毎Cell row、Staggered RGB (Row Pairs)は2 Cell rowごとに半triadずらす。
+RGB Rowsは毎Cell row、RGB Row Pairsは2 Cell rowごとに位相を切り替える。
+Row Offset ModeはNoneなら0px、Half PeriodならPitch / 2px、Integer Half Periodならfloor(Pitch / 2)px。
+Pitch 3では0 / 1.5 / 1px、Pitch 6では0 / 3 / 3px。偶数Pitchでは後二つの出力が一致する。
+整数版は段のずれ幅だけを整数化する。RGB幅・Gap・Cellの0.5px固定位相は変更せず、混色をすべて除く機能ではない。
+Noneでは両RGB Patternの配置が同じになる。Vertical Gapが0ならRow Pitchも見た目へ作用しない。
 Triad Pitchは横周期、Row Pitchは1行の高さで、行をまとめる方式とは独立。
 両配置を両Modelで使用する。共通geometryは `rgb_aperture.gdshaderinc`。
 RGB Pixel PatternはRGBと黒の4pixel周期、Green / Magenta StripesはG列とR+B列の2pixel周期。
 名称はmaskの成分配置を表し、入力や明るさへの再配分により最終pixelが必ず緑・マゼンタになるわけではない。
-後二つはMask Redistributionだけで使う。Cell Emissionへ切り替えても対応RGB配置は保ち、未対応配置のみStaggered RGBへ変更する。
+後二つはMask Redistributionだけで使う。Cell Emissionへ切り替えても対応RGB配置は保ち、未対応配置のみRGB Rowsへ変更する。
 
 Cell EmissionはHorizontal / Vertical Gapを両samplingで使用する。
 RGB配置全体の横位相はPixel Center（0.5px offset）に固定し、Gap Alignmentの設定は設けない。

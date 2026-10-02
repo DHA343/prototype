@@ -8,10 +8,16 @@ enum MaskModel {
 }
 
 enum MaskPattern {
-	STAGGERED_RGB = 0,
-	STAGGERED_RGB_ROW_PAIRS = 1,
+	RGB_ROWS = 0,
+	RGB_ROW_PAIRS = 1,
 	RGB_PIXEL_PATTERN = 2,
 	GREEN_MAGENTA_STRIPES = 3,
+}
+
+enum RowOffsetMode {
+	NONE,
+	HALF_PERIOD,
+	INTEGER_HALF_PERIOD,
 }
 
 enum CellSampling {
@@ -99,7 +105,7 @@ const NOISE_SHADER: Shader = preload("./crt_noise.gdshader")
 		emit_changed()
 
 @export_group("Mask")
-## Cell Emission supports both staggered RGB layouts.
+## Cell Emission supports both RGB row layouts.
 @export_enum("Mask Redistribution:0", "Cell Emission:1")
 var mask_model: int = MaskModel.REDISTRIBUTION:
 	set(value):
@@ -108,20 +114,20 @@ var mask_model: int = MaskModel.REDISTRIBUTION:
 
 		mask_model = value
 		if mask_model == MaskModel.CELL_EMISSION and not _is_rgb_layout():
-			mask_pattern = MaskPattern.STAGGERED_RGB
+			mask_pattern = MaskPattern.RGB_ROWS
 		notify_property_list_changed()
 		emit_changed()
 
 @export_enum(
-	"Staggered RGB:0", "Staggered RGB (Row Pairs):1",
+	"RGB Rows:0", "RGB Row Pairs:1",
 	"RGB Pixel Pattern:2", "Green / Magenta Stripes:3",
 )
-var mask_pattern: int = MaskPattern.STAGGERED_RGB:
+var mask_pattern: int = MaskPattern.RGB_ROWS:
 	set(value):
 		if value not in MaskPattern.values():
 			return
 		if mask_model == MaskModel.CELL_EMISSION and value not in [
-			MaskPattern.STAGGERED_RGB, MaskPattern.STAGGERED_RGB_ROW_PAIRS,
+			MaskPattern.RGB_ROWS, MaskPattern.RGB_ROW_PAIRS,
 		]:
 			return
 		if mask_pattern == value:
@@ -129,6 +135,17 @@ var mask_pattern: int = MaskPattern.STAGGERED_RGB:
 
 		mask_pattern = value
 		notify_property_list_changed()
+		emit_changed()
+
+## Alternate rows (or row pairs) by zero, half a triad, or floor(half a triad) output pixels.
+## Integer offset does not round the RGB aperture boundaries or the Cell's center alignment.
+@export_enum("None:0", "Half Period:1", "Integer Half Period:2")
+var row_offset_mode: int = RowOffsetMode.HALF_PERIOD:
+	set(value):
+		if value not in RowOffsetMode.values() or row_offset_mode == value:
+			return
+
+		row_offset_mode = value
 		emit_changed()
 
 ## Blend the mask output with the reconstructed signal. Zero removes the mask.
@@ -325,9 +342,9 @@ var cell_sampling: int = CellSampling.HORIZONTAL_4:
 
 func _validate_property(property: Dictionary) -> void:
 	if property.name == "mask_pattern" and _is_cell_emission():
-		property.hint_string = "Staggered RGB:0,Staggered RGB (Row Pairs):1"
+		property.hint_string = "RGB Rows:0,RGB Row Pairs:1"
 	elif (
-		property.name in ["triad_pitch", "row_pitch"]
+		property.name in ["triad_pitch", "row_pitch", "row_offset_mode"]
 		and not _is_rgb_layout()
 	):
 		property.usage |= PROPERTY_USAGE_READ_ONLY
@@ -365,6 +382,7 @@ func apply_to_pass(material: ShaderMaterial, pass_index: int) -> void:
 		material.set_shader_parameter(&"triad_pitch", float(triad_pitch))
 		material.set_shader_parameter(&"row_pitch", row_pitch)
 		material.set_shader_parameter(&"mask_pattern", mask_pattern)
+		material.set_shader_parameter(&"row_offset_mode", row_offset_mode)
 		material.set_shader_parameter(&"horizontal_gap", horizontal_gap)
 		material.set_shader_parameter(&"vertical_gap", vertical_gap)
 		material.set_shader_parameter(&"mask_strength", mask_strength)
@@ -428,6 +446,7 @@ func _update_shader_parameters() -> void:
 	_shader_parameters[&"beam_width"] = beam_width
 	_shader_parameters[&"mask_model"] = mask_model
 	_shader_parameters[&"mask_pattern"] = mask_pattern
+	_shader_parameters[&"row_offset_mode"] = row_offset_mode
 	_shader_parameters[&"triad_pitch"] = float(triad_pitch)
 	_shader_parameters[&"row_pitch"] = row_pitch
 	_shader_parameters[&"mask_strength"] = mask_strength
@@ -439,4 +458,4 @@ func _is_cell_emission() -> bool:
 
 
 func _is_rgb_layout() -> bool:
-	return mask_pattern in [MaskPattern.STAGGERED_RGB, MaskPattern.STAGGERED_RGB_ROW_PAIRS]
+	return mask_pattern in [MaskPattern.RGB_ROWS, MaskPattern.RGB_ROW_PAIRS]

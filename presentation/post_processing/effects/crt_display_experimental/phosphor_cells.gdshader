@@ -6,7 +6,8 @@ uniform sampler2D screen_texture
 uniform int cell_sampling : hint_enum("Horizontal 4:1", "2x2:2") = 1;
 uniform float triad_pitch : hint_range(2.0, 6.0, 1.0) = 3.0;
 uniform int row_pitch : hint_range(1, 4, 1) = 3;
-uniform int mask_pattern : hint_enum("Staggered RGB:0", "Staggered RGB (Row Pairs):1") = 0;
+uniform int mask_pattern : hint_enum("RGB Rows:0", "RGB Row Pairs:1") = 0;
+uniform int row_offset_mode : hint_enum("None:0", "Half Period:1", "Integer Half Period:2") = 1;
 uniform float horizontal_gap : hint_range(0.0, 1.0, 0.05) = 0.0;
 uniform float vertical_gap : hint_range(0.0, 1.0, 0.05) = 0.0;
 uniform float mask_strength : hint_range(0.0, 1.0, 0.01) = 0.5;
@@ -38,7 +39,7 @@ float cell_row_integral(float interval_top, float interval_height, float active_
 vec3 cell_emission(vec2 fragment_position, vec2 screen_uv, vec2 pixel_size) {
 	vec2 active_size = cell_active_size();
 	float row_offset = rgb_row_offset(
-		fragment_position.y, triad_pitch, float(row_pitch), mask_pattern);
+		fragment_position.y, triad_pitch, float(row_pitch), mask_pattern, row_offset_mode);
 	vec2 pixel_corner = fragment_position - vec2(0.5);
 	int horizontal_samples = cell_sampling == 2 ? 2 : 4;
 	int vertical_samples = cell_sampling == 2 ? 2 : 1;

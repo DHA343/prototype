@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="CRTDisplayExperimental" format=3]
+
+[ext_resource type="Script" path="res://presentation/post_processing/effects/crt_display_experimental/crt_display_experimental.gd" id="1_48lwo"]
+
+[resource]
+script = ExtResource("1_48lwo")
+signal_enabled = false
+sharpness = 0.5
+signal_pitch = 2.0
+vertical_blur = 0.5
+scanline_strength = 0.0
+row_offset_mode = 2
+mask_strength = 1.0
+noise_enabled = false
+enabled = false

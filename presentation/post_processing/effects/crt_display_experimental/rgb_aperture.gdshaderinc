@@ -1,8 +1,15 @@
-// Shared output-pixel geometry for both staggered RGB layouts.
-float rgb_row_offset(float output_y, float pitch, float row_height, int pattern_kind) {
+// Shared output-pixel geometry for both RGB row layouts.
+float rgb_row_offset(
+	float output_y, float pitch, float row_height, int pattern_kind, int offset_mode
+) {
+	if (offset_mode == 0) {
+		return 0.0;
+	}
 	float cell_row = floor(output_y / row_height);
 	float phase_row = pattern_kind == 1 ? floor(cell_row * 0.5) : cell_row;
-	return mod(phase_row, 2.0) * pitch * 0.5;
+	float half_period = pitch * 0.5;
+	float offset_width = offset_mode == 2 ? floor(half_period) : half_period;
+	return mod(phase_row, 2.0) * offset_width;
 }
 
 

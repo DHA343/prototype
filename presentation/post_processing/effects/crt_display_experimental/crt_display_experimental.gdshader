@@ -15,7 +15,8 @@ uniform float beam_width : hint_range(0.75, 1.25, 0.01) = 0.9;
 uniform float triad_pitch : hint_range(2.0, 6.0, 1.0) = 3.0;
 uniform int row_pitch : hint_range(1, 4, 1) = 3;
 uniform int mask_model : hint_enum("Mask Redistribution", "Cell Emission") = 0;
-uniform int mask_pattern : hint_enum("Staggered RGB:0", "Staggered RGB (Row Pairs):1", "RGB Pixel Pattern:2", "Green / Magenta Stripes:3") = 0;
+uniform int mask_pattern : hint_enum("RGB Rows:0", "RGB Row Pairs:1", "RGB Pixel Pattern:2", "Green / Magenta Stripes:3") = 0;
+uniform int row_offset_mode : hint_enum("None:0", "Half Period:1", "Integer Half Period:2") = 1;
 uniform float mask_strength : hint_range(0.0, 1.0, 0.01) = 0.5;
 uniform float brightness_compensation : hint_range(0.25, 6.0, 0.01) = 1.0;
 
@@ -140,7 +141,8 @@ float scanline_light(float position, float pixel_span) {
 // Additional pattern cells and averages follow https://godotshaders.com/shader/crt-with-luminance-preservation/
 vec4 generate_mask(vec2 fragcoord) {
 	if (mask_pattern == 0 || mask_pattern == 1) {
-		float row_offset = rgb_row_offset(fragcoord.y, triad_pitch, float(row_pitch), mask_pattern);
+		float row_offset = rgb_row_offset(
+			fragcoord.y, triad_pitch, float(row_pitch), mask_pattern, row_offset_mode);
 		vec3 coverage = rgb_aperture_integral(
 			fragcoord.x - 0.5, 1.0, row_offset, triad_pitch, triad_pitch, 0.0);
 		return vec4(coverage, 1.0 / 3.0);

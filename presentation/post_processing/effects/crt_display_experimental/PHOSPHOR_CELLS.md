@@ -2,7 +2,7 @@
 
 ## 構成
 
-CRT ResourceのMask ModelをCell Emissionへ設定して使用する。対応PatternはStaggered RGBとStaggered RGB (Row Pairs)。
+CRT ResourceのMask ModelをCell Emissionへ設定して使用する。対応PatternはRGB RowsとRGB Row Pairs。
 Signal / Scanline（pass 0）→ Cell Emission（pass 1）→ Optical Spread（pass 2）→ Phosphor Bloom（pass 3）→ Noise（pass 4）の順。
 
 Mask Redistributionはpass 0でmaskを適用し、pass 1を止める。
@@ -14,12 +14,13 @@ Cell専用のSubViewportは追加しない。Optical SpreadとBloom Coreにも�
 
 - Triad Pitch：2〜6出力px、1px刻み、初期値3。各R/G/Bの発光幅は等しい。
 - Row Pitch：1〜4出力px、初期値3。整数pixel境界に整列する。
-- Mask Pattern：Staggered RGBは毎row、Staggered RGB (Row Pairs)は2rowごとに半triadずらす。配置計算は共通。
+- Mask Pattern：RGB Rowsは毎row、RGB Row Pairsは2rowごとに位相を切り替える。配置計算は共通。
+- Row Offset Mode：None / Half Period / Integer Half Period。ずれ幅は0 / Pitchの半分 / 半分の切り捨て。初期値は従来と同じHalf Period。
 - Horizontal Gap：0〜1出力px、初期値0。triad両端へ等分し、RGB内部には隙間を作らない。
 - Vertical Gap：0〜1出力px、初期値0。row上下へ等分する。
 - 横位相：Pixel Center固定。Gapを含む横triad全体を0.5px移す。調整項目は設けない。
 - 共通関数は `rgb_aperture.gdshaderinc`。出力座標に固定し、解像度で自動換算しない。
-- 小数境界を整数へ丸めない。矩形のcoverageを解析計算し、soft edgeは後段のOptical Spreadで調整する。
+- 素子の小数境界は整数へ丸めない。整数版も段のずれ幅だけを丸める。矩形のcoverageを解析計算し、soft edgeは後段のOptical Spreadで調整する。
 
 両samplingが同じGeometryを使う。横samplingでも両Gapを編集できる。
 Row Pitchが整数なので、各output pixelの範囲は1つのCell row内に収まる。
@@ -62,8 +63,8 @@ Horizontal 2とMixed Pixel Patternも実装ごと削除した。
 
 | 整理前の設定 | 現在の設定 |
 | --- | --- |
-| Staggered RGB＋Stagger Rows 1 | Staggered RGB（ID 0） |
-| Staggered RGB＋Stagger Rows 2 | Staggered RGB (Row Pairs)（ID 1） |
+| Staggered RGB＋Stagger Rows 1 | RGB Rows（ID 0）＋Row Offset Mode Half Period |
+| Staggered RGB＋Stagger Rows 2 | RGB Row Pairs（ID 1）＋Row Offset Mode Half Period |
 | Horizontal 2（ID 0、旧初期値） | Horizontal 4（ID 1、現初期値） |
 | Horizontal 4 / 2x2 | 同じID 1 / 2を維持 |
 | Cell Brightness＋Brightness Compensation、Cell使用中 | 積をBrightness Compensationへ保存 |
@@ -73,7 +74,7 @@ Horizontal 2とMixed Pixel Patternも実装ごと削除した。
 
 プロジェクト内の保存Resourceを確認し、mainのStagger Rows 2をPattern ID 1へ移した。
 二つの明るさ倍率を非初期値で使う保存Resourceはなかった。
-CRT testはCell Emission / Staggered RGB / 2x2、pitch 2 / row 3、Gap 0 / 0、Mask Strength 1。横位相は0.5px固定。
+過去の整理時点のCRT testはCell Emission / RGB Rows / 2x2、pitch 2 / row 3、Gap 0 / 0、Mask Strength 1。横位相は0.5px固定。
 現在のScene保存値を優先している。別途保存した旧Resourceは上表に沿った移行が必要。
 Horizontal 2→4は同一出力ではなく、横方向に変化する入力とapertureの積の近似精度を変える。
 

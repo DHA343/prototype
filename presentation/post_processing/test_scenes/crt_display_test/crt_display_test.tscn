@@ -27,6 +27,7 @@ signal_pitch = 2.0
 vertical_blur = 0.5
 mask_model = 1
 mask_strength = 1.0
+triad_pitch = 4
 row_pitch = 2
 noise_enabled = false
 
