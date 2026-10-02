@@ -165,3 +165,17 @@ Scene内のNodeをメンバー変数として参照する場合は、原則と�
 ## その他
 
 - `assert` は、英語で簡潔に
+
+## export項目の追加と既存Resource
+
+Godot 4.7.2では、既存のResource instanceを保持した `GDScript.reload(true)` の後、
+新しいexport項目に宣言上の初期値が入らずnullになる場合がある。
+Inspectorで0相当に見えることと、新規Resourceの初期値は区別する。
+
+- 変更前にEditor上の調整値とScene保存値を確認する。未保存の調整値を初期値で置き換えない。
+- export追加後は既存instanceと新規instanceの両方で値を確認する。
+- 新しい項目がnullなら、調整済みの値を引き継いだ新規Resourceへ置き換え、Sceneを保存する。
+- Sceneを開き直すだけではResource cacheが残る場合があるため、読み直したという応答だけで正常と判断しない。
+- 最後にInspector対象の実値と保存ファイルを確認する。正常な0 / falseを欠損値として補正しない。
+
+再現結果と対応例: [Grain比較の作業記録](work-reports/crt-grain-comparison.md)。

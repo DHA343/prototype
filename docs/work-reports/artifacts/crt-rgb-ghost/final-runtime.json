@@ -1,0 +1,11 @@
+{
+	"ghost_strength": 0.2,
+	"mask_pitch": 4,
+	"mask_strength": 1.0,
+	"pass_count": 6,
+	"rgb_offset": "(2.0, 0.5)",
+	"rgb_strength": 0.3,
+	"script_matches_file": true,
+	"shader_matches_file": true,
+	"texture_size": 1.9
+}

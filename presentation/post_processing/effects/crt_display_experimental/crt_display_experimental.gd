@@ -8,16 +8,69 @@ enum MaskModel {
 }
 
 enum MaskPattern {
-	RGB_GRAIN,
+	STAGGERED_RGB,
 	RGB_STRIPES,
 	GREEN_MAGENTA_STRIPES,
 }
 
 const EFFECT_SHADER: Shader = preload("./crt_display_experimental.gdshader")
+const OFFSETS_SHADER: Shader = preload("./image_offsets.gdshader")
 const CELL_SHADER: Shader = preload("./phosphor_cells.gdshader")
 const SPREAD_SHADER: Shader = preload("./optical_spread.gdshader")
 const BLOOM_SHADER: Shader = preload("./phosphor_bloom.gdshader")
-const NOISE_SHADER: Shader = preload("./crt_noise.gdshader")
+const TEXTURE_SHADER: Shader = preload("./crt_texture.gdshader")
+
+@export_group("RGB Separation", "rgb_")
+## Visible red image offset in output pixels. Positive X / Y moves right / down.
+@export_custom(PROPERTY_HINT_RANGE, "-8,8,0.1,suffix:px")
+var rgb_red_offset: Vector2 = Vector2(-2.0, 0.5):
+	set(value):
+		if rgb_red_offset.is_equal_approx(value):
+			return
+
+		rgb_red_offset = value
+		emit_changed()
+
+## Visible blue image offset relative to green, which stays at the original position.
+@export_custom(PROPERTY_HINT_RANGE, "-8,8,0.1,suffix:px")
+var rgb_blue_offset: Vector2 = Vector2(2.0, -0.5):
+	set(value):
+		if rgb_blue_offset.is_equal_approx(value):
+			return
+
+		rgb_blue_offset = value
+		emit_changed()
+
+## Weight of the RGB-separated image relative to the original (weight 1). Zero disables it.
+@export_range(0.0, 1.0, 0.01)
+var rgb_strength: float = 0.3:
+	set(value):
+		if is_equal_approx(rgb_strength, value):
+			return
+
+		rgb_strength = value
+		emit_changed()
+
+@export_group("Ghost", "ghost_")
+## Full-color secondary image offset before Signal and Mask. Positive X / Y moves right / down.
+@export_custom(PROPERTY_HINT_RANGE, "-16,16,0.1,suffix:px")
+var ghost_offset: Vector2 = Vector2(5.0, 1.0):
+	set(value):
+		if ghost_offset.is_equal_approx(value):
+			return
+
+		ghost_offset = value
+		emit_changed()
+
+## Weight of the full-color secondary image relative to the original. Zero disables it.
+@export_range(0.0, 1.0, 0.01)
+var ghost_strength: float = 0.2:
+	set(value):
+		if is_equal_approx(ghost_strength, value):
+			return
+
+		ghost_strength = value
+		emit_changed()
 
 @export_group("Signal Reconstruction")
 @export var signal_enabled: bool = true:
@@ -104,9 +157,9 @@ var mask_model: int = MaskModel.REDISTRIBUTION:
 		notify_property_list_changed()
 		emit_changed()
 
-## Grain alternates by half a period; stripes have no row offset. Both models support all patterns.
-@export_enum("RGB Grain:0", "RGB Stripes:1", "Green / Magenta Stripes:2")
-var mask_pattern: int = MaskPattern.RGB_GRAIN:
+## Staggered RGB alternates by half a period; stripes have no row offset. Both models support all patterns.
+@export_enum("Staggered RGB:0", "RGB Stripes:1", "Green / Magenta Stripes:2")
+var mask_pattern: int = MaskPattern.STAGGERED_RGB:
 	set(value):
 		if value not in MaskPattern.values():
 			return
@@ -135,15 +188,43 @@ var mask_pattern: int = MaskPattern.RGB_GRAIN:
 		mask_pitch = value
 		emit_changed()
 
-## Height of each alternating band in RGB Grain. Stripes do not use this setting.
-@export_range(1, 8, 1, "suffix:px") var grain_height: int = 3:
+## Height of each alternating band in Staggered RGB. Stripes do not use this setting.
+@export_range(1, 8, 1, "suffix:px") var row_height: int = 3:
 	set(value):
-		if grain_height == value:
+		if row_height == value:
 			return
 
-		grain_height = value
+		row_height = value
 		emit_changed()
 
+
+@export_group("Texture", "texture_")
+@export var texture_enabled: bool = true:
+	set(value):
+		if texture_enabled == value:
+			return
+
+		texture_enabled = value
+		emit_changed()
+
+## Fixed brightness variation after the mask, before Optical Spread and Bloom.
+## RGB shares one multiplier, from 1 - Strength to 1 + Strength. Zero disables the pass.
+@export_range(0.0, 0.5, 0.01) var texture_strength: float = 0.2:
+	set(value):
+		if is_equal_approx(texture_strength, value):
+			return
+
+		texture_strength = value
+		emit_changed()
+
+## Spacing of the fixed brightness pattern in output pixels, independent of the mask layout.
+@export_range(1.0, 4.0, 0.1, "suffix:px") var texture_size: float = 1.5:
+	set(value):
+		if is_equal_approx(texture_size, value):
+			return
+
+		texture_size = value
+		emit_changed()
 
 @export_group("Optical Spread", "optical_spread_")
 ## Redistribute Mask light to adjacent pixels. Zero disables the pass.
@@ -215,63 +296,8 @@ var mask_pattern: int = MaskPattern.RGB_GRAIN:
 		emit_changed()
 
 
-@export_group("Noise", "noise_")
-@export var noise_enabled: bool = true:
-	set(value):
-		if noise_enabled == value:
-			return
-
-		noise_enabled = value
-		emit_changed()
-
-## Brightness grain after Mask and Bloom. Zero disables this component.
-@export_range(0.0, 0.25, 0.001) var noise_luma_strength: float = 0.08:
-	set(value):
-		if is_equal_approx(noise_luma_strength, value):
-			return
-
-		noise_luma_strength = value
-		emit_changed()
-
-## Perceptual red/green and blue/yellow grain after Bloom. Zero disables it.
-@export_range(0.0, 0.1, 0.001) var noise_chroma_strength: float = 0.006:
-	set(value):
-		if is_equal_approx(noise_chroma_strength, value):
-			return
-
-		noise_chroma_strength = value
-		emit_changed()
-
-## Grain spacing in output pixels, independent of the mask's cell layout.
-@export_range(1.0, 8.0, 0.1, "suffix:px") var noise_size: float = 1.5:
-	set(value):
-		if is_equal_approx(noise_size, value):
-			return
-
-		noise_size = value
-		emit_changed()
-
-## Blend hard grain cells with smooth interpolation. Most visible for larger grains.
-@export_range(0.0, 1.0, 0.01) var noise_softness: float = 0.6:
-	set(value):
-		if is_equal_approx(noise_softness, value):
-			return
-
-		noise_softness = value
-		emit_changed()
-
-## New random pattern per update. Zero keeps the grain still.
-@export_range(0.0, 60.0, 1.0, "suffix:Hz") var noise_rate: float = 30.0:
-	set(value):
-		if is_equal_approx(noise_rate, value):
-			return
-
-		noise_rate = value
-		emit_changed()
-
-
 func _validate_property(property: Dictionary) -> void:
-	if property.name == "grain_height" and mask_pattern != MaskPattern.RGB_GRAIN:
+	if property.name == "row_height" and mask_pattern != MaskPattern.STAGGERED_RGB:
 		property.usage |= PROPERTY_USAGE_READ_ONLY
 
 
@@ -280,62 +306,78 @@ func get_shader() -> Shader:
 
 
 func get_pass_count() -> int:
-	return 5
+	return 6
 
 
 func get_pass_shader(pass_index: int) -> Shader:
 	if pass_index == 0:
-		return EFFECT_SHADER
+		return OFFSETS_SHADER
 	if pass_index == 1:
-		return CELL_SHADER
+		return EFFECT_SHADER
 	if pass_index == 2:
-		return SPREAD_SHADER
-	return BLOOM_SHADER if pass_index == 3 else NOISE_SHADER
+		return CELL_SHADER
+	if pass_index == 3:
+		return TEXTURE_SHADER
+	return SPREAD_SHADER if pass_index == 4 else BLOOM_SHADER
 
 
 func apply_to_pass(material: ShaderMaterial, pass_index: int) -> void:
 	if pass_index == 0:
-		apply_to(material)
+		material.set_shader_parameter(&"rgb_red_offset", rgb_red_offset)
+		material.set_shader_parameter(&"rgb_blue_offset", rgb_blue_offset)
+		material.set_shader_parameter(&"rgb_strength", rgb_strength)
+		material.set_shader_parameter(&"ghost_offset", ghost_offset)
+		material.set_shader_parameter(&"ghost_strength", ghost_strength)
 		return
 
 	if pass_index == 1:
+		apply_to(material)
+		return
+
+	if pass_index == 2:
 		material.set_shader_parameter(&"mask_pitch", float(mask_pitch))
-		material.set_shader_parameter(&"grain_height", grain_height)
+		material.set_shader_parameter(&"row_height", row_height)
 		material.set_shader_parameter(&"mask_pattern", mask_pattern)
 		material.set_shader_parameter(&"mask_strength", mask_strength)
 		return
 
-	if pass_index == 2:
+	if pass_index == 3:
+		material.set_shader_parameter(&"texture_strength", texture_strength)
+		material.set_shader_parameter(&"texture_size", texture_size)
+		return
+
+	if pass_index == 4:
 		material.set_shader_parameter(&"spread_strength", optical_spread_strength)
 		material.set_shader_parameter(&"spread_width", optical_spread_width)
 		return
 
-	if pass_index == 3:
+	if pass_index == 5:
 		material.set_shader_parameter(&"bloom_hdr_limit", phosphor_bloom_hdr_limit)
 		material.set_shader_parameter(&"near_strength", phosphor_bloom_near_strength)
 		material.set_shader_parameter(&"far_strength", phosphor_bloom_far_strength)
 		return
 
-	material.set_shader_parameter(&"luma_strength", noise_luma_strength)
-	material.set_shader_parameter(&"chroma_strength", noise_chroma_strength)
-	material.set_shader_parameter(&"grain_size", noise_size)
-	material.set_shader_parameter(&"grain_softness", noise_softness)
-	material.set_shader_parameter(&"refresh_rate", noise_rate)
-
 
 func is_pass_enabled(pass_index: int) -> bool:
 	if pass_index == 0:
-		return true
+		return (
+			(rgb_strength > 0.0 and (rgb_red_offset != Vector2.ZERO or rgb_blue_offset != Vector2.ZERO))
+			or (ghost_strength > 0.0 and ghost_offset != Vector2.ZERO)
+		)
 	if pass_index == 1:
-		return _is_cell_emission() and mask_strength > 0.0
+		return true
 	if pass_index == 2:
-		return optical_spread_strength > 0.0 and optical_spread_width > 0.0
+		return _is_cell_emission() and mask_strength > 0.0
 	if pass_index == 3:
+		return texture_enabled and texture_strength > 0.0
+	if pass_index == 4:
+		return optical_spread_strength > 0.0 and optical_spread_width > 0.0
+	if pass_index == 5:
 		return (
 			phosphor_bloom_enabled
 			and (phosphor_bloom_near_strength > 0.0 or phosphor_bloom_far_strength > 0.0)
 		)
-	return noise_enabled and (noise_luma_strength > 0.0 or noise_chroma_strength > 0.0)
+	return false
 
 
 func create_pass_source(
@@ -343,7 +385,7 @@ func create_pass_source(
 	context: PassSourceContext,
 	material: ShaderMaterial,
 ) -> Node:
-	if pass_index != 3:
+	if pass_index != 5:
 		return null
 
 	var bloom := CRTPhosphorBloom.new()
@@ -363,7 +405,7 @@ func _update_shader_parameters() -> void:
 	_shader_parameters[&"mask_model"] = mask_model
 	_shader_parameters[&"mask_pattern"] = mask_pattern
 	_shader_parameters[&"mask_pitch"] = float(mask_pitch)
-	_shader_parameters[&"grain_height"] = grain_height
+	_shader_parameters[&"row_height"] = row_height
 	_shader_parameters[&"mask_strength"] = mask_strength
 
 

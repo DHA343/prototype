@@ -2,34 +2,37 @@
 
 [ext_resource type="Script" uid="uid://cdcn5i66x14bu" path="res://presentation/post_processing/post_processing.gd" id="1_post_processing"]
 [ext_resource type="Script" uid="uid://d12uwcn8et7ym" path="res://presentation/post_processing/post_process_effect.gd" id="2_effect"]
-[ext_resource type="Script" uid="uid://bi87egye7reys" path="res://presentation/post_processing/effects/chromatic_aberration/chromatic_aberration.gd" id="4_h14q8"]
 [ext_resource type="Script" uid="uid://du0elwyycowft" path="res://presentation/post_processing/effects/color_grading/color_grading.gd" id="5_color_grading"]
 [ext_resource type="Script" uid="uid://4kmsj3ju6w87" path="res://presentation/post_processing/effects/crt_display_experimental/crt_display_experimental.gd" id="8_crt"]
 [ext_resource type="Script" uid="uid://b6y73x0igwwoj" path="res://presentation/post_processing/effects/vignette/vignette.gd" id="10_vignette"]
 
-[sub_resource type="Resource" id="Resource_color_grading"]
+[sub_resource type="Resource" id="Resource_pvxqj"]
 script = ExtResource("5_color_grading")
-brightness = -0.02000000000000001
-contrast = 1.08
-saturation = 1.08
+metadata/_custom_type_script = "uid://du0elwyycowft"
 
-[sub_resource type="Resource" id="Resource_6tupy"]
-script = ExtResource("4_h14q8")
-metadata/_custom_type_script = "uid://bi87egye7reys"
-
-[sub_resource type="Resource" id="Resource_crt"]
+[sub_resource type="Resource" id="Resource_umxmu"]
 script = ExtResource("8_crt")
-mask_pattern = 2
-mask_strength = 1.0
-mask_pitch = 2
+rgb_red_offset = Vector2(-3, 0.5)
+rgb_blue_offset = Vector2(3, 0)
+rgb_strength = 1.0
+ghost_strength = 0.0
+sharpness = 0.5
+signal_pitch = 2.0
+mask_model = 1
+mask_strength = 0.75
+mask_pitch = 4
+row_height = 2
+texture_size = 1.8
+metadata/_custom_type_script = "uid://4kmsj3ju6w87"
 
-[sub_resource type="Resource" id="Resource_vignette"]
+[sub_resource type="Resource" id="Resource_pq11d"]
 script = ExtResource("10_vignette")
-strength = 0.5
-radius = 0.3
-softness = 0.7
-falloff = 1.0
+strength = 0.6
+radius = 0.5
+softness = 0.5
+falloff = 0.98
+metadata/_custom_type_script = "uid://b6y73x0igwwoj"
 
 [node name="PostProcessing" type="Node" unique_id=776314143]
 script = ExtResource("1_post_processing")
-composite_effects = Array[ExtResource("2_effect")]([SubResource("Resource_color_grading"), SubResource("Resource_6tupy"), SubResource("Resource_crt"), SubResource("Resource_vignette")])
+composite_effects = Array[ExtResource("2_effect")]([SubResource("Resource_pvxqj"), SubResource("Resource_umxmu"), SubResource("Resource_pq11d")])

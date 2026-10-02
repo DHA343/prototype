@@ -13,9 +13,9 @@ uniform float vertical_blur : hint_range(0.0, 1.0, 0.01) = 1.0;
 uniform float scanline_strength : hint_range(0.0, 1.0, 0.01) = 0.15;
 uniform float beam_width : hint_range(0.75, 1.25, 0.01) = 0.9;
 uniform float mask_pitch : hint_range(2.0, 6.0, 1.0) = 3.0;
-uniform int grain_height : hint_range(1, 8, 1) = 3;
+uniform int row_height : hint_range(1, 8, 1) = 3;
 uniform int mask_model : hint_enum("Mask Redistribution", "Cell Emission") = 0;
-uniform int mask_pattern : hint_enum("RGB Grain:0", "RGB Stripes:1", "Green / Magenta Stripes:2") = 0;
+uniform int mask_pattern : hint_enum("Staggered RGB:0", "RGB Stripes:1", "Green / Magenta Stripes:2") = 0;
 uniform float mask_strength : hint_range(0.0, 1.0, 0.01) = 0.5;
 
 const float HALF_PI = 1.57079632679;
@@ -138,7 +138,7 @@ float scanline_light(float position, float pixel_span) {
 
 vec4 generate_mask(vec2 fragcoord) {
 	float row_offset = mask_row_offset(
-		fragcoord.y, mask_pitch, float(grain_height), mask_pattern);
+		fragcoord.y, mask_pitch, float(row_height), mask_pattern);
 	vec3 coverage = mask_aperture_integral(
 		fragcoord.x - 0.5, 1.0, row_offset, mask_pitch, mask_pattern, 0.0);
 	return vec4(coverage, mask_occupancy(mask_pattern));

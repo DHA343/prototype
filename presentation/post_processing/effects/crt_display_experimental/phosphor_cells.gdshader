@@ -4,8 +4,8 @@ render_mode unshaded, blend_disabled;
 uniform sampler2D screen_texture
 	: hint_screen_texture, source_color, repeat_disable, filter_linear;
 uniform float mask_pitch : hint_range(2.0, 6.0, 1.0) = 3.0;
-uniform int grain_height : hint_range(1, 8, 1) = 3;
-uniform int mask_pattern : hint_enum("RGB Grain:0", "RGB Stripes:1", "Green / Magenta Stripes:2") = 0;
+uniform int row_height : hint_range(1, 8, 1) = 3;
+uniform int mask_pattern : hint_enum("Staggered RGB:0", "RGB Stripes:1", "Green / Magenta Stripes:2") = 0;
 uniform float mask_strength : hint_range(0.0, 1.0, 0.01) = 0.5;
 
 #include "mask_geometry.gdshaderinc"
@@ -13,7 +13,7 @@ uniform float mask_strength : hint_range(0.0, 1.0, 0.01) = 0.5;
 
 vec3 cell_emission(vec2 fragment_position, vec2 screen_uv, vec2 pixel_size) {
 	float row_offset = mask_row_offset(
-		fragment_position.y, mask_pitch, float(grain_height), mask_pattern);
+		fragment_position.y, mask_pitch, float(row_height), mask_pattern);
 	float pixel_left = fragment_position.x - 0.5;
 	// Preserve RGB's center alignment. G/M uses pixel boundaries so a 2px pair stays visible.
 	float alignment = mask_pattern == 2 ? 0.0 : 0.5;

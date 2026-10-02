@@ -1,0 +1,20 @@
+[
+	{
+		"bloom_grain_count": 1,
+		"bloom_uniform_matches": true,
+		"pattern": 0,
+		"zero_matches_off": true
+	},
+	{
+		"bloom_grain_count": 1,
+		"bloom_uniform_matches": true,
+		"pattern": 1,
+		"zero_matches_off": true
+	},
+	{
+		"bloom_grain_count": 1,
+		"bloom_uniform_matches": true,
+		"pattern": 2,
+		"zero_matches_off": true
+	}
+]

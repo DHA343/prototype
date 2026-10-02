@@ -1,23 +1,23 @@
 # Cell Emission
 
 CRT ResourceのMask ModelをCell Emissionに設定する。
-Signal / Scanline（pass 0）→ Cell Emission（pass 1）→ Optical Spread（pass 2）→ Phosphor Bloom（pass 3）→ Noise（pass 4）。
-Mask Redistributionはpass 0でmaskを適用し、pass 1を止める。
+RGB Separation / Ghost（pass 0）→ Signal / Scanline（pass 1）→ Cell Emission（pass 2）→ Texture（pass 3）→ Optical Spread（pass 4）→ Phosphor Bloom（pass 5）。
+Mask Redistributionはpass 1でmaskを適用し、pass 2を止める。
 Cell専用のSubViewportは追加しない。Bloom Coreにも同じMask設定が反映される。
 
 ## Maskの役割と設定
 
 規則的な粒感と、局所的な色・明るさの変化を作る。純粋なRGB素子のpixel再現だけを目的にしない。
-MaskグループはModel・Pattern・Strength・Mask Pitch・Grain Heightの5項目。
+MaskグループはModel・Pattern・Strength・Mask Pitch・Row Heightの5項目。
 
 | Pattern | 配置 | 高さの設定 |
 | --- | --- | --- |
-| RGB Grain | 等幅RGBを横半周期ずつ交互にずらす | Grain Heightは位相が切り替わる段の高さ |
+| Staggered RGB | 等幅RGBを横半周期ずつ交互にずらす | Row Heightは位相が切り替わる段の高さ |
 | RGB Stripes | 等幅RGBの縦縞、段のずれなし | 使用しない |
 | Green / Magenta Stripes | 等幅G / R+Bの縦縞 | 使用しない |
 
 Mask Pitchは横一組の周期、2〜6出力px、整数step、初期値3。
-Grain Heightは1〜8出力px、整数step、初期値3。旧2段groupingも高さへ集約する。
+Row Heightは1〜8出力px、整数step、初期値3。旧2段groupingも高さへ集約する。
 RGBの横位相は0.5px固定、G/Mは0px固定。Pitch 2のG/Mが毎pixelの平均で消えることを避ける。
 `mask_geometry.gdshaderinc`を両Modelで共用する。境界を整数へ丸めず、矩形coverageを解析積分する。
 出力座標に固定し、解像度による自動換算は行わない。
@@ -34,20 +34,20 @@ aperture自体は解析積分、変化する入力との積は区間中心によ
 Mask Redistributionは明るさに応じた非線形の再配分を使うため、同じ配置でも色応答は異なる。
 
 Strength 0は再構成信号、1は正規化した発光、中間は両者の混合。
-0ではCell passと画面コピーを無効にする。Optical Spread・Bloom・Noiseは独立して有効にできる。
+0ではCell passと画面コピーを無効にする。Optical Spread・Bloom・Textureは独立して有効にできる。
 画面テクスチャ中心のalphaを保持する。透明Sceneは画面コピー側の制約がある。
 
 ## 整理と移行
 
 | 整理前 | 整理後 |
 | --- | --- |
-| RGB Rows、Row Offset Half Period | RGB Grain、Grain Height = 旧Row Pitch |
-| RGB Row Pairs、Row Offset Half Period | RGB Grain、Grain Height = 旧Row Pitch × 2 |
+| RGB Rows、Row Offset Half Period | Staggered RGB、Row Height = 旧Row Pitch |
+| RGB Row Pairs、Row Offset Half Period | Staggered RGB、Row Height = 旧Row Pitch × 2 |
 | Triad Pitch | Mask Pitch（RGBでは同じ幅） |
 | 固定2pxのGreen / Magenta Stripes | Pattern ID 2、Mask Pitch 2 |
 | Cell Sampling | 横4点固定、2x2の実装を削除 |
 | Horizontal / Vertical Gap | 設定と非発光部分の計算を削除 |
-| Row Offset Mode | 設定を削除、Grainは半周期・Stripesは0に固定 |
+| Row Offset Mode | 設定を削除、Staggered RGBは半周期・Stripesは0に固定 |
 | Brightness Compensation | 設定と倍率を削除、追加gainなし |
 | RGB Pixel Pattern | RGB/黒の固定配列を実装ごと削除 |
 | Mask Pixel Preview | Scene・Script・Shader・UID・READMEを削除 |

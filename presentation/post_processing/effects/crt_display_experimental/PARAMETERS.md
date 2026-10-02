@@ -5,11 +5,16 @@ Resource の初期値は見た目を調整するための出発点。
 Scene に保存された値は初期値を上書きする。
 
 Maskは規則的な粒感と局所的な色・明るさの変化を作る。Mask Modelは描画モデル、Mask Patternは質感の配置。
-InspectorのMaskグループはModel / Pattern / Strength / Mask Pitch / Grain Heightの5項目。
+InspectorのMaskグループはModel / Pattern / Strength / Mask Pitch / Row Heightの5項目。
 Gap・Sampling・段のずれ幅・明るさ倍率の設定は持たず、内部の小グループも設けない。
 
 | 項目 | 範囲 | 初期値 | step | 意味・根拠 |
 | --- | --- | --- | --- | --- |
+| RGB Red Offset | 各軸 −8〜8 px | (−2, 0.5) px | 0.1 | 元の像に重ねる赤成分の位置。X正で右、Y正で下。初期値は赤が左。出力pixel基準 |
+| RGB Blue Offset | 各軸 −8〜8 px | (2, −0.5) px | 0.1 | 青成分の位置。初期値は青が右。緑は元の位置を維持し、赤青は独立したXY設定 |
+| RGB Strength | 0〜1 | 0.3 | 0.01 | 元の像の重み1に対するRGB分離像の重み。0で無効。副像へ置換せず元の輪郭を残す |
+| Ghost Offset | 各軸 −16〜16 px | (5, 1) px | 0.1 | フルカラーの副像の位置。RGB全成分が同じ方向へ動く |
+| Ghost Strength | 0〜1 | 0.2 | 0.01 | 元の像の重み1に対するフルカラー副像の重み。0で無効 |
 | Scanline Count | 180〜720 | 360 | 1 | 縦方向の再構成の行数と走査線模様の周期を共用する。1080pで初期値は1行あたり3出力px。範囲は調整用 |
 | Signal Prefilter Enabled | OFF / ON | ON | — | 信号の各サンプルが担当する元画像の範囲を平均してから補間する。細線がサンプル間に落ちて消えることを抑える。OFFで従来の点サンプリング。Signal EnabledがOFFなら無効 |
 | Sharpness | 0.5〜1.0 | 0.67 | 0.01 | 横方向のkernelを広げるほど低い値。範囲は半径2〜1サンプル間隔に対応 |
@@ -18,10 +23,13 @@ Gap・Sampling・段のずれ幅・明るさ倍率の設定は持たず、内部
 | Scanline Strength | 0〜1 | 0.15 | 0.01 | 行方向の明るさの濃淡。0で走査線模様を無効。Signal EnabledがOFFでも使用可能。低解像度では自動的に弱める |
 | Beam Width | 0.75〜1.25 lines | 0.9 line | 0.01 | 走査線の発光profileのFWHM。現在は模様だけに使用し、縦の補間へ影響しない。1.0では隣接profileの合計が一定になり、濃淡はほぼ生じない |
 | Mask Model | Mask Redistribution / Cell Emission | Mask Redistribution | — | 明るさに応じた色の再配分、またはHDR信号とaperture coverageからの発光。両Modelで全Patternを使用可能 |
-| Mask Pattern | RGB Grain / RGB Stripes / Green / Magenta Stripes | RGB Grain | — | 半周期ずつ交互にずらすRGB粒状配置、ずらさないRGB縦縞、GとR+Bの縦縞 |
+| Mask Pattern | Staggered RGB / RGB Stripes / Green / Magenta Stripes | Staggered RGB | — | 半周期ずつ交互にずらすRGB粒状配置、ずらさないRGB縦縞、GとR+Bの縦縞 |
 | Mask Strength | 0〜1 | 0.5 | 0.01 | mask適用前と完全適用の混合比。0でmaskを無効化 |
 | Mask Pitch | 2〜6 px | 3 px | 1 | RGB triadまたはG/Mの一組の横周期。全Pattern共通、出力pixelの整数単位 |
-| Grain Height | 1〜8 px | 3 px | 1 | RGB Grainが半周期ずつずれる段の高さ。縦縞では使用せず読取専用 |
+| Row Height | 1〜8 px | 3 px | 1 | Staggered RGBが半周期ずつずれる段の高さ。縦縞では使用せず読取専用 |
+| Texture Enabled | OFF / ON | ON | — | 固定された明暗乗算。OFFでpassと画面コピーを無効にする |
+| Texture Strength | 0〜0.5 | 0.2 | 0.01 | 倍率1を基準とした明暗の変動幅。0.2なら0.8〜1.2の範囲。0で無効 |
+| Texture Size | 1〜4 px | 1.5 px | 0.1 | 粒の格子間隔。出力pixel基準でMask配置とは独立 |
 | Optical Spread Strength | 0〜1 | 0.5 | 0.01 | mask適用後の光を隣接pixelへ移す量。0でpassと画面コピーを無効化。Mask Redistribution / Cell Emission共通 |
 | Optical Spread Width | 0〜1 px | 0.75 px | 0.05 | 4つのbilinear sampleのfootprint幅。±Width / 2pxを読む。0で無効。GaussianのFWHMではない |
 | Near Width | 0.5〜8.0 px @1080p | 4.0 px | 0.1 | すぐ周囲のにじみ。現在のCRT testで使用する調整値を初期値に採用 |
@@ -29,16 +37,29 @@ Gap・Sampling・段のずれ幅・明るさ倍率の設定は持たず、内部
 | Near Strength | 0〜0.25 | 0.1 | 0.01 | sourceからNearへ再配分する割合。初期値10%、上限25%は調整用 |
 | Far Strength | 0〜0.1 | 0.05 | 0.001 | sourceからFarへ再配分する割合。初期値5%、上限10%は調整用 |
 | HDR Limit | 1.0〜32.0 | 16.0 | 0.1 | sourceの最大RGB成分の漸近値。1は意味のある端点、16と上限32は調整用 |
-| Noise Enabled | OFF / ON | ON | — | maskとBloomの後へノイズを重ねる。OFFならNoise passの描画と画面コピーを無効にする |
-| Noise Luma Strength | 0〜0.25 | 0.08 | 0.001 | 明るさの粒感。0でこの成分を無効。RGB比率を保ちながら明暗を揺らす |
-| Noise Chroma Strength | 0〜0.1 | 0.006 | 0.001 | Oklabの赤緑 / 青黄成分を揺らす色の粒感。0でこの成分を無効。明るさにも多少影響する |
-| Noise Size | 1〜8 px | 1.5 px | 0.1 | 粒の間隔。出力pixel基準でMask Pitch / Grain Heightとは独立。解像度による自動換算なし |
-| Noise Softness | 0〜1 | 0.6 | 0.01 | 硬い粒と、隣接する粒を滑らかに補間したノイズの混合比。大きな粒ほど差が見える |
-| Noise Rate | 0〜60 Hz | 30 Hz | 1 | 1秒あたりのノイズ更新回数。0で固定された粒になる。描画fps以上にしても見える更新回数は増えない |
 
-stepは原則1 / 0.1 / 0.01 / 0.001。Mask PitchとGrain Heightは整数。
+stepは原則1 / 0.1 / 0.01 / 0.001。Mask PitchとRow Heightは整数。
 Far Strength は0.001刻みで微調整する。初期値0.05の2%ずつ調整できる。
 初期値・範囲・Scene保存値はstep変更に合わせて丸めない。
+
+## RGB SeparationとGhost
+
+Pass 0で元の信号からRGB分離像とフルカラー副像を作り、その後にSignal / Scanline、Mask、
+Texture、Optical Spread、Bloomを適用する。MaskやTextureの配置を移動しない。
+RGB分離像とGhostはどちらも同じ入力から作り、片方をもう片方へ重ねて二重処理しない。
+追加の専用ブラー・Radial・時間変化は持たない。
+
+合成は `(original + r * rgb_separated + g * ghost) / (1 + r + g)`。
+r / gは有効なRGB Strength / Ghost Strengthで、Strength 0または対応Offsetが全て0なら
+その項を重みごと除外する。両方が無効ならPass 0と画面コピーを止める。
+Strengthは混合率そのものではなく元の像に対する重み。単独で1なら元の像と副像が半分ずつ、
+両方1なら元の像・RGB分離像・Ghostがそれぞれ3分の1となる。
+均一なRGB / HDR値を保ち、clampや加算による明るさ増加は行わない。alphaは元のpixelを維持する。
+
+Offsetは副像の見える方向を表し、読み取りは逆方向へ行う。端のpixelを延長する。
+線形補間により整数未満の位置も連続して変化する。
+初期値は演出を確認する出発点で、実機計測値ではない。各Strength 0で独立に無効化できる。
+既存のChromaticAberrationファイルは残し、CRTテストシーンの配置だけを除去した。
 
 ## Mask ModelとPattern
 
@@ -46,7 +67,7 @@ Mask Redistributionは中心の再構成信号を使い、明るさに応じて�
 Cell Emissionは横4区間のHDR入力とaperture coverageの積を近似積分し、各channelの占有率で正規化する。
 両Modelの違いはsamplingだけでなく、明るさへの応答にもある。両Modelで全Patternを使用する。
 
-RGB GrainはGrain Heightごとに横位相をMask Pitchの半分ずらす。
+Staggered RGBはRow Heightごとに横位相をMask Pitchの半分ずらす。
 RGB Stripesは同じRGB apertureを段のずれなしで使用する。
 Green / Magenta Stripesは前半G、後半R+B。Pitch 2は1pxずつの細かな変調、Pitchを広げると太い縞になる。
 Patternは成分配置を表す。coverageの重なり・入力色・Modelの応答により最終pixelが原色のみになるとは限らない。
@@ -59,13 +80,14 @@ G/Mは0pxの横位相とし、Pitch 2で両色が毎pixel平均されて模様�
 これはPatternの固定geometryで、調整項目ではない。
 
 Mask Strength = 0はSignal / Scanline後の信号、1は完全なmask出力、中間は両者の混合。
-0ではCell passと画面コピーを無効にする。独立したOptical Spread・Bloom・Noiseは引き続き作用する。
+0ではCell passと画面コピーを無効にする。独立したOptical Spread・Bloom・Textureは引き続き作用する。
 
-旧RGB RowsはRGB Grainへ、RGB Row PairsはGrain Heightを旧Row Pitchの2倍にして移す。
+旧RGB RowsはStaggered RGBへ、RGB Row PairsはRow Heightを旧Row Pitchの2倍にして移す。
 旧Green / Magenta StripesはMask Pitch 2に移し、従来の固定2px周期を維持する。
 Sampling 2x2・Gap・Row Offset Mode・Brightness Compensation・RGB Pixel Patternの実装と旧名aliasは削除。
-現在のCRT testはCell Emission / RGB Grain / Mask Pitch 4 / Grain Height 2 / Strength 1。
-Signal・Optical Spread・Bloom・Noise・後段の色調整の保存値は変更していない。
+現在のCRT testはCell Emission / Staggered RGB / Mask Pitch 4 / Row Height 2 / Strength 1。
+Signal・Optical Spread・Bloom・後段の色調整の保存値は変更していない。
+旧Noiseの有効状態をTextureへ移行している。
 
 詳細は[Cell Emissionの仕様](PHOSPHOR_CELLS.md)を参照。
 
@@ -152,7 +174,7 @@ Beamのprofileと光量補正の式は変更していない。出力pixelでの�
 
 ## Optical Spread
 
-Signal / Scanline → Mask RedistributionまたはCell Emission → Optical Spread → Bloom → Noiseの順。
+Signal / Scanline → Mask RedistributionまたはCell Emission → Texture → Optical Spread → Bloomの順。
 maskを大きくせず、セル周辺のごく狭い光の広がりを加える。
 全mask方式で使用でき、maskやsignalを無効にしても使用可能。
 処理としては、mask適用後の画像への狭い対称ブラー。maskだけでなく映像の輪郭にも作用する。
@@ -166,53 +188,48 @@ Width = 1は3×3のbinomial kernelに相当する。これを超えてpixel周�
 強くするとmaskの粒感そのものが弱くなる。周期や配置を変える設定ではない。
 
 画面端は端のpixelを延長する。入力RGBの符号と画面テクスチャの中心alphaを維持する。
-透明Sceneのalphaについては、Noiseと同じ画面コピー側の制約がある。
+透明Sceneのalphaには画面コピー側の制約がある。
 出力pixel単位で、表示解像度による自動換算はしない。
 
 StrengthまたはWidthが0の場合、メイン描画とBloom Core再描画のpass / BackBufferCopyを非表示にする。
 有効時は全画面passと画面コピーが各1つ増える。追加SubViewportは作らない。
 Bloomが有効ならCoreにも同じ広がりを適用してからBloom sourceを生成する。
 Near / Far BloomのGaussianやHDR応答制限とは独立した、狭い光の再配分。
-Noiseは後に重ねるため、この処理でぼかされない。
+Textureは前段で適用するため、この処理で柔らかくなる。
 
-## Noise
+## Texture
 
-NoiseはCRT Resourceの最終passで、signal、mask、Optical Spread、Bloomの後に重ねる。
-maskのセル形状やsignalのボケに頼らず、不規則な画面の質感を調整するための配置。
-ノイズを信号の前へ入れる方式は今回の対象に含めない。
+Signal / Scanline → Mask RedistributionまたはCell Emission → Texture → Optical Spread → Bloomの順。
+画面に固定された細かな明暗のムラを、Mask後のlinear HDR RGBへ共通倍率で乗算する。
+色差・時間更新・大きなムラは含めない。旧Noiseの加算応答・Oklab変換・Rate・Softnessは削除。
 
-Luma / Chroma Strengthはそれぞれ0で無効。
-両方0、またはNoise EnabledがOFFの場合はNoise passとBackBufferCopyを非表示にする。
-Signal、Scanline、mask、Bloomの有効状態とは独立し、Mask Redistribution / Cell Emissionの両方で使える。
+倍率は `1 + Strength × variation`、variationは-1〜1。Strengthの最大値0.5でも倍率は正。
+RGB比率・純黒・符号付きRGB・画面テクスチャの中心alphaを保持し、HDRを1でclampしない。
+純黒は粒だけでは明るくならない。ただし後段のSpread / Bloomは周囲の光を広げる。
+hashの期待値は0なので平均倍率の基準は1。有限画面や画像内容との相関により、画面の平均明るさが厳密に一定とは限らない。
 
-出力pixel座標と `floor(TIME × Rate)` を整数hashへ渡してノイズを生成する。
-Rate = 0ならtickは0に固定され、時間が経っても同じ粒を描画する。
-画面に固定された格子であり、画像の内容を移動しても粒の位置は画像へ追従しない。
-Sizeは格子の間隔。Softnessは硬い格子とsmoothstep補間を混合する。
-補間を強くすると粒の境界と振幅も和らぐため、必要に応じてStrengthを合わせて調整する。
-Size = 1でpixel中心と格子が一致する場合は、Softnessの差がほとんど出ない。
+出力pixel座標から単一サイズの格子を作り、各格子の値をsmoothstepで補間する。
+Sizeは格子間隔で、実測の粒径やFWHMではない。Size 1ではpixel中心に格子が一致する。
+Softnessは独立した設定にせず、滑らかな補間へ固定。複数サイズの合成はしない。
+模様は左上を基準に固定され、映像の移動や時間更新に追従しない。解像度の自動換算なし。
 
-明るさはlinear RGBの `Y = dot(max(RGB, 0), (0.2126, 0.7152, 0.0722))` を使う。
-ノイズの応答を `sqrt(Y) + 0.02` とし、中間調で粒を見せつつ高いHDR値で過度に強くなることを抑える。
-Lumaは `max(Y + noise × Strength × 応答, 0)` を目標明るさにして、元のRGBへ共通倍率を掛ける。
-ほぼ黒の領域には無彩色の粒を加える。負方向を0で止めるため、黒や非常に暗い部分では平均明るさが少し上がる。
-Strengthは単純な不透明度やdisplay RGBの変化量ではなく、この応答に掛ける係数。
+TextureはDispersed Randomに固定。設定はEnabled / Strength / Sizeの3項目。
+中心hashから上下左右4点の平均を引き、低周波の塊を抑える。
+係数0.894427191を掛けて-1〜1へ制限し、前述の格子上でsmoothstep補間する。
+最適化したblue-noise textureではない。色量子化・階調数制限はしない。
 
-ChromaはLuma処理後のRGBをOklabへ変換し、赤緑を表すaと青黄を表すbへ独立したノイズを加える。
-式は `Lab.ab += noise.yz × Strength × (Lab.L + 0.02)`。Lを変更せずlinear RGBへ戻す。
-linear RGBの振幅を揃えても、青の粒の見え方が赤・緑と揃わなかったため、知覚上の色差を扱う方式へ変更した。
-Oklabの明度Lを保つが、RGBへ戻す際のclampや最終表示によって明るさや色味は変わり得る。
-粒の補間は色差のベクトルへ適用する。角度の補間による特定の色相への偏りは加えない。
-Luma処理後のLに応じた量なので、Lumaの強さによってChromaの振幅も変わる。
-同じStrengthでも以前のRGB方式と色・量の見え方は異なる。暗部では色の粒が弱くなる場合がある。
-負のRGBを0で止めるため、暗部は平均明るさが少し上がり、飽和色では色味も変わる場合がある。
-入力のHDR値を1でclampせず、画面テクスチャのalphaと元の負のRGB成分を保持する。
-透明SubViewportではGodotの画面コピーでalphaが1になる場合があり、元Sceneの透明度を保証する機能ではない。
-最終表示で白く飽和する部分ではノイズが見えにくい場合がある。
+Enabled OFFまたはStrength 0が無加工の基準。
+Strengthは変動の上限であり、出力での実測contrastを表すものではない。
+後段のSpread / BloomとMaskの配置で、細かい模様の見え方や干渉も変わる。
+各格子に5回のhashを使う。方式を固定してもpass数・texture数は増えない。
 
-Noise有効時は全画面passと画面コピーを1つ追加する。追加のSubViewportやノイズtextureは作らない。
-Chroma > 0の場合はOklabとの往復変換を行う。Chroma = 0ならこの変換は行わずLumaの式だけを使用する。
-NoiseはBloomの後なので、BloomのCoreに再描画されず、ノイズ自身の発光の広がりも加えない。
+Textureはpass 3。Enabled OFFまたはStrength 0で、メイン描画とBloom Core再描画のpass / BackBufferCopyを無効化する。
+Optical Spreadはpass 4、Bloomはpass 5。BloomのCoreにもRGB Separation / Ghost・Texture・Spreadを同じ順序・同じ設定で再描画する。
+有効時はSpreadで粒が柔らかくなり、Bloomでムラを含む発光が広がる。後段を含めた色比率・平均輝度の不変は保証しない。
+全画面pass数は従来と同じ5。Texture用SubViewport・textureは追加しない。
+旧Noise Enabledの保存値はTexture Enabledへ移行した。
+名称整理時のCRT testはON / Dispersed Random / Strength 0.25 / Size 1.8。
+Resourceの新規作成時のStrength初期値は引き続き0.2。
 
 ## Bloom
 

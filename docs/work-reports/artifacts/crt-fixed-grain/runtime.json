@@ -1,0 +1,274 @@
+[
+	{
+		"bloom_core": [
+			{
+				"copy_visible": true,
+				"shader": "res://presentation/post_processing/effects/crt_display_experimental/crt_display_experimental.gdshader",
+				"visible": true
+			},
+			{
+				"copy_visible": true,
+				"shader": "res://presentation/post_processing/effects/crt_display_experimental/phosphor_cells.gdshader",
+				"visible": true
+			},
+			{
+				"copy_visible": false,
+				"shader": "res://presentation/post_processing/effects/crt_display_experimental/crt_grain.gdshader",
+				"visible": false
+			},
+			{
+				"copy_visible": true,
+				"shader": "res://presentation/post_processing/effects/crt_display_experimental/optical_spread.gdshader",
+				"visible": true
+			}
+		],
+		"enabled": false,
+		"main": {
+			"copy_visible": false,
+			"size": 1.5,
+			"strength": 0.2,
+			"visible": false
+		},
+		"model": 1,
+		"strength": 0.2,
+		"zero_matches_off": true
+	},
+	{
+		"bloom_core": [
+			{
+				"copy_visible": true,
+				"shader": "res://presentation/post_processing/effects/crt_display_experimental/crt_display_experimental.gdshader",
+				"visible": true
+			},
+			{
+				"copy_visible": true,
+				"shader": "res://presentation/post_processing/effects/crt_display_experimental/phosphor_cells.gdshader",
+				"visible": true
+			},
+			{
+				"copy_visible": false,
+				"shader": "res://presentation/post_processing/effects/crt_display_experimental/crt_grain.gdshader",
+				"visible": false
+			},
+			{
+				"copy_visible": true,
+				"shader": "res://presentation/post_processing/effects/crt_display_experimental/optical_spread.gdshader",
+				"visible": true
+			}
+		],
+		"enabled": true,
+		"main": {
+			"copy_visible": false,
+			"size": 1.5,
+			"strength": 0.0,
+			"visible": false
+		},
+		"model": 1,
+		"strength": 0.0,
+		"zero_matches_off": true
+	},
+	{
+		"bloom_core": [
+			{
+				"copy_visible": true,
+				"shader": "res://presentation/post_processing/effects/crt_display_experimental/crt_display_experimental.gdshader",
+				"visible": true
+			},
+			{
+				"copy_visible": true,
+				"shader": "res://presentation/post_processing/effects/crt_display_experimental/phosphor_cells.gdshader",
+				"visible": true
+			},
+			{
+				"copy_visible": true,
+				"shader": "res://presentation/post_processing/effects/crt_display_experimental/crt_grain.gdshader",
+				"visible": true
+			},
+			{
+				"copy_visible": true,
+				"shader": "res://presentation/post_processing/effects/crt_display_experimental/optical_spread.gdshader",
+				"visible": true
+			}
+		],
+		"enabled": true,
+		"main": {
+			"copy_visible": true,
+			"size": 1.5,
+			"strength": 0.2,
+			"visible": true
+		},
+		"model": 1,
+		"strength": 0.2,
+		"zero_matches_off": true
+	},
+	{
+		"bloom_core": [
+			{
+				"copy_visible": true,
+				"shader": "res://presentation/post_processing/effects/crt_display_experimental/crt_display_experimental.gdshader",
+				"visible": true
+			},
+			{
+				"copy_visible": true,
+				"shader": "res://presentation/post_processing/effects/crt_display_experimental/phosphor_cells.gdshader",
+				"visible": true
+			},
+			{
+				"copy_visible": true,
+				"shader": "res://presentation/post_processing/effects/crt_display_experimental/crt_grain.gdshader",
+				"visible": true
+			},
+			{
+				"copy_visible": true,
+				"shader": "res://presentation/post_processing/effects/crt_display_experimental/optical_spread.gdshader",
+				"visible": true
+			}
+		],
+		"enabled": true,
+		"main": {
+			"copy_visible": true,
+			"size": 1.5,
+			"strength": 0.5,
+			"visible": true
+		},
+		"model": 1,
+		"strength": 0.5,
+		"zero_matches_off": true
+	},
+	{
+		"bloom_core": [
+			{
+				"copy_visible": true,
+				"shader": "res://presentation/post_processing/effects/crt_display_experimental/crt_display_experimental.gdshader",
+				"visible": true
+			},
+			{
+				"copy_visible": false,
+				"shader": "res://presentation/post_processing/effects/crt_display_experimental/phosphor_cells.gdshader",
+				"visible": false
+			},
+			{
+				"copy_visible": false,
+				"shader": "res://presentation/post_processing/effects/crt_display_experimental/crt_grain.gdshader",
+				"visible": false
+			},
+			{
+				"copy_visible": true,
+				"shader": "res://presentation/post_processing/effects/crt_display_experimental/optical_spread.gdshader",
+				"visible": true
+			}
+		],
+		"enabled": false,
+		"main": {
+			"copy_visible": false,
+			"size": 1.5,
+			"strength": 0.2,
+			"visible": false
+		},
+		"model": 0,
+		"strength": 0.2,
+		"zero_matches_off": true
+	},
+	{
+		"bloom_core": [
+			{
+				"copy_visible": true,
+				"shader": "res://presentation/post_processing/effects/crt_display_experimental/crt_display_experimental.gdshader",
+				"visible": true
+			},
+			{
+				"copy_visible": false,
+				"shader": "res://presentation/post_processing/effects/crt_display_experimental/phosphor_cells.gdshader",
+				"visible": false
+			},
+			{
+				"copy_visible": false,
+				"shader": "res://presentation/post_processing/effects/crt_display_experimental/crt_grain.gdshader",
+				"visible": false
+			},
+			{
+				"copy_visible": true,
+				"shader": "res://presentation/post_processing/effects/crt_display_experimental/optical_spread.gdshader",
+				"visible": true
+			}
+		],
+		"enabled": true,
+		"main": {
+			"copy_visible": false,
+			"size": 1.5,
+			"strength": 0.0,
+			"visible": false
+		},
+		"model": 0,
+		"strength": 0.0,
+		"zero_matches_off": true
+	},
+	{
+		"bloom_core": [
+			{
+				"copy_visible": true,
+				"shader": "res://presentation/post_processing/effects/crt_display_experimental/crt_display_experimental.gdshader",
+				"visible": true
+			},
+			{
+				"copy_visible": false,
+				"shader": "res://presentation/post_processing/effects/crt_display_experimental/phosphor_cells.gdshader",
+				"visible": false
+			},
+			{
+				"copy_visible": true,
+				"shader": "res://presentation/post_processing/effects/crt_display_experimental/crt_grain.gdshader",
+				"visible": true
+			},
+			{
+				"copy_visible": true,
+				"shader": "res://presentation/post_processing/effects/crt_display_experimental/optical_spread.gdshader",
+				"visible": true
+			}
+		],
+		"enabled": true,
+		"main": {
+			"copy_visible": true,
+			"size": 1.5,
+			"strength": 0.2,
+			"visible": true
+		},
+		"model": 0,
+		"strength": 0.2,
+		"zero_matches_off": true
+	},
+	{
+		"bloom_core": [
+			{
+				"copy_visible": true,
+				"shader": "res://presentation/post_processing/effects/crt_display_experimental/crt_display_experimental.gdshader",
+				"visible": true
+			},
+			{
+				"copy_visible": false,
+				"shader": "res://presentation/post_processing/effects/crt_display_experimental/phosphor_cells.gdshader",
+				"visible": false
+			},
+			{
+				"copy_visible": true,
+				"shader": "res://presentation/post_processing/effects/crt_display_experimental/crt_grain.gdshader",
+				"visible": true
+			},
+			{
+				"copy_visible": true,
+				"shader": "res://presentation/post_processing/effects/crt_display_experimental/optical_spread.gdshader",
+				"visible": true
+			}
+		],
+		"enabled": true,
+		"main": {
+			"copy_visible": true,
+			"size": 1.5,
+			"strength": 0.5,
+			"visible": true
+		},
+		"model": 0,
+		"strength": 0.5,
+		"zero_matches_off": true
+	}
+]
