@@ -1,0 +1,264 @@
+[gd_scene format=3]
+
+[ext_resource type="Shader" path="res://experiments/post_processing/testbed/patterns/reference_shape.gdshader" id="1_shape"]
+
+[sub_resource type="ShaderMaterial" id="Material_white"]
+shader = ExtResource("1_shape")
+shader_parameter/shape_type = 0
+shader_parameter/fill_type = 0
+shader_parameter/color_a = Color(0.95, 0.96, 1, 1)
+
+[sub_resource type="ShaderMaterial" id="Material_red"]
+shader = ExtResource("1_shape")
+shader_parameter/shape_type = 1
+shader_parameter/fill_type = 0
+shader_parameter/color_a = Color(0.95, 0.08, 0.08, 1)
+
+[sub_resource type="ShaderMaterial" id="Material_luminance"]
+shader = ExtResource("1_shape")
+shader_parameter/shape_type = 1
+shader_parameter/fill_type = 1
+shader_parameter/color_a = Color(0.05, 0.05, 0.05, 1)
+shader_parameter/color_b = Color(0.98, 0.98, 0.98, 1)
+
+[sub_resource type="ShaderMaterial" id="Material_color"]
+shader = ExtResource("1_shape")
+shader_parameter/shape_type = 1
+shader_parameter/fill_type = 1
+shader_parameter/color_a = Color(1, 0.05, 0.06, 1)
+shader_parameter/color_b = Color(0.05, 0.12, 1, 1)
+
+[sub_resource type="ShaderMaterial" id="Material_radial"]
+shader = ExtResource("1_shape")
+shader_parameter/shape_type = 0
+shader_parameter/fill_type = 2
+shader_parameter/color_a = Color(1, 1, 1, 1)
+shader_parameter/color_b = Color(0.06, 0.1, 0.4, 1)
+
+[sub_resource type="ShaderMaterial" id="Material_split"]
+shader = ExtResource("1_shape")
+shader_parameter/shape_type = 1
+shader_parameter/fill_type = 3
+shader_parameter/color_a = Color(1, 0, 0, 1)
+shader_parameter/color_b = Color(0, 1, 0, 1)
+shader_parameter/color_c = Color(0, 0, 1, 1)
+
+[sub_resource type="ShaderMaterial" id="Material_quadrants"]
+shader = ExtResource("1_shape")
+shader_parameter/shape_type = 1
+shader_parameter/fill_type = 4
+shader_parameter/color_a = Color(1, 0, 0, 1)
+shader_parameter/color_b = Color(0, 1, 0, 1)
+shader_parameter/color_c = Color(0, 0, 1, 1)
+shader_parameter/color_d = Color(1, 1, 1, 1)
+
+[sub_resource type="ShaderMaterial" id="Material_hdr"]
+shader = ExtResource("1_shape")
+shader_parameter/shape_type = 0
+shader_parameter/fill_type = 5
+shader_parameter/color_a = Color(0.25, 0.1, 0.05, 1)
+shader_parameter/color_b = Color(1, 0.4, 0.2, 1)
+shader_parameter/hdr_multiplier = 3.0
+
+[sub_resource type="ShaderMaterial" id="Material_low_contrast"]
+shader = ExtResource("1_shape")
+shader_parameter/shape_type = 0
+shader_parameter/fill_type = 0
+shader_parameter/color_a = Color(0.24, 0.28, 0.32, 1)
+
+[sub_resource type="ShaderMaterial" id="Material_cmy"]
+shader = ExtResource("1_shape")
+shader_parameter/shape_type = 1
+shader_parameter/fill_type = 3
+shader_parameter/color_a = Color(0, 1, 1, 1)
+shader_parameter/color_b = Color(1, 0, 1, 1)
+shader_parameter/color_c = Color(1, 1, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="Material_vertical_lines"]
+shader = ExtResource("1_shape")
+shader_parameter/shape_type = 1
+shader_parameter/fill_type = 6
+shader_parameter/color_a = Color(0.94, 0.96, 1, 1)
+shader_parameter/color_b = Color(0.06, 0.08, 0.12, 1)
+
+[sub_resource type="ShaderMaterial" id="Material_horizontal_lines"]
+shader = ExtResource("1_shape")
+shader_parameter/shape_type = 1
+shader_parameter/fill_type = 7
+shader_parameter/color_a = Color(0.16, 0.85, 1, 1)
+shader_parameter/color_b = Color(0.05, 0.08, 0.12, 1)
+
+[sub_resource type="ShaderMaterial" id="Material_diagonal_lines"]
+shader = ExtResource("1_shape")
+shader_parameter/shape_type = 1
+shader_parameter/fill_type = 8
+shader_parameter/color_a = Color(1, 0.72, 0.18, 1)
+shader_parameter/color_b = Color(0.06, 0.08, 0.12, 1)
+
+[sub_resource type="ShaderMaterial" id="Material_rgb_dots"]
+shader = ExtResource("1_shape")
+shader_parameter/shape_type = 1
+shader_parameter/fill_type = 9
+shader_parameter/color_a = Color(1, 0.05, 0.05, 1)
+shader_parameter/color_b = Color(0.05, 1, 0.05, 1)
+shader_parameter/color_c = Color(0.05, 0.1, 1, 1)
+shader_parameter/color_d = Color(0.04, 0.05, 0.08, 1)
+
+[sub_resource type="ShaderMaterial" id="Material_rings"]
+shader = ExtResource("1_shape")
+shader_parameter/shape_type = 0
+shader_parameter/fill_type = 10
+shader_parameter/color_a = Color(0.94, 0.95, 1, 1)
+shader_parameter/color_b = Color(0.07, 0.09, 0.16, 1)
+
+[node name="ReferenceSet" type="Node2D"]
+
+[node name="White" type="ColorRect" parent="."]
+material = SubResource("Material_white")
+offset_left = 165.0
+offset_top = 35.0
+offset_right = 375.0
+offset_bottom = 245.0
+mouse_filter = 2
+
+[node name="Red" type="ColorRect" parent="."]
+material = SubResource("Material_red")
+offset_left = 625.0
+offset_top = 35.0
+offset_right = 835.0
+offset_bottom = 245.0
+mouse_filter = 2
+
+[node name="LuminanceGradient" type="ColorRect" parent="."]
+material = SubResource("Material_luminance")
+offset_left = 1085.0
+offset_top = 35.0
+offset_right = 1295.0
+offset_bottom = 245.0
+mouse_filter = 2
+
+[node name="ColorGradient" type="ColorRect" parent="."]
+material = SubResource("Material_color")
+offset_left = 1545.0
+offset_top = 35.0
+offset_right = 1755.0
+offset_bottom = 245.0
+mouse_filter = 2
+
+[node name="RadialGradient" type="ColorRect" parent="."]
+material = SubResource("Material_radial")
+offset_left = 165.0
+offset_top = 300.0
+offset_right = 375.0
+offset_bottom = 510.0
+mouse_filter = 2
+
+[node name="HardSplit" type="ColorRect" parent="."]
+material = SubResource("Material_split")
+offset_left = 625.0
+offset_top = 300.0
+offset_right = 835.0
+offset_bottom = 510.0
+mouse_filter = 2
+
+[node name="Quadrants" type="ColorRect" parent="."]
+material = SubResource("Material_quadrants")
+offset_left = 1085.0
+offset_top = 300.0
+offset_right = 1295.0
+offset_bottom = 510.0
+mouse_filter = 2
+
+[node name="HDRGradient" type="ColorRect" parent="."]
+material = SubResource("Material_hdr")
+offset_left = 1545.0
+offset_top = 300.0
+offset_right = 1755.0
+offset_bottom = 510.0
+mouse_filter = 2
+
+[node name="LowContrast" type="ColorRect" parent="."]
+material = SubResource("Material_low_contrast")
+offset_left = 165.0
+offset_top = 565.0
+offset_right = 375.0
+offset_bottom = 775.0
+mouse_filter = 2
+
+[node name="CMYSplit" type="ColorRect" parent="."]
+material = SubResource("Material_cmy")
+offset_left = 625.0
+offset_top = 565.0
+offset_right = 835.0
+offset_bottom = 775.0
+mouse_filter = 2
+
+[node name="VerticalLines" type="ColorRect" parent="."]
+material = SubResource("Material_vertical_lines")
+offset_left = 1085.0
+offset_top = 565.0
+offset_right = 1295.0
+offset_bottom = 775.0
+mouse_filter = 2
+
+[node name="HorizontalLines" type="ColorRect" parent="."]
+material = SubResource("Material_horizontal_lines")
+offset_left = 1545.0
+offset_top = 565.0
+offset_right = 1755.0
+offset_bottom = 775.0
+mouse_filter = 2
+
+[node name="DiagonalLines" type="ColorRect" parent="."]
+material = SubResource("Material_diagonal_lines")
+offset_left = 165.0
+offset_top = 830.0
+offset_right = 375.0
+offset_bottom = 1040.0
+mouse_filter = 2
+
+[node name="RGBDots" type="ColorRect" parent="."]
+material = SubResource("Material_rgb_dots")
+offset_left = 625.0
+offset_top = 830.0
+offset_right = 835.0
+offset_bottom = 1040.0
+mouse_filter = 2
+
+[node name="ConcentricRings" type="ColorRect" parent="."]
+material = SubResource("Material_rings")
+offset_left = 1085.0
+offset_top = 830.0
+offset_right = 1295.0
+offset_bottom = 1040.0
+mouse_filter = 2
+
+[node name="SmallText" type="Label" parent="."]
+offset_left = 1545.0
+offset_top = 838.0
+offset_right = 1755.0
+offset_bottom = 872.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.95, 0.96, 1, 1)
+theme_override_font_sizes/font_size = 13
+text = "AaBb 0123456789"
+
+[node name="MediumText" type="Label" parent="."]
+offset_left = 1545.0
+offset_top = 888.0
+offset_right = 1755.0
+offset_bottom = 930.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.16, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 22
+text = "CRT 0123"
+
+[node name="LargeText" type="Label" parent="."]
+offset_left = 1545.0
+offset_top = 948.0
+offset_right = 1755.0
+offset_bottom = 1026.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 0.78, 0.25, 1)
+theme_override_font_sizes/font_size = 40
+text = "RGB"

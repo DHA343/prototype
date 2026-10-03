@@ -1,0 +1,33 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" uid="uid://cla0isb7w2hpj" path="res://experiments/post_processing/testbed/testbed.gd" id="1_testbed"]
+[ext_resource type="Script" uid="uid://cdcn5i66x14bu" path="res://presentation/post_processing/post_processing.gd" id="2_post_processing"]
+[ext_resource type="Texture2D" uid="uid://b88bbiqbtds1n" path="res://experiments/post_processing/testbed/images/0040997d99e7fc8ecebb4518ae97c9e9.png" id="3_image"]
+[ext_resource type="Texture2D" uid="uid://dsco3rqkupiql" path="res://experiments/post_processing/testbed/images/img_art2.jpg" id="4_image"]
+[ext_resource type="Script" path="res://experiments/post_processing/testbed/pattern.gd" id="5_pattern"]
+
+[node name="PostProcessTestbed" type="Node2D"]
+script = ExtResource("1_testbed")
+images = Array[Texture2D]([ExtResource("3_image"), ExtResource("4_image")])
+
+[node name="PostProcessing" type="Node" parent="."]
+script = ExtResource("2_post_processing")
+
+[node name="WorldUILayer" type="CanvasLayer" parent="."]
+layer = 100
+visible = false
+
+[node name="UI" type="Control" parent="WorldUILayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Pattern" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="Content" type="Node2D" parent="Pattern"]
+script = ExtResource("5_pattern")

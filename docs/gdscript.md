@@ -177,3 +177,15 @@ Inspectorで0相当に見えることと、新規Resourceの初期値は区別�
 - 新しい項目がnullなら、調整済みの値を引き継いだ新規Resourceへ置き換え、Sceneを保存する。
 - Sceneを開き直すだけではResource cacheが残る場合があるため、読み直したという応答だけで正常と判断しない。
 - 最後にInspector対象の実値と保存ファイルを確認する。正常な0 / falseを欠損値として補正しない。
+
+## 新規グローバルクラスの登録
+
+Godot 4.7.2でEditorを開いたまま外部編集とCLI importを併用した際、
+Editor側の古いクラス登録情報が残り、停止・再実行後に追加したclass_nameが
+見つからなくなる事例を確認した。CLIのimport成功だけでEditorへの登録を判断しない。
+
+- 新しいclass_nameを追加したらEditorのファイル情報を更新し、filesystem scanを行う。
+- scanだけで型が認識されない場合は、該当スクリプトをGodot AIのscript_createまたは
+  script_patchで再保存してメタデータと診断を更新し、もう一度scanする。
+- 一度停止して再実行し、CLIとEditor実行の両方で型を解決できることを確認する。
+- 登録キャッシュを手動で編集しない。

@@ -1,0 +1,321 @@
+[
+	{
+		"id": "color_grading",
+		"title": "Color Grading",
+		"modes": [
+			"Exposure",
+			"Temperature",
+			"Tint",
+			"Vibrance",
+			"Shadows / Midtones / Highlights",
+			"Channel Mixer",
+			"Brightness",
+			"Contrast",
+			"Saturation",
+			"Hue",
+			"Gamma"
+		],
+		"script": "res://experiments/post_processing/effects/color_grading/color_grading.gd"
+	},
+	{
+		"id": "color_transform",
+		"title": "Color Transform",
+		"modes": [
+			"Monochrome",
+			"Sepia",
+			"Negative",
+			"Duotone",
+			"Gradient Map",
+			"LUT",
+			"Solarization",
+			"Selective Color",
+			"Thermal",
+			"Night Vision"
+		],
+		"script": "res://experiments/post_processing/effects/color_transform/color_transform.gd"
+	},
+	{
+		"id": "dithering",
+		"title": "Dithering",
+		"modes": [
+			"Posterize",
+			"Palette",
+			"Bayer",
+			"Random",
+			"Blue Noise"
+		],
+		"script": "res://experiments/post_processing/effects/dithering/dithering.gd"
+	},
+	{
+		"id": "pixelation",
+		"title": "Pixelation",
+		"modes": [
+			"Rectangular Mosaic",
+			"Hexagonal Mosaic",
+			"LED Dots",
+			"Low Resolution Nearest",
+			"Low Resolution Bilinear"
+		],
+		"script": "res://experiments/post_processing/effects/pixelation/pixelation.gd"
+	},
+	{
+		"id": "print",
+		"title": "Print",
+		"modes": [
+			"Halftone",
+			"CMYK Screens",
+			"Crosshatch",
+			"Paper",
+			"Misregistration"
+		],
+		"script": "res://experiments/post_processing/effects/print/print.gd"
+	},
+	{
+		"id": "detail",
+		"title": "Detail",
+		"modes": [
+			"Sharpen",
+			"Unsharp Mask",
+			"Sobel",
+			"Outline",
+			"Emboss"
+		],
+		"script": "res://experiments/post_processing/effects/detail/detail.gd"
+	},
+	{
+		"id": "painting",
+		"title": "Painting",
+		"modes": [
+			"Kuwahara",
+			"Bilateral",
+			"Color Planes",
+			"Comic"
+		],
+		"script": "res://experiments/post_processing/effects/painting/painting.gd"
+	},
+	{
+		"id": "blur",
+		"title": "Blur",
+		"modes": [
+			"Gaussian",
+			"Dual Kawase",
+			"Directional",
+			"Radial",
+			"Zoom",
+			"Tilt Shift"
+		],
+		"script": "res://experiments/post_processing/effects/blur/blur.gd"
+	},
+	{
+		"id": "lens",
+		"title": "Lens",
+		"modes": [
+			"Multi-scale Bloom",
+			"Soft Focus",
+			"Halation",
+			"Anamorphic Streak",
+			"Starburst",
+			"Lens Ghosts",
+			"Lens Dirt"
+		],
+		"script": "res://experiments/post_processing/effects/lens/lens.gd"
+	},
+	{
+		"id": "distortion",
+		"title": "Distortion",
+		"modes": [
+			"Barrel",
+			"Pincushion",
+			"Fisheye",
+			"Ripple",
+			"Waves",
+			"Heat Haze",
+			"Swirl",
+			"Kaleidoscope"
+		],
+		"script": "res://experiments/post_processing/effects/distortion/distortion.gd"
+	},
+	{
+		"id": "film",
+		"title": "Film",
+		"modes": [
+			"Film Grain",
+			"Color Noise",
+			"Monochrome Noise",
+			"Dust and Scratches",
+			"Flicker",
+			"Film Weave"
+		],
+		"script": "res://experiments/post_processing/effects/film/film.gd"
+	},
+	{
+		"id": "vhs",
+		"title": "VHS",
+		"modes": [
+			"VHS Composite",
+			"Color Bleed",
+			"Tape Tearing",
+			"Tracking Noise",
+			"Interlace",
+			"Vertical Roll"
+		],
+		"script": "res://experiments/post_processing/effects/vhs/vhs.gd"
+	},
+	{
+		"id": "glitch",
+		"title": "Glitch",
+		"modes": [
+			"Block Displacement",
+			"Horizontal Bands",
+			"Channel Dropout",
+			"Local Inversion",
+			"Compression Damage"
+		],
+		"script": "res://experiments/post_processing/effects/glitch/glitch.gd"
+	},
+	{
+		"id": "display",
+		"title": "Display",
+		"modes": [
+			"CRT Glass",
+			"LCD Grid",
+			"Dot Matrix",
+			"Glass Reflection"
+		],
+		"script": "res://experiments/post_processing/effects/display/display.gd"
+	},
+	{
+		"id": "overlay",
+		"title": "Screen Cues",
+		"modes": [
+			"Flash",
+			"Colored Edge",
+			"Letterbox",
+			"Circular Mask",
+			"Wipe",
+			"Dissolve"
+		],
+		"script": "res://experiments/post_processing/effects/overlay/overlay.gd"
+	},
+	{
+		"id": "temporal",
+		"title": "Temporal",
+		"modes": [
+			"Afterimage",
+			"Frame Blend",
+			"LCD Response",
+			"Phosphor Persistence",
+			"Feedback",
+			"Frame Hold",
+			"Temporal AA"
+		],
+		"script": "res://experiments/post_processing/effects/temporal/temporal.gd"
+	},
+	{
+		"id": "auto_exposure",
+		"title": "Auto Exposure",
+		"modes": [
+			"Auto Exposure"
+		],
+		"script": "res://experiments/post_processing/effects/auto_exposure/auto_exposure.gd"
+	},
+	{
+		"id": "target",
+		"title": "Target Effects",
+		"modes": [
+			"Target Outline",
+			"Target Glow",
+			"Target Distortion"
+		],
+		"script": "res://experiments/post_processing/effects/target/target.gd"
+	},
+	{
+		"id": "motion_blur",
+		"title": "Motion Blur",
+		"modes": [
+			"Object Motion Blur"
+		],
+		"script": "res://experiments/post_processing/effects/motion_blur/motion_blur.gd"
+	},
+	{
+		"id": "crt",
+		"title": "CRT (existing)",
+		"modes": [
+			"CRT"
+		],
+		"script": "res://experiments/post_processing/effects/crt/crt_display_experimental.gd"
+	},
+	{
+		"id": "pseudo_3d",
+		"title": "Pseudo 3D",
+		"modes": [
+			"Depth of Field",
+			"Bokeh",
+			"Depth Fog",
+			"SSAO (pseudo)",
+			"SSR (pseudo)",
+			"Contact Shadows",
+			"Light Shafts",
+			"Normal Lighting",
+			"Depth Outline",
+			"SSIL (pseudo)",
+			"Volumetric Fog (pseudo)"
+		],
+		"script": "res://experiments/post_processing/effects/pseudo_3d/pseudo_3d.gd"
+	},
+	{
+		"id": "antialiasing",
+		"title": "Antialiasing",
+		"modes": [
+			"FXAA",
+			"Morphological AA"
+		],
+		"script": "res://experiments/post_processing/effects/antialiasing/antialiasing.gd"
+	},
+	{
+		"id": "vignette",
+		"title": "Vignette",
+		"modes": [
+			"Vignette"
+		],
+		"script": "res://experiments/post_processing/effects/vignette/vignette.gd"
+	},
+	{
+		"id": "chromatic_aberration",
+		"title": "Chromatic Aberration",
+		"modes": [
+			"Chromatic Aberration"
+		],
+		"script": "res://experiments/post_processing/effects/chromatic_aberration/chromatic_aberration.gd"
+	},
+	{
+		"id": "display_texture",
+		"title": "Texture Overlay",
+		"modes": [
+			"Texture Overlay"
+		],
+		"script": "res://experiments/post_processing/effects/display_texture/display_texture.gd"
+	},
+	{
+		"id": "glow",
+		"title": "Glow (existing)",
+		"modes": [
+			"Glow (existing)"
+		],
+		"script": "res://experiments/post_processing/effects/glow/glow.gd"
+	},
+	{
+		"id": "tone_mapping",
+		"title": "Tone Mapping",
+		"modes": [
+			"Linear Clamp",
+			"Reinhard",
+			"Extended Reinhard",
+			"ACES Approximation",
+			"Hable",
+			"Filmic",
+			"Logarithmic"
+		],
+		"script": "res://experiments/post_processing/effects/tone_mapping/tone_mapping.gd"
+	}
+]
