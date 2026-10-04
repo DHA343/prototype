@@ -1,26 +1,9 @@
 @tool
 extends Node2D
 
-enum BackgroundStyle {
-	SOLID,
-	CHECKERBOARD,
-	GRADIENT,
-}
-
 const CANVAS_SIZE: Vector2 = Vector2(1280.0, 720.0)
-const BACKGROUND_CHECKER_SIZE: float = 32.0
 
-@export var preview_title: String = "Post-process Testbed"
-
-@export var background_style: BackgroundStyle = BackgroundStyle.SOLID:
-	set(value):
-		if background_style == value:
-			return
-		background_style = value
-		if is_inside_tree():
-			queue_redraw()
-
-@export var images: Array[Texture2D] = []:
+var images: Array[Texture2D] = []:
 	set(value):
 		images = value
 		if is_node_ready():
@@ -32,9 +15,11 @@ const BACKGROUND_CHECKER_SIZE: float = 32.0
 				queue_redraw()
 
 var _image_index: int = -1
+var _pixel_size: Vector2
+var _stretch: Transform2D
 
-@onready var _ui: Control = $"../../WorldUILayer/UI"
-@onready var _world_ui_layer: CanvasLayer = $"../../WorldUILayer"
+@onready var _ui: Control = $"../../Layer2/Labels/UI"
+@onready var _labels: Node2D = $"../../Layer2/Labels"
 
 
 func _ready() -> void:
@@ -42,27 +27,26 @@ func _ready() -> void:
 		return
 	get_viewport().size_changed.connect(_fit_canvas)
 	_fit_canvas()
-	preview_title = String(get_parent().get_parent().get("preview_title"))
 	_create_labels()
 	_ui.visible = _image_index < 0
+
+
+func _process(_delta: float) -> void:
+	if Engine.is_editor_hint():
+		return
+	var current := get_viewport().get_stretch_transform()
+	if current != _stretch or get_viewport_rect().size * current.get_scale().abs() != _pixel_size:
+		_fit_canvas()
 
 
 func _draw() -> void:
 	if _image_index >= 0:
 		if _image_index < images.size() and images[_image_index] != null:
-			draw_texture_rect(images[_image_index], Rect2(-position, get_viewport_rect().size), false)
+			draw_texture_rect(images[_image_index], Rect2(-position, _pixel_size), false)
 			return
 		_show_pattern()
 
-	match background_style:
-		BackgroundStyle.SOLID:
-			draw_rect(Rect2(Vector2.ZERO, CANVAS_SIZE), Color(0.035, 0.04, 0.055))
-		BackgroundStyle.CHECKERBOARD:
-			_draw_background_checkerboard()
-		BackgroundStyle.GRADIENT:
-			_draw_background_gradient()
-
-	draw_rect(Rect2(0.0, 0.0, CANVAS_SIZE.x, 65.0), Color(0.018, 0.021, 0.03))
+	draw_rect(Rect2(-position, _pixel_size), Color.BLACK)
 	_draw_stripe_comparison()
 	_draw_grayscale_comparison(Rect2(620.0, 98.0, 300.0, 175.0))
 	_draw_color_comparison(Rect2(940.0, 98.0, 320.0, 175.0))
@@ -92,9 +76,8 @@ func _show_next_image() -> void:
 
 
 func _create_labels() -> void:
-	_add_label(preview_title, Vector2(20.0, 7.0), 22)
 	_add_label(
-		"1  MAIN   |   2  PATTERN / BACKGROUND   |   3  NEXT IMAGE   |   CTRL+O  OPEN IMAGE",
+		"1  MAIN   |   2  PATTERN   |   3  NEXT IMAGE",
 		Vector2(20.0, 38.0),
 		14
 	)
@@ -135,37 +118,15 @@ func _add_label(
 
 
 func _fit_canvas() -> void:
-	var viewport_size := get_viewport_rect().size
-	var canvas_offset := ((viewport_size - CANVAS_SIZE) * 0.5).floor()
+	_stretch = get_viewport().get_stretch_transform()
+	_pixel_size = get_viewport_rect().size * _stretch.get_scale().abs()
+	var canvas_offset := ((_pixel_size - CANVAS_SIZE) * 0.5).floor()
+	var layer := get_parent() as CanvasLayer
+	layer.transform = _stretch.affine_inverse()
 	scale = Vector2.ONE
 	position = canvas_offset
-	_world_ui_layer.transform = Transform2D(
-		Vector2.RIGHT,
-		Vector2.DOWN,
-		canvas_offset
-	)
+	_labels.transform = _stretch.affine_inverse() * Transform2D(0.0, canvas_offset)
 	queue_redraw()
-
-
-func _draw_background_checkerboard() -> void:
-	for row in int(ceil(CANVAS_SIZE.y / BACKGROUND_CHECKER_SIZE)):
-		for column in int(ceil(CANVAS_SIZE.x / BACKGROUND_CHECKER_SIZE)):
-			var cell_color := Color(0.11, 0.13, 0.17)
-			if (row + column) % 2 != 0:
-				cell_color = Color(0.18, 0.21, 0.27)
-			draw_rect(
-				Rect2(Vector2(column, row) * BACKGROUND_CHECKER_SIZE, Vector2.ONE * BACKGROUND_CHECKER_SIZE),
-				cell_color
-			)
-
-
-func _draw_background_gradient() -> void:
-	const STRIP_HEIGHT: float = 4.0
-	var strip_count := int(CANVAS_SIZE.y / STRIP_HEIGHT)
-	for row in strip_count:
-		var blend := float(row) / float(strip_count - 1)
-		var gradient_color := Color.from_hsv(blend, 0.7, 0.45)
-		draw_rect(Rect2(0.0, float(row) * STRIP_HEIGHT, CANVAS_SIZE.x, STRIP_HEIGHT), gradient_color)
 
 
 func _draw_stripe_comparison() -> void:

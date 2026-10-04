@@ -1,5 +1,5 @@
 @tool
-class_name CRTDisplayExperimental
+class_name CRT
 extends PostProcessEffect
 
 enum ChromaticMode {
@@ -18,7 +18,7 @@ enum MaskPattern {
 	GREEN_MAGENTA_STRIPES,
 }
 
-const EFFECT_SHADER: Shader = preload("./crt_display_experimental.gdshader")
+const EFFECT_SHADER: Shader = preload("./crt.gdshader")
 const OFFSETS_SHADER: Shader = preload("./image_offsets.gdshader")
 const CELL_SHADER: Shader = preload("./phosphor_cells.gdshader")
 const SPREAD_SHADER: Shader = preload("./optical_spread.gdshader")

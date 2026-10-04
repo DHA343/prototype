@@ -44,7 +44,7 @@ func _ready() -> void:
 	# Only their canvas is rendered separately, including every Z index.
 	var output := CanvasLayer.new()
 	output.name = "Image"
-	output.layer = RenderLayers.WORLD_EFFECTS - 1
+	output.layer = RenderLayers.LAYER_1_OUTPUT
 	add_child(output, false, Node.INTERNAL_MODE_BACK)
 	output.custom_viewport = _main_viewport
 	_material = ShaderMaterial.new()

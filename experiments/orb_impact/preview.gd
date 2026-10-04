@@ -133,7 +133,7 @@ func _update_status() -> void:
 func _create_wave_layer() -> void:
 	# A single capture/pass combines all waves before world post-processing and damage numbers.
 	_wave_layer = CanvasLayer.new()
-	_wave_layer.layer = RenderLayers.WORLD_EFFECTS - 1
+	_wave_layer.layer = RenderLayers.LAYER_1_OUTPUT
 	add_child(_wave_layer)
 	_wave_copy = BackBufferCopy.new()
 	_wave_copy.copy_mode = BackBufferCopy.COPY_MODE_VIEWPORT

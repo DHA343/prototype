@@ -7,9 +7,12 @@ enum Source {
 	IMAGE,
 }
 
-@export var preview_title: String = "Post-process Testbed"
+const IMAGE_DIRECTORY: String = "res://experiments/post_processing/testbed/images"
+const IMAGE_EXTENSIONS: Array[String] = [
+	"png", "jpg", "jpeg", "webp", "bmp", "svg", "tga", "exr", "hdr", "dds", "ktx", "ktx2",
+]
+
 @export var main_scene: PackedScene = preload("res://main/main.tscn")
-@export var images: Array[Texture2D] = []
 @export var mask_image: Texture2D
 @export var velocity_image: Texture2D
 @export var mask_orb: bool = true
@@ -18,26 +21,20 @@ enum Source {
 var source: Source = Source.MAIN
 var _main: Node2D
 var _main_layers: Dictionary[CanvasLayer, bool] = {}
-var _panel: Control
+var _modes: Dictionary[ExperimentEffect, int] = {}
 var _buffers: Array[SubViewport] = []
 
 @onready var _post: PostProcessing = $PostProcessing
-@onready var _pattern: Node2D = $Pattern/Content
-@onready var _pattern_layer: CanvasLayer = $Pattern
-@onready var _pattern_ui: CanvasLayer = $WorldUILayer
+@onready var _pattern: Node2D = $Layer1/Content
+@onready var _layer_1: CanvasLayer = $Layer1
+@onready var _pattern_labels: Node2D = $Layer2/Labels
 
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
-	_pattern.set("images", images)
-	_pattern.set("preview_title", preview_title)
-	var layer := CanvasLayer.new()
-	layer.layer = 1000
-	add_child(layer)
-	_panel = preload("panel.gd").new()
-	_panel.testbed = self
-	layer.add_child(_panel)
+	_pattern.set("images", _collect_images(IMAGE_DIRECTORY))
+	_watch_effects()
 	_create_buffers()
 	select_source(Source.MAIN)
 
@@ -45,8 +42,9 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
+	_watch_effects()
 	var needed := false
-	for effect in _post.world_effects + _post.composite_effects:
+	for effect in _post.layer_1_effects + _post.layer_2_effects:
 		if effect is ExperimentEffect:
 			var experiment := effect as ExperimentEffect
 			for uniform: Dictionary in experiment.get_shader().get_shader_uniform_list():
@@ -72,17 +70,9 @@ func _input(event: InputEvent) -> void:
 		KEY_1:
 			select_source(Source.MAIN)
 		KEY_2:
-			if source == Source.PATTERN:
-				_pattern.set("background_style", (int(_pattern.get("background_style")) + 1) % 3)
 			select_source(Source.PATTERN)
 		KEY_3:
 			next_image()
-		KEY_F1:
-			_panel.visible = not _panel.visible
-		KEY_O:
-			if not key.ctrl_pressed:
-				return
-			_panel.call("open_file", "image")
 		_:
 			return
 	get_viewport().set_input_as_handled()
@@ -93,12 +83,12 @@ func select_source(value: Source) -> void:
 		_main = main_scene.instantiate() as Node2D
 		var main_post := _main.get_node_or_null("PostProcessing") as PostProcessing
 		if main_post != null:
-			main_post.world_effects = []
-			main_post.composite_effects = []
+			main_post.layer_1_effects = []
+			main_post.layer_2_effects = []
 			main_post.enabled = false
-		var world := _main.get_node_or_null("WorldLayer") as PixelationLayer
-		if world != null:
-			world.post_processing = _post
+		var layer_1 := _main.get_node_or_null("Layer1") as PixelationLayer
+		if layer_1 != null:
+			layer_1.post_processing = _post
 		add_child(_main)
 		for node in _main.find_children("*", "CanvasLayer", true, false):
 			var layer := node as CanvasLayer
@@ -114,22 +104,58 @@ func select_source(value: Source) -> void:
 		var camera := _main.get_node_or_null("Camera2D") as Camera2D
 		if camera != null:
 			camera.enabled = show_main
-	_pattern_layer.visible = not show_main
-	_pattern_ui.visible = value == Source.PATTERN
+	_layer_1.visible = not show_main
+	_pattern_labels.visible = value == Source.PATTERN
 	if value == Source.PATTERN:
 		_pattern.call("_show_pattern")
-	for effect in _post.world_effects + _post.composite_effects:
+	for effect in _post.layer_1_effects + _post.layer_2_effects:
 		if effect is ExperimentEffect:
 			(effect as ExperimentEffect).reset_history()
 	for viewport in _buffers:
 		viewport.get_child(0).call("reset_motion")
-	if _panel != null:
-		_panel.call("set_status", "%s | 1 Main / 2 Pattern / 3 Image / F1 Panel" % Source.keys()[value])
 
 
 func next_image() -> void:
 	_pattern.call("_show_next_image")
 	select_source(Source.IMAGE if int(_pattern.get("_image_index")) >= 0 else Source.PATTERN)
+
+
+func _collect_images(directory: String) -> Array[Texture2D]:
+	var images: Array[Texture2D] = []
+	if not DirAccess.dir_exists_absolute(directory):
+		return images
+	var files := ResourceLoader.list_directory(directory)
+	files.sort()
+	for file in files:
+		if file.ends_with("/") or file.get_extension().to_lower() not in IMAGE_EXTENSIONS:
+			continue
+		var path := directory.path_join(file)
+		var texture := load(path) as Texture2D
+		if texture != null:
+			images.append(texture)
+	return images
+
+
+func _on_effect_changed(effect: ExperimentEffect) -> void:
+	if not _modes.has(effect):
+		return
+	var mode := int(effect.get_parameter(&"mode"))
+	if _modes[effect] != mode:
+		_modes[effect] = mode
+		_post.rebuild_effects()
+
+
+func _watch_effects() -> void:
+	for effect in _post.layer_1_effects + _post.layer_2_effects:
+		if effect is ExperimentEffect:
+			var experiment := effect as ExperimentEffect
+			if not _modes.has(experiment):
+				_modes[experiment] = int(experiment.get_parameter(&"mode"))
+				experiment.changed.connect(_on_effect_changed.bind(experiment), CONNECT_DEFERRED)
+	for experiment: ExperimentEffect in _modes.keys():
+		if not _post.layer_1_effects.has(experiment) and not _post.layer_2_effects.has(experiment):
+			experiment.changed.disconnect(_on_effect_changed.bind(experiment))
+			_modes.erase(experiment)
 
 
 func _create_buffers() -> void:

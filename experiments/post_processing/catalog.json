@@ -239,11 +239,11 @@
 	},
 	{
 		"id": "crt",
-		"title": "CRT (existing)",
+		"title": "CRT",
 		"modes": [
 			"CRT"
 		],
-		"script": "res://experiments/post_processing/effects/crt/crt_display_experimental.gd"
+		"script": "res://experiments/post_processing/effects/crt/crt.gd"
 	},
 	{
 		"id": "pseudo_3d",

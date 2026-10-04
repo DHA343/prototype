@@ -3,20 +3,20 @@ extends Node2D
 
 var _feedback: Feedback = Feedback.new()
 
-@onready var orb: Orb = $WorldLayer/Actors/Orb
-@onready var enemies: Node2D = $WorldLayer/Actors/Enemies
+@onready var orb: Orb = $Layer1/Actors/Orb
+@onready var enemies: Node2D = $Layer1/Actors/Enemies
 @onready var crowd_manager: CrowdManager = $CrowdManager
 @onready var spawn_area: SpawnArea = $SpawnArea
 @onready var enemy_spawner: EnemySpawner = $EnemySpawner
-@onready var damage_number_spawner: DamageNumberSpawner = $WorldUILayer/DamageNumberSpawner
+@onready var damage_number_spawner: DamageNumberSpawner = $Layer2/DamageNumberSpawner
 @onready var world_sound_output: WorldSoundOutput = $WorldSoundOutput
 @onready var camera: GameCamera = $Camera2D
 @onready var camera_shake: CameraShake = $Camera2D/CameraShake
-@onready var world_ui_layer: CanvasLayer = $WorldUILayer
+@onready var layer_2: CanvasLayer = $Layer2
 
 
 func _ready() -> void:
-	world_ui_layer.layer = RenderLayers.WORLD_UI
+	layer_2.layer = RenderLayers.LAYER_2
 	_feedback.sound_requested.connect(world_sound_output.request)
 	_feedback.camera_shake_requested.connect(camera_shake.request)
 	orb.setup(_feedback)

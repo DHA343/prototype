@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://bjr1ldrcu2mlr"]
+
+[ext_resource type="PackedScene" path="res://experiments/post_processing/testbed/testbed.tscn" id="1_je7uq"]
+
+[node name="Experiment" unique_id=1427492686 instance=ExtResource("1_je7uq")]

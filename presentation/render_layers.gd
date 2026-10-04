@@ -1,7 +1,10 @@
 class_name RenderLayers
 extends RefCounted
 
-## World UI bypasses world effects but receives composite effects.
-const WORLD_EFFECTS: int = 50
-const WORLD_UI: int = 100
-const COMPOSITE_EFFECTS: int = 150
+## Layer numbers describe logical drawing order, independently of CanvasLayer indices.
+const LAYER_1: int = 0
+const LAYER_1_EFFECTS: int = 50
+const LAYER_1_OUTPUT: int = LAYER_1_EFFECTS - 1
+const LAYER_2: int = 100
+const LAYER_2_EFFECTS: int = 150
+const OVERLAY: int = 200

@@ -55,19 +55,30 @@ max_offset_y = 24.0
 [node name="CameraShake" type="Node" parent="Camera2D" unique_id=1954490449]
 script = ExtResource("10_camera_shake")
 
-[node name="WorldLayer" type="CanvasLayer" parent="." unique_id=1734096239 node_paths=PackedStringArray("post_processing")]
+[node name="Layer1" type="CanvasLayer" parent="." unique_id=1734096239 node_paths=PackedStringArray("post_processing")]
 layer = 0
 script = ExtResource("15_pixelation_layer")
 pixelation = SubResource("Resource_pixelation")
 post_processing = NodePath("../PostProcessing")
 
-[node name="Actors" type="Node2D" parent="WorldLayer" unique_id=137631151]
+[node name="Actors" type="Node2D" parent="Layer1" unique_id=137631151]
 y_sort_enabled = true
 
-[node name="Orb" parent="WorldLayer/Actors" unique_id=1133452163 instance=ExtResource("2_orb")]
+[node name="Orb" parent="Layer1/Actors" unique_id=1133452163 instance=ExtResource("2_orb")]
 
-[node name="Enemies" type="Node2D" parent="WorldLayer/Actors" unique_id=512686501]
+[node name="Enemies" type="Node2D" parent="Layer1/Actors" unique_id=512686501]
 y_sort_enabled = true
+
+[node name="Layer2" type="CanvasLayer" parent="." unique_id=1176134946]
+layer = 100
+follow_viewport_enabled = true
+
+[node name="DamageNumberSpawner" type="Node2D" parent="Layer2" unique_id=1110146965]
+script = ExtResource("8_damage_number_spawner")
+damage_number_scene = ExtResource("9_damage_number")
+
+[node name="Overlay" type="CanvasLayer" parent="." unique_id=471109458]
+layer = 200
 
 [node name="CrowdManager" type="Node" parent="." unique_id=2104208583]
 script = ExtResource("3_crowd_manager")
@@ -90,11 +101,3 @@ enemy_scene = ExtResource("6_enemy")
 target_count = 100
 
 [node name="PostProcessing" parent="." unique_id=1190863564 instance=ExtResource("12_post_processing")]
-
-[node name="WorldUILayer" type="CanvasLayer" parent="." unique_id=1176134946]
-layer = 100
-follow_viewport_enabled = true
-
-[node name="DamageNumberSpawner" type="Node2D" parent="WorldUILayer" unique_id=1110146965]
-script = ExtResource("8_damage_number_spawner")
-damage_number_scene = ExtResource("9_damage_number")

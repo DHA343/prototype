@@ -53,9 +53,9 @@ Gaussian も中心との差分で計算し、合成ではぼかしに使った�
 
 ## 確認シーン
 
-`res://experiments/post_processing/effects/crt/preview.tscn`
+`res://experiments/post_processing/presets/crt.tscn`
 
-専用 Bloom シーンと A/B 切替は削除し、CRT preview に一本化した。
+専用 Bloom シーンと A/B 切替は削除し、CRTプリセットで確認する。
 パターン・画像切替は共通の `res://experiments/post_processing/testbed/testbed.tscn` を継承する。
 Inspector の Phosphor Bloom から ON/OFF と各パラメータを調整する。
 
@@ -79,7 +79,7 @@ A は現在と同じ HDR 制限式、B は旧線形応答。
 | Linear で Limit を 1.01 / 16 に変更 | 画像データが完全一致 |
 | 540 / 720 / 1080 / 2160p | Near/Far 幅を高さに比例して換算。Far 実測は1080p換算で約16.03px |
 | 移動する 8x 輝点 | 現在位置と同じフレームで source / Bloom 更新。旧位置に残像なし |
-| World / Composite の前段処理 | Bloom source の Core 画像と OFF の最終画像が完全一致 |
+| Layer 1 / Layer 2 の前段処理 | Bloom source の Core 画像と OFF の最終画像が完全一致 |
 | 強度ゼロ、Resource 変更後の PostProcessing 再構築 | Bloom pass と中間描画の停止、再構築後の正常動作を確認 |
 
 Near は低解像度で 1px 前後になるため離散化の影響があり、
@@ -98,7 +98,7 @@ preceding_passes は同じ CanvasLayer 上の先行 pass のみを描画順に�
 context と source の寿命は一回の生成から次の再構築まで。
 Bloom は PostProcessing 内部の EffectBinding や描画ノード、親 PostProcessing の型を参照しない。
 
-移行後の確認では、World / Composite の前段処理を含む 256×1080 の HDR 画像が
+移行後の確認では、Layer 1 / Layer 2 の前段処理を含む 256×1080 の HDR 画像が
 移行前と全ピクセル完全一致した。前段・Bloom・Effect・PostProcessing 全体の ON/OFF と
 Resource 変更後の再構築も確認した。
 Limit = 1.0 / 1.1 / 2.0 / 16.0 で値は有限、均一面は OFF と完全一致。

@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cdcn5i66x14bu" path="res://presentation/post_processing/post_processing.gd" id="1_post_processing"]
 [ext_resource type="Script" uid="uid://d12uwcn8et7ym" path="res://presentation/post_processing/post_process_effect.gd" id="2_effect"]
 [ext_resource type="Script" uid="uid://du0elwyycowft" path="res://presentation/post_processing/effects/color_grading/color_grading.gd" id="5_color_grading"]
-[ext_resource type="Script" uid="uid://4kmsj3ju6w87" path="res://experiments/post_processing/effects/crt/crt_display_experimental.gd" id="8_crt"]
+[ext_resource type="Script" uid="uid://4kmsj3ju6w87" path="res://experiments/post_processing/effects/crt/crt.gd" id="8_crt"]
 [ext_resource type="Script" uid="uid://b6y73x0igwwoj" path="res://presentation/post_processing/effects/vignette/vignette.gd" id="10_vignette"]
 
 [sub_resource type="Resource" id="Resource_pvxqj"]
@@ -37,4 +37,4 @@ metadata/_custom_type_script = "uid://b6y73x0igwwoj"
 
 [node name="PostProcessing" type="Node" unique_id=776314143]
 script = ExtResource("1_post_processing")
-composite_effects = Array[ExtResource("2_effect")]([SubResource("Resource_pvxqj"), SubResource("Resource_h14q8"), SubResource("Resource_pq11d")])
+layer_2_effects = Array[ExtResource("2_effect")]([SubResource("Resource_pvxqj"), SubResource("Resource_h14q8"), SubResource("Resource_pq11d")])

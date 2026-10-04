@@ -2,58 +2,91 @@
 
 このフォルダは実験用ポストプロセスと確認シーンの保存先。正式採用済みの実装を示すものではない。
 現在は27グループ、130モードを収録。うち既存実装を参照する5グループを含む。
-一覧は [CATALOG.md](CATALOG.md)、実行時メニューの定義は `catalog.json`。
+一覧は [CATALOG.md](CATALOG.md)、グループ・モード・Resourceスクリプトの対応は `catalog.json`。
 
 ## 起動と入力
 
-`testbed/testbed.tscn` を開いてF6で実行する。起動時は実際の `main/main.tscn` を表示する。
+`testbed/testbed.tscn` または `presets/crt.tscn` を開いてF6で実行する。
+起動時は実際の `main/main.tscn` を表示する。
 
 - `1`: main。シミュレーションを再開する。
-- `2`: 共通テストパターン。表示中にもう一度押すと背景を単色・市松・グラデーションで切り替える。
-- `3`: 登録画像を順番に表示する。nullの項目はスキップする。
-- `Ctrl+O`: PC上の任意の画像を読み込み、登録画像に追加して表示する。
-- `F1`: 操作パネルの表示切替。数値・文字入力欄の操作中は入力切替キーを無効にする。
-- 画像は画面全体へ引き伸ばす。パターンは1280×720を画面中央に等倍配置する。
+- `2`: 共通テストパターン。背景は黒で固定。
+- `3`: 画像フォルダから自動収集した画像を順番に表示する。画像がなければパターンを表示する。
+- 画像は画面全体へ引き伸ばす。パターンは1280×720を画面中央に実画素で等倍配置する。
+- パターンはプロジェクトの論理解像度による拡大縮小を相殺する。mainの描画倍率は変更しない。
+- 1280×720より小さい表示領域では、細線の幅を保つためパターンの外周を切り取る。
 - パターンには細線、階調、色、半透明の重なり、文字、線形HDRの1x/2x/4x/8x/16xを含む。
 
 mainは複製した専用シーンではなく元のPackedSceneを生成するため、mainの保存済み変更は
-testbedの次回起動に反映される。mainのシーン・スクリプト・正式側のポストプロセスは変更しない。
+testbedの次回起動に反映される。testbed実行時の調整はmainの保存ファイルへ書き戻さない。
 入力切替時は同じmainインスタンスを保持し、非表示中は処理・カメラ・CanvasLayerを止める。
 
 二重適用を避けるため、生成したmainインスタンスのPostProcessingは空にして無効化する。
-mainのWorldLayerが持つPixelation設定は維持し、実験側の全体ON/OFFに接続する。
+mainのLayer1が持つPixelation設定は維持し、実験側の全体ON/OFFに接続する。
 エフェクトの構成や調整値はtestbed側で設定する。実験の調整値は正式シーンへ書き戻さない。
 
-## エフェクトの組み合わせ
+## エフェクトの設定
 
-右のパネルでグループを選び、Add effectで追加する。Modeで方式を切り替え、
-数値・色・テクスチャを調整する。複数回追加すれば同じグループの異なるModeも併用できる。
+合成段階の仕様は [描画と合成](../../docs/rendering.md) を参照する。
+Layer1 / Layer2は描画順に応じた配置先。1・2はCanvasLayer.layerの実際の値とは区別する。
+各配列は対応するレイヤーまでに描かれた画面全体へ適用する。Overlayは全エフェクトの後に描く。
+testbedのLayer2/Labelsはパターン専用の説明で、Labelsだけを入力に応じて表示切替する。
+共通の確認要素はLayer2の別の子、またはOverlayへ配置できる。
 
-- Composite: 文字・ゲーム内UIを含む画面に適用する。
-- World: ゲーム内の文字・UIの前に適用する。
-- Up / Down: 同じ段階の適用順を変更する。
-- Remove / Reset: 選択したエフェクトの削除・初期化。
-- Effect enabled: 個別のON/OFF。Effects enabled: 全体のON/OFF。
-- Save preset / Load preset: WorldとCompositeの構成・順序・パラメータを`.tres`で保存・復元する。
-- Load texture / Clear texture: 任意の画像の割り当て・解除。
+実行時のエフェクト編集パネルは設けない。testbedまたは各プリセットシーンのPostProcessingを
+Inspectorで編集し、Layer 1 Effects / Layer 2 Effects配列にエフェクトのResourceを設定する。
+各グループのResourceスクリプトは一覧から確認できる。
 
-操作パネルはCanvasLayer 1000なので、エフェクトの処理や履歴には含まれない。
-プリセットの既定保存先はGodotのuserデータフォルダ。履歴テクスチャや統計値は保存しない。
-読み込んだ外部画像はImageTextureとしてプリセット内に保存されるので、ファイルが大きくなる場合がある。
+- Layer 1 Effects: Layer1までに描かれた画面全体へ適用する。
+- Layer 2 Effects: Layer2までに描かれた画面全体へ適用する。Layer1とその加工結果も含む。
+- 配列の順序: エフェクトの適用順。追加・削除・並べ替えはInspectorの配列編集を使う。
+- 個別Resource: Mode、数値、色、テクスチャなどをInspectorで調整する。
+- Enabled: PostProcessingでは全体、個別ResourceではそのエフェクトのON/OFF。
+- 同じグループを複数回使う場合は、別のResourceインスタンスを設定する。同一インスタンスの重複登録は無視される。
+
+保存する設定はシーン・ResourceをInspectorで編集して保存する。
+実行中の一時調整にはRemote Inspectorを使う。Remoteでの変更はシーンファイルには自動保存されない。
+Mode変更時の処理構成の更新はtestbed側が行うため、実行時パネルに依存しない。
+スクリプトから実行中の配列をappend/remove/並べ替えする場合は、変更後にrebuild_effects()を呼ぶ。
+
+入力切替は1 / 2 / 3で行う。画像は`testbed/images/`へ追加すればよく、配列への手動登録は不要。
+起動時にフォルダ直下のTexture2Dをファイル名の昇順で収集する。サブフォルダや画像以外は対象外。
+GodotがインポートできるPNG / JPEG / WebP / BMP / SVG等の画像を使用できる。
+追加・削除はGodotのインポート完了後、testbedの次回起動に反映する。実行中はフォルダを監視しない。
+画像はResourceLoaderで読み込み、Ctrl+Oや画像選択ダイアログは設けない。
 
 ## 配置と共通基盤
 
-`effects/<group>/` にResourceスクリプト、シェーダー、`preview.tscn`を置く。
-同じ役割の方式はModeにまとめる。各previewは共通testbedを継承する。
+`testbed/testbed.tscn` は入力切替・テスト素材・mainの生成を担当する共通シーン。
+`presets/` にエフェクトの組み合わせと調整値を保存する継承シーンをまとめる。
+最初のプリセットは `presets/crt.tscn`。グループごとの単体previewは作成しない。
+
+`effects/<group>/` にResourceスクリプト、シェーダー、仕様書を置く。
+同じ役割の方式はModeにまとめる。
 例外としてCRTは従来の複数パス・仕様書を同じフォルダ内に保持する。
 既存のVignette、Chromatic Aberration、Display Texture、Glowは参照する薄いResourceを置く。
 
 `effects/_shared/` はシェーダー関数、動的パラメータ、履歴、縮小・拡大処理を共有する。
-新しいResourceはShaderのuniformからInspectorと実行時パネルを生成する。
+新しいResourceはShaderのuniformからInspectorの設定項目を生成する。
 RenderLayersとPostProcessingは正式側の共通基盤を参照し、実験用の入力・補助バッファ・UIはtestbed側に置く。
 
 `testbed/patterns/reference_set.tscn` は追加の図形・グラデーション・文字の素材。
-`testbed/images/` は共通確認画像。testbedルートのimagesで表示順を設定する。
+`testbed/images/` は共通確認画像の保存先。起動時に自動収集し、表示順はファイル名で決まる。
+
+## プリセットの作成
+
+1. `testbed/testbed.tscn` を元にGodot Editorで「新しい継承シーン」を作成する。
+2. `presets/<任意の名前>.tscn` に保存する。プリセットはシーン名で識別する。
+3. PostProcessingのLayer 1 Effects / Layer 2 EffectsにResourceを追加する。
+   [一覧](CATALOG.md)のResourceスクリプトを割り当て、Modeと各パラメータを調整する。
+4. エフェクトResourceはシーン内に保存し、Local to SceneをONにする。
+   既存Resourceを流用する場合は「ユニーク化」してから編集する。
+5. シーンを保存し、F6で実行する。入力切替と画像収集は共通testbedから引き継ぐ。
+
+既存の `presets/crt.tscn` を複製して、配列の構成や調整値を変更してもよい。
+調整値は各シーンの組み込みResourceに保存するため、別プリセットの設定と共有しない。
+外部の同じResourceファイルを参照すれば値が共有されるため、意図的に共有する場合だけ使用する。
+共通testbedの変更は継承先にも反映される。プリセット側で上書きした項目は、その値を優先する。
 
 ## 擬似3D
 
@@ -95,7 +128,9 @@ LUTはN×N×Nの立方体をN²×Nの横長画像に配置し、Bのスライス
 
 ## CRT
 
-`effects/crt/preview.tscn` は旧crt_display_testの後継。
+`effects/crt/crt.gd`（クラス名: `CRT`）と `crt.gdshader` がCRT本体。
+他のエフェクトと同じ命名と配列への追加方法を使う。
+`presets/crt.tscn` は旧crt_display_testの後継。
 従来の色調補正・CRT・ビネットと保存済み調整値を保持し、起動時はmainに適用する。
 個別ON/OFFとパラメータ変更は正式側の調整から独立している。
 

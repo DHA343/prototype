@@ -10,16 +10,18 @@ extends Node
 		enabled = value
 		_apply_enabled_state()
 
-@export var world_effects: Array[PostProcessEffect] = []:
+## Processes the whole screen drawn through Layer 1, including preceding layers.
+@export var layer_1_effects: Array[PostProcessEffect] = []:
 	set(value):
-		world_effects = value
+		layer_1_effects = value
 
 		if _is_initialized:
 			rebuild_effects()
 
-@export var composite_effects: Array[PostProcessEffect] = []:
+## Processes the whole screen drawn through Layer 2, including Layer 1 and its effects.
+@export var layer_2_effects: Array[PostProcessEffect] = []:
 	set(value):
-		composite_effects = value
+		layer_2_effects = value
 
 		if _is_initialized:
 			rebuild_effects()
@@ -49,11 +51,11 @@ func rebuild_effects() -> void:
 
 	var registered_effects: Dictionary[int, bool] = {}
 
-	_build_effect_layer(&"WorldEffects", RenderLayers.WORLD_EFFECTS, world_effects, registered_effects)
+	_build_effect_layer(&"Layer1Effects", RenderLayers.LAYER_1_EFFECTS, layer_1_effects, registered_effects)
 	_build_effect_layer(
-		&"CompositeEffects",
-		RenderLayers.COMPOSITE_EFFECTS,
-		composite_effects,
+		&"Layer2Effects",
+		RenderLayers.LAYER_2_EFFECTS,
+		layer_2_effects,
 		registered_effects,
 	)
 

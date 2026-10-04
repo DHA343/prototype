@@ -20,9 +20,9 @@ func _process(_delta: float) -> void:
 		var main: Node2D = testbed.get("_main")
 		if main != null:
 			if bool(testbed.get("mask_orb")):
-				_add_visual(main.get_node("WorldLayer/Actors/Orb/Visual") as Node2D)
+				_add_visual(main.get_node("Layer1/Actors/Orb/Visual") as Node2D)
 			if bool(testbed.get("mask_enemies")):
-				for enemy in main.get_node("WorldLayer/Actors/Enemies").get_children():
+				for enemy in main.get_node("Layer1/Actors/Enemies").get_children():
 					var visual := enemy.get_node_or_null("VisualRoot/Visual") as Node2D
 					if visual != null:
 						_add_visual(visual)
