@@ -36,9 +36,6 @@ var last_contact: Vector2 = Vector2.ZERO
 var last_normal: Vector2 = Vector2.ZERO
 var _enemy_contacts: Array[Enemy] = []
 var _motion := Motion.new(self)
-var _struck_flippers: Array[PinballFlipper]:
-	get:
-		return _motion.struck_flippers
 
 @onready var _collision: CollisionShape2D = $CollisionShape2D
 
@@ -51,8 +48,6 @@ static func reflected_velocity(
 
 func _ready() -> void:
 	_motion.native_contact = _resolve_contact
-	_motion.swept_contact = _apply_swept_contact
-	_motion.separation = _contact_separation
 	_motion.contact_recorded = _record_contact
 	_refresh_shape()
 
@@ -84,21 +79,7 @@ func advance(delta: float, swings: Array[PinballFlipper.Swing] = []) -> void:
 		return
 	_release_enemy_contacts()
 	_sync_motion()
-	_motion.advance(delta, swings, _advance_motion)
-
-
-func _advance_motion(delta: float, swings: Array[PinballFlipper.Swing]) -> void:
-	_motion.advance_motion(delta, swings)
-
-
-func _apply_swept_contact(hit: Dictionary) -> void:
-	_sync_motion()
-	_motion.apply_swept_contact(hit)
-
-
-func _contact_separation(hit: Dictionary) -> Vector2:
-	_sync_motion()
-	return _motion.contact_separation(hit)
+	_motion.advance(delta, swings)
 
 
 func _resolve_contact(collision: KinematicCollision2D) -> void:

@@ -12,10 +12,7 @@ var gravity: float = 2100.0
 var max_speed: float = 1950.0
 var boundary: PinballBoundary
 var flippers: PinballFlippers
-var struck_flippers: Array[PinballFlipper] = []
 var native_contact: Callable
-var swept_contact: Callable
-var separation: Callable
 var contact_recorded: Callable
 var _guard_exceptions: Array[PinballFlipper] = []
 
@@ -32,7 +29,6 @@ static func reflected_velocity(
 
 
 func reset() -> void:
-	struck_flippers.clear()
 	if flippers != null:
 		flippers.release_target(body.get_instance_id())
 
@@ -41,7 +37,7 @@ func step_velocity(current: Vector2, delta: float) -> Vector2:
 	return (current + Vector2.DOWN * gravity * delta).limit_length(max_speed)
 
 
-func advance(delta: float, swings: Array[PinballFlipper.Swing] = [], integrate: Callable = Callable()) -> void:
+func advance(delta: float, swings: Array[PinballFlipper.Swing] = []) -> void:
 	flippers.refresh_target(body, step_velocity(body.velocity, delta).y)
 	if flippers.is_target_disabled(body.get_instance_id()):
 		_exclude_flippers()
@@ -51,13 +47,7 @@ func advance(delta: float, swings: Array[PinballFlipper.Swing] = [], integrate: 
 		if swing.flipper not in existing:
 			body.add_collision_exception_with(swing.flipper)
 			active.append(swing)
-	for index in range(struck_flippers.size() - 1, -1, -1):
-		if not struck_flippers[index].is_rising():
-			struck_flippers.remove_at(index)
-	if integrate.is_valid():
-		integrate.call(delta, active)
-	else:
-		advance_motion(delta, active)
+	advance_motion(delta, active)
 	for swing: PinballFlipper.Swing in active:
 		body.remove_collision_exception_with(swing.flipper)
 	for item: PinballFlipper in _guard_exceptions:
@@ -83,10 +73,7 @@ func advance_motion(delta: float, swings: Array[PinballFlipper.Swing]) -> void:
 			hit = flippers.first_contact(swings, body.global_position, body.velocity,
 				radius, delta - remaining, collision_time)
 		if not hit.is_empty() and (collision == null or hit.time < collision_time):
-			if swept_contact.is_valid():
-				swept_contact.call(hit)
-			else:
-				apply_swept_contact(hit)
+			apply_swept_contact(hit)
 			remaining -= hit.time
 		else:
 			if swept:
@@ -105,7 +92,7 @@ func advance_motion(delta: float, swings: Array[PinballFlipper.Swing]) -> void:
 
 
 func apply_swept_contact(hit: Dictionary) -> void:
-	var offset: Vector2 = separation.call(hit) if separation.is_valid() else contact_separation(hit)
+	var offset := contact_separation(hit)
 	body.global_position += body.velocity * hit.time + offset
 	body.force_update_transform()
 	_respond_to_flipper(hit)
@@ -144,11 +131,7 @@ func _respond_to_flipper(hit: Dictionary) -> void:
 	if incoming <= 0:
 		return
 	var item: PinballFlipper = hit.flipper
-	var already_struck := item in struck_flippers
-	if hit.is_striking and already_struck and body.velocity.dot(normal) > 0:
-		return
-	if hit.is_striking and not already_struck:
-		struck_flippers.append(item)
+	if hit.is_striking:
 		body.velocity = reflected_velocity(body.velocity, normal, flippers.restitution, hit.strike_surface_velocity)
 		body.velocity = flippers.direct_shot(body.velocity, hit.ratio, item.side, normal)
 		if flippers.disable_target(body):

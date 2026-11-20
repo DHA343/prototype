@@ -1,5 +1,7 @@
 extends SceneTree
 
+const TEST_STEP: float = 1.0 / 240.0
+
 const Motion = preload("res://pinball/motion.gd")
 
 var checks: int = 0
@@ -75,9 +77,9 @@ func _test_generic_motion() -> void:
 	await physics_frame
 	for step in 12:
 		var swings := _main.flippers.plan_motion(true, false)
-		_main.flippers.advance(PinballLab.STEP, true, false)
-		target.motion.advance(PinballLab.STEP, swings)
-		other.motion.advance(PinballLab.STEP, swings)
+		_main.flippers.advance(TEST_STEP, true, false)
+		target.motion.advance(TEST_STEP, swings)
+		other.motion.advance(TEST_STEP, swings)
 	_check(target.body.get_script() == null, "Generic test must not use a ball or enemy script")
 	_check(target.body.velocity.y < 0, "Common movement did not produce an upward shot")
 	var id: int = target.body.get_instance_id()
@@ -89,15 +91,15 @@ func _test_generic_motion() -> void:
 	target.body.global_position = polygon[0].lerp(polygon[2], 0.5)
 	target.body.velocity = Vector2(0, -600)
 	var before: Vector2 = target.body.global_position
-	target.motion.advance(PinballLab.STEP)
-	_check(target.body.global_position.distance_to(before + Vector2.UP * 600 * PinballLab.STEP) < 0.001,
+	target.motion.advance(TEST_STEP)
+	_check(target.body.global_position.distance_to(before + Vector2.UP * 600 * TEST_STEP) < 0.001,
 		"Suppressed target still collides or recovers against a flipper")
 	_check(target.body.get_collision_exceptions().is_empty(), "Guard leaked collision exceptions after a step")
 	# The gravity-adjusted velocity, rather than the previous velocity, releases it.
 	target.body.global_position = Vector2(960, 400)
 	target.body.velocity = Vector2(0, -1)
 	target.motion.gravity = 1500
-	target.motion.advance(PinballLab.STEP)
+	target.motion.advance(TEST_STEP)
 	_check(not _main.flippers.is_target_disabled(id), "Descending target did not regain collision")
 	_main.flippers.disable_target(target.body)
 	target.body.free()
@@ -117,15 +119,15 @@ func _test_multibody() -> void:
 	await physics_frame
 	for step in 12:
 		var swings := _main.flippers.plan_motion(true, false)
-		_main.flippers.advance(PinballLab.STEP, true, false)
+		_main.flippers.advance(TEST_STEP, true, false)
 		for target: Dictionary in targets:
-			target.motion.advance(PinballLab.STEP, swings)
+			target.motion.advance(TEST_STEP, swings)
 	for target: Dictionary in targets:
 		_check(_main.flippers.is_target_disabled(target.body.get_instance_id()), "Multibody state missing")
 		_check(target.body.velocity.y < 0, "Multibody shot did not travel upward")
 		_check(target.body.get_collision_exceptions().is_empty(), "Multibody collision exceptions leaked")
 	targets[0].body.velocity = Vector2(0, 300)
-	targets[0].motion.advance(PinballLab.STEP)
+	targets[0].motion.advance(TEST_STEP)
 	_check(not _main.flippers.is_target_disabled(targets[0].body.get_instance_id()), "One target did not release")
 	_check(_main.flippers.is_target_disabled(targets[1].body.get_instance_id()), "One release cleared all targets")
 	for target: Dictionary in targets:

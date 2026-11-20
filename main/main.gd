@@ -3,7 +3,7 @@ extends Node2D
 
 signal bumper_hit(center: Vector2)
 
-const STEP: float = 1.0 / 240.0
+const PREDICTION_STEP: float = 1.0 / 240.0
 
 @export_range(0.0, 1.0, 0.05, "suffix:s") var respawn_delay: float = 0.45
 
@@ -44,40 +44,34 @@ func _physics_process(delta: float) -> void:
 
 
 func advance(delta: float) -> void:
+	if delta <= 0:
+		return
 	routes.refresh()
-	var remaining := delta
-	while remaining > 0.000001:
-		var left_pressed := Input.is_action_pressed(&"pinball_left")
-		var right_pressed := Input.is_action_pressed(&"pinball_right")
-		var collision_radius := ball.radius
-		for enemy: Enemy in enemies:
-			collision_radius = minf(collision_radius, enemy.radius)
-		var step := minf(minf(STEP, remaining),
-			flippers.motion_step_limit(collision_radius, left_pressed, right_pressed))
-		var swings := flippers.plan_motion(left_pressed, right_pressed)
-		flippers.advance(step, left_pressed, right_pressed)
-		for enemy: Enemy in enemies:
-			enemy.prepare(step)
-		crowd.calculate(enemies, step, boundary.exit_target())
-		for enemy: Enemy in enemies:
-			enemy.advance(step)
-		if ball.active:
-			ball.advance(step, swings)
-			if boundary.to_local(ball.global_position).y > boundary.bottom + 120.0:
-				ball.active = false
-				ball.visible = false
-				_respawn_remaining = respawn_delay
-		else:
-			_respawn_remaining -= step
-			if _respawn_remaining <= 0.0:
-				reset_ball()
-		# Resolve exits after all motion, so removal never mutates the movement iteration.
-		for index in range(enemies.size() - 1, -1, -1):
-			var enemy := enemies[index]
-			if boundary.has_exited(enemy.global_position, enemy.radius):
-				enemy.finish(Enemy.ExitReason.ESCAPED)
-		spawner.advance(step)
-		remaining -= step
+	var left_pressed := Input.is_action_pressed(&"pinball_left")
+	var right_pressed := Input.is_action_pressed(&"pinball_right")
+	var swings := flippers.plan_motion(left_pressed, right_pressed)
+	flippers.advance(delta, left_pressed, right_pressed)
+	for enemy: Enemy in enemies:
+		enemy.prepare(delta)
+	crowd.calculate(enemies, delta, boundary.exit_target())
+	for enemy: Enemy in enemies:
+		enemy.advance(delta)
+	if ball.active:
+		ball.advance(delta, swings)
+		if boundary.to_local(ball.global_position).y > boundary.bottom + 120.0:
+			ball.active = false
+			ball.visible = false
+			_respawn_remaining = respawn_delay
+	else:
+		_respawn_remaining -= delta
+		if _respawn_remaining <= 0:
+			reset_ball()
+	# Resolve exits after all motion, so removal never mutates the movement iteration.
+	for index in range(enemies.size() - 1, -1, -1):
+		var enemy := enemies[index]
+		if boundary.has_exited(enemy.global_position, enemy.radius):
+			enemy.finish(Enemy.ExitReason.ESCAPED)
+	spawner.advance(delta)
 	if is_instance_valid(launcher):
 		launcher.advance(delta, enemies)
 
@@ -114,7 +108,7 @@ func predict_shot() -> Vector2:
 	var horizon := deg_to_rad(flippers.swing_angle) / deg_to_rad(flippers.raise_speed)
 	var step_limit := flippers.motion_step_limit(ball.radius, true, true)
 	while elapsed < horizon:
-		var step := minf(minf(STEP, step_limit), horizon - elapsed)
+		var step := minf(minf(PREDICTION_STEP, step_limit), horizon - elapsed)
 		velocity = ball.step_velocity(velocity, step)
 		query.transform = Transform2D(0.0, position)
 		query.motion = velocity * step

@@ -1,5 +1,7 @@
 extends SceneTree
 
+const TEST_STEP: float = 1.0 / 240.0
+
 const MAIN: PackedScene = preload("res://main/main.tscn")
 const ENEMY: PackedScene = preload("res://enemies/enemy.tscn")
 
@@ -141,7 +143,7 @@ func _test_walls_and_crowd() -> void:
 	enemy.prepare(0.2)
 	enemy.receive_hit(0.0, enemy.global_position, Vector2.LEFT * 3600.0)
 	for _step in 100:
-		_lab.advance(PinballLab.STEP)
+		_lab.advance(TEST_STEP)
 		_check(enemy.global_position.x >= left.x + enemy.radius - 0.15,
 			"Knockback is constrained by the side wall")
 	await _clear()
@@ -172,8 +174,8 @@ func _test_flippers() -> void:
 			enemy.receive_hit(0.0, middle, -normal * 600.0)
 			# Keep this pose stationary while testing its actual collision surface.
 			for _step in 40:
-				enemy.prepare(PinballLab.STEP)
-				enemy.advance(PinballLab.STEP)
+				enemy.prepare(TEST_STEP)
+				enemy.advance(TEST_STEP)
 			_check((enemy.global_position - middle).dot(normal) >= enemy.radius - 0.15,
 				"Resting and raised flippers block enemies")
 			await _clear()
@@ -235,7 +237,7 @@ func _test_combat() -> void:
 	_check(absf(enemy.current_health - 88.0) < 0.01, "Damage includes base and ball-speed terms")
 	_check(absf(enemy.knockback_velocity().y - 540.0) < 0.01, "Knockback includes base and ball-speed terms")
 	for _step in 12:
-		_lab.ball.advance(PinballLab.STEP)
+		_lab.ball.advance(TEST_STEP)
 	_check(hits[0] == 1, "A continuous contact does not damage repeatedly")
 	enemy.velocity = Vector2.DOWN * 120.0
 	_lab.place_ball(enemy.global_position + Vector2.UP * (_lab.ball.radius + enemy.radius + 6.0),

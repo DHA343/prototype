@@ -2,10 +2,19 @@ extends PinballBall
 
 const FixedFlipper = preload("res://experiments/flippers/fixed_flipper.gd")
 const ShotGuard = preload("res://experiments/flippers/shot_guard.gd")
+const LegacyMotion = preload("res://experiments/flippers/legacy_motion.gd")
 
 var max_separation: float = 0.0
 var contact_count: int = 0
 var _guard_exceptions: Array[PinballFlipper] = []
+var _struck_flippers: Array[PinballFlipper]:
+	get:
+		return (_motion as LegacyMotion).struck_flippers
+
+
+func _ready() -> void:
+	_motion = LegacyMotion.new(self)
+	super._ready()
 
 
 func reset_at(point: Vector2, initial_velocity: Vector2 = Vector2.ZERO) -> void:
@@ -40,7 +49,8 @@ func advance(delta: float, swings: Array[PinballFlipper.Swing] = []) -> void:
 
 func _apply_swept_contact(hit: Dictionary) -> void:
 	var shots_before := _struck_flippers.size()
-	super._apply_swept_contact(hit)
+	_sync_motion()
+	(_motion as LegacyMotion).apply_default(hit)
 	if _struck_flippers.size() > shots_before and flippers is ShotGuard:
 		_start_guard((flippers as ShotGuard).contact_elapsed)
 
@@ -80,3 +90,7 @@ func _contact_separation(hit: Dictionary) -> Vector2:
 	max_separation = maxf(max_separation, distance)
 	contact_count += 1
 	return Vector2.UP * distance
+
+
+func _advance_motion(delta: float, swings: Array[PinballFlipper.Swing]) -> void:
+	(_motion as LegacyMotion).advance_default(delta, swings)
