@@ -1,0 +1,15 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://missiles/visuals.tscn" id="1"]
+[ext_resource type="Script" path="res://missiles/homing_2.gd" id="2"]
+
+[node name="Homing2" type="Node2D"]
+script = ExtResource("2")
+hit_radius = 18.0
+lifetime = 3.0
+damage = 10.0
+piercing = true
+tint = Color(0.9137255, 0.09803922, 1, 1)
+
+[node name="Visuals" parent="." instance=ExtResource("1")]
+circular_body = true

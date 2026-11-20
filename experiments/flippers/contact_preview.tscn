@@ -1,0 +1,7 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://experiments/flippers/method_preview.tscn" id="1"]
+[ext_resource type="Script" path="res://experiments/flippers/contact_preview.gd" id="2"]
+
+[node name="ContactPreview" instance=ExtResource("1")]
+script = ExtResource("2")

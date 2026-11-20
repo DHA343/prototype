@@ -1,0 +1,172 @@
+{
+	"cases": [
+		{
+			"before": {
+				"contacts": 1121,
+				"cpu_ms": 4108.287,
+				"max_below": 0.0,
+				"max_contacts": 8,
+				"max_push": 47.0389823913574,
+				"native": 11976,
+				"pairs": 1398,
+				"passed": 0,
+				"visible_passes": 0
+			},
+			"case": "long20_seed1",
+			"depth": 48.0,
+			"duration": 30.0,
+			"method": 6,
+			"thick": {
+				"contacts": 1001,
+				"cpu_ms": 1569.521,
+				"max_below": 0.0,
+				"max_contacts": 8,
+				"max_push": 69.599853515625,
+				"native": 10805,
+				"pairs": 1920,
+				"passed": 0,
+				"visible_passes": 0
+			}
+		},
+		{
+			"before": {
+				"contacts": 1203,
+				"cpu_ms": 3997.487,
+				"max_below": 0.0,
+				"max_contacts": 8,
+				"max_push": 54.2233924865723,
+				"native": 11977,
+				"pairs": 1741,
+				"passed": 0,
+				"visible_passes": 0
+			},
+			"case": "long20_seed2",
+			"depth": 48.0,
+			"duration": 30.0,
+			"method": 6,
+			"thick": {
+				"contacts": 952,
+				"cpu_ms": 1508.054,
+				"max_below": 0.0,
+				"max_contacts": 8,
+				"max_push": 55.1409072875977,
+				"native": 10743,
+				"pairs": 1659,
+				"passed": 0,
+				"visible_passes": 0
+			}
+		},
+		{
+			"before": {
+				"contacts": 1023,
+				"cpu_ms": 3921.398,
+				"max_below": 0.0,
+				"max_contacts": 8,
+				"max_push": 35.647590637207,
+				"native": 11141,
+				"pairs": 1734,
+				"passed": 0,
+				"visible_passes": 0
+			},
+			"case": "long20_seed3",
+			"depth": 48.0,
+			"duration": 30.0,
+			"method": 6,
+			"thick": {
+				"contacts": 1030,
+				"cpu_ms": 1482.669,
+				"max_below": 0.0,
+				"max_contacts": 8,
+				"max_push": 58.3064384460449,
+				"native": 9748,
+				"pairs": 1902,
+				"passed": 0,
+				"visible_passes": 0
+			}
+		},
+		{
+			"before": {
+				"contacts": 2361,
+				"cpu_ms": 5706.663,
+				"max_below": 0.0,
+				"max_contacts": 8,
+				"max_push": 100.856369018555,
+				"native": 14526,
+				"pairs": 7419,
+				"passed": 0,
+				"visible_passes": 0
+			},
+			"case": "long50",
+			"depth": 48.0,
+			"duration": 15.0,
+			"method": 6,
+			"thick": {
+				"contacts": 1886,
+				"cpu_ms": 2398.737,
+				"max_below": 0.0,
+				"max_contacts": 8,
+				"max_push": 70.1757583618164,
+				"native": 13322,
+				"pairs": 9163,
+				"passed": 0,
+				"visible_passes": 0
+			}
+		},
+		{
+			"before": {
+				"contacts": 760,
+				"cpu_ms": 1923.446,
+				"max_below": 0.0,
+				"max_contacts": 8,
+				"max_push": 59.9472808837891,
+				"native": 18721,
+				"pairs": 1239,
+				"passed": 0,
+				"visible_passes": 0
+			},
+			"case": "long_alternating",
+			"depth": 48.0,
+			"duration": 15.0,
+			"method": 6,
+			"thick": {
+				"contacts": 637,
+				"cpu_ms": 892.683,
+				"max_below": 0.0,
+				"max_contacts": 8,
+				"max_push": 44.5419387817383,
+				"native": 20754,
+				"pairs": 1160,
+				"passed": 0,
+				"visible_passes": 0
+			}
+		},
+		{
+			"before": {
+				"contacts": 1986,
+				"cpu_ms": 5699.132,
+				"max_below": 0.0,
+				"max_contacts": 8,
+				"max_push": 58.8138885498047,
+				"native": 21394,
+				"pairs": 18025,
+				"passed": 0,
+				"visible_passes": 0
+			},
+			"case": "long_return",
+			"depth": 48.0,
+			"duration": 15.0,
+			"method": 6,
+			"thick": {
+				"contacts": 1900,
+				"cpu_ms": 3320.517,
+				"max_below": 0.0,
+				"max_contacts": 8,
+				"max_push": 53.9959983825684,
+				"native": 30172,
+				"pairs": 8975,
+				"passed": 0,
+				"visible_passes": 0
+			}
+		}
+	]
+}

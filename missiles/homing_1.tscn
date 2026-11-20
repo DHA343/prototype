@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://dxbft15n8ggpy"]
+
+[ext_resource type="PackedScene" path="res://missiles/visuals.tscn" id="1"]
+[ext_resource type="Script" uid="uid://bw4dc3msy7i7p" path="res://missiles/homing_1.gd" id="2"]
+
+[node name="Homing1" type="Node2D" unique_id=2018222772]
+script = ExtResource("2")
+lifetime = 3.0
+damage = 10.0
+piercing = true
+penetration_limit = 5
+tint = Color(0.9137255, 0.09803922, 1, 1)
+
+[node name="Visuals" parent="." unique_id=174262578 instance=ExtResource("1")]
+circular_body = true

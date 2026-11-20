@@ -1,0 +1,42 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://experiments/flippers/comparison.gd" id="1"]
+[ext_resource type="PackedScene" path="res://experiments/flippers/guard_preview.tscn" id="2"]
+
+[sub_resource type="World2D" id="LeftWorld"]
+
+[sub_resource type="World2D" id="RightWorld"]
+
+[node name="ShotGuardComparison" type="Node2D"]
+script = ExtResource("1")
+
+[node name="LeftView" type="SubViewportContainer" parent="."]
+offset_top = 170.0
+offset_right = 1440.0
+offset_bottom = 1340.0
+scale = Vector2(0.6666667, 0.6666667)
+mouse_filter = 2
+
+[node name="World" type="SubViewport" parent="LeftView"]
+world_2d = SubResource("LeftWorld")
+handle_input_locally = false
+size = Vector2i(1440, 1170)
+render_target_update_mode = 4
+
+[node name="Preview" parent="LeftView/World" instance=ExtResource("2")]
+
+[node name="RightView" type="SubViewportContainer" parent="."]
+offset_left = 960.0
+offset_top = 170.0
+offset_right = 2400.0
+offset_bottom = 1340.0
+scale = Vector2(0.6666667, 0.6666667)
+mouse_filter = 2
+
+[node name="World" type="SubViewport" parent="RightView"]
+world_2d = SubResource("RightWorld")
+handle_input_locally = false
+size = Vector2i(1440, 1170)
+render_target_update_mode = 4
+
+[node name="Preview" parent="RightView/World" instance=ExtResource("2")]

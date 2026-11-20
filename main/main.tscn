@@ -1,0 +1,128 @@
+[gd_scene format=3 uid="uid://dvdsb43n7d23u"]
+
+[ext_resource type="Script" uid="uid://bf68tj2oh7sco" path="res://main/main.gd" id="1_main"]
+[ext_resource type="PackedScene" path="res://pinball/boundary.tscn" id="2_boundary"]
+[ext_resource type="Script" uid="uid://ccxy8hkpg3ugv" path="res://pinball/ball.gd" id="3_ball"]
+[ext_resource type="PackedScene" path="res://pinball/bumper.tscn" id="4_bumper"]
+[ext_resource type="Script" uid="uid://bsop2brtcjspr" path="res://presentation/audio/world_sound_output.gd" id="5_audio"]
+[ext_resource type="PackedScene" uid="uid://1cph7125gclc" path="res://presentation/post_processing/post_processing.tscn" id="6_post"]
+[ext_resource type="Script" uid="uid://e6n5u5pvxfy8" path="res://presentation/post_processing/effects/pixelation/pixelation_layer.gd" id="7_layer"]
+[ext_resource type="Resource" path="res://pinball/hit.tres" id="8_sound"]
+[ext_resource type="PackedScene" path="res://enemies/enemy.tscn" id="9_enemy"]
+[ext_resource type="Script" uid="uid://b7xtycwrc5lgt" path="res://enemies/spawn_area.gd" id="10_spawn_area"]
+[ext_resource type="Script" uid="uid://chw0eypgejfm3" path="res://enemies/spawner.gd" id="11_spawner"]
+[ext_resource type="Script" uid="uid://bawug645gica2" path="res://enemies/routes.gd" id="12_routes"]
+[ext_resource type="Script" uid="uid://bn2q3aont3gnx" path="res://enemies/crowd.gd" id="13_crowd"]
+[ext_resource type="Script" uid="uid://bvk5k2uiadu35" path="res://pinball/shot_guide.gd" id="14_guide"]
+[ext_resource type="Script" uid="uid://5w4c2ri6yxhh" path="res://pinball/flippers.gd" id="15_flippers"]
+[ext_resource type="PackedScene" path="res://pinball/flipper.tscn" id="16_flipper"]
+[ext_resource type="PackedScene" path="res://missiles/launcher.tscn" id="17_launcher"]
+[ext_resource type="Script" uid="uid://b5sv3n6bxuavn" path="res://debug/enemy_summon.gd" id="18_debug_summon"]
+[ext_resource type="PackedScene" uid="uid://dxbft15n8ggpy" path="res://missiles/homing_1.tscn" id="19_homing"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_piupu"]
+radius = 24.0
+
+[node name="Main" type="Node2D" unique_id=2043606413]
+script = ExtResource("1_main")
+
+[node name="Playfield" type="CanvasLayer" parent="." unique_id=172764747 node_paths=PackedStringArray("post_processing")]
+script = ExtResource("7_layer")
+post_processing = NodePath("../PostProcessing")
+render_resolution = Vector2i(640, 360)
+
+[node name="Boundary" parent="Playfield" unique_id=1154390745 instance=ExtResource("2_boundary")]
+position = Vector2(960, 6)
+width = 957.0
+height = 1074.0
+opening_width = 84.0
+opening_offset = Vector2(0, 30)
+lower_angle = 10.5
+upper_corner_radius = 63.0
+lower_corner_radius = 15.0
+start_distance = 180.0
+wall_restitution = 0.45
+
+[node name="Flippers" type="Node2D" parent="Playfield" unique_id=483592109]
+script = ExtResource("15_flippers")
+swing_angle = 18.0
+raise_speed = 600.0
+pass_until_descending = true
+
+[node name="LeftFlipper" parent="Playfield/Flippers" unique_id=472308079 node_paths=PackedStringArray("pivot_socket", "tip_socket") instance=ExtResource("16_flipper")]
+position = Vector2(655.2057, 1019.6005)
+rotation = 0.18325953
+pivot_socket = NodePath("../../Boundary/LeftPivot")
+tip_socket = NodePath("../../Boundary/LeftTip")
+
+[node name="RightFlipper" parent="Playfield/Flippers" unique_id=836034419 node_paths=PackedStringArray("pivot_socket", "tip_socket") instance=ExtResource("16_flipper")]
+position = Vector2(1264.7944, 1019.6005)
+rotation = 2.9583333
+pivot_socket = NodePath("../../Boundary/RightPivot")
+tip_socket = NodePath("../../Boundary/RightTip")
+side = 1
+
+[node name="Ball" type="CharacterBody2D" parent="Playfield" unique_id=361712701]
+position = Vector2(780, 540)
+collision_mask = 6
+script = ExtResource("3_ball")
+radius = 24.0
+gravity = 1500.0
+max_speed = 3600.0
+damage = 50.0
+hit_sound = ExtResource("8_sound")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Playfield/Ball" unique_id=1980512776]
+shape = SubResource("CircleShape2D_piupu")
+
+[node name="Bumper" parent="Playfield" unique_id=721098814 instance=ExtResource("4_bumper")]
+position = Vector2(705, 288)
+
+[node name="Bumper2" parent="Playfield" unique_id=1218309574 instance=ExtResource("4_bumper")]
+position = Vector2(1215, 288)
+
+[node name="Bumper3" parent="Playfield" unique_id=1335068592 instance=ExtResource("4_bumper")]
+position = Vector2(960, 474)
+radius = 60.0
+
+[node name="MissileLauncher" parent="Playfield" unique_id=2131053223 instance=ExtResource("17_launcher")]
+missile_scene = ExtResource("19_homing")
+spread = 180.0
+shot_interval = 0.0
+minimum_launch_speed = 60.0
+maximum_launch_speed = 580.0
+
+[node name="SpawnArea" type="Node2D" parent="Playfield" unique_id=1165301394]
+position = Vector2(960, 120)
+script = ExtResource("10_spawn_area")
+
+[node name="DebugSummon" type="Node2D" parent="Playfield" unique_id=1153586074 node_paths=PackedStringArray("spawner")]
+script = ExtResource("18_debug_summon")
+spawner = NodePath("../../EnemySpawner")
+
+[node name="ShotGuide" type="Node2D" parent="Playfield" unique_id=1909654514 node_paths=PackedStringArray("lab")]
+script = ExtResource("14_guide")
+lab = NodePath("../..")
+
+[node name="Enemies" type="Node2D" parent="." unique_id=1405321490]
+
+[node name="EnemySpawner" type="Node" parent="." unique_id=1347142709 node_paths=PackedStringArray("spawn_area", "spawn_parent")]
+script = ExtResource("11_spawner")
+enemy_scene = ExtResource("9_enemy")
+spawn_area = NodePath("../Playfield/SpawnArea")
+spawn_parent = NodePath("../Enemies")
+
+[node name="Routes" type="Node" parent="." unique_id=1098445792]
+script = ExtResource("12_routes")
+
+[node name="CrowdManager" type="Node" parent="." unique_id=1059045130]
+script = ExtResource("13_crowd")
+
+[node name="WorldSoundOutput" type="Node2D" parent="." unique_id=850030289]
+script = ExtResource("5_audio")
+
+[node name="PostProcessing" parent="." unique_id=83329764 instance=ExtResource("6_post")]
+enabled = false
+
+[connection signal="bumper_hit" from="." to="Playfield/MissileLauncher" method="fire_from"]

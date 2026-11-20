@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://b7dnl3bf84cy7"]
+
+[ext_resource type="Script" uid="uid://lie7wlkuwwcr" path="res://missiles/archive/homing.gd" id="1"]
+[ext_resource type="PackedScene" path="res://missiles/visuals.tscn" id="2"]
+
+[node name="Missile" type="Node2D" unique_id=81812994]
+script = ExtResource("1")
+departure_distance = 20.0
+damage = 10.0
+piercing = true
+max_turn_speed = 540.0
+instability_enabled = false
+tint = Color(0.9137255, 0.09803922, 1, 1)
+
+[node name="Visuals" parent="." unique_id=2018755131 instance=ExtResource("2")]
