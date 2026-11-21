@@ -1,0 +1,163 @@
+{
+	"automatic_updates_disabled": true,
+	"cases": [
+		{
+			"caps": [],
+			"initial_enemies": 30,
+			"max_correction": {
+				"distance": 2.27298641204834,
+				"event": {
+					"changed": true,
+					"correction_px": 2.27298641204834,
+					"end": [
+						805.517517089844,
+						939.21728515625
+					],
+					"found": true,
+					"kind": "sweep",
+					"normal": [
+						-0.0122169395908713,
+						-0.999925374984741
+					],
+					"point": [
+						797.726928710938,
+						999.85791015625
+					],
+					"position": [
+						797.459655761719,
+						975.709350585938
+					],
+					"ratio": 0.540862261881403,
+					"shot": true,
+					"speed": 2548.03002929688,
+					"target": "LeftFlipper",
+					"time_ms": 2.0,
+					"velocity": [
+						549.39892578125,
+						-2488.09521484375
+					]
+				},
+				"frame": 67
+			},
+			"mode": 0,
+			"outcome": {
+				"balls": [
+					[
+						600.887023925781,
+						966.780578613281,
+						321.416229248047,
+						57.2453384399414
+					]
+				],
+				"enemies": 19,
+				"removed": {
+					"escaped": 0,
+					"killed": 11
+				}
+			}
+		},
+		{
+			"caps": [],
+			"initial_enemies": 30,
+			"max_correction": {
+				"distance": 0.284742951393127,
+				"event": {
+					"changed": true,
+					"correction_px": 0.284742951393127,
+					"end": [
+						805.962463378906,
+						938.657043457031
+					],
+					"found": true,
+					"kind": "sweep",
+					"normal": [
+						-0.00610727211460471,
+						-0.99998140335083
+					],
+					"point": [
+						797.74951171875,
+						1000.72943115234
+					],
+					"position": [
+						797.603759765625,
+						976.579833984375
+					],
+					"ratio": 0.54050104647249,
+					"shot": true,
+					"speed": 2546.4306640625,
+					"target": "LeftFlipper",
+					"time_ms": 1.41666666666667,
+					"velocity": [
+						548.113525390625,
+						-2486.74096679688
+					]
+				},
+				"frame": 67
+			},
+			"mode": 4,
+			"outcome": {
+				"balls": [
+					[
+						666.530517578125,
+						978.95751953125,
+						473.4873046875,
+						86.0171356201172
+					]
+				],
+				"enemies": 17,
+				"removed": {
+					"escaped": 0,
+					"killed": 13
+				}
+			}
+		},
+		{
+			"caps": [],
+			"initial_enemies": 60,
+			"max_correction": {
+				"distance": 0.0
+			},
+			"mode": 0,
+			"outcome": {
+				"balls": [
+					[
+						964.721130371094,
+						1089.90844726563,
+						-80.9977111816406,
+						380.198944091797
+					]
+				],
+				"enemies": 55,
+				"removed": {
+					"escaped": 0,
+					"killed": 5
+				}
+			}
+		},
+		{
+			"caps": [],
+			"initial_enemies": 60,
+			"max_correction": {
+				"distance": 0.0
+			},
+			"mode": 4,
+			"outcome": {
+				"balls": [
+					[
+						964.721130371094,
+						1089.90844726563,
+						-80.9977111816406,
+						380.198944091797
+					]
+				],
+				"enemies": 55,
+				"removed": {
+					"escaped": 0,
+					"killed": 5
+				}
+			}
+		}
+	],
+	"physics_hz": 60,
+	"scope": "Focused diagnostic replay, not a performance sample"
+}

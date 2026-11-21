@@ -1,0 +1,40 @@
+@tool
+extends TableFlipper
+
+enum Rule { CURRENT, WITHOUT_ANGLE, THREE_CONDITIONS }
+
+var rule: Rule = Rule.THREE_CONDITIONS
+
+
+func is_striking(point: Vector2, normal: Vector2) -> bool:
+	if rule == Rule.CURRENT:
+		return super.is_striking(point, normal)
+	return is_rising() and _shot_face(point, global_transform)
+
+
+func _contact_at(
+	center: Vector2, ball_radius: float, pose: Transform2D, omega: float, equalization: float,
+) -> Dictionary:
+	var hit := super._contact_at(center, ball_radius, pose, omega, equalization)
+	if hit.is_empty():
+		return hit
+	return shot_contact(hit, omega, equalization)
+
+
+func shot_contact(hit: Dictionary, omega: float, equalization: float) -> Dictionary:
+	if rule == Rule.CURRENT:
+		return hit
+	var pose: Transform2D = hit.pose
+	hit.on_shot_face = _shot_face(hit.point, pose)
+	hit.is_striking = omega * _direction > 0.0 and hit.on_shot_face
+	if _is_upper_contact(hit.point, pose):
+		var arm: Vector2 = hit.point - pose.origin
+		var tip_arm := pose * _tip.position - pose.origin
+		var amount := equalization if hit.is_striking else 0.0
+		hit.strike_surface_velocity = _upper_velocity(_point_velocity(arm, tip_arm, omega, amount), pose)
+	return hit
+
+
+func _shot_face(point: Vector2, pose: Transform2D) -> bool:
+	return _is_upper_contact(point, pose) and (
+		rule == Rule.THREE_CONDITIONS or (pose.affine_inverse() * point).x > 0.0)

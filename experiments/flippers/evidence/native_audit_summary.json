@@ -1,0 +1,1202 @@
+{
+  "checks": 28392,
+  "failures": 0,
+  "groups": {
+    "main_336_60hz": {
+      "inputs": 336,
+      "classified": 336,
+      "ambiguous_ids": [],
+      "clamped_inputs": 0,
+      "reference_contacts": 150,
+      "reference_shots": 103,
+      "native": {
+        "extra_candidates": 12,
+        "missed_contacts": 0,
+        "noncontact_first_shots": 1,
+        "noncontact_first_velocity_changes": 1,
+        "noncontact_first_position_only": 11,
+        "false_shots": 5,
+        "missed_shots": 0,
+        "both_contacts": 150,
+        "both_shots": 103,
+        "time_error_ms": {
+          "count": 150,
+          "median": 3.733719184432025,
+          "p95": 7.25229607066971,
+          "max": 10.9013271110598
+        },
+        "point_error_px": {
+          "count": 150,
+          "median": 14.295619487762451,
+          "p95": 35.4810981750488,
+          "max": 38.563720703125
+        },
+        "end_error_px": {
+          "count": 150,
+          "median": 15.182753086090049,
+          "p95": 41.1977424621582,
+          "max": 43.2824630737305
+        },
+        "shot_angle_error_deg": {
+          "count": 103,
+          "median": 0.869248507033316,
+          "p95": 4.11563549854967,
+          "max": 4.72468389372653
+        },
+        "velocity_error_px_s": {
+          "count": 150,
+          "median": 165.12668609619152,
+          "p95": 1704.51062011719,
+          "max": 5041.01708984375
+        },
+        "correction_px": {
+          "count": 150,
+          "median": 1.04193711280823,
+          "p95": 27.6233940124512,
+          "max": 27.7163887023926
+        },
+        "position_over_3px": 122,
+        "shot_angle_over_half_degree": 83,
+        "guard3_noncontact_shots": 1,
+        "guard3_noncontact_max_position_error_px": 7.46743249893188,
+        "guard3_exhausted_inputs": 22,
+        "guard3_discarded_ms": 125.27958096386793,
+        "guard3_cap_ids": [
+          613,
+          622,
+          630,
+          661,
+          670,
+          678,
+          709,
+          710,
+          718,
+          726,
+          757,
+          758,
+          766,
+          774,
+          805,
+          806,
+          814,
+          822,
+          853,
+          854,
+          862,
+          870
+        ],
+        "guard3_queries": {
+          "native_queries": 640,
+          "detection_checks": 0,
+          "separation_checks": 0
+        }
+      },
+      "sampled": {
+        "extra_candidates": 0,
+        "missed_contacts": 0,
+        "noncontact_first_shots": 0,
+        "noncontact_first_velocity_changes": 0,
+        "noncontact_first_position_only": 0,
+        "false_shots": 0,
+        "missed_shots": 0,
+        "both_contacts": 150,
+        "both_shots": 103,
+        "time_error_ms": {
+          "count": 150,
+          "median": 0.35654879583688803,
+          "p95": 0.798164532386215,
+          "max": 8.0412808485562
+        },
+        "point_error_px": {
+          "count": 150,
+          "median": 0.5832226872444151,
+          "p95": 1.85238111019135,
+          "max": 2.19566369056702
+        },
+        "end_error_px": {
+          "count": 150,
+          "median": 0.3935341238975525,
+          "p95": 1.61595869064331,
+          "max": 2.73000621795654
+        },
+        "shot_angle_error_deg": {
+          "count": 103,
+          "median": 0.0575589312805164,
+          "p95": 0.290905547435365,
+          "max": 0.399186937585957
+        },
+        "velocity_error_px_s": {
+          "count": 150,
+          "median": 2.643218994140625,
+          "p95": 17.1575145721436,
+          "max": 25.1775817871094
+        },
+        "correction_px": {
+          "count": 150,
+          "median": 1.0096457004547101,
+          "p95": 2.45950675010681,
+          "max": 3.00666332244873
+        },
+        "position_over_3px": 0,
+        "shot_angle_over_half_degree": 0,
+        "guard3_noncontact_shots": 0,
+        "guard3_noncontact_max_position_error_px": 0,
+        "guard3_exhausted_inputs": 0,
+        "guard3_discarded_ms": 0.0,
+        "guard3_cap_ids": [],
+        "guard3_queries": {
+          "native_queries": 487,
+          "detection_checks": 4684,
+          "separation_checks": 2312
+        }
+      }
+    },
+    "previous_540_60hz": {
+      "inputs": 540,
+      "classified": 538,
+      "ambiguous_ids": [
+        21,
+        26
+      ],
+      "clamped_inputs": 216,
+      "reference_contacts": 265,
+      "reference_shots": 196,
+      "native": {
+        "extra_candidates": 48,
+        "missed_contacts": 0,
+        "noncontact_first_shots": 15,
+        "noncontact_first_velocity_changes": 15,
+        "noncontact_first_position_only": 33,
+        "false_shots": 15,
+        "missed_shots": 32,
+        "both_contacts": 265,
+        "both_shots": 164,
+        "time_error_ms": {
+          "count": 265,
+          "median": 3.35553580619116,
+          "p95": 10.9013271110598,
+          "max": 13.6143388118664
+        },
+        "point_error_px": {
+          "count": 265,
+          "median": 19.219762802124,
+          "p95": 47.7612915039063,
+          "max": 68.3012771606445
+        },
+        "end_error_px": {
+          "count": 265,
+          "median": 24.7479038238525,
+          "p95": 56.2998199462891,
+          "max": 101.048416137695
+        },
+        "shot_angle_error_deg": {
+          "count": 164,
+          "median": 1.28813643158909,
+          "p95": 4.54373425336632,
+          "max": 6.35956053478172
+        },
+        "velocity_error_px_s": {
+          "count": 265,
+          "median": 147.643600463867,
+          "p95": 3887.71655273438,
+          "max": 6856.13427734375
+        },
+        "correction_px": {
+          "count": 265,
+          "median": 5.75036144256592,
+          "p95": 42.1692733764648,
+          "max": 59.7072219848633
+        },
+        "position_over_3px": 255,
+        "shot_angle_over_half_degree": 132,
+        "guard3_noncontact_shots": 15,
+        "guard3_noncontact_max_position_error_px": 24.0906238555908,
+        "guard3_exhausted_inputs": 69,
+        "guard3_discarded_ms": 424.1447462281526,
+        "guard3_cap_ids": [
+          30,
+          35,
+          39,
+          40,
+          45,
+          50,
+          55,
+          90,
+          95,
+          99,
+          100,
+          105,
+          110,
+          115,
+          150,
+          155,
+          159,
+          160,
+          165,
+          170,
+          175,
+          210,
+          215,
+          219,
+          220,
+          225,
+          230,
+          235,
+          270,
+          275,
+          279,
+          280,
+          285,
+          290,
+          295,
+          330,
+          335,
+          339,
+          340,
+          345,
+          350,
+          355,
+          390,
+          395,
+          398,
+          399,
+          400,
+          405,
+          409,
+          410,
+          415,
+          450,
+          455,
+          458,
+          459,
+          460,
+          465,
+          469,
+          470,
+          475,
+          510,
+          515,
+          518,
+          519,
+          520,
+          525,
+          529,
+          530,
+          535
+        ],
+        "guard3_queries": {
+          "native_queries": 1357,
+          "detection_checks": 0,
+          "separation_checks": 0
+        }
+      },
+      "sampled": {
+        "extra_candidates": 0,
+        "missed_contacts": 0,
+        "noncontact_first_shots": 0,
+        "noncontact_first_velocity_changes": 0,
+        "noncontact_first_position_only": 0,
+        "false_shots": 0,
+        "missed_shots": 0,
+        "both_contacts": 265,
+        "both_shots": 196,
+        "time_error_ms": {
+          "count": 265,
+          "median": 0.258933124132454,
+          "p95": 0.591239230139584,
+          "max": 0.653338983344535
+        },
+        "point_error_px": {
+          "count": 265,
+          "median": 0.649430096149445,
+          "p95": 2.0316321849823,
+          "max": 2.54410886764526
+        },
+        "end_error_px": {
+          "count": 265,
+          "median": 0.471937030553818,
+          "p95": 2.02712345123291,
+          "max": 2.87324905395508
+        },
+        "shot_angle_error_deg": {
+          "count": 196,
+          "median": 0.0865601446150687,
+          "p95": 0.451731742953424,
+          "max": 0.567058419872032
+        },
+        "velocity_error_px_s": {
+          "count": 265,
+          "median": 7.28695440292358,
+          "p95": 26.938497543335,
+          "max": 35.6291809082031
+        },
+        "correction_px": {
+          "count": 265,
+          "median": 0.768898725509644,
+          "p95": 2.0461094379425,
+          "max": 2.70985460281372
+        },
+        "position_over_3px": 0,
+        "shot_angle_over_half_degree": 6,
+        "guard3_noncontact_shots": 0,
+        "guard3_noncontact_max_position_error_px": 0,
+        "guard3_exhausted_inputs": 0,
+        "guard3_discarded_ms": 0.0,
+        "guard3_cap_ids": [],
+        "guard3_queries": {
+          "native_queries": 802,
+          "detection_checks": 10736,
+          "separation_checks": 4760
+        }
+      }
+    },
+    "main_336_30hz": {
+      "inputs": 336,
+      "classified": 334,
+      "ambiguous_ids": [
+        643,
+        714
+      ],
+      "clamped_inputs": 0,
+      "reference_contacts": 163,
+      "reference_shots": 105,
+      "native": {
+        "extra_candidates": 16,
+        "missed_contacts": 0,
+        "noncontact_first_shots": 0,
+        "noncontact_first_velocity_changes": 0,
+        "noncontact_first_position_only": 16,
+        "false_shots": 6,
+        "missed_shots": 22,
+        "both_contacts": 163,
+        "both_shots": 83,
+        "time_error_ms": {
+          "count": 163,
+          "median": 3.58957969583571,
+          "p95": 13.7944835082938,
+          "max": 27.3943985870574
+        },
+        "point_error_px": {
+          "count": 163,
+          "median": 14.0404996871948,
+          "p95": 40.9052619934082,
+          "max": 49.5192604064941
+        },
+        "end_error_px": {
+          "count": 163,
+          "median": 25.0651817321777,
+          "p95": 106.992668151855,
+          "max": 200.833969116211
+        },
+        "shot_angle_error_deg": {
+          "count": 83,
+          "median": 1.1534518246239,
+          "p95": 5.89485580799521,
+          "max": 8.43850918180129
+        },
+        "velocity_error_px_s": {
+          "count": 163,
+          "median": 578.017211914063,
+          "p95": 3974.51977539063,
+          "max": 6606.42626953125
+        },
+        "correction_px": {
+          "count": 163,
+          "median": 1.34925508499146,
+          "p95": 32.2084350585938,
+          "max": 36.7582130432129
+        },
+        "position_over_3px": 137,
+        "shot_angle_over_half_degree": 67,
+        "guard3_noncontact_shots": 0,
+        "guard3_noncontact_max_position_error_px": 36.9937744140625,
+        "guard3_exhausted_inputs": 30,
+        "guard3_discarded_ms": 466.0030961783198,
+        "guard3_cap_ids": [
+          563,
+          611,
+          621,
+          626,
+          629,
+          630,
+          634,
+          659,
+          661,
+          669,
+          670,
+          674,
+          677,
+          678,
+          682,
+          709,
+          717,
+          718,
+          726,
+          757,
+          766,
+          774,
+          805,
+          806,
+          814,
+          822,
+          853,
+          854,
+          862,
+          870
+        ],
+        "guard3_queries": {
+          "native_queries": 749,
+          "detection_checks": 0,
+          "separation_checks": 0
+        }
+      },
+      "sampled": {
+        "extra_candidates": 0,
+        "missed_contacts": 0,
+        "noncontact_first_shots": 0,
+        "noncontact_first_velocity_changes": 0,
+        "noncontact_first_position_only": 0,
+        "false_shots": 0,
+        "missed_shots": 0,
+        "both_contacts": 163,
+        "both_shots": 105,
+        "time_error_ms": {
+          "count": 163,
+          "median": 0.382389439037066,
+          "p95": 1.68301922385581,
+          "max": 5.81905862536385
+        },
+        "point_error_px": {
+          "count": 163,
+          "median": 0.583738088607788,
+          "p95": 1.78747010231018,
+          "max": 2.61270976066589
+        },
+        "end_error_px": {
+          "count": 163,
+          "median": 0.399226188659668,
+          "p95": 1.67159998416901,
+          "max": 2.96975231170654
+        },
+        "shot_angle_error_deg": {
+          "count": 105,
+          "median": 0.0490348685365537,
+          "p95": 0.30768332016212,
+          "max": 0.413534523669936
+        },
+        "velocity_error_px_s": {
+          "count": 163,
+          "median": 2.30428528785706,
+          "p95": 16.5589332580566,
+          "max": 25.9831256866455
+        },
+        "correction_px": {
+          "count": 163,
+          "median": 1.00673675537109,
+          "p95": 2.45950675010681,
+          "max": 3.87763261795044
+        },
+        "position_over_3px": 0,
+        "shot_angle_over_half_degree": 0,
+        "guard3_noncontact_shots": 0,
+        "guard3_noncontact_max_position_error_px": 0,
+        "guard3_exhausted_inputs": 0,
+        "guard3_discarded_ms": 0.0,
+        "guard3_cap_ids": [],
+        "guard3_queries": {
+          "native_queries": 499,
+          "detection_checks": 6918,
+          "separation_checks": 2635
+        }
+      }
+    },
+    "previous_540_30hz": {
+      "inputs": 540,
+      "classified": 540,
+      "ambiguous_ids": [],
+      "clamped_inputs": 216,
+      "reference_contacts": 279,
+      "reference_shots": 204,
+      "native": {
+        "extra_candidates": 54,
+        "missed_contacts": 3,
+        "noncontact_first_shots": 9,
+        "noncontact_first_velocity_changes": 9,
+        "noncontact_first_position_only": 45,
+        "false_shots": 9,
+        "missed_shots": 57,
+        "both_contacts": 276,
+        "both_shots": 147,
+        "time_error_ms": {
+          "count": 276,
+          "median": 5.8385963648712895,
+          "p95": 17.9626418892467,
+          "max": 33.0372415288972
+        },
+        "point_error_px": {
+          "count": 276,
+          "median": 35.492214202880845,
+          "p95": 69.183837890625,
+          "max": 143.715209960938
+        },
+        "end_error_px": {
+          "count": 276,
+          "median": 43.543848037719755,
+          "p95": 160.510299682617,
+          "max": 227.316665649414
+        },
+        "shot_angle_error_deg": {
+          "count": 147,
+          "median": 1.79373360765817,
+          "p95": 9.8085520679784,
+          "max": 12.2919217652831
+        },
+        "velocity_error_px_s": {
+          "count": 276,
+          "median": 498.1057739257815,
+          "p95": 5277.24267578125,
+          "max": 7104.22607421875
+        },
+        "correction_px": {
+          "count": 276,
+          "median": 8.72924137115479,
+          "p95": 59.7072219848633,
+          "max": 94.6448822021484
+        },
+        "position_over_3px": 276,
+        "shot_angle_over_half_degree": 124,
+        "guard3_noncontact_shots": 9,
+        "guard3_noncontact_max_position_error_px": 48.9904174804688,
+        "guard3_exhausted_inputs": 72,
+        "guard3_discarded_ms": 1085.891507007701,
+        "guard3_cap_ids": [
+          30,
+          35,
+          38,
+          39,
+          40,
+          45,
+          50,
+          55,
+          90,
+          95,
+          98,
+          99,
+          100,
+          105,
+          110,
+          115,
+          150,
+          155,
+          158,
+          159,
+          160,
+          165,
+          170,
+          175,
+          210,
+          215,
+          218,
+          219,
+          220,
+          225,
+          230,
+          235,
+          270,
+          275,
+          278,
+          279,
+          280,
+          285,
+          290,
+          295,
+          330,
+          335,
+          338,
+          339,
+          340,
+          345,
+          350,
+          355,
+          390,
+          395,
+          398,
+          399,
+          400,
+          405,
+          410,
+          415,
+          450,
+          455,
+          458,
+          459,
+          460,
+          465,
+          470,
+          475,
+          510,
+          515,
+          518,
+          519,
+          520,
+          525,
+          530,
+          535
+        ],
+        "guard3_queries": {
+          "native_queries": 1473,
+          "detection_checks": 0,
+          "separation_checks": 0
+        }
+      },
+      "sampled": {
+        "extra_candidates": 0,
+        "missed_contacts": 0,
+        "noncontact_first_shots": 0,
+        "noncontact_first_velocity_changes": 0,
+        "noncontact_first_position_only": 0,
+        "false_shots": 0,
+        "missed_shots": 0,
+        "both_contacts": 279,
+        "both_shots": 204,
+        "time_error_ms": {
+          "count": 279,
+          "median": 0.280599868701152,
+          "p95": 0.59565119280043,
+          "max": 0.702895123242396
+        },
+        "point_error_px": {
+          "count": 279,
+          "median": 0.70147705078125,
+          "p95": 2.04565811157227,
+          "max": 2.77483701705933
+        },
+        "end_error_px": {
+          "count": 279,
+          "median": 0.565240561962128,
+          "p95": 2.83694005012512,
+          "max": 4.13517570495605
+        },
+        "shot_angle_error_deg": {
+          "count": 204,
+          "median": 0.0901043924743904,
+          "p95": 0.449011620116467,
+          "max": 0.609935252551904
+        },
+        "velocity_error_px_s": {
+          "count": 279,
+          "median": 7.3989462852478,
+          "p95": 28.1487464904785,
+          "max": 38.3231620788574
+        },
+        "correction_px": {
+          "count": 279,
+          "median": 0.752222239971161,
+          "p95": 2.24178218841553,
+          "max": 2.85663843154907
+        },
+        "position_over_3px": 9,
+        "shot_angle_over_half_degree": 8,
+        "guard3_noncontact_shots": 0,
+        "guard3_noncontact_max_position_error_px": 0,
+        "guard3_exhausted_inputs": 0,
+        "guard3_discarded_ms": 0.0,
+        "guard3_cap_ids": [],
+        "guard3_queries": {
+          "native_queries": 929,
+          "detection_checks": 18555,
+          "separation_checks": 6732
+        }
+      }
+    },
+    "main_336_120hz": {
+      "inputs": 336,
+      "classified": 335,
+      "ambiguous_ids": [
+        788
+      ],
+      "clamped_inputs": 0,
+      "reference_contacts": 112,
+      "reference_shots": 87,
+      "native": {
+        "extra_candidates": 17,
+        "missed_contacts": 0,
+        "noncontact_first_shots": 6,
+        "noncontact_first_velocity_changes": 6,
+        "noncontact_first_position_only": 11,
+        "false_shots": 7,
+        "missed_shots": 0,
+        "both_contacts": 112,
+        "both_shots": 87,
+        "time_error_ms": {
+          "count": 112,
+          "median": 2.526483380400655,
+          "p95": 5.77977462720203,
+          "max": 6.67828955435349
+        },
+        "point_error_px": {
+          "count": 112,
+          "median": 6.3409628868103045,
+          "p95": 17.0025234222412,
+          "max": 18.1183815002441
+        },
+        "end_error_px": {
+          "count": 112,
+          "median": 17.217897415161147,
+          "p95": 28.3034954071045,
+          "max": 34.0597763061523
+        },
+        "shot_angle_error_deg": {
+          "count": 87,
+          "median": 0.402778363109341,
+          "p95": 3.49637554367682,
+          "max": 4.08101625785464
+        },
+        "velocity_error_px_s": {
+          "count": 112,
+          "median": 28.87443923950195,
+          "p95": 1012.71240234375,
+          "max": 1199.44958496094
+        },
+        "correction_px": {
+          "count": 112,
+          "median": 2.64754176139832,
+          "p95": 8.83462429046631,
+          "max": 8.83462429046631
+        },
+        "position_over_3px": 79,
+        "shot_angle_over_half_degree": 34,
+        "guard3_noncontact_shots": 6,
+        "guard3_noncontact_max_position_error_px": 7.95963764190674,
+        "guard3_exhausted_inputs": 17,
+        "guard3_discarded_ms": 25.90816063314984,
+        "guard3_cap_ids": [
+          622,
+          630,
+          662,
+          670,
+          678,
+          710,
+          718,
+          726,
+          758,
+          766,
+          774,
+          806,
+          814,
+          822,
+          854,
+          862,
+          870
+        ],
+        "guard3_queries": {
+          "native_queries": 571,
+          "detection_checks": 0,
+          "separation_checks": 0
+        }
+      },
+      "sampled": {
+        "extra_candidates": 0,
+        "missed_contacts": 0,
+        "noncontact_first_shots": 0,
+        "noncontact_first_velocity_changes": 0,
+        "noncontact_first_position_only": 0,
+        "false_shots": 0,
+        "missed_shots": 0,
+        "both_contacts": 112,
+        "both_shots": 87,
+        "time_error_ms": {
+          "count": 112,
+          "median": 0.371844544165973,
+          "p95": 0.818306316408173,
+          "max": 1.02388978314896
+        },
+        "point_error_px": {
+          "count": 112,
+          "median": 0.6751480400562285,
+          "p95": 1.86020708084106,
+          "max": 2.19566369056702
+        },
+        "end_error_px": {
+          "count": 112,
+          "median": 0.42468623816967,
+          "p95": 1.71346151828766,
+          "max": 2.60536074638367
+        },
+        "shot_angle_error_deg": {
+          "count": 87,
+          "median": 0.0643914483177365,
+          "p95": 0.295746550731317,
+          "max": 0.399186937585957
+        },
+        "velocity_error_px_s": {
+          "count": 112,
+          "median": 3.82257199287415,
+          "p95": 18.2780838012695,
+          "max": 25.1775817871094
+        },
+        "correction_px": {
+          "count": 112,
+          "median": 1.238557994365695,
+          "p95": 2.56222128868103,
+          "max": 3.00666332244873
+        },
+        "position_over_3px": 0,
+        "shot_angle_over_half_degree": 0,
+        "guard3_noncontact_shots": 0,
+        "guard3_noncontact_max_position_error_px": 0,
+        "guard3_exhausted_inputs": 0,
+        "guard3_discarded_ms": 0.0,
+        "guard3_cap_ids": [],
+        "guard3_queries": {
+          "native_queries": 444,
+          "detection_checks": 3086,
+          "separation_checks": 1836
+        }
+      }
+    },
+    "previous_540_120hz": {
+      "inputs": 540,
+      "classified": 534,
+      "ambiguous_ids": [
+        64,
+        69,
+        244,
+        249,
+        424,
+        429
+      ],
+      "clamped_inputs": 216,
+      "reference_contacts": 219,
+      "reference_shots": 162,
+      "native": {
+        "extra_candidates": 24,
+        "missed_contacts": 0,
+        "noncontact_first_shots": 8,
+        "noncontact_first_velocity_changes": 8,
+        "noncontact_first_position_only": 16,
+        "false_shots": 8,
+        "missed_shots": 8,
+        "both_contacts": 219,
+        "both_shots": 154,
+        "time_error_ms": {
+          "count": 219,
+          "median": 1.75747099516836,
+          "p95": 5.84891996841179,
+          "max": 7.21574098715791
+        },
+        "point_error_px": {
+          "count": 219,
+          "median": 11.6720113754272,
+          "p95": 32.3880500793457,
+          "max": 36.4679069519043
+        },
+        "end_error_px": {
+          "count": 219,
+          "median": 15.0081167221069,
+          "p95": 31.647253036499,
+          "max": 45.5747947692871
+        },
+        "shot_angle_error_deg": {
+          "count": 154,
+          "median": 0.748591080910925,
+          "p95": 4.59364671449984,
+          "max": 5.13268012115537
+        },
+        "velocity_error_px_s": {
+          "count": 219,
+          "median": 61.5782852172852,
+          "p95": 308.520538330078,
+          "max": 6835.2978515625
+        },
+        "correction_px": {
+          "count": 219,
+          "median": 1.41618525981903,
+          "p95": 27.7168769836426,
+          "max": 31.2895221710205
+        },
+        "position_over_3px": 161,
+        "shot_angle_over_half_degree": 94,
+        "guard3_noncontact_shots": 8,
+        "guard3_noncontact_max_position_error_px": 7.30215930938721,
+        "guard3_exhausted_inputs": 57,
+        "guard3_discarded_ms": 113.43836216693623,
+        "guard3_cap_ids": [
+          30,
+          35,
+          39,
+          40,
+          45,
+          50,
+          90,
+          95,
+          99,
+          100,
+          105,
+          110,
+          150,
+          155,
+          159,
+          160,
+          165,
+          170,
+          210,
+          215,
+          219,
+          220,
+          225,
+          230,
+          270,
+          275,
+          279,
+          280,
+          285,
+          290,
+          330,
+          335,
+          339,
+          340,
+          345,
+          350,
+          390,
+          395,
+          399,
+          400,
+          405,
+          410,
+          415,
+          450,
+          455,
+          459,
+          460,
+          465,
+          470,
+          475,
+          510,
+          515,
+          519,
+          520,
+          525,
+          530,
+          535
+        ],
+        "guard3_queries": {
+          "native_queries": 1135,
+          "detection_checks": 0,
+          "separation_checks": 0
+        }
+      },
+      "sampled": {
+        "extra_candidates": 0,
+        "missed_contacts": 0,
+        "noncontact_first_shots": 0,
+        "noncontact_first_velocity_changes": 0,
+        "noncontact_first_position_only": 0,
+        "false_shots": 0,
+        "missed_shots": 0,
+        "both_contacts": 219,
+        "both_shots": 162,
+        "time_error_ms": {
+          "count": 219,
+          "median": 0.239720570098143,
+          "p95": 0.492257441995509,
+          "max": 0.653338983344535
+        },
+        "point_error_px": {
+          "count": 219,
+          "median": 0.593980669975281,
+          "p95": 2.0316321849823,
+          "max": 2.54410886764526
+        },
+        "end_error_px": {
+          "count": 219,
+          "median": 0.417304843664169,
+          "p95": 1.63467252254486,
+          "max": 2.36055588722229
+        },
+        "shot_angle_error_deg": {
+          "count": 162,
+          "median": 0.086788932606891,
+          "p95": 0.451492953136738,
+          "max": 0.567058419872032
+        },
+        "velocity_error_px_s": {
+          "count": 219,
+          "median": 4.59833240509033,
+          "p95": 26.5392456054688,
+          "max": 35.6291809082031
+        },
+        "correction_px": {
+          "count": 219,
+          "median": 0.682855367660522,
+          "p95": 2.19721221923828,
+          "max": 3.07570433616638
+        },
+        "position_over_3px": 0,
+        "shot_angle_over_half_degree": 6,
+        "guard3_noncontact_shots": 0,
+        "guard3_noncontact_max_position_error_px": 0,
+        "guard3_exhausted_inputs": 0,
+        "guard3_discarded_ms": 0.0,
+        "guard3_cap_ids": [],
+        "guard3_queries": {
+          "native_queries": 753,
+          "detection_checks": 6508,
+          "separation_checks": 3723
+        }
+      }
+    }
+  },
+  "benchmark": {
+    "native": {
+      "repetitions": 7,
+      "batch_inputs": 876,
+      "median_batch_ms": 21.013,
+      "min_batch_ms": 18.465,
+      "max_batch_ms": 28.701,
+      "mean_us_per_input_at_median_batch": 23.98744292237443
+    },
+    "sampled": {
+      "repetitions": 7,
+      "batch_inputs": 876,
+      "median_batch_ms": 64.328,
+      "min_batch_ms": 61.341,
+      "max_batch_ms": 102.02,
+      "mean_us_per_input_at_median_batch": 73.4337899543379
+    }
+  },
+  "integration": {
+    "population": [
+      {
+        "balls": 1,
+        "below_disabled": 0,
+        "below_enabled": 0,
+        "contacts": 8,
+        "discarded_ms": 0.0,
+        "exhausted_updates": 0,
+        "exited": 1,
+        "max_correction_px": 0.0,
+        "sampled": false,
+        "seconds": 6.0,
+        "shots": 0
+      },
+      {
+        "balls": 20,
+        "below_disabled": 0,
+        "below_enabled": 0,
+        "contacts": 629,
+        "discarded_ms": 0.0,
+        "exhausted_updates": 0,
+        "exited": 11,
+        "max_correction_event": {
+          "changed": true,
+          "correction_px": 34.4027976989746,
+          "end": [
+            1011.0517578125,
+            943.648742675781
+          ],
+          "found": true,
+          "kind": "native",
+          "normal": [
+            -0.0087192477658391,
+            -0.999961912631989
+          ],
+          "point": [
+            1036.68310546875,
+            1003.59057617188
+          ],
+          "position": [
+            1036.51806640625,
+            984.685302734375
+          ],
+          "ratio": 0.86371209334803,
+          "shot": true,
+          "speed": 2897.77612304688,
+          "target": "RightFlipper",
+          "time_ms": 0.0,
+          "velocity": [
+            -1527.97668457031,
+            -2462.19287109375
+          ]
+        },
+        "max_correction_px": 34.4027976989746,
+        "sampled": false,
+        "seconds": 6.0,
+        "shots": 35
+      },
+      {
+        "balls": 1,
+        "below_disabled": 0,
+        "below_enabled": 0,
+        "contacts": 8,
+        "discarded_ms": 0.0,
+        "exhausted_updates": 0,
+        "exited": 1,
+        "max_correction_px": 0.0,
+        "sampled": true,
+        "seconds": 6.0,
+        "shots": 0
+      },
+      {
+        "balls": 20,
+        "below_disabled": 0,
+        "below_enabled": 0,
+        "contacts": 749,
+        "discarded_ms": 0.0,
+        "exhausted_updates": 0,
+        "exited": 13,
+        "max_correction_event": {
+          "changed": true,
+          "correction_px": 58.5479049682617,
+          "end": [
+            978.057495117188,
+            975.031555175781
+          ],
+          "found": true,
+          "kind": "sweep",
+          "normal": [
+            -1.0,
+            0.0
+          ],
+          "point": [
+            1001.99987792969,
+            1031.64270019531
+          ],
+          "position": [
+            978.591247558594,
+            973.0947265625
+          ],
+          "ratio": 0.98791836487396,
+          "shot": false,
+          "speed": 187.509017944336,
+          "target": "RightFlipper",
+          "time_ms": 5.95238095238095,
+          "velocity": [
+            -49.8179321289063,
+            180.770034790039
+          ]
+        },
+        "max_correction_px": 58.5479049682617,
+        "sampled": true,
+        "seconds": 6.0,
+        "shots": 37
+      }
+    ],
+    "near_enemy": {
+      "native": {
+        "placements": 84,
+        "exhausted_placements": 0,
+        "exhausted_updates": 0,
+        "discarded_ms": 0.0,
+        "max_correction_px": 52.5498733520508
+      },
+      "sampled": {
+        "placements": 84,
+        "exhausted_placements": 3,
+        "exhausted_updates": 3,
+        "discarded_ms": 25.802646958926758,
+        "max_correction_px": 68.388313293457
+      }
+    }
+  }
+}
