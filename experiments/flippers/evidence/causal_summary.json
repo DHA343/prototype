@@ -1,0 +1,3112 @@
+{
+  "failures": 0,
+  "mechanical_checks": 490693,
+  "guard_off_checks": 105840,
+  "environments": {
+    "baseline": {
+      "enemy": {
+        "cases": 84,
+        "capped_cases": 2,
+        "capped_updates": 2,
+        "unresolved": 0,
+        "max_correction_px": 60.6096534729004,
+        "introduced_events": 15,
+        "enemy_budget_updates": 0,
+        "enemy_residual_max_px": 2.91113212599477,
+        "initial_ball_overlaps": 0,
+        "initial_enemy_world_overlaps": 0
+      },
+      "enemy_frozen": {
+        "cases": 84,
+        "capped_cases": 1,
+        "capped_updates": 1,
+        "unresolved": 0,
+        "max_correction_px": 60.6096534729004,
+        "introduced_events": 15,
+        "enemy_budget_updates": 0,
+        "enemy_residual_max_px": 27.3525998507013,
+        "initial_ball_overlaps": 0,
+        "initial_enemy_world_overlaps": 0
+      },
+      "flipper_only": {
+        "cases": 84,
+        "capped_cases": 0,
+        "capped_updates": 0,
+        "unresolved": 0,
+        "max_correction_px": 2.18924164772034,
+        "introduced_events": 0,
+        "enemy_budget_updates": 0,
+        "enemy_residual_max_px": 0.0,
+        "initial_ball_overlaps": 0,
+        "initial_enemy_world_overlaps": 0
+      },
+      "full_reference": {
+        "cases": 84,
+        "capped_cases": 2,
+        "capped_updates": 2,
+        "unresolved": 0,
+        "max_correction_px": 60.6096534729004,
+        "introduced_events": 24,
+        "enemy_budget_updates": 0,
+        "enemy_residual_max_px": 2.91113212599477,
+        "initial_ball_overlaps": 0,
+        "initial_enemy_world_overlaps": 0
+      },
+      "full_routes_crowd": {
+        "cases": 84,
+        "capped_cases": 23,
+        "capped_updates": 30,
+        "unresolved": 0,
+        "max_correction_px": 65.3315200805664,
+        "introduced_events": 56,
+        "enemy_budget_updates": 0,
+        "enemy_residual_max_px": 0.0158998025880805,
+        "initial_ball_overlaps": 0,
+        "initial_enemy_world_overlaps": 0
+      },
+      "three_crowd_dense": {
+        "cases": 84,
+        "capped_cases": 12,
+        "capped_updates": 16,
+        "unresolved": 0,
+        "max_correction_px": 65.1708221435547,
+        "introduced_events": 42,
+        "enemy_budget_updates": 0,
+        "enemy_residual_max_px": 2.09025077929757,
+        "initial_ball_overlaps": 0,
+        "initial_enemy_world_overlaps": 0
+      },
+      "three_crowd_sparse": {
+        "cases": 84,
+        "capped_cases": 17,
+        "capped_updates": 25,
+        "unresolved": 0,
+        "max_correction_px": 60.6096534729004,
+        "introduced_events": 34,
+        "enemy_budget_updates": 0,
+        "enemy_residual_max_px": 3.55173576295897,
+        "initial_ball_overlaps": 0,
+        "initial_enemy_world_overlaps": 0
+      },
+      "three_static_spacing": {
+        "cases": 84,
+        "capped_cases": 17,
+        "capped_updates": 24,
+        "unresolved": 0,
+        "max_correction_px": 65.1708221435547,
+        "introduced_events": 45,
+        "enemy_budget_updates": 0,
+        "enemy_residual_max_px": 3.37106309366221,
+        "initial_ball_overlaps": 0,
+        "initial_enemy_world_overlaps": 0
+      },
+      "walls": {
+        "cases": 84,
+        "capped_cases": 0,
+        "capped_updates": 0,
+        "unresolved": 0,
+        "max_correction_px": 2.18924164772034,
+        "introduced_events": 0,
+        "enemy_budget_updates": 0,
+        "enemy_residual_max_px": 0.0,
+        "initial_ball_overlaps": 0,
+        "initial_enemy_world_overlaps": 0
+      },
+      "walls_enemy": {
+        "cases": 84,
+        "capped_cases": 2,
+        "capped_updates": 2,
+        "unresolved": 0,
+        "max_correction_px": 60.6096534729004,
+        "introduced_events": 24,
+        "enemy_budget_updates": 0,
+        "enemy_residual_max_px": 2.91113212599477,
+        "initial_ball_overlaps": 0,
+        "initial_enemy_world_overlaps": 0
+      },
+      "walls_enemy_frozen": {
+        "cases": 84,
+        "capped_cases": 2,
+        "capped_updates": 7,
+        "unresolved": 0,
+        "max_correction_px": 60.6096534729004,
+        "introduced_events": 25,
+        "enemy_budget_updates": 0,
+        "enemy_residual_max_px": 27.3525998507013,
+        "initial_ball_overlaps": 0,
+        "initial_enemy_world_overlaps": 0
+      },
+      "walls_three_crowd": {
+        "cases": 84,
+        "capped_cases": 18,
+        "capped_updates": 22,
+        "unresolved": 0,
+        "max_correction_px": 65.1708221435547,
+        "introduced_events": 52,
+        "enemy_budget_updates": 0,
+        "enemy_residual_max_px": 2.09025077929757,
+        "initial_ball_overlaps": 0,
+        "initial_enemy_world_overlaps": 0
+      }
+    },
+    "unlimited": {
+      "enemy": {
+        "cases": 84,
+        "capped_cases": 1,
+        "capped_updates": 1,
+        "unresolved": 0,
+        "max_correction_px": 251.192932128906,
+        "introduced_events": 5,
+        "enemy_budget_updates": 0,
+        "enemy_residual_max_px": 2.91113212599477,
+        "initial_ball_overlaps": 0,
+        "initial_enemy_world_overlaps": 0
+      },
+      "enemy_frozen": {
+        "cases": 84,
+        "capped_cases": 1,
+        "capped_updates": 1,
+        "unresolved": 0,
+        "max_correction_px": 251.192932128906,
+        "introduced_events": 5,
+        "enemy_budget_updates": 0,
+        "enemy_residual_max_px": 27.3525998507013,
+        "initial_ball_overlaps": 0,
+        "initial_enemy_world_overlaps": 0
+      },
+      "flipper_only": {
+        "cases": 84,
+        "capped_cases": 0,
+        "capped_updates": 0,
+        "unresolved": 0,
+        "max_correction_px": 2.18924164772034,
+        "introduced_events": 0,
+        "enemy_budget_updates": 0,
+        "enemy_residual_max_px": 0.0,
+        "initial_ball_overlaps": 0,
+        "initial_enemy_world_overlaps": 0
+      },
+      "full_reference": {
+        "cases": 84,
+        "capped_cases": 1,
+        "capped_updates": 1,
+        "unresolved": 3,
+        "max_correction_px": 249.014892578125,
+        "introduced_events": 5,
+        "enemy_budget_updates": 0,
+        "enemy_residual_max_px": 2.91113212599477,
+        "initial_ball_overlaps": 0,
+        "initial_enemy_world_overlaps": 0
+      },
+      "full_routes_crowd": {
+        "cases": 84,
+        "capped_cases": 11,
+        "capped_updates": 16,
+        "unresolved": 8,
+        "max_correction_px": 249.015991210938,
+        "introduced_events": 10,
+        "enemy_budget_updates": 0,
+        "enemy_residual_max_px": 0.0158998025880805,
+        "initial_ball_overlaps": 0,
+        "initial_enemy_world_overlaps": 0
+      },
+      "three_crowd_dense": {
+        "cases": 84,
+        "capped_cases": 4,
+        "capped_updates": 6,
+        "unresolved": 4,
+        "max_correction_px": 252.188110351563,
+        "introduced_events": 8,
+        "enemy_budget_updates": 0,
+        "enemy_residual_max_px": 2.09025077929757,
+        "initial_ball_overlaps": 0,
+        "initial_enemy_world_overlaps": 0
+      },
+      "three_crowd_sparse": {
+        "cases": 84,
+        "capped_cases": 5,
+        "capped_updates": 6,
+        "unresolved": 5,
+        "max_correction_px": 251.192932128906,
+        "introduced_events": 10,
+        "enemy_budget_updates": 0,
+        "enemy_residual_max_px": 3.55173576295897,
+        "initial_ball_overlaps": 0,
+        "initial_enemy_world_overlaps": 0
+      },
+      "three_static_spacing": {
+        "cases": 84,
+        "capped_cases": 5,
+        "capped_updates": 7,
+        "unresolved": 3,
+        "max_correction_px": 251.192932128906,
+        "introduced_events": 9,
+        "enemy_budget_updates": 0,
+        "enemy_residual_max_px": 3.37106309366221,
+        "initial_ball_overlaps": 0,
+        "initial_enemy_world_overlaps": 0
+      },
+      "walls": {
+        "cases": 84,
+        "capped_cases": 0,
+        "capped_updates": 0,
+        "unresolved": 0,
+        "max_correction_px": 2.18924164772034,
+        "introduced_events": 0,
+        "enemy_budget_updates": 0,
+        "enemy_residual_max_px": 0.0,
+        "initial_ball_overlaps": 0,
+        "initial_enemy_world_overlaps": 0
+      },
+      "walls_enemy": {
+        "cases": 84,
+        "capped_cases": 1,
+        "capped_updates": 1,
+        "unresolved": 3,
+        "max_correction_px": 249.014892578125,
+        "introduced_events": 5,
+        "enemy_budget_updates": 0,
+        "enemy_residual_max_px": 2.91113212599477,
+        "initial_ball_overlaps": 0,
+        "initial_enemy_world_overlaps": 0
+      },
+      "walls_enemy_frozen": {
+        "cases": 84,
+        "capped_cases": 1,
+        "capped_updates": 1,
+        "unresolved": 3,
+        "max_correction_px": 249.014892578125,
+        "introduced_events": 5,
+        "enemy_budget_updates": 0,
+        "enemy_residual_max_px": 27.3525998507013,
+        "initial_ball_overlaps": 0,
+        "initial_enemy_world_overlaps": 0
+      },
+      "walls_three_crowd": {
+        "cases": 84,
+        "capped_cases": 6,
+        "capped_updates": 8,
+        "unresolved": 8,
+        "max_correction_px": 249.015258789063,
+        "introduced_events": 9,
+        "enemy_budget_updates": 0,
+        "enemy_residual_max_px": 2.09025077929757,
+        "initial_ball_overlaps": 0,
+        "initial_enemy_world_overlaps": 0
+      }
+    }
+  },
+  "normal": {
+    "enemy": {
+      "cases": 84,
+      "capped_cases": 0,
+      "capped_updates": 0,
+      "unresolved": 0,
+      "max_correction_px": 0.0,
+      "introduced_events": 0,
+      "enemy_budget_updates": 0,
+      "enemy_residual_max_px": 0.0,
+      "initial_ball_overlaps": 0,
+      "initial_enemy_world_overlaps": 0
+    },
+    "full_routes_crowd": {
+      "cases": 84,
+      "capped_cases": 2,
+      "capped_updates": 2,
+      "unresolved": 0,
+      "max_correction_px": 0.0639189928770065,
+      "introduced_events": 0,
+      "enemy_budget_updates": 0,
+      "enemy_residual_max_px": 0.0,
+      "initial_ball_overlaps": 0,
+      "initial_enemy_world_overlaps": 0
+    },
+    "walls": {
+      "cases": 84,
+      "capped_cases": 0,
+      "capped_updates": 0,
+      "unresolved": 0,
+      "max_correction_px": 0.0,
+      "introduced_events": 0,
+      "enemy_budget_updates": 0,
+      "enemy_residual_max_px": 0.0,
+      "initial_ball_overlaps": 0,
+      "initial_enemy_world_overlaps": 0
+    },
+    "walls_enemy": {
+      "cases": 84,
+      "capped_cases": 0,
+      "capped_updates": 0,
+      "unresolved": 0,
+      "max_correction_px": 0.000984162325039506,
+      "introduced_events": 0,
+      "enemy_budget_updates": 0,
+      "enemy_residual_max_px": 0.0,
+      "initial_ball_overlaps": 0,
+      "initial_enemy_world_overlaps": 0
+    },
+    "walls_enemy_frozen": {
+      "cases": 84,
+      "capped_cases": 0,
+      "capped_updates": 0,
+      "unresolved": 0,
+      "max_correction_px": 0.000984162325039506,
+      "introduced_events": 0,
+      "enemy_budget_updates": 0,
+      "enemy_residual_max_px": 0.0,
+      "initial_ball_overlaps": 0,
+      "initial_enemy_world_overlaps": 0
+    },
+    "walls_three_crowd": {
+      "cases": 84,
+      "capped_cases": 2,
+      "capped_updates": 2,
+      "unresolved": 0,
+      "max_correction_px": 0.0562927164137363,
+      "introduced_events": 0,
+      "enemy_budget_updates": 0,
+      "enemy_residual_max_px": 0.0,
+      "initial_ball_overlaps": 0,
+      "initial_enemy_world_overlaps": 0
+    }
+  },
+  "guard_off": {
+    "enemy": {
+      "cases": 84,
+      "capped_cases": 20,
+      "capped_updates": 20,
+      "unresolved": 0,
+      "max_correction_px": 38.5376281738281,
+      "introduced_events": 70,
+      "enemy_budget_updates": 0,
+      "enemy_residual_max_px": 2.91113212599477,
+      "initial_ball_overlaps": 0,
+      "initial_enemy_world_overlaps": 0
+    },
+    "enemy_frozen": {
+      "cases": 84,
+      "capped_cases": 20,
+      "capped_updates": 50,
+      "unresolved": 0,
+      "max_correction_px": 38.5376281738281,
+      "introduced_events": 117,
+      "enemy_budget_updates": 0,
+      "enemy_residual_max_px": 27.3525998507013,
+      "initial_ball_overlaps": 0,
+      "initial_enemy_world_overlaps": 0
+    },
+    "flipper_only": {
+      "cases": 84,
+      "capped_cases": 0,
+      "capped_updates": 0,
+      "unresolved": 0,
+      "max_correction_px": 2.18924164772034,
+      "introduced_events": 0,
+      "enemy_budget_updates": 0,
+      "enemy_residual_max_px": 0.0,
+      "initial_ball_overlaps": 0,
+      "initial_enemy_world_overlaps": 0
+    },
+    "full_routes_crowd": {
+      "cases": 84,
+      "capped_cases": 41,
+      "capped_updates": 71,
+      "unresolved": 0,
+      "max_correction_px": 38.5376281738281,
+      "introduced_events": 192,
+      "enemy_budget_updates": 0,
+      "enemy_residual_max_px": 0.0153196667448192,
+      "initial_ball_overlaps": 0,
+      "initial_enemy_world_overlaps": 0
+    },
+    "walls": {
+      "cases": 84,
+      "capped_cases": 0,
+      "capped_updates": 0,
+      "unresolved": 0,
+      "max_correction_px": 2.18924164772034,
+      "introduced_events": 0,
+      "enemy_budget_updates": 0,
+      "enemy_residual_max_px": 0.0,
+      "initial_ball_overlaps": 0,
+      "initial_enemy_world_overlaps": 0
+    },
+    "walls_enemy": {
+      "cases": 84,
+      "capped_cases": 20,
+      "capped_updates": 23,
+      "unresolved": 0,
+      "max_correction_px": 38.5376281738281,
+      "introduced_events": 70,
+      "enemy_budget_updates": 0,
+      "enemy_residual_max_px": 2.91113212599477,
+      "initial_ball_overlaps": 0,
+      "initial_enemy_world_overlaps": 0
+    },
+    "walls_three_crowd": {
+      "cases": 84,
+      "capped_cases": 38,
+      "capped_updates": 64,
+      "unresolved": 0,
+      "max_correction_px": 38.5376281738281,
+      "introduced_events": 201,
+      "enemy_budget_updates": 0,
+      "enemy_residual_max_px": 2.09025077929757,
+      "initial_ball_overlaps": 0,
+      "initial_enemy_world_overlaps": 0
+    }
+  },
+  "paired": [
+    {
+      "mode": "baseline",
+      "fixture": [
+        0.5,
+        36.0,
+        0.0
+      ],
+      "results": [
+        {
+          "environment": "flipper_only",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 24.8209915161133
+        },
+        {
+          "environment": "walls",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 24.8209915161133
+        },
+        {
+          "environment": "enemy",
+          "capped_updates": 1,
+          "unresolved": false,
+          "max_correction_px": 24.8209915161133
+        },
+        {
+          "environment": "walls_enemy_frozen",
+          "capped_updates": 1,
+          "unresolved": false,
+          "max_correction_px": 24.8209915161133
+        },
+        {
+          "environment": "full_reference",
+          "capped_updates": 1,
+          "unresolved": false,
+          "max_correction_px": 24.8209915161133
+        }
+      ]
+    },
+    {
+      "mode": "baseline",
+      "fixture": [
+        0.7,
+        36.0,
+        0.0
+      ],
+      "results": [
+        {
+          "environment": "flipper_only",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 35.3507080078125
+        },
+        {
+          "environment": "walls",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 35.3507080078125
+        },
+        {
+          "environment": "enemy",
+          "capped_updates": 1,
+          "unresolved": false,
+          "max_correction_px": 35.3507080078125
+        },
+        {
+          "environment": "walls_enemy_frozen",
+          "capped_updates": 1,
+          "unresolved": false,
+          "max_correction_px": 35.3507080078125
+        },
+        {
+          "environment": "full_reference",
+          "capped_updates": 1,
+          "unresolved": false,
+          "max_correction_px": 35.3507080078125
+        }
+      ]
+    },
+    {
+      "mode": "baseline",
+      "fixture": [
+        0.9,
+        3.0,
+        0.0
+      ],
+      "results": [
+        {
+          "environment": "flipper_only",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 60.6096534729004
+        },
+        {
+          "environment": "walls",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 60.6096534729004
+        },
+        {
+          "environment": "enemy",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 60.6096534729004
+        },
+        {
+          "environment": "walls_enemy_frozen",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 60.6096534729004
+        },
+        {
+          "environment": "full_reference",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 60.6096534729004
+        }
+      ]
+    },
+    {
+      "mode": "baseline",
+      "fixture": [
+        0.15,
+        3.0,
+        0.0
+      ],
+      "results": [
+        {
+          "environment": "flipper_only",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 12.3128728866577
+        },
+        {
+          "environment": "walls",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 12.3128728866577
+        },
+        {
+          "environment": "enemy",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 12.3128728866577
+        },
+        {
+          "environment": "walls_enemy_frozen",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 12.3128728866577
+        },
+        {
+          "environment": "full_reference",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 12.3128728866577
+        }
+      ]
+    },
+    {
+      "mode": "baseline",
+      "fixture": [
+        0.99,
+        12.0,
+        36.0
+      ],
+      "results": [
+        {
+          "environment": "flipper_only",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 43.4791603088379
+        },
+        {
+          "environment": "walls",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 43.4791603088379
+        },
+        {
+          "environment": "enemy",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 43.4791603088379
+        },
+        {
+          "environment": "walls_enemy_frozen",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 43.4791603088379
+        },
+        {
+          "environment": "full_reference",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 43.4791603088379
+        }
+      ]
+    },
+    {
+      "mode": "baseline",
+      "fixture": [
+        0.9,
+        3.0,
+        36.0
+      ],
+      "results": [
+        {
+          "environment": "flipper_only",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 47.237377166748
+        },
+        {
+          "environment": "walls",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 47.237377166748
+        },
+        {
+          "environment": "enemy",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 47.237377166748
+        },
+        {
+          "environment": "walls_enemy_frozen",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 47.237377166748
+        },
+        {
+          "environment": "full_reference",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 47.237377166748
+        }
+      ]
+    },
+    {
+      "mode": "baseline",
+      "fixture": [
+        0.9,
+        12.0,
+        36.0
+      ],
+      "results": [
+        {
+          "environment": "flipper_only",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 36.8589782714844
+        },
+        {
+          "environment": "walls",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 36.8589782714844
+        },
+        {
+          "environment": "enemy",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 36.8589782714844
+        },
+        {
+          "environment": "walls_enemy_frozen",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 36.8589782714844
+        },
+        {
+          "environment": "full_reference",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 36.8589782714844
+        }
+      ]
+    },
+    {
+      "mode": "baseline",
+      "fixture": [
+        0.99,
+        3.0,
+        36.0
+      ],
+      "results": [
+        {
+          "environment": "flipper_only",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 55.3687744140625
+        },
+        {
+          "environment": "walls",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 55.3687744140625
+        },
+        {
+          "environment": "enemy",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 55.3687744140625
+        },
+        {
+          "environment": "walls_enemy_frozen",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 55.3687744140625
+        },
+        {
+          "environment": "full_reference",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 55.3687744140625
+        }
+      ]
+    },
+    {
+      "mode": "baseline",
+      "fixture": [
+        0.7,
+        36.0,
+        36.0
+      ],
+      "results": [
+        {
+          "environment": "flipper_only",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 37.6070709228516
+        },
+        {
+          "environment": "walls",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 37.6070709228516
+        },
+        {
+          "environment": "enemy",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 37.6070709228516
+        },
+        {
+          "environment": "walls_enemy_frozen",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 37.6070709228516
+        },
+        {
+          "environment": "full_reference",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 37.6070709228516
+        }
+      ]
+    },
+    {
+      "mode": "unlimited",
+      "fixture": [
+        0.5,
+        36.0,
+        0.0
+      ],
+      "results": [
+        {
+          "environment": "flipper_only",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 28.6393527984619
+        },
+        {
+          "environment": "walls",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 28.6393527984619
+        },
+        {
+          "environment": "enemy",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 171.696838378906
+        },
+        {
+          "environment": "walls_enemy_frozen",
+          "capped_updates": 0,
+          "unresolved": true,
+          "max_correction_px": 1.21995723247528
+        },
+        {
+          "environment": "full_reference",
+          "capped_updates": 0,
+          "unresolved": true,
+          "max_correction_px": 1.21995723247528
+        }
+      ]
+    },
+    {
+      "mode": "unlimited",
+      "fixture": [
+        0.7,
+        36.0,
+        0.0
+      ],
+      "results": [
+        {
+          "environment": "flipper_only",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 40.7368049621582
+        },
+        {
+          "environment": "walls",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 40.7368049621582
+        },
+        {
+          "environment": "enemy",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 251.192932128906
+        },
+        {
+          "environment": "walls_enemy_frozen",
+          "capped_updates": 0,
+          "unresolved": true,
+          "max_correction_px": 0.704884052276611
+        },
+        {
+          "environment": "full_reference",
+          "capped_updates": 0,
+          "unresolved": true,
+          "max_correction_px": 0.704884052276611
+        }
+      ]
+    },
+    {
+      "mode": "unlimited",
+      "fixture": [
+        0.9,
+        3.0,
+        0.0
+      ],
+      "results": [
+        {
+          "environment": "flipper_only",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 24.6417217254639
+        },
+        {
+          "environment": "walls",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 24.6417217254639
+        },
+        {
+          "environment": "enemy",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 24.6417217254639
+        },
+        {
+          "environment": "walls_enemy_frozen",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 24.6417217254639
+        },
+        {
+          "environment": "full_reference",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 24.6417217254639
+        }
+      ]
+    },
+    {
+      "mode": "unlimited",
+      "fixture": [
+        0.15,
+        3.0,
+        0.0
+      ],
+      "results": [
+        {
+          "environment": "flipper_only",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 12.3133296966553
+        },
+        {
+          "environment": "walls",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 12.3133296966553
+        },
+        {
+          "environment": "enemy",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 249.014892578125
+        },
+        {
+          "environment": "walls_enemy_frozen",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 249.014892578125
+        },
+        {
+          "environment": "full_reference",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 249.014892578125
+        }
+      ]
+    },
+    {
+      "mode": "unlimited",
+      "fixture": [
+        0.99,
+        12.0,
+        36.0
+      ],
+      "results": [
+        {
+          "environment": "flipper_only",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 25.7289600372314
+        },
+        {
+          "environment": "walls",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 25.7289600372314
+        },
+        {
+          "environment": "enemy",
+          "capped_updates": 1,
+          "unresolved": false,
+          "max_correction_px": 31.1877727508545
+        },
+        {
+          "environment": "walls_enemy_frozen",
+          "capped_updates": 1,
+          "unresolved": false,
+          "max_correction_px": 31.1877727508545
+        },
+        {
+          "environment": "full_reference",
+          "capped_updates": 1,
+          "unresolved": false,
+          "max_correction_px": 31.1877727508545
+        }
+      ]
+    },
+    {
+      "mode": "unlimited",
+      "fixture": [
+        0.9,
+        3.0,
+        36.0
+      ],
+      "results": [
+        {
+          "environment": "flipper_only",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 47.2365341186523
+        },
+        {
+          "environment": "walls",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 47.2365341186523
+        },
+        {
+          "environment": "enemy",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 56.05859375
+        },
+        {
+          "environment": "walls_enemy_frozen",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 56.05859375
+        },
+        {
+          "environment": "full_reference",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 56.05859375
+        }
+      ]
+    },
+    {
+      "mode": "unlimited",
+      "fixture": [
+        0.9,
+        12.0,
+        36.0
+      ],
+      "results": [
+        {
+          "environment": "flipper_only",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 36.8580856323242
+        },
+        {
+          "environment": "walls",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 36.8580856323242
+        },
+        {
+          "environment": "enemy",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 45.0943603515625
+        },
+        {
+          "environment": "walls_enemy_frozen",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 45.0943603515625
+        },
+        {
+          "environment": "full_reference",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 45.0943603515625
+        }
+      ]
+    },
+    {
+      "mode": "unlimited",
+      "fixture": [
+        0.99,
+        3.0,
+        36.0
+      ],
+      "results": [
+        {
+          "environment": "flipper_only",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 38.8376007080078
+        },
+        {
+          "environment": "walls",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 38.8376007080078
+        },
+        {
+          "environment": "enemy",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 38.8376007080078
+        },
+        {
+          "environment": "walls_enemy_frozen",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 38.8376007080078
+        },
+        {
+          "environment": "full_reference",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 38.8376007080078
+        }
+      ]
+    },
+    {
+      "mode": "unlimited",
+      "fixture": [
+        0.7,
+        36.0,
+        36.0
+      ],
+      "results": [
+        {
+          "environment": "flipper_only",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 43.3291664123535
+        },
+        {
+          "environment": "walls",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 43.3291664123535
+        },
+        {
+          "environment": "enemy",
+          "capped_updates": 0,
+          "unresolved": false,
+          "max_correction_px": 208.822631835938
+        },
+        {
+          "environment": "walls_enemy_frozen",
+          "capped_updates": 0,
+          "unresolved": true,
+          "max_correction_px": 0.704884052276611
+        },
+        {
+          "environment": "full_reference",
+          "capped_updates": 0,
+          "unresolved": true,
+          "max_correction_px": 0.704884052276611
+        }
+      ]
+    }
+  ],
+  "clock": [
+    {
+      "fixture": [
+        0.5,
+        36.0,
+        0.0
+      ],
+      "policy": "baseline",
+      "ordinary": false,
+      "target": "LeftFlipper",
+      "iteration": 1,
+      "current_fraction": 0.08319414599807055,
+      "raw_safe_fraction": 0.0,
+      "difference_ms": 1.3865690999678426
+    },
+    {
+      "fixture": [
+        0.5,
+        36.0,
+        0.0
+      ],
+      "policy": "baseline",
+      "ordinary": false,
+      "target": "LeftFlipper",
+      "iteration": 2,
+      "current_fraction": 0.033077526578512574,
+      "raw_safe_fraction": 0.0,
+      "difference_ms": 0.5054278339154916
+    },
+    {
+      "fixture": [
+        0.5,
+        36.0,
+        0.0
+      ],
+      "policy": "baseline",
+      "ordinary": false,
+      "target": "LeftFlipper",
+      "iteration": 3,
+      "current_fraction": 0.03501586646422126,
+      "raw_safe_fraction": 0.0,
+      "difference_ms": 0.51734786305965
+    },
+    {
+      "fixture": [
+        0.5,
+        36.0,
+        0.0
+      ],
+      "policy": "baseline",
+      "ordinary": false,
+      "target": "LeftFlipper",
+      "iteration": 4,
+      "current_fraction": 0.03688075148345584,
+      "raw_safe_fraction": 0.0,
+      "difference_ms": 0.5258207442539999
+    },
+    {
+      "fixture": [
+        0.5,
+        36.0,
+        0.0
+      ],
+      "policy": "baseline",
+      "ordinary": false,
+      "target": "LeftFlipper",
+      "iteration": 5,
+      "current_fraction": 0.03880120013181476,
+      "raw_safe_fraction": 0.0,
+      "difference_ms": 0.5327987217503503
+    },
+    {
+      "fixture": [
+        0.5,
+        36.0,
+        0.0
+      ],
+      "policy": "baseline",
+      "ordinary": false,
+      "target": "LeftFlipper",
+      "iteration": 6,
+      "current_fraction": 0.04077540302415549,
+      "raw_safe_fraction": 0.0,
+      "difference_ms": 0.5381824078880681
+    },
+    {
+      "fixture": [
+        0.5,
+        36.0,
+        0.0
+      ],
+      "policy": "baseline",
+      "ordinary": false,
+      "target": "LeftFlipper",
+      "iteration": 7,
+      "current_fraction": 0.04279745025088397,
+      "raw_safe_fraction": 0.0,
+      "difference_ms": 0.5418379738147104
+    },
+    {
+      "fixture": [
+        0.7,
+        36.0,
+        0.0
+      ],
+      "policy": "baseline",
+      "ordinary": false,
+      "target": "LeftFlipper",
+      "iteration": 1,
+      "current_fraction": 0.08081506939424031,
+      "raw_safe_fraction": 0.0,
+      "difference_ms": 1.3469178232373387
+    },
+    {
+      "fixture": [
+        0.7,
+        36.0,
+        0.0
+      ],
+      "policy": "baseline",
+      "ordinary": false,
+      "target": "LeftFlipper",
+      "iteration": 2,
+      "current_fraction": 0.05930960749030903,
+      "raw_safe_fraction": 0.0,
+      "difference_ms": 0.908608291512804
+    },
+    {
+      "fixture": [
+        0.7,
+        36.0,
+        0.0
+      ],
+      "policy": "baseline",
+      "ordinary": false,
+      "target": "LeftFlipper",
+      "iteration": 3,
+      "current_fraction": 0.03389399773472908,
+      "raw_safe_fraction": 0.0,
+      "difference_ms": 0.48845116556779955
+    },
+    {
+      "fixture": [
+        0.7,
+        36.0,
+        0.0
+      ],
+      "policy": "baseline",
+      "ordinary": false,
+      "target": "LeftFlipper",
+      "iteration": 4,
+      "current_fraction": 0.017970528082387357,
+      "raw_safe_fraction": 0.0,
+      "difference_ms": 0.2501980803318594
+    },
+    {
+      "fixture": [
+        0.7,
+        36.0,
+        0.0
+      ],
+      "policy": "baseline",
+      "ordinary": false,
+      "target": "LeftFlipper",
+      "iteration": 5,
+      "current_fraction": 0.009168578243449417,
+      "raw_safe_fraction": 0.0,
+      "difference_ms": 0.12535730611525187
+    },
+    {
+      "fixture": [
+        0.7,
+        36.0,
+        0.0
+      ],
+      "policy": "baseline",
+      "ordinary": false,
+      "target": "LeftFlipper",
+      "iteration": 6,
+      "current_fraction": 0.0045929267806693215,
+      "raw_safe_fraction": 0.0,
+      "difference_ms": 0.06222099441699343
+    },
+    {
+      "fixture": [
+        0.7,
+        36.0,
+        0.0
+      ],
+      "policy": "baseline",
+      "ordinary": false,
+      "target": "LeftFlipper",
+      "iteration": 7,
+      "current_fraction": 0.002271338673023848,
+      "raw_safe_fraction": 0.0,
+      "difference_ms": 0.03062880435374429
+    },
+    {
+      "fixture": [
+        0.99,
+        12.0,
+        36.0
+      ],
+      "policy": "unlimited",
+      "ordinary": false,
+      "target": "Enemy",
+      "iteration": 4,
+      "current_fraction": 0.28997658782953656,
+      "raw_safe_fraction": 0.0,
+      "difference_ms": 4.164330812098514
+    },
+    {
+      "fixture": [
+        0.05,
+        3.0,
+        -36.0
+      ],
+      "policy": "baseline",
+      "ordinary": true,
+      "target": "Enemy",
+      "iteration": 2,
+      "current_fraction": 0.0032631888291719904,
+      "raw_safe_fraction": 0.00390625,
+      "difference_ms": -0.010184138650626142
+    },
+    {
+      "fixture": [
+        0.05,
+        3.0,
+        -36.0
+      ],
+      "policy": "baseline",
+      "ordinary": true,
+      "target": "Enemy",
+      "iteration": 3,
+      "current_fraction": 0.003029551644710077,
+      "raw_safe_fraction": 0.00390625,
+      "difference_ms": -0.013838936166182324
+    },
+    {
+      "fixture": [
+        0.05,
+        3.0,
+        -36.0
+      ],
+      "policy": "baseline",
+      "ordinary": true,
+      "target": "Enemy",
+      "iteration": 4,
+      "current_fraction": 0.002817653357038418,
+      "raw_safe_fraction": 0.00390625,
+      "difference_ms": -0.017131752455161783
+    },
+    {
+      "fixture": [
+        0.05,
+        3.0,
+        -36.0
+      ],
+      "policy": "baseline",
+      "ordinary": true,
+      "target": "Enemy",
+      "iteration": 6,
+      "current_fraction": 0.0031575451871340573,
+      "raw_safe_fraction": 0.00390625,
+      "difference_ms": -0.011691209480212043
+    },
+    {
+      "fixture": [
+        0.05,
+        3.0,
+        -36.0
+      ],
+      "policy": "baseline",
+      "ordinary": true,
+      "target": "Enemy",
+      "iteration": 7,
+      "current_fraction": 0.0029400172122662593,
+      "raw_safe_fraction": 0.00390625,
+      "difference_ms": -0.015040321295348495
+    },
+    {
+      "fixture": [
+        0.05,
+        12.0,
+        -36.0
+      ],
+      "policy": "baseline",
+      "ordinary": true,
+      "target": "@CharacterBody2D@41",
+      "iteration": 3,
+      "current_fraction": 0.004317067932606796,
+      "raw_safe_fraction": 0.0068359375,
+      "difference_ms": -0.026147609699488292
+    },
+    {
+      "fixture": [
+        0.05,
+        12.0,
+        -36.0
+      ],
+      "policy": "baseline",
+      "ordinary": true,
+      "target": "@CharacterBody2D@41",
+      "iteration": 4,
+      "current_fraction": 0.0016408013787352598,
+      "raw_safe_fraction": 0.00537109375,
+      "difference_ms": -0.038555847062352
+    },
+    {
+      "fixture": [
+        0.05,
+        12.0,
+        -36.0
+      ],
+      "policy": "baseline",
+      "ordinary": true,
+      "target": "@CharacterBody2D@41",
+      "iteration": 5,
+      "current_fraction": 0.0011819150816633859,
+      "raw_safe_fraction": 0.00537109375,
+      "difference_ms": -0.043227795069097935
+    },
+    {
+      "fixture": [
+        0.05,
+        12.0,
+        -36.0
+      ],
+      "policy": "baseline",
+      "ordinary": true,
+      "target": "@CharacterBody2D@41",
+      "iteration": 6,
+      "current_fraction": 0.0008354978791692776,
+      "raw_safe_fraction": 0.00537109375,
+      "difference_ms": -0.046747129574544584
+    },
+    {
+      "fixture": [
+        0.05,
+        12.0,
+        -36.0
+      ],
+      "policy": "baseline",
+      "ordinary": true,
+      "target": "@CharacterBody2D@41",
+      "iteration": 7,
+      "current_fraction": 0.004749949674286962,
+      "raw_safe_fraction": 0.0068359375,
+      "difference_ms": -0.0214817354262874
+    },
+    {
+      "fixture": [
+        0.05,
+        3.0,
+        -36.0
+      ],
+      "policy": "baseline",
+      "ordinary": true,
+      "target": "Enemy",
+      "iteration": 2,
+      "current_fraction": 0.0031390868455031945,
+      "raw_safe_fraction": 0.00390625,
+      "difference_ms": -0.012598332584780193
+    },
+    {
+      "fixture": [
+        0.05,
+        3.0,
+        -36.0
+      ],
+      "policy": "baseline",
+      "ordinary": true,
+      "target": "Enemy",
+      "iteration": 3,
+      "current_fraction": 0.0029217491237227733,
+      "raw_safe_fraction": 0.00390625,
+      "difference_ms": -0.016116695761242777
+    },
+    {
+      "fixture": [
+        0.05,
+        3.0,
+        -36.0
+      ],
+      "policy": "baseline",
+      "ordinary": true,
+      "target": "Enemy",
+      "iteration": 4,
+      "current_fraction": 0.0027153326484942925,
+      "raw_safe_fraction": 0.00390625,
+      "difference_ms": -0.019438858874498047
+    },
+    {
+      "fixture": [
+        0.05,
+        3.0,
+        -36.0
+      ],
+      "policy": "baseline",
+      "ordinary": true,
+      "target": "Enemy",
+      "iteration": 6,
+      "current_fraction": 0.0031337537686607756,
+      "raw_safe_fraction": 0.00390625,
+      "difference_ms": -0.012512730416968263
+    },
+    {
+      "fixture": [
+        0.05,
+        3.0,
+        -36.0
+      ],
+      "policy": "baseline",
+      "ordinary": true,
+      "target": "Enemy",
+      "iteration": 7,
+      "current_fraction": 0.0029105447905077454,
+      "raw_safe_fraction": 0.00390625,
+      "difference_ms": -0.016077680312520624
+    },
+    {
+      "fixture": [
+        0.05,
+        12.0,
+        -36.0
+      ],
+      "policy": "baseline",
+      "ordinary": true,
+      "target": "@CharacterBody2D@45",
+      "iteration": 1,
+      "current_fraction": 0.005570312637142187,
+      "raw_safe_fraction": 0.0068359375,
+      "difference_ms": -0.015243527959199737
+    },
+    {
+      "fixture": [
+        0.05,
+        12.0,
+        -36.0
+      ],
+      "policy": "baseline",
+      "ordinary": true,
+      "target": "@CharacterBody2D@45",
+      "iteration": 2,
+      "current_fraction": 0.0026491097905088612,
+      "raw_safe_fraction": 0.00537109375,
+      "difference_ms": -0.03260169172200787
+    },
+    {
+      "fixture": [
+        0.05,
+        12.0,
+        -36.0
+      ],
+      "policy": "baseline",
+      "ordinary": true,
+      "target": "@CharacterBody2D@45",
+      "iteration": 3,
+      "current_fraction": 0.001978043329436858,
+      "raw_safe_fraction": 0.00537109375,
+      "difference_ms": -0.040531517859788674
+    },
+    {
+      "fixture": [
+        0.05,
+        12.0,
+        -36.0
+      ],
+      "policy": "baseline",
+      "ordinary": true,
+      "target": "@CharacterBody2D@45",
+      "iteration": 4,
+      "current_fraction": 0.0014687584655862353,
+      "raw_safe_fraction": 0.00537109375,
+      "difference_ms": -0.04652294849302379
+    },
+    {
+      "fixture": [
+        0.05,
+        12.0,
+        -36.0
+      ],
+      "policy": "baseline",
+      "ordinary": true,
+      "target": "@CharacterBody2D@45",
+      "iteration": 5,
+      "current_fraction": 0.0034928540678717816,
+      "raw_safe_fraction": 0.00537109375,
+      "difference_ms": -0.022359151553370562
+    },
+    {
+      "fixture": [
+        0.05,
+        12.0,
+        -36.0
+      ],
+      "policy": "baseline",
+      "ordinary": true,
+      "target": "@CharacterBody2D@45",
+      "iteration": 6,
+      "current_fraction": 0.002601163147540521,
+      "raw_safe_fraction": 0.00537109375,
+      "difference_ms": -0.032858944876067823
+    },
+    {
+      "fixture": [
+        0.05,
+        12.0,
+        -36.0
+      ],
+      "policy": "baseline",
+      "ordinary": true,
+      "target": "@CharacterBody2D@45",
+      "iteration": 7,
+      "current_fraction": 0.0019314488241143656,
+      "raw_safe_fraction": 0.00537109375,
+      "difference_ms": -0.040697449742644096
+    }
+  ],
+  "source_hashes": {
+    "enemies/crowd.gd": "850ecb1badab8bbf5dc8e1cd9a9d8ad9fb76f320b5b3281c2aec33298941b851",
+    "enemies/enemy.gd": "ee8ebc75dde4644cba9c2c7dd55f92ab395e4b52219fceadb999b04f29a27269",
+    "enemies/enemy.tscn": "53603dd7967b6da2664bd954fb2e660d8e70a94529a80f44c29d12eb384202f0",
+    "enemies/routes.gd": "de7be3a213721ea816c2ddc27ab68ad7b6e63e5e0f43fa576e7d5e48c04fcbfa",
+    "main/main.gd": "107ff0ed5aab39e1b2584e39ba7141807da00fa8b8a9323e9d08281bfd698723",
+    "main/main.tscn": "22192529717ca6b0dbecf92b3dc2f2dc4f3f61fc9931b6b462d240effd325b2a",
+    "pinball/ball.gd": "a4494d61eb51b6d67b25de0e22cb3ee45aca4825f3d3e176d9d59422a4171206",
+    "pinball/boundary.gd": "c95d2ea2f3a98c5d22df93a4ca58e3ac19570d6c47f164d4f131cb48a9a0dc35",
+    "pinball/flipper.gd": "48598ca3e2816c79f5338923b51d7d7ed618c813cbd120b27743cc7b8796ee6f",
+    "pinball/flipper.tscn": "985cd85f51d8d58e6fea2157458d1e496999c767e3dc6dc000093d7fa75b330d",
+    "pinball/flippers.gd": "7104b33f3f7e26fc7f5c99b052729b78e9a85618efd935f5e6e24778e6d06779",
+    "pinball/motion.gd": "2acccd2a1d7105a3d8454fefefca6bfc1c52ead4a0c633e052c19ef7b94f60e1",
+    "pinball/table_flipper.gd": "e067a7e517e1cc791c3dea1e1c841e65472465eaa1b13034cdc6823971544749"
+  },
+  "legacy": {
+    "checks": 3737,
+    "failures": [
+      "Enemy follows the route and disappears through the hole",
+      "Fast flipper preserves the inside face even for the smallest configured enemy"
+    ],
+    "removals": [
+      {
+        "health": 100.0,
+        "position": [
+          1018.03173828125,
+          705.107177734375
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          966.671081542969,
+          1080.84497070313
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          954.115783691406,
+          1080.83825683594
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          966.687744140625,
+          1080.65319824219
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          953.693603515625,
+          1080.9306640625
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          966.582885742188,
+          1080.6337890625
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          953.599060058594,
+          1080.79284667969
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          966.545837402344,
+          1080.65844726563
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          953.564636230469,
+          1080.75183105469
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          966.520751953125,
+          1080.6806640625
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          966.749816894531,
+          1080.12683105469
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          954.084228515625,
+          1080.13439941406
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          966.687561035156,
+          1080.06274414063
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          953.524963378906,
+          1080.03271484375
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          966.563537597656,
+          1080.49401855469
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          953.597412109375,
+          1080.19445800781
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          966.518005371094,
+          1080.11096191406
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          953.450866699219,
+          1080.37585449219
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          966.537109375,
+          1080.4853515625
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          966.62890625,
+          1080.02734375
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          954.039672851563,
+          1080.01818847656
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          966.549133300781,
+          1080.15661621094
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          953.491516113281,
+          1080.08654785156
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          966.544311523438,
+          1080.01733398438
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          953.494140625,
+          1080.12036132813
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          966.5478515625,
+          1080.18444824219
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          953.518615722656,
+          1080.18896484375
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          966.495361328125,
+          1080.24328613281
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          508.514068603516,
+          606.0
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          508.537994384766,
+          606.0
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          575.190002441406,
+          606.0
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          792.998962402344,
+          996.273864746094
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          1126.9931640625,
+          996.222778320313
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          779.075561523438,
+          953.905578613281
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          1140.9345703125,
+          953.889465332031
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          783.385131835938,
+          959.700073242188
+        ],
+        "reason": 1
+      },
+      {
+        "health": 100.0,
+        "position": [
+          916.452331542969,
+          1037.55114746094
+        ],
+        "reason": 1
+      },
+      {
+        "health": 0.0,
+        "position": [
+          960.0,
+          720.0
+        ],
+        "reason": 0
+      },
+      {
+        "health": 0.0,
+        "position": [
+          960.0,
+          720.0
+        ],
+        "reason": 0
+      }
+    ],
+    "snapshots": [
+      {
+        "actors": [
+          {
+            "flipper_depth_px": 0.0,
+            "move_speed": 30.0,
+            "path_remaining_px": 444.86856842041,
+            "position": [
+              1018.03173828125,
+              705.107177734375
+            ],
+            "radius": 30.0,
+            "signed_test_normal_distance": 354.149200439453,
+            "velocity": [
+              -4.423828125,
+              29.6704082489014
+            ]
+          }
+        ],
+        "ball_position": [
+          1800.0,
+          90.0
+        ],
+        "failure": "Enemy follows the route and disappears through the hole",
+        "raise_speed": 600.0,
+        "removals_before": 0,
+        "swing_angle": 18.0
+      },
+      {
+        "actors": [
+          {
+            "flipper_depth_px": 7.54766848471214,
+            "move_speed": 0.0,
+            "path_remaining_px": 0.0,
+            "position": [
+              916.452331542969,
+              1037.55114746094
+            ],
+            "radius": 6.0,
+            "signed_test_normal_distance": -223.068817138672,
+            "velocity": [
+              1017.64770507813,
+              0.0
+            ]
+          }
+        ],
+        "ball_position": [
+          1800.0,
+          90.0
+        ],
+        "failure": "Fast flipper preserves the inside face even for the smallest configured enemy",
+        "raise_speed": 1440.0,
+        "removals_before": 36,
+        "swing_angle": 60.0
+      }
+    ]
+  },
+  "route": {
+    "at_20s": {
+      "position": [
+        1020.31762695313,
+        689.77490234375
+      ],
+      "velocity": [
+        -4.423828125,
+        29.6704082489014
+      ]
+    },
+    "exit_s": 33.15,
+    "scene_layers": {
+      "ball_layer": 1,
+      "ball_mask": 6,
+      "enemy_layer": 4,
+      "enemy_mask": 2,
+      "flipper_layer": 2,
+      "flipper_mask": 5
+    },
+    "scope": "Original Enemy.advance, actual routes/crowd, one enemy, no ball movement, no parameter changes",
+    "speed": 30.0
+  },
+  "raw_query_target_matches": 72,
+  "raw_query_cases": 10,
+  "legacy_comparison": {
+    "baseline": {
+      "correction_cap_unresolved_match": true,
+      "old_introduced_events": 24,
+      "new_introduced_events": 24,
+      "final_position_max_difference_px": 0.7820560707669815
+    },
+    "unlimited": {
+      "correction_cap_unresolved_match": true,
+      "old_introduced_events": 5,
+      "new_introduced_events": 5,
+      "final_position_max_difference_px": 0.8634526095622681
+    }
+  },
+  "legacy_replay": {
+    "cases": [
+      {
+        "cases": 84,
+        "first_divergences": [
+          {
+            "frame": 44,
+            "gap": 3.0,
+            "observer": {
+              "ball_id": "56170120777",
+              "below_reset": false,
+              "contacts": 2.0,
+              "discarded_ms": 0.0,
+              "flipper_depth_px": 0.0,
+              "guard_active": false,
+              "max_correction_px": 0.0,
+              "opening_exit": false,
+              "position": [
+                661.791381835938,
+                976.16943359375
+              ],
+              "release_below_to_reset": false,
+              "release_downward_exit": false,
+              "release_opening_exit": false,
+              "shots": 0.0,
+              "unresolved": false,
+              "update": 44.0,
+              "velocity": [
+                366.294647216797,
+                -60.3206253051758
+              ],
+              "world_contacts": []
+            },
+            "offset": 0.0,
+            "plain": {
+              "ball_id": "54878275142",
+              "below_reset": false,
+              "contacts": 2,
+              "discarded_ms": 0.0,
+              "flipper_depth_px": 0.0,
+              "guard_active": false,
+              "max_correction_px": 0.0,
+              "opening_exit": false,
+              "position": [
+                661.789123535156,
+                976.17041015625
+              ],
+              "release_below_to_reset": false,
+              "release_downward_exit": false,
+              "release_opening_exit": false,
+              "shots": 0,
+              "unresolved": false,
+              "update": 44,
+              "velocity": [
+                366.294647216797,
+                -60.3206253051758
+              ],
+              "world_contacts": []
+            },
+            "ratio": 0.05
+          },
+          {
+            "frame": 35,
+            "gap": 36.0,
+            "observer": {
+              "ball_id": "56170120777",
+              "below_reset": false,
+              "contacts": 2.0,
+              "discarded_ms": 0.0,
+              "flipper_depth_px": 0.0,
+              "guard_active": false,
+              "max_correction_px": 0.0,
+              "opening_exit": false,
+              "position": [
+                661.334228515625,
+                976.242309570313
+              ],
+              "release_below_to_reset": false,
+              "release_downward_exit": false,
+              "release_opening_exit": false,
+              "shots": 0.0,
+              "unresolved": false,
+              "update": 35.0,
+              "velocity": [
+                431.528137207031,
+                -71.1140594482422
+              ],
+              "world_contacts": []
+            },
+            "offset": 0.0,
+            "plain": {
+              "ball_id": "54878275142",
+              "below_reset": false,
+              "contacts": 2,
+              "discarded_ms": 0.0,
+              "flipper_depth_px": 0.0,
+              "guard_active": false,
+              "max_correction_px": 0.0,
+              "opening_exit": false,
+              "position": [
+                661.332336425781,
+                976.243103027344
+              ],
+              "release_below_to_reset": false,
+              "release_downward_exit": false,
+              "release_opening_exit": false,
+              "shots": 0,
+              "unresolved": false,
+              "update": 35,
+              "velocity": [
+                431.528137207031,
+                -71.1140594482422
+              ],
+              "world_contacts": []
+            },
+            "ratio": 0.05
+          },
+          {
+            "frame": 4,
+            "gap": 3.0,
+            "observer": {
+              "ball_id": "56170120777",
+              "below_reset": false,
+              "contacts": 2.0,
+              "discarded_ms": 0.0,
+              "flipper_depth_px": 0.0,
+              "guard_active": false,
+              "max_correction_px": 0.0,
+              "opening_exit": false,
+              "position": [
+                654.106750488281,
+                976.5869140625
+              ],
+              "release_below_to_reset": false,
+              "release_downward_exit": false,
+              "release_opening_exit": false,
+              "shots": 0.0,
+              "unresolved": false,
+              "update": 4.0,
+              "velocity": [
+                -546.108154296875,
+                -119.521507263184
+              ],
+              "world_contacts": []
+            },
+            "offset": 0.0,
+            "plain": {
+              "ball_id": "54878275142",
+              "below_reset": false,
+              "contacts": 2,
+              "discarded_ms": 0.0,
+              "flipper_depth_px": 0.0,
+              "guard_active": false,
+              "max_correction_px": 0.0,
+              "opening_exit": false,
+              "position": [
+                654.104675292969,
+                976.585754394531
+              ],
+              "release_below_to_reset": false,
+              "release_downward_exit": false,
+              "release_opening_exit": false,
+              "shots": 0,
+              "unresolved": false,
+              "update": 4,
+              "velocity": [
+                -546.108154296875,
+                -119.521507263184
+              ],
+              "world_contacts": []
+            },
+            "ratio": 0.15
+          },
+          {
+            "frame": 37,
+            "gap": 36.0,
+            "observer": {
+              "ball_id": "56170120777",
+              "below_reset": false,
+              "contacts": 2.0,
+              "discarded_ms": 0.0,
+              "flipper_depth_px": 0.0,
+              "guard_active": false,
+              "max_correction_px": 0.0,
+              "opening_exit": false,
+              "position": [
+                1274.47680664063,
+                974.708984375
+              ],
+              "release_below_to_reset": false,
+              "release_downward_exit": false,
+              "release_opening_exit": false,
+              "shots": 0.0,
+              "unresolved": false,
+              "update": 37.0,
+              "velocity": [
+                931.343627929688,
+                -203.686859130859
+              ],
+              "world_contacts": []
+            },
+            "offset": -36.0,
+            "plain": {
+              "ball_id": "54878275142",
+              "below_reset": false,
+              "contacts": 2,
+              "discarded_ms": 0.0,
+              "flipper_depth_px": 0.0,
+              "guard_active": false,
+              "max_correction_px": 0.0,
+              "opening_exit": false,
+              "position": [
+                1274.47473144531,
+                974.710144042969
+              ],
+              "release_below_to_reset": false,
+              "release_downward_exit": false,
+              "release_opening_exit": false,
+              "shots": 0,
+              "unresolved": false,
+              "update": 37,
+              "velocity": [
+                931.343627929688,
+                -203.686859130859
+              ],
+              "world_contacts": []
+            },
+            "ratio": 0.15
+          },
+          {
+            "frame": 35,
+            "gap": 72.0,
+            "observer": {
+              "ball_id": "56170120777",
+              "below_reset": false,
+              "contacts": 2.0,
+              "discarded_ms": 0.0,
+              "flipper_depth_px": 0.0,
+              "guard_active": false,
+              "max_correction_px": 0.0,
+              "opening_exit": false,
+              "position": [
+                660.23583984375,
+                976.431945800781
+              ],
+              "release_below_to_reset": false,
+              "release_downward_exit": false,
+              "release_opening_exit": false,
+              "shots": 0.0,
+              "unresolved": false,
+              "update": 35.0,
+              "velocity": [
+                447.281280517578,
+                -73.1509857177734
+              ],
+              "world_contacts": []
+            },
+            "offset": 0.0,
+            "plain": {
+              "ball_id": "54878275142",
+              "below_reset": false,
+              "contacts": 2,
+              "discarded_ms": 0.0,
+              "flipper_depth_px": 0.0,
+              "guard_active": false,
+              "max_correction_px": 0.0,
+              "opening_exit": false,
+              "position": [
+                660.234619140625,
+                976.4326171875
+              ],
+              "release_below_to_reset": false,
+              "release_downward_exit": false,
+              "release_opening_exit": false,
+              "shots": 0,
+              "unresolved": false,
+              "update": 35,
+              "velocity": [
+                447.281280517578,
+                -73.1509857177734
+              ],
+              "world_contacts": []
+            },
+            "ratio": 0.15
+          },
+          {
+            "frame": 46,
+            "gap": 36.0,
+            "observer": {
+              "ball_id": "56170120777",
+              "below_reset": false,
+              "contacts": 1.0,
+              "discarded_ms": 0.0,
+              "flipper_depth_px": 0.0,
+              "guard_active": false,
+              "max_correction_px": 0.0,
+              "opening_exit": false,
+              "position": [
+                517.89013671875,
+                951.307067871094
+              ],
+              "release_below_to_reset": false,
+              "release_downward_exit": false,
+              "release_opening_exit": false,
+              "shots": 0.0,
+              "unresolved": false,
+              "update": 46.0,
+              "velocity": [
+                131.641403198242,
+                16.462516784668
+              ],
+              "world_contacts": []
+            },
+            "offset": 0.0,
+            "plain": {
+              "ball_id": "54878275142",
+              "below_reset": false,
+              "contacts": 1,
+              "discarded_ms": 0.0,
+              "flipper_depth_px": 0.0,
+              "guard_active": false,
+              "max_correction_px": 0.0,
+              "opening_exit": false,
+              "position": [
+                517.891052246094,
+                951.310241699219
+              ],
+              "release_below_to_reset": false,
+              "release_downward_exit": false,
+              "release_opening_exit": false,
+              "shots": 0,
+              "unresolved": false,
+              "update": 46,
+              "velocity": [
+                131.712371826172,
+                16.6613006591797
+              ],
+              "world_contacts": []
+            },
+            "ratio": 0.3
+          },
+          {
+            "frame": 33,
+            "gap": 3.0,
+            "observer": {
+              "ball_id": "56170120777",
+              "below_reset": false,
+              "contacts": 2.0,
+              "discarded_ms": 0.0,
+              "flipper_depth_px": 0.0,
+              "guard_active": false,
+              "max_correction_px": 0.0,
+              "opening_exit": false,
+              "position": [
+                1274.15771484375,
+                974.780090332031
+              ],
+              "release_below_to_reset": false,
+              "release_downward_exit": false,
+              "release_opening_exit": false,
+              "shots": 0.0,
+              "unresolved": false,
+              "update": 33.0,
+              "velocity": [
+                856.502563476563,
+                -187.0546875
+              ],
+              "world_contacts": []
+            },
+            "offset": 0.0,
+            "plain": {
+              "ball_id": "54878275142",
+              "below_reset": false,
+              "contacts": 2,
+              "discarded_ms": 0.0,
+              "flipper_depth_px": 0.0,
+              "guard_active": false,
+              "max_correction_px": 0.0,
+              "opening_exit": false,
+              "position": [
+                1274.16015625,
+                974.77880859375
+              ],
+              "release_below_to_reset": false,
+              "release_downward_exit": false,
+              "release_opening_exit": false,
+              "shots": 0,
+              "unresolved": false,
+              "update": 33,
+              "velocity": [
+                856.502563476563,
+                -187.0546875
+              ],
+              "world_contacts": []
+            },
+            "ratio": 0.5
+          },
+          {
+            "frame": 34,
+            "gap": 12.0,
+            "observer": {
+              "ball_id": "56170120777",
+              "below_reset": false,
+              "contacts": 2.0,
+              "discarded_ms": 0.0,
+              "flipper_depth_px": 0.0,
+              "guard_active": false,
+              "max_correction_px": 0.0,
+              "opening_exit": false,
+              "position": [
+                1275.2802734375,
+                974.531921386719
+              ],
+              "release_below_to_reset": false,
+              "release_downward_exit": false,
+              "release_opening_exit": false,
+              "shots": 0.0,
+              "unresolved": false,
+              "update": 34.0,
+              "velocity": [
+                835.426452636719,
+                -182.622039794922
+              ],
+              "world_contacts": []
+            },
+            "offset": 0.0,
+            "plain": {
+              "ball_id": "54878275142",
+              "below_reset": false,
+              "contacts": 2,
+              "discarded_ms": 0.0,
+              "flipper_depth_px": 0.0,
+              "guard_active": false,
+              "max_correction_px": 0.0,
+              "opening_exit": false,
+              "position": [
+                1275.27819824219,
+                974.533020019531
+              ],
+              "release_below_to_reset": false,
+              "release_downward_exit": false,
+              "release_opening_exit": false,
+              "shots": 0,
+              "unresolved": false,
+              "update": 34,
+              "velocity": [
+                835.426452636719,
+                -182.622039794922
+              ],
+              "world_contacts": []
+            },
+            "ratio": 0.5
+          },
+          {
+            "frame": 31,
+            "gap": 12.0,
+            "observer": {
+              "ball_id": "56170120777",
+              "below_reset": false,
+              "contacts": 1.0,
+              "discarded_ms": 0.0,
+              "flipper_depth_px": 0.0,
+              "guard_active": false,
+              "max_correction_px": 0.0,
+              "opening_exit": false,
+              "position": [
+                699.618896484375,
+                971.336975097656
+              ],
+              "release_below_to_reset": false,
+              "release_downward_exit": false,
+              "release_opening_exit": false,
+              "shots": 0.0,
+              "unresolved": false,
+              "update": 31.0,
+              "velocity": [
+                659.076354980469,
+                -88.7976379394531
+              ],
+              "world_contacts": []
+            },
+            "offset": 36.0,
+            "plain": {
+              "ball_id": "54878275142",
+              "below_reset": false,
+              "contacts": 1,
+              "discarded_ms": 0.0,
+              "flipper_depth_px": 0.0,
+              "guard_active": false,
+              "max_correction_px": 0.0,
+              "opening_exit": false,
+              "position": [
+                699.617980957031,
+                971.328186035156
+              ],
+              "release_below_to_reset": false,
+              "release_downward_exit": false,
+              "release_opening_exit": false,
+              "shots": 0,
+              "unresolved": false,
+              "update": 31,
+              "velocity": [
+                658.964904785156,
+                -89.3773956298828
+              ],
+              "world_contacts": []
+            },
+            "ratio": 0.7
+          }
+        ],
+        "observer_metric_differences": 0,
+        "observer_position_max_px": 0.782056093215942,
+        "old_metric_differences": 0,
+        "old_position_max_px": 0.333735734224319,
+        "policy": "baseline"
+      },
+      {
+        "cases": 84,
+        "first_divergences": [
+          {
+            "frame": 38,
+            "gap": 3.0,
+            "observer": {
+              "ball_id": "56170120777",
+              "below_reset": false,
+              "contacts": 2.0,
+              "discarded_ms": 0.0,
+              "flipper_depth_px": 0.0,
+              "guard_active": false,
+              "max_correction_px": 0.0,
+              "opening_exit": false,
+              "position": [
+                1274.47802734375,
+                974.723754882813
+              ],
+              "release_below_to_reset": false,
+              "release_downward_exit": false,
+              "release_opening_exit": false,
+              "shots": 0.0,
+              "unresolved": false,
+              "update": 38.0,
+              "velocity": [
+                923.878784179688,
+                -200.549438476563
+              ],
+              "world_contacts": []
+            },
+            "offset": -36.0,
+            "plain": {
+              "ball_id": "54878275142",
+              "below_reset": false,
+              "contacts": 2,
+              "discarded_ms": 0.0,
+              "flipper_depth_px": 0.0,
+              "guard_active": false,
+              "max_correction_px": 0.0,
+              "opening_exit": false,
+              "position": [
+                1274.48095703125,
+                974.72265625
+              ],
+              "release_below_to_reset": false,
+              "release_downward_exit": false,
+              "release_opening_exit": false,
+              "shots": 0,
+              "unresolved": false,
+              "update": 38,
+              "velocity": [
+                923.878784179688,
+                -200.549438476563
+              ],
+              "world_contacts": []
+            },
+            "ratio": 0.05
+          },
+          {
+            "frame": 43,
+            "gap": 12.0,
+            "observer": {
+              "ball_id": "56170120777",
+              "below_reset": false,
+              "contacts": 2.0,
+              "discarded_ms": 0.0,
+              "flipper_depth_px": 0.0,
+              "guard_active": false,
+              "max_correction_px": 0.0,
+              "opening_exit": false,
+              "position": [
+                1272.12548828125,
+                975.230895996094
+              ],
+              "release_below_to_reset": false,
+              "release_downward_exit": false,
+              "release_opening_exit": false,
+              "shots": 0.0,
+              "unresolved": false,
+              "update": 43.0,
+              "velocity": [
+                829.955932617188,
+                -180.913909912109
+              ],
+              "world_contacts": []
+            },
+            "offset": -36.0,
+            "plain": {
+              "ball_id": "54878275142",
+              "below_reset": false,
+              "contacts": 2,
+              "discarded_ms": 0.0,
+              "flipper_depth_px": 0.0,
+              "guard_active": false,
+              "max_correction_px": 0.0,
+              "opening_exit": false,
+              "position": [
+                1272.12744140625,
+                975.229736328125
+              ],
+              "release_below_to_reset": false,
+              "release_downward_exit": false,
+              "release_opening_exit": false,
+              "shots": 0,
+              "unresolved": false,
+              "update": 43,
+              "velocity": [
+                829.955932617188,
+                -180.913909912109
+              ],
+              "world_contacts": []
+            },
+            "ratio": 0.05
+          },
+          {
+            "frame": 37,
+            "gap": 36.0,
+            "observer": {
+              "ball_id": "56170120777",
+              "below_reset": false,
+              "contacts": 2.0,
+              "discarded_ms": 0.0,
+              "flipper_depth_px": 0.0,
+              "guard_active": false,
+              "max_correction_px": 0.0,
+              "opening_exit": false,
+              "position": [
+                1274.47473144531,
+                974.710144042969
+              ],
+              "release_below_to_reset": false,
+              "release_downward_exit": false,
+              "release_opening_exit": false,
+              "shots": 0.0,
+              "unresolved": false,
+              "update": 37.0,
+              "velocity": [
+                931.343627929688,
+                -203.686859130859
+              ],
+              "world_contacts": []
+            },
+            "offset": -36.0,
+            "plain": {
+              "ball_id": "54878275142",
+              "below_reset": false,
+              "contacts": 2,
+              "discarded_ms": 0.0,
+              "flipper_depth_px": 0.0,
+              "guard_active": false,
+              "max_correction_px": 0.0,
+              "opening_exit": false,
+              "position": [
+                1274.47680664063,
+                974.708984375
+              ],
+              "release_below_to_reset": false,
+              "release_downward_exit": false,
+              "release_opening_exit": false,
+              "shots": 0,
+              "unresolved": false,
+              "update": 37,
+              "velocity": [
+                931.343627929688,
+                -203.686859130859
+              ],
+              "world_contacts": []
+            },
+            "ratio": 0.15
+          },
+          {
+            "frame": 35,
+            "gap": 72.0,
+            "observer": {
+              "ball_id": "56170120777",
+              "below_reset": false,
+              "contacts": 2.0,
+              "discarded_ms": 0.0,
+              "flipper_depth_px": 0.0,
+              "guard_active": false,
+              "max_correction_px": 0.0,
+              "opening_exit": false,
+              "position": [
+                660.23583984375,
+                976.431945800781
+              ],
+              "release_below_to_reset": false,
+              "release_downward_exit": false,
+              "release_opening_exit": false,
+              "shots": 0.0,
+              "unresolved": false,
+              "update": 35.0,
+              "velocity": [
+                447.281280517578,
+                -73.1509857177734
+              ],
+              "world_contacts": []
+            },
+            "offset": 0.0,
+            "plain": {
+              "ball_id": "54878275142",
+              "below_reset": false,
+              "contacts": 2,
+              "discarded_ms": 0.0,
+              "flipper_depth_px": 0.0,
+              "guard_active": false,
+              "max_correction_px": 0.0,
+              "opening_exit": false,
+              "position": [
+                660.234619140625,
+                976.4326171875
+              ],
+              "release_below_to_reset": false,
+              "release_downward_exit": false,
+              "release_opening_exit": false,
+              "shots": 0,
+              "unresolved": false,
+              "update": 35,
+              "velocity": [
+                447.281280517578,
+                -73.1509857177734
+              ],
+              "world_contacts": []
+            },
+            "ratio": 0.15
+          },
+          {
+            "frame": 59,
+            "gap": 72.0,
+            "observer": {
+              "ball_id": "56170120777",
+              "below_reset": false,
+              "contacts": 1.0,
+              "discarded_ms": 0.0,
+              "flipper_depth_px": 0.0,
+              "guard_active": false,
+              "max_correction_px": 0.0,
+              "opening_exit": false,
+              "position": [
+                1298.53186035156,
+                970.487121582031
+              ],
+              "release_below_to_reset": false,
+              "release_downward_exit": false,
+              "release_opening_exit": false,
+              "shots": 0.0,
+              "unresolved": false,
+              "update": 59.0,
+              "velocity": [
+                -413.531097412109,
+                54.2979431152344
+              ],
+              "world_contacts": []
+            },
+            "offset": 0.0,
+            "plain": {
+              "ball_id": "54878275142",
+              "below_reset": false,
+              "contacts": 1,
+              "discarded_ms": 0.0,
+              "flipper_depth_px": 0.0,
+              "guard_active": false,
+              "max_correction_px": 0.0,
+              "opening_exit": false,
+              "position": [
+                1298.53356933594,
+                970.480346679688
+              ],
+              "release_below_to_reset": false,
+              "release_downward_exit": false,
+              "release_opening_exit": false,
+              "shots": 0,
+              "unresolved": false,
+              "update": 59,
+              "velocity": [
+                -413.191741943359,
+                53.2399749755859
+              ],
+              "world_contacts": []
+            },
+            "ratio": 0.5
+          },
+          {
+            "frame": 59,
+            "gap": 72.0,
+            "observer": {
+              "ball_id": "56170120777",
+              "below_reset": false,
+              "contacts": 2.0,
+              "discarded_ms": 0.0,
+              "flipper_depth_px": 0.0,
+              "guard_active": false,
+              "max_correction_px": 0.0,
+              "opening_exit": false,
+              "position": [
+                641.497680664063,
+                973.81494140625
+              ],
+              "release_below_to_reset": false,
+              "release_downward_exit": false,
+              "release_opening_exit": false,
+              "shots": 0.0,
+              "unresolved": false,
+              "update": 59.0,
+              "velocity": [
+                -994.097717285156,
+                -218.145950317383
+              ],
+              "world_contacts": []
+            },
+            "offset": 0.0,
+            "plain": {
+              "ball_id": "54878275142",
+              "below_reset": false,
+              "contacts": 2,
+              "discarded_ms": 0.0,
+              "flipper_depth_px": 0.0,
+              "guard_active": false,
+              "max_correction_px": 0.0,
+              "opening_exit": false,
+              "position": [
+                641.500122070313,
+                973.816162109375
+              ],
+              "release_below_to_reset": false,
+              "release_downward_exit": false,
+              "release_opening_exit": false,
+              "shots": 0,
+              "unresolved": false,
+              "update": 59,
+              "velocity": [
+                -994.097717285156,
+                -218.145950317383
+              ],
+              "world_contacts": []
+            },
+            "ratio": 0.7
+          },
+          {
+            "frame": 48,
+            "gap": 36.0,
+            "observer": {
+              "ball_id": "56170120777",
+              "below_reset": false,
+              "contacts": 2.0,
+              "discarded_ms": 0.0,
+              "flipper_depth_px": 0.0,
+              "guard_active": false,
+              "max_correction_px": 0.0,
+              "opening_exit": false,
+              "position": [
+                652.141235351563,
+                976.154724121094
+              ],
+              "release_below_to_reset": false,
+              "release_downward_exit": false,
+              "release_opening_exit": false,
+              "shots": 0.0,
+              "unresolved": false,
+              "update": 48.0,
+              "velocity": [
+                -1210.62939453125,
+                -265.316711425781
+              ],
+              "world_contacts": []
+            },
+            "offset": 0.0,
+            "plain": {
+              "ball_id": "54878275142",
+              "below_reset": false,
+              "contacts": 2,
+              "discarded_ms": 0.0,
+              "flipper_depth_px": 0.0,
+              "guard_active": false,
+              "max_correction_px": 0.0,
+              "opening_exit": false,
+              "position": [
+                652.139953613281,
+                976.153930664063
+              ],
+              "release_below_to_reset": false,
+              "release_downward_exit": false,
+              "release_opening_exit": false,
+              "shots": 0,
+              "unresolved": false,
+              "update": 48,
+              "velocity": [
+                -1210.62939453125,
+                -265.316711425781
+              ],
+              "world_contacts": []
+            },
+            "ratio": 0.9
+          },
+          {
+            "frame": 58,
+            "gap": 72.0,
+            "observer": {
+              "ball_id": "56170120777",
+              "below_reset": false,
+              "contacts": 2.0,
+              "discarded_ms": 0.0,
+              "flipper_depth_px": 0.0,
+              "guard_active": false,
+              "max_correction_px": 0.0,
+              "opening_exit": false,
+              "position": [
+                1271.25854492188,
+                975.422058105469
+              ],
+              "release_below_to_reset": false,
+              "release_downward_exit": false,
+              "release_opening_exit": false,
+              "shots": 0.0,
+              "unresolved": false,
+              "update": 58.0,
+              "velocity": [
+                714.4697265625,
+                -155.378952026367
+              ],
+              "world_contacts": []
+            },
+            "offset": 36.0,
+            "plain": {
+              "ball_id": "54878275142",
+              "below_reset": false,
+              "contacts": 2,
+              "discarded_ms": 0.0,
+              "flipper_depth_px": 0.0,
+              "guard_active": false,
+              "max_correction_px": 0.0,
+              "opening_exit": false,
+              "position": [
+                1271.26037597656,
+                975.421020507813
+              ],
+              "release_below_to_reset": false,
+              "release_downward_exit": false,
+              "release_opening_exit": false,
+              "shots": 0,
+              "unresolved": false,
+              "update": 58,
+              "velocity": [
+                714.4697265625,
+                -155.378952026367
+              ],
+              "world_contacts": []
+            },
+            "ratio": 0.99
+          }
+        ],
+        "observer_metric_differences": 0,
+        "observer_position_max_px": 0.570042252540588,
+        "old_metric_differences": 0,
+        "old_position_max_px": 0.863452613353729,
+        "policy": "unlimited"
+      }
+    ],
+    "checks": 29773,
+    "failures": 0,
+    "scope": "Unmodified inherited near-grid implementation; independent check of old versus observer trajectories"
+  },
+  "stage_safety_note": "Times in response traces are current code estimates. Raw safe fractions expose recovery included in current time accounting; no corrected trajectory is applied."
+}

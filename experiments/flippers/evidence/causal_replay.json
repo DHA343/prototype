@@ -1,0 +1,979 @@
+{
+	"cases": [
+		{
+			"cases": 84,
+			"first_divergences": [
+				{
+					"frame": 44,
+					"gap": 3.0,
+					"observer": {
+						"ball_id": "56170120777",
+						"below_reset": false,
+						"contacts": 2.0,
+						"discarded_ms": 0.0,
+						"flipper_depth_px": 0.0,
+						"guard_active": false,
+						"max_correction_px": 0.0,
+						"opening_exit": false,
+						"position": [
+							661.791381835938,
+							976.16943359375
+						],
+						"release_below_to_reset": false,
+						"release_downward_exit": false,
+						"release_opening_exit": false,
+						"shots": 0.0,
+						"unresolved": false,
+						"update": 44.0,
+						"velocity": [
+							366.294647216797,
+							-60.3206253051758
+						],
+						"world_contacts": []
+					},
+					"offset": 0.0,
+					"plain": {
+						"ball_id": "54878275142",
+						"below_reset": false,
+						"contacts": 2,
+						"discarded_ms": 0.0,
+						"flipper_depth_px": 0.0,
+						"guard_active": false,
+						"max_correction_px": 0.0,
+						"opening_exit": false,
+						"position": [
+							661.789123535156,
+							976.17041015625
+						],
+						"release_below_to_reset": false,
+						"release_downward_exit": false,
+						"release_opening_exit": false,
+						"shots": 0,
+						"unresolved": false,
+						"update": 44,
+						"velocity": [
+							366.294647216797,
+							-60.3206253051758
+						],
+						"world_contacts": []
+					},
+					"ratio": 0.05
+				},
+				{
+					"frame": 35,
+					"gap": 36.0,
+					"observer": {
+						"ball_id": "56170120777",
+						"below_reset": false,
+						"contacts": 2.0,
+						"discarded_ms": 0.0,
+						"flipper_depth_px": 0.0,
+						"guard_active": false,
+						"max_correction_px": 0.0,
+						"opening_exit": false,
+						"position": [
+							661.334228515625,
+							976.242309570313
+						],
+						"release_below_to_reset": false,
+						"release_downward_exit": false,
+						"release_opening_exit": false,
+						"shots": 0.0,
+						"unresolved": false,
+						"update": 35.0,
+						"velocity": [
+							431.528137207031,
+							-71.1140594482422
+						],
+						"world_contacts": []
+					},
+					"offset": 0.0,
+					"plain": {
+						"ball_id": "54878275142",
+						"below_reset": false,
+						"contacts": 2,
+						"discarded_ms": 0.0,
+						"flipper_depth_px": 0.0,
+						"guard_active": false,
+						"max_correction_px": 0.0,
+						"opening_exit": false,
+						"position": [
+							661.332336425781,
+							976.243103027344
+						],
+						"release_below_to_reset": false,
+						"release_downward_exit": false,
+						"release_opening_exit": false,
+						"shots": 0,
+						"unresolved": false,
+						"update": 35,
+						"velocity": [
+							431.528137207031,
+							-71.1140594482422
+						],
+						"world_contacts": []
+					},
+					"ratio": 0.05
+				},
+				{
+					"frame": 4,
+					"gap": 3.0,
+					"observer": {
+						"ball_id": "56170120777",
+						"below_reset": false,
+						"contacts": 2.0,
+						"discarded_ms": 0.0,
+						"flipper_depth_px": 0.0,
+						"guard_active": false,
+						"max_correction_px": 0.0,
+						"opening_exit": false,
+						"position": [
+							654.106750488281,
+							976.5869140625
+						],
+						"release_below_to_reset": false,
+						"release_downward_exit": false,
+						"release_opening_exit": false,
+						"shots": 0.0,
+						"unresolved": false,
+						"update": 4.0,
+						"velocity": [
+							-546.108154296875,
+							-119.521507263184
+						],
+						"world_contacts": []
+					},
+					"offset": 0.0,
+					"plain": {
+						"ball_id": "54878275142",
+						"below_reset": false,
+						"contacts": 2,
+						"discarded_ms": 0.0,
+						"flipper_depth_px": 0.0,
+						"guard_active": false,
+						"max_correction_px": 0.0,
+						"opening_exit": false,
+						"position": [
+							654.104675292969,
+							976.585754394531
+						],
+						"release_below_to_reset": false,
+						"release_downward_exit": false,
+						"release_opening_exit": false,
+						"shots": 0,
+						"unresolved": false,
+						"update": 4,
+						"velocity": [
+							-546.108154296875,
+							-119.521507263184
+						],
+						"world_contacts": []
+					},
+					"ratio": 0.15
+				},
+				{
+					"frame": 37,
+					"gap": 36.0,
+					"observer": {
+						"ball_id": "56170120777",
+						"below_reset": false,
+						"contacts": 2.0,
+						"discarded_ms": 0.0,
+						"flipper_depth_px": 0.0,
+						"guard_active": false,
+						"max_correction_px": 0.0,
+						"opening_exit": false,
+						"position": [
+							1274.47680664063,
+							974.708984375
+						],
+						"release_below_to_reset": false,
+						"release_downward_exit": false,
+						"release_opening_exit": false,
+						"shots": 0.0,
+						"unresolved": false,
+						"update": 37.0,
+						"velocity": [
+							931.343627929688,
+							-203.686859130859
+						],
+						"world_contacts": []
+					},
+					"offset": -36.0,
+					"plain": {
+						"ball_id": "54878275142",
+						"below_reset": false,
+						"contacts": 2,
+						"discarded_ms": 0.0,
+						"flipper_depth_px": 0.0,
+						"guard_active": false,
+						"max_correction_px": 0.0,
+						"opening_exit": false,
+						"position": [
+							1274.47473144531,
+							974.710144042969
+						],
+						"release_below_to_reset": false,
+						"release_downward_exit": false,
+						"release_opening_exit": false,
+						"shots": 0,
+						"unresolved": false,
+						"update": 37,
+						"velocity": [
+							931.343627929688,
+							-203.686859130859
+						],
+						"world_contacts": []
+					},
+					"ratio": 0.15
+				},
+				{
+					"frame": 35,
+					"gap": 72.0,
+					"observer": {
+						"ball_id": "56170120777",
+						"below_reset": false,
+						"contacts": 2.0,
+						"discarded_ms": 0.0,
+						"flipper_depth_px": 0.0,
+						"guard_active": false,
+						"max_correction_px": 0.0,
+						"opening_exit": false,
+						"position": [
+							660.23583984375,
+							976.431945800781
+						],
+						"release_below_to_reset": false,
+						"release_downward_exit": false,
+						"release_opening_exit": false,
+						"shots": 0.0,
+						"unresolved": false,
+						"update": 35.0,
+						"velocity": [
+							447.281280517578,
+							-73.1509857177734
+						],
+						"world_contacts": []
+					},
+					"offset": 0.0,
+					"plain": {
+						"ball_id": "54878275142",
+						"below_reset": false,
+						"contacts": 2,
+						"discarded_ms": 0.0,
+						"flipper_depth_px": 0.0,
+						"guard_active": false,
+						"max_correction_px": 0.0,
+						"opening_exit": false,
+						"position": [
+							660.234619140625,
+							976.4326171875
+						],
+						"release_below_to_reset": false,
+						"release_downward_exit": false,
+						"release_opening_exit": false,
+						"shots": 0,
+						"unresolved": false,
+						"update": 35,
+						"velocity": [
+							447.281280517578,
+							-73.1509857177734
+						],
+						"world_contacts": []
+					},
+					"ratio": 0.15
+				},
+				{
+					"frame": 46,
+					"gap": 36.0,
+					"observer": {
+						"ball_id": "56170120777",
+						"below_reset": false,
+						"contacts": 1.0,
+						"discarded_ms": 0.0,
+						"flipper_depth_px": 0.0,
+						"guard_active": false,
+						"max_correction_px": 0.0,
+						"opening_exit": false,
+						"position": [
+							517.89013671875,
+							951.307067871094
+						],
+						"release_below_to_reset": false,
+						"release_downward_exit": false,
+						"release_opening_exit": false,
+						"shots": 0.0,
+						"unresolved": false,
+						"update": 46.0,
+						"velocity": [
+							131.641403198242,
+							16.462516784668
+						],
+						"world_contacts": []
+					},
+					"offset": 0.0,
+					"plain": {
+						"ball_id": "54878275142",
+						"below_reset": false,
+						"contacts": 1,
+						"discarded_ms": 0.0,
+						"flipper_depth_px": 0.0,
+						"guard_active": false,
+						"max_correction_px": 0.0,
+						"opening_exit": false,
+						"position": [
+							517.891052246094,
+							951.310241699219
+						],
+						"release_below_to_reset": false,
+						"release_downward_exit": false,
+						"release_opening_exit": false,
+						"shots": 0,
+						"unresolved": false,
+						"update": 46,
+						"velocity": [
+							131.712371826172,
+							16.6613006591797
+						],
+						"world_contacts": []
+					},
+					"ratio": 0.3
+				},
+				{
+					"frame": 33,
+					"gap": 3.0,
+					"observer": {
+						"ball_id": "56170120777",
+						"below_reset": false,
+						"contacts": 2.0,
+						"discarded_ms": 0.0,
+						"flipper_depth_px": 0.0,
+						"guard_active": false,
+						"max_correction_px": 0.0,
+						"opening_exit": false,
+						"position": [
+							1274.15771484375,
+							974.780090332031
+						],
+						"release_below_to_reset": false,
+						"release_downward_exit": false,
+						"release_opening_exit": false,
+						"shots": 0.0,
+						"unresolved": false,
+						"update": 33.0,
+						"velocity": [
+							856.502563476563,
+							-187.0546875
+						],
+						"world_contacts": []
+					},
+					"offset": 0.0,
+					"plain": {
+						"ball_id": "54878275142",
+						"below_reset": false,
+						"contacts": 2,
+						"discarded_ms": 0.0,
+						"flipper_depth_px": 0.0,
+						"guard_active": false,
+						"max_correction_px": 0.0,
+						"opening_exit": false,
+						"position": [
+							1274.16015625,
+							974.77880859375
+						],
+						"release_below_to_reset": false,
+						"release_downward_exit": false,
+						"release_opening_exit": false,
+						"shots": 0,
+						"unresolved": false,
+						"update": 33,
+						"velocity": [
+							856.502563476563,
+							-187.0546875
+						],
+						"world_contacts": []
+					},
+					"ratio": 0.5
+				},
+				{
+					"frame": 34,
+					"gap": 12.0,
+					"observer": {
+						"ball_id": "56170120777",
+						"below_reset": false,
+						"contacts": 2.0,
+						"discarded_ms": 0.0,
+						"flipper_depth_px": 0.0,
+						"guard_active": false,
+						"max_correction_px": 0.0,
+						"opening_exit": false,
+						"position": [
+							1275.2802734375,
+							974.531921386719
+						],
+						"release_below_to_reset": false,
+						"release_downward_exit": false,
+						"release_opening_exit": false,
+						"shots": 0.0,
+						"unresolved": false,
+						"update": 34.0,
+						"velocity": [
+							835.426452636719,
+							-182.622039794922
+						],
+						"world_contacts": []
+					},
+					"offset": 0.0,
+					"plain": {
+						"ball_id": "54878275142",
+						"below_reset": false,
+						"contacts": 2,
+						"discarded_ms": 0.0,
+						"flipper_depth_px": 0.0,
+						"guard_active": false,
+						"max_correction_px": 0.0,
+						"opening_exit": false,
+						"position": [
+							1275.27819824219,
+							974.533020019531
+						],
+						"release_below_to_reset": false,
+						"release_downward_exit": false,
+						"release_opening_exit": false,
+						"shots": 0,
+						"unresolved": false,
+						"update": 34,
+						"velocity": [
+							835.426452636719,
+							-182.622039794922
+						],
+						"world_contacts": []
+					},
+					"ratio": 0.5
+				},
+				{
+					"frame": 31,
+					"gap": 12.0,
+					"observer": {
+						"ball_id": "56170120777",
+						"below_reset": false,
+						"contacts": 1.0,
+						"discarded_ms": 0.0,
+						"flipper_depth_px": 0.0,
+						"guard_active": false,
+						"max_correction_px": 0.0,
+						"opening_exit": false,
+						"position": [
+							699.618896484375,
+							971.336975097656
+						],
+						"release_below_to_reset": false,
+						"release_downward_exit": false,
+						"release_opening_exit": false,
+						"shots": 0.0,
+						"unresolved": false,
+						"update": 31.0,
+						"velocity": [
+							659.076354980469,
+							-88.7976379394531
+						],
+						"world_contacts": []
+					},
+					"offset": 36.0,
+					"plain": {
+						"ball_id": "54878275142",
+						"below_reset": false,
+						"contacts": 1,
+						"discarded_ms": 0.0,
+						"flipper_depth_px": 0.0,
+						"guard_active": false,
+						"max_correction_px": 0.0,
+						"opening_exit": false,
+						"position": [
+							699.617980957031,
+							971.328186035156
+						],
+						"release_below_to_reset": false,
+						"release_downward_exit": false,
+						"release_opening_exit": false,
+						"shots": 0,
+						"unresolved": false,
+						"update": 31,
+						"velocity": [
+							658.964904785156,
+							-89.3773956298828
+						],
+						"world_contacts": []
+					},
+					"ratio": 0.7
+				}
+			],
+			"observer_metric_differences": 0,
+			"observer_position_max_px": 0.782056093215942,
+			"old_metric_differences": 0,
+			"old_position_max_px": 0.333735734224319,
+			"policy": "baseline"
+		},
+		{
+			"cases": 84,
+			"first_divergences": [
+				{
+					"frame": 38,
+					"gap": 3.0,
+					"observer": {
+						"ball_id": "56170120777",
+						"below_reset": false,
+						"contacts": 2.0,
+						"discarded_ms": 0.0,
+						"flipper_depth_px": 0.0,
+						"guard_active": false,
+						"max_correction_px": 0.0,
+						"opening_exit": false,
+						"position": [
+							1274.47802734375,
+							974.723754882813
+						],
+						"release_below_to_reset": false,
+						"release_downward_exit": false,
+						"release_opening_exit": false,
+						"shots": 0.0,
+						"unresolved": false,
+						"update": 38.0,
+						"velocity": [
+							923.878784179688,
+							-200.549438476563
+						],
+						"world_contacts": []
+					},
+					"offset": -36.0,
+					"plain": {
+						"ball_id": "54878275142",
+						"below_reset": false,
+						"contacts": 2,
+						"discarded_ms": 0.0,
+						"flipper_depth_px": 0.0,
+						"guard_active": false,
+						"max_correction_px": 0.0,
+						"opening_exit": false,
+						"position": [
+							1274.48095703125,
+							974.72265625
+						],
+						"release_below_to_reset": false,
+						"release_downward_exit": false,
+						"release_opening_exit": false,
+						"shots": 0,
+						"unresolved": false,
+						"update": 38,
+						"velocity": [
+							923.878784179688,
+							-200.549438476563
+						],
+						"world_contacts": []
+					},
+					"ratio": 0.05
+				},
+				{
+					"frame": 43,
+					"gap": 12.0,
+					"observer": {
+						"ball_id": "56170120777",
+						"below_reset": false,
+						"contacts": 2.0,
+						"discarded_ms": 0.0,
+						"flipper_depth_px": 0.0,
+						"guard_active": false,
+						"max_correction_px": 0.0,
+						"opening_exit": false,
+						"position": [
+							1272.12548828125,
+							975.230895996094
+						],
+						"release_below_to_reset": false,
+						"release_downward_exit": false,
+						"release_opening_exit": false,
+						"shots": 0.0,
+						"unresolved": false,
+						"update": 43.0,
+						"velocity": [
+							829.955932617188,
+							-180.913909912109
+						],
+						"world_contacts": []
+					},
+					"offset": -36.0,
+					"plain": {
+						"ball_id": "54878275142",
+						"below_reset": false,
+						"contacts": 2,
+						"discarded_ms": 0.0,
+						"flipper_depth_px": 0.0,
+						"guard_active": false,
+						"max_correction_px": 0.0,
+						"opening_exit": false,
+						"position": [
+							1272.12744140625,
+							975.229736328125
+						],
+						"release_below_to_reset": false,
+						"release_downward_exit": false,
+						"release_opening_exit": false,
+						"shots": 0,
+						"unresolved": false,
+						"update": 43,
+						"velocity": [
+							829.955932617188,
+							-180.913909912109
+						],
+						"world_contacts": []
+					},
+					"ratio": 0.05
+				},
+				{
+					"frame": 37,
+					"gap": 36.0,
+					"observer": {
+						"ball_id": "56170120777",
+						"below_reset": false,
+						"contacts": 2.0,
+						"discarded_ms": 0.0,
+						"flipper_depth_px": 0.0,
+						"guard_active": false,
+						"max_correction_px": 0.0,
+						"opening_exit": false,
+						"position": [
+							1274.47473144531,
+							974.710144042969
+						],
+						"release_below_to_reset": false,
+						"release_downward_exit": false,
+						"release_opening_exit": false,
+						"shots": 0.0,
+						"unresolved": false,
+						"update": 37.0,
+						"velocity": [
+							931.343627929688,
+							-203.686859130859
+						],
+						"world_contacts": []
+					},
+					"offset": -36.0,
+					"plain": {
+						"ball_id": "54878275142",
+						"below_reset": false,
+						"contacts": 2,
+						"discarded_ms": 0.0,
+						"flipper_depth_px": 0.0,
+						"guard_active": false,
+						"max_correction_px": 0.0,
+						"opening_exit": false,
+						"position": [
+							1274.47680664063,
+							974.708984375
+						],
+						"release_below_to_reset": false,
+						"release_downward_exit": false,
+						"release_opening_exit": false,
+						"shots": 0,
+						"unresolved": false,
+						"update": 37,
+						"velocity": [
+							931.343627929688,
+							-203.686859130859
+						],
+						"world_contacts": []
+					},
+					"ratio": 0.15
+				},
+				{
+					"frame": 35,
+					"gap": 72.0,
+					"observer": {
+						"ball_id": "56170120777",
+						"below_reset": false,
+						"contacts": 2.0,
+						"discarded_ms": 0.0,
+						"flipper_depth_px": 0.0,
+						"guard_active": false,
+						"max_correction_px": 0.0,
+						"opening_exit": false,
+						"position": [
+							660.23583984375,
+							976.431945800781
+						],
+						"release_below_to_reset": false,
+						"release_downward_exit": false,
+						"release_opening_exit": false,
+						"shots": 0.0,
+						"unresolved": false,
+						"update": 35.0,
+						"velocity": [
+							447.281280517578,
+							-73.1509857177734
+						],
+						"world_contacts": []
+					},
+					"offset": 0.0,
+					"plain": {
+						"ball_id": "54878275142",
+						"below_reset": false,
+						"contacts": 2,
+						"discarded_ms": 0.0,
+						"flipper_depth_px": 0.0,
+						"guard_active": false,
+						"max_correction_px": 0.0,
+						"opening_exit": false,
+						"position": [
+							660.234619140625,
+							976.4326171875
+						],
+						"release_below_to_reset": false,
+						"release_downward_exit": false,
+						"release_opening_exit": false,
+						"shots": 0,
+						"unresolved": false,
+						"update": 35,
+						"velocity": [
+							447.281280517578,
+							-73.1509857177734
+						],
+						"world_contacts": []
+					},
+					"ratio": 0.15
+				},
+				{
+					"frame": 59,
+					"gap": 72.0,
+					"observer": {
+						"ball_id": "56170120777",
+						"below_reset": false,
+						"contacts": 1.0,
+						"discarded_ms": 0.0,
+						"flipper_depth_px": 0.0,
+						"guard_active": false,
+						"max_correction_px": 0.0,
+						"opening_exit": false,
+						"position": [
+							1298.53186035156,
+							970.487121582031
+						],
+						"release_below_to_reset": false,
+						"release_downward_exit": false,
+						"release_opening_exit": false,
+						"shots": 0.0,
+						"unresolved": false,
+						"update": 59.0,
+						"velocity": [
+							-413.531097412109,
+							54.2979431152344
+						],
+						"world_contacts": []
+					},
+					"offset": 0.0,
+					"plain": {
+						"ball_id": "54878275142",
+						"below_reset": false,
+						"contacts": 1,
+						"discarded_ms": 0.0,
+						"flipper_depth_px": 0.0,
+						"guard_active": false,
+						"max_correction_px": 0.0,
+						"opening_exit": false,
+						"position": [
+							1298.53356933594,
+							970.480346679688
+						],
+						"release_below_to_reset": false,
+						"release_downward_exit": false,
+						"release_opening_exit": false,
+						"shots": 0,
+						"unresolved": false,
+						"update": 59,
+						"velocity": [
+							-413.191741943359,
+							53.2399749755859
+						],
+						"world_contacts": []
+					},
+					"ratio": 0.5
+				},
+				{
+					"frame": 59,
+					"gap": 72.0,
+					"observer": {
+						"ball_id": "56170120777",
+						"below_reset": false,
+						"contacts": 2.0,
+						"discarded_ms": 0.0,
+						"flipper_depth_px": 0.0,
+						"guard_active": false,
+						"max_correction_px": 0.0,
+						"opening_exit": false,
+						"position": [
+							641.497680664063,
+							973.81494140625
+						],
+						"release_below_to_reset": false,
+						"release_downward_exit": false,
+						"release_opening_exit": false,
+						"shots": 0.0,
+						"unresolved": false,
+						"update": 59.0,
+						"velocity": [
+							-994.097717285156,
+							-218.145950317383
+						],
+						"world_contacts": []
+					},
+					"offset": 0.0,
+					"plain": {
+						"ball_id": "54878275142",
+						"below_reset": false,
+						"contacts": 2,
+						"discarded_ms": 0.0,
+						"flipper_depth_px": 0.0,
+						"guard_active": false,
+						"max_correction_px": 0.0,
+						"opening_exit": false,
+						"position": [
+							641.500122070313,
+							973.816162109375
+						],
+						"release_below_to_reset": false,
+						"release_downward_exit": false,
+						"release_opening_exit": false,
+						"shots": 0,
+						"unresolved": false,
+						"update": 59,
+						"velocity": [
+							-994.097717285156,
+							-218.145950317383
+						],
+						"world_contacts": []
+					},
+					"ratio": 0.7
+				},
+				{
+					"frame": 48,
+					"gap": 36.0,
+					"observer": {
+						"ball_id": "56170120777",
+						"below_reset": false,
+						"contacts": 2.0,
+						"discarded_ms": 0.0,
+						"flipper_depth_px": 0.0,
+						"guard_active": false,
+						"max_correction_px": 0.0,
+						"opening_exit": false,
+						"position": [
+							652.141235351563,
+							976.154724121094
+						],
+						"release_below_to_reset": false,
+						"release_downward_exit": false,
+						"release_opening_exit": false,
+						"shots": 0.0,
+						"unresolved": false,
+						"update": 48.0,
+						"velocity": [
+							-1210.62939453125,
+							-265.316711425781
+						],
+						"world_contacts": []
+					},
+					"offset": 0.0,
+					"plain": {
+						"ball_id": "54878275142",
+						"below_reset": false,
+						"contacts": 2,
+						"discarded_ms": 0.0,
+						"flipper_depth_px": 0.0,
+						"guard_active": false,
+						"max_correction_px": 0.0,
+						"opening_exit": false,
+						"position": [
+							652.139953613281,
+							976.153930664063
+						],
+						"release_below_to_reset": false,
+						"release_downward_exit": false,
+						"release_opening_exit": false,
+						"shots": 0,
+						"unresolved": false,
+						"update": 48,
+						"velocity": [
+							-1210.62939453125,
+							-265.316711425781
+						],
+						"world_contacts": []
+					},
+					"ratio": 0.9
+				},
+				{
+					"frame": 58,
+					"gap": 72.0,
+					"observer": {
+						"ball_id": "56170120777",
+						"below_reset": false,
+						"contacts": 2.0,
+						"discarded_ms": 0.0,
+						"flipper_depth_px": 0.0,
+						"guard_active": false,
+						"max_correction_px": 0.0,
+						"opening_exit": false,
+						"position": [
+							1271.25854492188,
+							975.422058105469
+						],
+						"release_below_to_reset": false,
+						"release_downward_exit": false,
+						"release_opening_exit": false,
+						"shots": 0.0,
+						"unresolved": false,
+						"update": 58.0,
+						"velocity": [
+							714.4697265625,
+							-155.378952026367
+						],
+						"world_contacts": []
+					},
+					"offset": 36.0,
+					"plain": {
+						"ball_id": "54878275142",
+						"below_reset": false,
+						"contacts": 2,
+						"discarded_ms": 0.0,
+						"flipper_depth_px": 0.0,
+						"guard_active": false,
+						"max_correction_px": 0.0,
+						"opening_exit": false,
+						"position": [
+							1271.26037597656,
+							975.421020507813
+						],
+						"release_below_to_reset": false,
+						"release_downward_exit": false,
+						"release_opening_exit": false,
+						"shots": 0,
+						"unresolved": false,
+						"update": 58,
+						"velocity": [
+							714.4697265625,
+							-155.378952026367
+						],
+						"world_contacts": []
+					},
+					"ratio": 0.99
+				}
+			],
+			"observer_metric_differences": 0,
+			"observer_position_max_px": 0.570042252540588,
+			"old_metric_differences": 0,
+			"old_position_max_px": 0.863452613353729,
+			"policy": "unlimited"
+		}
+	],
+	"checks": 29773,
+	"failures": 0,
+	"scope": "Unmodified inherited near-grid implementation; independent check of old versus observer trajectories"
+}

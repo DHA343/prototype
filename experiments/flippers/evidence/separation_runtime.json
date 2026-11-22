@@ -1,0 +1,155 @@
+{
+	"controls": [
+		{
+			"flippers": [
+				0,
+				0
+			],
+			"label": "実験用：現行\n1 / 2 / 3 / 4：方式切替・球リセット　R：球リセット\nA / D / Space：既存操作　検出B・③・接触上限8回を維持",
+			"mode": 0,
+			"motion": "res://pinball/motion.gd"
+		},
+		{
+			"flippers": [
+				2,
+				2
+			],
+			"label": "実験用：3条件のみ\n1 / 2 / 3 / 4：方式切替・球リセット　R：球リセット\nA / D / Space：既存操作　検出B・③・接触上限8回を維持",
+			"mode": 1,
+			"motion": "res://pinball/motion.gd"
+		},
+		{
+			"flippers": [
+				0,
+				0
+			],
+			"label": "実験用：新接触の法線分離のみ\n1 / 2 / 3 / 4：方式切替・球リセット　R：球リセット\nA / D / Space：既存操作　検出B・③・接触上限8回を維持",
+			"mode": 2,
+			"motion": "res://experiments/flippers/separation.gd"
+		},
+		{
+			"flippers": [
+				2,
+				2
+			],
+			"label": "実験用：3条件＋新接触の法線分離\n1 / 2 / 3 / 4：方式切替・球リセット　R：球リセット\nA / D / Space：既存操作　検出B・③・接触上限8回を維持",
+			"mode": 3,
+			"motion": "res://experiments/flippers/separation.gd"
+		}
+	],
+	"results": [
+		{
+			"exceptions": 0,
+			"id": 96,
+			"mode": 0,
+			"position": [
+				953.6123046875,
+				1037.60473632813
+			],
+			"rate": 30.0,
+			"velocity": [
+				960.804931640625,
+				-142.314575195313
+			]
+		},
+		{
+			"exceptions": 0,
+			"id": 1885,
+			"mode": 0,
+			"position": [
+				1131.75708007813,
+				959.890808105469
+			],
+			"rate": 30.0,
+			"velocity": [
+				0.0,
+				360.0
+			]
+		},
+		{
+			"exceptions": 0,
+			"id": 96,
+			"mode": 1,
+			"position": [
+				940.155395507813,
+				1022.37475585938
+			],
+			"rate": 30.0,
+			"velocity": [
+				542.748901367188,
+				-648.293151855469
+			]
+		},
+		{
+			"exceptions": 0,
+			"id": 1885,
+			"mode": 1,
+			"position": [
+				1131.75708007813,
+				959.890808105469
+			],
+			"rate": 30.0,
+			"velocity": [
+				0.0,
+				360.0
+			]
+		},
+		{
+			"exceptions": 0,
+			"id": 96,
+			"mode": 2,
+			"position": [
+				951.147216796875,
+				1042.62915039063
+			],
+			"rate": 30.0,
+			"velocity": [
+				839.261047363281,
+				-98.8894500732422
+			]
+		},
+		{
+			"exceptions": 0,
+			"id": 1885,
+			"mode": 2,
+			"position": [
+				1131.75708007813,
+				1163.77624511719
+			],
+			"rate": 30.0,
+			"velocity": [
+				0.0,
+				360.0
+			]
+		},
+		{
+			"exceptions": 0,
+			"id": 96,
+			"mode": 3,
+			"position": [
+				941.533020019531,
+				1024.81518554688
+			],
+			"rate": 30.0,
+			"velocity": [
+				542.748901367188,
+				-648.293151855469
+			]
+		},
+		{
+			"exceptions": 0,
+			"id": 1885,
+			"mode": 3,
+			"position": [
+				1131.75708007813,
+				1163.77624511719
+			],
+			"rate": 30.0,
+			"velocity": [
+				0.0,
+				360.0
+			]
+		}
+	],
+	"scope": "Live rendered preview; actual four-mode key handlers and lean motion; two CLI fixtures per mode"
+}
