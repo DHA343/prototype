@@ -3,8 +3,6 @@ extends Node2D
 
 signal bumper_hit(center: Vector2)
 
-const PREDICTION_STEP: float = 1.0 / 240.0
-
 @export_range(0.0, 1.0, 0.05, "suffix:s") var respawn_delay: float = 0.45
 
 var enemies: Array[Enemy] = []
@@ -86,66 +84,9 @@ func reset_ball() -> void:
 	place_ball(_spawn_position)
 
 
-## Returns the predicted shot velocity in world coordinates, or zero when no shot is predicted.
+## Returns the predicted directed shot velocity in world coordinates, or zero.
 func predict_shot() -> Vector2:
-	if not ball.active or flippers.is_target_disabled(ball.get_instance_id()):
-		return Vector2.ZERO
-	var query := PhysicsShapeQueryParameters2D.new()
-	query.shape = (ball.get_node("CollisionShape2D") as CollisionShape2D).shape
-	query.collision_mask = ball.collision_mask
-	var excluded: Array[RID] = [ball.get_rid()]
-	for flipper: PinballFlipper in flippers.items:
-		excluded.append(flipper.get_rid())
-	query.exclude = excluded
-	var space := ball.get_world_2d().direct_space_state
-	var position := ball.global_position
-	var velocity := ball.velocity
-	var elapsed := 0.0
-	var swings := flippers.plan_motion(true, true)
-	var stationary := flippers.items.duplicate()
-	for swing: PinballFlipper.Swing in swings:
-		stationary.erase(swing.flipper)
-	var horizon := deg_to_rad(flippers.swing_angle) / deg_to_rad(flippers.raise_speed)
-	var step_limit := flippers.motion_step_limit(ball.radius, true, true)
-	while elapsed < horizon:
-		var step := minf(minf(PREDICTION_STEP, step_limit), horizon - elapsed)
-		velocity = ball.step_velocity(velocity, step)
-		query.transform = Transform2D(0.0, position)
-		query.motion = velocity * step
-		var travel := space.cast_motion(query)
-		var hit := flippers.first_contact(swings, position, velocity, ball.radius, elapsed, step * travel[0])
-		if not hit.is_empty() and (travel[0] >= 1.0 or hit.time < step * travel[0]):
-			var normal: Vector2 = hit.normal
-			var surface_velocity: Vector2 = hit.surface_velocity
-			if (velocity - surface_velocity).dot(normal) < 0.0:
-				var reflected := PinballBall.reflected_velocity(velocity, normal,
-					flippers.restitution, hit.strike_surface_velocity)
-				if hit.is_striking:
-					var flipper: PinballFlipper = hit.flipper
-					reflected = flippers.direct_shot(reflected, hit.ratio, flipper.side, normal)
-				return reflected.limit_length(ball.max_speed)
-		# A wall or bumper reached first invalidates this direct flipper preview.
-		if travel[0] < 1.0:
-			return Vector2.ZERO
-		position += query.motion
-		elapsed += step
-		for flipper: PinballFlipper in stationary:
-			if not flipper.visible:
-				continue
-			var contact := flipper.predicted_contact(position, ball.radius, elapsed, step,
-				flippers.swing_angle, flippers.raise_speed, flippers.power_equalization)
-			if contact.is_empty():
-				continue
-			var normal: Vector2 = contact["normal"]
-			var surface_velocity: Vector2 = contact["surface_velocity"]
-			if (velocity - surface_velocity).dot(normal) < 0.0:
-				surface_velocity = contact["strike_surface_velocity"]
-				var reflected := PinballBall.reflected_velocity(velocity, normal,
-					flippers.restitution, surface_velocity)
-				if contact["is_striking"]:
-					reflected = flippers.direct_shot(reflected, contact["ratio"], flipper.side, normal)
-				return reflected.limit_length(ball.max_speed)
-	return Vector2.ZERO
+	return $Playfield/ShotGuide.predict_shot()
 
 
 func _can_spawn_enemy(point: Vector2, radius: float) -> bool:

@@ -27,6 +27,7 @@ func _run() -> void:
 				_main.ball._motion = candidate
 			else:
 				var original := PinballMotion.new(_main.ball)
+				original.separate_new_contacts = false
 				original.native_contact = _main.ball._resolve_contact
 				_main.ball._motion = original
 			_main.ball.gravity = 0.0

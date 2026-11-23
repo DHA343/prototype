@@ -66,7 +66,9 @@ func _run() -> void:
 			await preview.reset_case(index, mode)
 			var original: PinballMotion = Lean.new(preview.main.ball) if mode == 1 else PinballMotion.new(preview.main.ball)
 			if mode == 1: (original as Lean).native_response = preview.main.ball._resolve_contact
-			else: original.native_contact = preview.main.ball._resolve_contact
+			else:
+				original.separate_new_contacts = false
+				original.native_contact = preview.main.ball._resolve_contact
 			original.contact_recorded = preview.main.ball._record_contact
 			preview.main.ball._motion = original
 			preview.scenes.advance(preview.main, preview.input, 0)

@@ -68,10 +68,14 @@ func first_contact(
 	radius: float, elapsed: float, duration: float,
 ) -> Dictionary:
 	var first := {}
+	var first_swing: PinballFlipper.Swing
 	for swing: PinballFlipper.Swing in swings:
 		var hit := swing.sweep(center, velocity, radius, elapsed, duration, power_equalization)
 		if not hit.is_empty() and (first.is_empty() or hit.time < first.time):
 			first = hit
+			first_swing = swing
+	if first_swing != null:
+		first.swing = first_swing
 	return first
 
 
@@ -119,14 +123,30 @@ func motion_step_limit(ball_radius: float, left_pressed: bool, right_pressed: bo
 func direct_shot(
 	physical_velocity: Vector2, contact_ratio: float, side: int, normal: Vector2,
 ) -> Vector2:
-	var direction := shot_direction(contact_ratio, side)
-	# An edited angle must not send the ball back into the contact surface.
-	return direction * physical_velocity.length() if direction.dot(normal) > 0.0 else physical_velocity
+	var direction := _outward_direction(contact_ratio, side, normal)
+	return direction * physical_velocity.length() if direction != Vector2.ZERO else physical_velocity
+
+
+## Zero means the shot uses physical reflection at the powered surface speed.
+func outward_shot_direction(hit: Dictionary) -> Vector2:
+	var flipper: PinballFlipper = hit.flipper
+	return _outward_direction(hit.ratio, flipper.side, hit.normal)
+
+
+func shot_velocity(incoming: Vector2, hit: Dictionary, direction: Vector2) -> Vector2:
+	var reflected := PinballMotion.reflected_velocity(
+		incoming, hit.normal, restitution, hit.strike_surface_velocity)
+	return direction * reflected.length() if direction != Vector2.ZERO else reflected
 
 
 func shot_direction(contact_ratio: float, side: int) -> Vector2:
 	var angle := lerpf(root_angle, tip_angle, clampf(contact_ratio, 0.0, 1.0))
 	return Vector2.UP.rotated(deg_to_rad(angle * (1.0 if side == 0 else -1.0)))
+
+
+func _outward_direction(contact_ratio: float, side: int, normal: Vector2) -> Vector2:
+	var direction := shot_direction(contact_ratio, side)
+	return direction if direction.dot(normal) > 0.0 else Vector2.ZERO
 
 
 func _refresh_shape() -> void:

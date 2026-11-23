@@ -39,6 +39,7 @@ func _run() -> void:
 					ball._motion = candidate
 				else:
 					ball._motion = PinballMotion.new(ball)
+					ball._motion.separate_new_contacts = false
 					ball._motion.native_contact = ball._resolve_contact
 				ball._motion.contact_recorded = ball._record_contact
 				_motion = ball._motion

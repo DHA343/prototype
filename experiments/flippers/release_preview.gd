@@ -36,6 +36,7 @@ func set_mode(value: int) -> void:
 		item.set("rule", 0 if mode == 0 else 2)
 	if mode == 0:
 		ball._motion = PinballMotion.new(ball)
+		ball._motion.separate_new_contacts = false
 		ball._motion.native_contact = ball._resolve_contact
 	else:
 		var candidate := Motion.new(ball)

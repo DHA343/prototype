@@ -12,6 +12,7 @@ var _duration: float = 0.0
 
 func _init(target: CharacterBody2D) -> void:
 	super(target)
+	separate_new_contacts = false
 	native_contact = _native_response
 
 

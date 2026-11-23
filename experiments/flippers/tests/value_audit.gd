@@ -113,6 +113,7 @@ func _episode(mode: String, profile: String, episode_seed: int) -> Dictionary:
 			_main.ball._motion = candidate
 		else:
 			var original := PinballMotion.new(_main.ball)
+			original.separate_new_contacts = false
 			original.native_contact = _main.ball._resolve_contact
 			original.contact_recorded = _main.ball._record_contact
 			_main.ball._motion = original

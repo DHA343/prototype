@@ -86,6 +86,7 @@ func _prepare_case(saved: Dictionary, observed: bool) -> Array[PinballFlipper.Sw
 		_main.ball._motion = candidate
 	else:
 		var motion := PinballMotion.new(_main.ball)
+		motion.separate_new_contacts = false
 		motion.native_contact = _main.ball._resolve_contact
 		motion.contact_recorded = _main.ball._record_contact
 		_main.ball._motion = motion
