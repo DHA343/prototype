@@ -96,7 +96,7 @@ func _episode(mode: String, profile: String, episode_seed: int) -> Dictionary:
 	_main.ball.sound_requested.disconnect(_main._sound.request)
 	for node: Node in _main.get_node("Playfield").find_children("*", "", true, false):
 		if node is PinballBumper: node.hit_sound = null
-	_probe = Probe.new(_main.ball)
+	_probe = _make_probe()
 	_probe.normal_new = mode in ["N", "B", "F"]
 	_probe.refine = mode == "F"
 	_probe.observe = _observe
@@ -194,6 +194,10 @@ func _episode(mode: String, profile: String, episode_seed: int) -> Dictionary:
 	_main.free()
 	await physics_frame
 	return result
+
+
+func _make_probe() -> Probe:
+	return Probe.new(_main.ball)
 
 
 func _observe_tick(before: Vector2, bits: int) -> void:

@@ -1,0 +1,962 @@
+{
+  "scope": "Fixed 3 shot conditions and new-contact normal separation in every new trial",
+  "autoplay": {
+    "current": {
+      "external_down_turns": 57,
+      "guarded_inside_end_ticks": 13,
+      "guarded_inside_ticks": 13,
+      "guarded_ticks": 1872,
+      "internal_releases": 8,
+      "one_board_only_clear_ticks": 13,
+      "releases": 79,
+      "shot_cycles": 80,
+      "wall_seconds": 240,
+      "active_seconds": 232.53333333333333,
+      "caps": 0,
+      "max_slow_run": 0,
+      "release_depth_max_px": 45.0609800429869,
+      "drops": 16,
+      "early_releases": 0
+    },
+    "early": {
+      "external_down_turns": 14,
+      "guarded_inside_end_ticks": 15,
+      "guarded_inside_ticks": 15,
+      "guarded_ticks": 96,
+      "internal_releases": 11,
+      "one_board_only_clear_ticks": 15,
+      "releases": 92,
+      "shot_cycles": 93,
+      "wall_seconds": 240,
+      "active_seconds": 230.66666666666666,
+      "caps": 1,
+      "max_slow_run": 0,
+      "release_depth_max_px": 64.5574257708283,
+      "drops": 20,
+      "early_releases": 8
+    },
+    "immediate": {
+      "external_down_turns": 73,
+      "guarded_inside_end_ticks": 11,
+      "guarded_inside_ticks": 11,
+      "guarded_ticks": 1913,
+      "internal_releases": 8,
+      "one_board_only_clear_ticks": 11,
+      "releases": 94,
+      "shot_cycles": 94,
+      "wall_seconds": 240,
+      "active_seconds": 230.66666666666666,
+      "caps": 1,
+      "max_slow_run": 0,
+      "release_depth_max_px": 50.9749752917809,
+      "drops": 20,
+      "early_releases": 0
+    }
+  },
+  "recorded_current_internal": [
+    {
+      "seed": 113,
+      "shot_frame": 3716,
+      "release_frame": 3718,
+      "age_ticks": 2,
+      "side": 0,
+      "depth_px": 45.060965393356,
+      "turns": [
+        {
+          "frame": 3717,
+          "kind": "enemy",
+          "incoming": [
+            750.052917480469,
+            -2343.18676757813
+          ],
+          "outgoing": [
+            -11.7255859375,
+            2005.70043945313
+          ],
+          "gap": [
+            10.2505838391044,
+            143.715071072896
+          ]
+        }
+      ],
+      "earlier_clear_tick": true,
+      "maximum_correction_px": 37.0093193054199,
+      "powered_shots_on_release_tick": 0,
+      "cap_on_release_tick": false,
+      "guard_after_release_tick": false,
+      "end_gap": [
+        -4.03071400980295,
+        155.726208247553
+      ],
+      "unexecuted_path_ms": 16.6666666666667,
+      "drop_in_recorded_tail": false
+    },
+    {
+      "seed": 113,
+      "shot_frame": 3860,
+      "release_frame": 3862,
+      "age_ticks": 2,
+      "side": 0,
+      "depth_px": 10.1096254897012,
+      "turns": [
+        {
+          "frame": 3861,
+          "kind": "enemy",
+          "incoming": [
+            543.467468261719,
+            -2303.78515625
+          ],
+          "outgoing": [
+            475.256591796875,
+            1893.6796875
+          ],
+          "gap": [
+            16.8940949089389,
+            162.192202360822
+          ]
+        }
+      ],
+      "earlier_clear_tick": true,
+      "maximum_correction_px": 8.82414245605469,
+      "powered_shots_on_release_tick": 0,
+      "cap_on_release_tick": false,
+      "guard_after_release_tick": false,
+      "end_gap": [
+        2.7748955554776,
+        154.104660902556
+      ],
+      "unexecuted_path_ms": 2.57267483310598,
+      "drop_in_recorded_tail": false
+    },
+    {
+      "seed": 113,
+      "shot_frame": 7028,
+      "release_frame": 7031,
+      "age_ticks": 3,
+      "side": 0,
+      "depth_px": 4.89788841848971,
+      "turns": [
+        {
+          "frame": 7030,
+          "kind": "enemy",
+          "incoming": [
+            -2358.2099609375,
+            -243.356689453125
+          ],
+          "outgoing": [
+            -2148.85864257813,
+            953.3955078125
+          ],
+          "gap": [
+            5.16433772729094,
+            87.4135186279934
+          ]
+        }
+      ],
+      "earlier_clear_tick": true,
+      "maximum_correction_px": 4.2879581451416,
+      "powered_shots_on_release_tick": 0,
+      "cap_on_release_tick": false,
+      "guard_after_release_tick": false,
+      "end_gap": [
+        1.16465022627455,
+        155.364250980121
+      ],
+      "unexecuted_path_ms": 0.00751330863088887,
+      "drop_in_recorded_tail": true
+    },
+    {
+      "seed": 271,
+      "shot_frame": 4319,
+      "release_frame": 4322,
+      "age_ticks": 3,
+      "side": 0,
+      "depth_px": 1.65399170930888,
+      "turns": [
+        {
+          "frame": 4321,
+          "kind": "enemy",
+          "incoming": [
+            1253.58056640625,
+            -2368.458984375
+          ],
+          "outgoing": [
+            -2001.23486328125,
+            950.5791015625
+          ],
+          "gap": [
+            9.22314743785046,
+            74.1978207982656
+          ]
+        }
+      ],
+      "earlier_clear_tick": true,
+      "maximum_correction_px": 1.46437418460846,
+      "powered_shots_on_release_tick": 0,
+      "cap_on_release_tick": false,
+      "guard_after_release_tick": false,
+      "end_gap": [
+        1.17263740306936,
+        136.664366693357
+      ],
+      "unexecuted_path_ms": 0.0,
+      "drop_in_recorded_tail": false
+    },
+    {
+      "seed": 271,
+      "shot_frame": 4535,
+      "release_frame": 4537,
+      "age_ticks": 2,
+      "side": 0,
+      "depth_px": 12.142578125,
+      "turns": [
+        {
+          "frame": 4536,
+          "kind": "enemy",
+          "incoming": [
+            1668.77587890625,
+            -2391.46875
+          ],
+          "outgoing": [
+            -313.101684570313,
+            2389.08447265625
+          ],
+          "gap": [
+            1.806619646394,
+            47.4609616956631
+          ]
+        }
+      ],
+      "earlier_clear_tick": false,
+      "maximum_correction_px": 10.5936889648438,
+      "powered_shots_on_release_tick": 0,
+      "cap_on_release_tick": false,
+      "guard_after_release_tick": false,
+      "end_gap": [
+        0.5235595703125,
+        35.4764404296875
+      ],
+      "unexecuted_path_ms": 0.00737486861094108,
+      "drop_in_recorded_tail": true
+    },
+    {
+      "seed": 271,
+      "shot_frame": 4967,
+      "release_frame": 4968,
+      "age_ticks": 1,
+      "side": 0,
+      "depth_px": 44.1001840938271,
+      "turns": [
+        {
+          "frame": 4967,
+          "kind": "enemy",
+          "incoming": [
+            1809.40368652344,
+            -2384.37963867188
+          ],
+          "outgoing": [
+            -1481.92346191406,
+            942.820068359375
+          ],
+          "gap": [
+            0.149174460136152,
+            71.2143352313034
+          ]
+        }
+      ],
+      "earlier_clear_tick": false,
+      "maximum_correction_px": 44.2521057128906,
+      "powered_shots_on_release_tick": 1,
+      "cap_on_release_tick": false,
+      "guard_after_release_tick": true,
+      "end_gap": [
+        -10.2572152813492,
+        60.3798023574699
+      ],
+      "unexecuted_path_ms": 0.0,
+      "drop_in_recorded_tail": false
+    },
+    {
+      "seed": 271,
+      "shot_frame": 4968,
+      "release_frame": 4969,
+      "age_ticks": 1,
+      "side": 0,
+      "depth_px": 10.2572152813492,
+      "turns": [
+        {
+          "frame": 4968,
+          "kind": "enemy",
+          "incoming": [
+            1853.50427246094,
+            -2762.66943359375
+          ],
+          "outgoing": [
+            668.67236328125,
+            2726.005859375
+          ],
+          "gap": [
+            0.238593479730614,
+            64.9991394128021
+          ]
+        }
+      ],
+      "earlier_clear_tick": false,
+      "maximum_correction_px": 8.95269203186035,
+      "powered_shots_on_release_tick": 0,
+      "cap_on_release_tick": false,
+      "guard_after_release_tick": false,
+      "end_gap": [
+        7.3519853589662,
+        50.5384051440436
+      ],
+      "unexecuted_path_ms": 0.424944336567128,
+      "drop_in_recorded_tail": false
+    },
+    {
+      "seed": 271,
+      "shot_frame": 5111,
+      "release_frame": 5113,
+      "age_ticks": 2,
+      "side": 0,
+      "depth_px": 28.6851806640625,
+      "turns": [
+        {
+          "frame": 5112,
+          "kind": "enemy",
+          "incoming": [
+            1730.13049316406,
+            -2371.01391601563
+          ],
+          "outgoing": [
+            -2456.1728515625,
+            254.405517578125
+          ],
+          "gap": [
+            5.83085219309861,
+            39.9174919709779
+          ]
+        }
+      ],
+      "earlier_clear_tick": true,
+      "maximum_correction_px": 24.9923706054688,
+      "powered_shots_on_release_tick": 0,
+      "cap_on_release_tick": false,
+      "guard_after_release_tick": false,
+      "end_gap": [
+        2.51910400390625,
+        33.4808959960938
+      ],
+      "unexecuted_path_ms": 6.49348562740565,
+      "drop_in_recorded_tail": true
+    }
+  ],
+  "local": [
+    {
+      "name": "live_age1",
+      "method": "current",
+      "shots": 2,
+      "caps": 0,
+      "internal_releases": 2,
+      "maximum_correction_px": 36.9593505859375,
+      "ending_y_velocity": -1235.52294921875,
+      "first_shot_velocity": [
+        1809.40368652344,
+        -2384.37963867188
+      ],
+      "first_tick_position_delta_from_source": 9.622973124161367,
+      "first_tick_velocity_delta_from_source": 57.5531735610115,
+      "complete_first_tick_reproduction": false
+    },
+    {
+      "name": "live_age1",
+      "method": "early",
+      "shots": 2,
+      "caps": 0,
+      "internal_releases": 2,
+      "maximum_correction_px": 36.9593505859375,
+      "ending_y_velocity": -1235.52294921875,
+      "first_shot_velocity": [
+        1809.40368652344,
+        -2384.37963867188
+      ]
+    },
+    {
+      "name": "live_age1",
+      "method": "immediate",
+      "shots": 2,
+      "caps": 0,
+      "internal_releases": 0,
+      "maximum_correction_px": 2.67062473297119,
+      "ending_y_velocity": -613.203247070313,
+      "first_shot_velocity": [
+        1809.40368652344,
+        -2384.37963867188
+      ]
+    },
+    {
+      "name": "live_age2",
+      "method": "current",
+      "shots": 1,
+      "caps": 0,
+      "internal_releases": 1,
+      "maximum_correction_px": 37.0750045776367,
+      "ending_y_velocity": -88.6142578125,
+      "first_shot_velocity": [
+        750.052917480469,
+        -2368.18676757813
+      ],
+      "first_tick_position_delta_from_source": 0.0,
+      "first_tick_velocity_delta_from_source": 0.0,
+      "complete_first_tick_reproduction": true
+    },
+    {
+      "name": "live_age2",
+      "method": "early",
+      "shots": 2,
+      "caps": 0,
+      "internal_releases": 1,
+      "maximum_correction_px": 30.4820346832275,
+      "ending_y_velocity": -155.180908203125,
+      "first_shot_velocity": [
+        750.052917480469,
+        -2368.18676757813
+      ]
+    },
+    {
+      "name": "live_age2",
+      "method": "immediate",
+      "shots": 3,
+      "caps": 0,
+      "internal_releases": 1,
+      "maximum_correction_px": 29.3985939025879,
+      "ending_y_velocity": -162.398193359375,
+      "first_shot_velocity": [
+        750.052917480469,
+        -2368.18676757813
+      ]
+    },
+    {
+      "name": "top_0.05",
+      "method": "current",
+      "shots": 1,
+      "caps": 0,
+      "internal_releases": 0,
+      "maximum_correction_px": 0.184192582964897,
+      "ending_y_velocity": -1125.86071777344,
+      "first_shot_velocity": [
+        -480.309997558594,
+        -1550.86071777344
+      ]
+    },
+    {
+      "name": "top_0.05",
+      "method": "early",
+      "shots": 1,
+      "caps": 0,
+      "internal_releases": 0,
+      "maximum_correction_px": 0.184192582964897,
+      "ending_y_velocity": -1125.86071777344,
+      "first_shot_velocity": [
+        -480.309997558594,
+        -1550.86071777344
+      ]
+    },
+    {
+      "name": "top_0.05",
+      "method": "immediate",
+      "shots": 1,
+      "caps": 0,
+      "internal_releases": 0,
+      "maximum_correction_px": 0.184192582964897,
+      "ending_y_velocity": -1125.86071777344,
+      "first_shot_velocity": [
+        -480.309997558594,
+        -1550.86071777344
+      ]
+    },
+    {
+      "name": "top_0.5",
+      "method": "current",
+      "shots": 1,
+      "caps": 0,
+      "internal_releases": 0,
+      "maximum_correction_px": 1.21995723247528,
+      "ending_y_velocity": -1471.95825195313,
+      "first_shot_velocity": [
+        364.820861816406,
+        -2262.3837890625
+      ]
+    },
+    {
+      "name": "top_0.5",
+      "method": "early",
+      "shots": 1,
+      "caps": 0,
+      "internal_releases": 0,
+      "maximum_correction_px": 1.21995723247528,
+      "ending_y_velocity": -1471.95825195313,
+      "first_shot_velocity": [
+        364.820861816406,
+        -2262.3837890625
+      ]
+    },
+    {
+      "name": "top_0.5",
+      "method": "immediate",
+      "shots": 1,
+      "caps": 0,
+      "internal_releases": 0,
+      "maximum_correction_px": 1.21995723247528,
+      "ending_y_velocity": -1471.95825195313,
+      "first_shot_velocity": [
+        364.820861816406,
+        -2262.3837890625
+      ]
+    },
+    {
+      "name": "top_0.99",
+      "method": "current",
+      "shots": 1,
+      "caps": 0,
+      "internal_releases": 0,
+      "maximum_correction_px": 2.18924164772034,
+      "ending_y_velocity": -1950.70361328125,
+      "first_shot_velocity": [
+        1886.48107910156,
+        -2375.70361328125
+      ]
+    },
+    {
+      "name": "top_0.99",
+      "method": "early",
+      "shots": 1,
+      "caps": 0,
+      "internal_releases": 0,
+      "maximum_correction_px": 2.18924164772034,
+      "ending_y_velocity": -1950.70361328125,
+      "first_shot_velocity": [
+        1886.48107910156,
+        -2375.70361328125
+      ]
+    },
+    {
+      "name": "top_0.99",
+      "method": "immediate",
+      "shots": 1,
+      "caps": 0,
+      "internal_releases": 0,
+      "maximum_correction_px": 2.18924164772034,
+      "ending_y_velocity": -1950.70361328125,
+      "first_shot_velocity": [
+        1886.48107910156,
+        -2375.70361328125
+      ]
+    },
+    {
+      "name": "opposite_raised_0.92",
+      "method": "current",
+      "shots": 1,
+      "caps": 0,
+      "internal_releases": 0,
+      "maximum_correction_px": 1.83093309402466,
+      "ending_y_velocity": -1994.53930664063,
+      "first_shot_velocity": [
+        1647.58532714844,
+        -2419.53930664063
+      ]
+    },
+    {
+      "name": "opposite_raised_0.92",
+      "method": "early",
+      "shots": 1,
+      "caps": 0,
+      "internal_releases": 0,
+      "maximum_correction_px": 1.83093309402466,
+      "ending_y_velocity": -1994.53930664063,
+      "first_shot_velocity": [
+        1647.58532714844,
+        -2419.53930664063
+      ]
+    },
+    {
+      "name": "opposite_raised_0.92",
+      "method": "immediate",
+      "shots": 1,
+      "caps": 0,
+      "internal_releases": 0,
+      "maximum_correction_px": 1.83093309402466,
+      "ending_y_velocity": -1994.53930664063,
+      "first_shot_velocity": [
+        1647.58532714844,
+        -2419.53930664063
+      ]
+    },
+    {
+      "name": "opposite_raised_0.99",
+      "method": "current",
+      "shots": 1,
+      "caps": 0,
+      "internal_releases": 0,
+      "maximum_correction_px": 2.18924164772034,
+      "ending_y_velocity": -1950.70361328125,
+      "first_shot_velocity": [
+        1886.48107910156,
+        -2375.70361328125
+      ]
+    },
+    {
+      "name": "opposite_raised_0.99",
+      "method": "early",
+      "shots": 1,
+      "caps": 0,
+      "internal_releases": 0,
+      "maximum_correction_px": 2.18924164772034,
+      "ending_y_velocity": -1950.70361328125,
+      "first_shot_velocity": [
+        1886.48107910156,
+        -2375.70361328125
+      ]
+    },
+    {
+      "name": "opposite_raised_0.99",
+      "method": "immediate",
+      "shots": 1,
+      "caps": 0,
+      "internal_releases": 0,
+      "maximum_correction_px": 2.18924164772034,
+      "ending_y_velocity": -1950.70361328125,
+      "first_shot_velocity": [
+        1886.48107910156,
+        -2375.70361328125
+      ]
+    },
+    {
+      "name": "near_0",
+      "method": "current",
+      "shots": 1,
+      "caps": 1,
+      "internal_releases": 1,
+      "maximum_correction_px": 24.8209915161133,
+      "ending_y_velocity": 171.871719360352,
+      "first_shot_velocity": [
+        364.820861816406,
+        -2262.3837890625
+      ]
+    },
+    {
+      "name": "near_0",
+      "method": "early",
+      "shots": 2,
+      "caps": 1,
+      "internal_releases": 1,
+      "maximum_correction_px": 13.0099811553955,
+      "ending_y_velocity": -267.163909912109,
+      "first_shot_velocity": [
+        364.820861816406,
+        -2262.3837890625
+      ]
+    },
+    {
+      "name": "near_0",
+      "method": "immediate",
+      "shots": 5,
+      "caps": 1,
+      "internal_releases": 1,
+      "maximum_correction_px": 9.72209739685059,
+      "ending_y_velocity": 158.065185546875,
+      "first_shot_velocity": [
+        364.820861816406,
+        -2262.3837890625
+      ]
+    },
+    {
+      "name": "near_1",
+      "method": "current",
+      "shots": 1,
+      "caps": 1,
+      "internal_releases": 1,
+      "maximum_correction_px": 35.3507080078125,
+      "ending_y_velocity": 303.181671142578,
+      "first_shot_velocity": [
+        931.560974121094,
+        -2419.80688476563
+      ]
+    },
+    {
+      "name": "near_1",
+      "method": "early",
+      "shots": 2,
+      "caps": 0,
+      "internal_releases": 1,
+      "maximum_correction_px": 23.4061832427979,
+      "ending_y_velocity": 190.667556762695,
+      "first_shot_velocity": [
+        931.560974121094,
+        -2419.80688476563
+      ]
+    },
+    {
+      "name": "near_1",
+      "method": "immediate",
+      "shots": 4,
+      "caps": 0,
+      "internal_releases": 0,
+      "maximum_correction_px": 0.986966371536255,
+      "ending_y_velocity": -211.487976074219,
+      "first_shot_velocity": [
+        931.560974121094,
+        -2419.80688476563
+      ]
+    },
+    {
+      "name": "near_2",
+      "method": "current",
+      "shots": 2,
+      "caps": 0,
+      "internal_releases": 1,
+      "maximum_correction_px": 60.6096534729004,
+      "ending_y_velocity": 1112.51171875,
+      "first_shot_velocity": [
+        1579.98571777344,
+        -2428.03295898438
+      ]
+    },
+    {
+      "name": "near_2",
+      "method": "early",
+      "shots": 2,
+      "caps": 0,
+      "internal_releases": 1,
+      "maximum_correction_px": 60.6096534729004,
+      "ending_y_velocity": 1112.51171875,
+      "first_shot_velocity": [
+        1579.98571777344,
+        -2428.03295898438
+      ]
+    },
+    {
+      "name": "near_2",
+      "method": "immediate",
+      "shots": 3,
+      "caps": 0,
+      "internal_releases": 1,
+      "maximum_correction_px": 62.4542045593262,
+      "ending_y_velocity": 1112.14575195313,
+      "first_shot_velocity": [
+        1579.98571777344,
+        -2428.03295898438
+      ]
+    },
+    {
+      "name": "descending_catch",
+      "method": "current",
+      "shots": 0,
+      "caps": 0,
+      "internal_releases": 0,
+      "maximum_correction_px": 0.0,
+      "ending_y_velocity": -8.14178276062012,
+      "first_shot_velocity": null
+    },
+    {
+      "name": "descending_catch",
+      "method": "early",
+      "shots": 0,
+      "caps": 0,
+      "internal_releases": 0,
+      "maximum_correction_px": 0.0,
+      "ending_y_velocity": -8.14178276062012,
+      "first_shot_velocity": null
+    },
+    {
+      "name": "descending_catch",
+      "method": "immediate",
+      "shots": 0,
+      "caps": 0,
+      "internal_releases": 0,
+      "maximum_correction_px": 0.0,
+      "ending_y_velocity": -8.14178276062012,
+      "first_shot_velocity": null
+    },
+    {
+      "name": "guarded_opposite_underpass",
+      "method": "current",
+      "shots": 0,
+      "caps": 0,
+      "internal_releases": 0,
+      "maximum_correction_px": 0,
+      "ending_y_velocity": -1700.0,
+      "first_shot_velocity": null
+    },
+    {
+      "name": "guarded_opposite_underpass",
+      "method": "early",
+      "shots": 0,
+      "caps": 0,
+      "internal_releases": 0,
+      "maximum_correction_px": 0.615331649780273,
+      "ending_y_velocity": 252.5,
+      "first_shot_velocity": null
+    },
+    {
+      "name": "guarded_opposite_underpass",
+      "method": "immediate",
+      "shots": 0,
+      "caps": 0,
+      "internal_releases": 0,
+      "maximum_correction_px": 0,
+      "ending_y_velocity": -1700.0,
+      "first_shot_velocity": null
+    },
+    {
+      "name": "continuous_3s",
+      "method": "current",
+      "shots": 2,
+      "caps": 0,
+      "internal_releases": 0,
+      "maximum_correction_px": 1.21995723247528,
+      "ending_y_velocity": -1407.56640625,
+      "first_shot_velocity": [
+        364.820861816406,
+        -2262.3837890625
+      ]
+    },
+    {
+      "name": "continuous_3s",
+      "method": "early",
+      "shots": 2,
+      "caps": 0,
+      "internal_releases": 0,
+      "maximum_correction_px": 1.21995723247528,
+      "ending_y_velocity": -1407.56640625,
+      "first_shot_velocity": [
+        364.820861816406,
+        -2262.3837890625
+      ]
+    },
+    {
+      "name": "continuous_3s",
+      "method": "immediate",
+      "shots": 2,
+      "caps": 0,
+      "internal_releases": 0,
+      "maximum_correction_px": 1.21995723247528,
+      "ending_y_velocity": -1407.763671875,
+      "first_shot_velocity": [
+        364.820861816406,
+        -2262.3837890625
+      ]
+    }
+  ],
+  "component_cost": [
+    {
+      "position": [
+        800.0,
+        900.0
+      ],
+      "method": "current_refresh",
+      "median_batch_mean_us": 0.37
+    },
+    {
+      "position": [
+        800.0,
+        900.0
+      ],
+      "method": "reused_geometry",
+      "median_batch_mean_us": 0.91
+    },
+    {
+      "position": [
+        800.0,
+        900.0
+      ],
+      "method": "extra_geometry",
+      "median_batch_mean_us": 4.06
+    },
+    {
+      "position": [
+        800.0,
+        900.0
+      ],
+      "method": "external_two_gaps",
+      "median_batch_mean_us": 5.335
+    },
+    {
+      "position": [
+        800.0,
+        1040.0
+      ],
+      "method": "current_refresh",
+      "median_batch_mean_us": 0.38
+    },
+    {
+      "position": [
+        800.0,
+        1040.0
+      ],
+      "method": "reused_geometry",
+      "median_batch_mean_us": 0.785
+    },
+    {
+      "position": [
+        800.0,
+        1040.0
+      ],
+      "method": "extra_geometry",
+      "median_batch_mean_us": 8.95
+    },
+    {
+      "position": [
+        800.0,
+        1040.0
+      ],
+      "method": "external_two_gaps",
+      "median_batch_mean_us": 5.315
+    }
+  ],
+  "previous_18_minutes": {
+    "A": {
+      "wall_seconds": 1080,
+      "active_seconds": 1060.8666666666668,
+      "shots": 432,
+      "release_inside": 10,
+      "release_depth_max_px": 35.855518945528
+    },
+    "B": {
+      "wall_seconds": 1080,
+      "active_seconds": 1054.3333333333333,
+      "shots": 462,
+      "release_inside": 8,
+      "release_depth_max_px": 45.0609800429869
+    }
+  },
+  "original_B_replay": [
+    {
+      "seed": 113,
+      "one_second_checkpoints_identical": true,
+      "saved_internal_first_contacts_matched": 3
+    },
+    {
+      "seed": 271,
+      "one_second_checkpoints_identical": true,
+      "saved_internal_first_contacts_matched": 4
+    }
+  ],
+  "local_checks": 1147,
+  "production_hashes_match": {
+    "enemies/crowd.gd": true,
+    "enemies/enemy.gd": true,
+    "enemies/enemy.tscn": true,
+    "enemies/routes.gd": true,
+    "main/main.gd": true,
+    "main/main.tscn": true,
+    "pinball/ball.gd": true,
+    "pinball/boundary.gd": true,
+    "pinball/flipper.gd": true,
+    "pinball/flipper.tscn": true,
+    "pinball/flippers.gd": true,
+    "pinball/motion.gd": true,
+    "pinball/table_flipper.gd": true
+  },
+  "warning": "Long autoplay trajectories diverge, so policy counts are descriptive, not causal improvements. One-tick live snapshot restoration is explicitly checked; later Enemy commands are held, without route/crowd replay."
+}
