@@ -1,0 +1,2289 @@
+{
+  "scope": "54 fresh-process main-scene episodes. Observational counts, not human rates or causal rankings.",
+  "modes": {
+    "A": {
+      "episodes": 9,
+      "wall_seconds": 1080,
+      "contacts": 12558,
+      "shots": 432,
+      "caps": 2,
+      "large_corrections": 8,
+      "corrections_over_one": 236,
+      "release_inside": 10,
+      "respawns": 41,
+      "drops": 41,
+      "occupied_respawns": 2,
+      "blocked_respawn_ticks": 0,
+      "introduced_events": 1,
+      "path_crossings": 0,
+      "clock_unknown_ticks": 0,
+      "physical_missing_ms": 104.36805518305546,
+      "cap_physical_missing_ms": 6.074157810201981,
+      "missing_ticks": 57,
+      "missing_over_half_tick": 4,
+      "detection_opportunities": 2831,
+      "reference_samples": 85,
+      "coarse_shot_errors": 1,
+      "refined_shot_errors": 1,
+      "reference_unstable": 0,
+      "ball_damage_events": 542,
+      "damage_events": 7733,
+      "enemy_ticks_removed": 694414,
+      "enemy_overlaps_removed": 6064,
+      "spawned": 1080,
+      "killed": 890,
+      "escaped": 35,
+      "correction_max_px": 93.4104843139648,
+      "new_contact_max_px": 93.4104843139648,
+      "release_depth_max_px": 35.855518945528,
+      "max_cap_run": 1,
+      "max_slow_run": 0,
+      "max_jitter_run": 3,
+      "enemy_depth_max_px": 0.00725999304165015,
+      "enemy_count_max": 54,
+      "max_blocked_respawn_ticks": 0,
+      "respawn_overlap_max_px": 28.5440998077393,
+      "missing_max_ms": 16.6666666666667,
+      "active_seconds": 1060.8666666666668,
+      "mean_enemy_count": 10.718657407407408,
+      "large_per_1000_contacts": 0.6370441153049848,
+      "caps_per_active_minute": 0.11311506315591024,
+      "captured_cap_examples": [
+        {
+          "profile": "adaptive",
+          "seed": 113,
+          "frame": 5677,
+          "missing_ms": 0.50229346170871,
+          "recorded_tail_ticks": 61,
+          "active_after_tail": true,
+          "tail_caps": 1,
+          "end_position": [
+            682.200012207031,
+            954.840087890625
+          ]
+        },
+        {
+          "profile": "adaptive",
+          "seed": 809,
+          "frame": 6891,
+          "missing_ms": 5.57186434849327,
+          "recorded_tail_ticks": 61,
+          "active_after_tail": true,
+          "tail_caps": 1,
+          "end_position": [
+            864.948913574219,
+            964.349609375
+          ]
+        }
+      ]
+    },
+    "N": {
+      "episodes": 9,
+      "wall_seconds": 1080,
+      "contacts": 12983,
+      "shots": 463,
+      "caps": 0,
+      "large_corrections": 12,
+      "corrections_over_one": 267,
+      "release_inside": 16,
+      "respawns": 61,
+      "drops": 61,
+      "occupied_respawns": 4,
+      "blocked_respawn_ticks": 0,
+      "introduced_events": 2,
+      "path_crossings": 0,
+      "clock_unknown_ticks": 0,
+      "physical_missing_ms": 172.50791536025358,
+      "cap_physical_missing_ms": 0.0,
+      "missing_ticks": 75,
+      "missing_over_half_tick": 8,
+      "detection_opportunities": 2828,
+      "reference_samples": 84,
+      "coarse_shot_errors": 1,
+      "refined_shot_errors": 0,
+      "reference_unstable": 0,
+      "ball_damage_events": 517,
+      "damage_events": 7791,
+      "enemy_ticks_removed": 736137,
+      "enemy_overlaps_removed": 9595,
+      "spawned": 1080,
+      "killed": 899,
+      "escaped": 29,
+      "correction_max_px": 44.2521057128906,
+      "new_contact_max_px": 2.87585663795471,
+      "release_depth_max_px": 45.0609800429869,
+      "max_cap_run": 0,
+      "max_slow_run": 0,
+      "max_jitter_run": 3,
+      "enemy_depth_max_px": 0.00725185305204334,
+      "enemy_count_max": 58,
+      "max_blocked_respawn_ticks": 0,
+      "respawn_overlap_max_px": 14.3877601623535,
+      "missing_max_ms": 16.6666666666667,
+      "active_seconds": 1051.5333333333333,
+      "mean_enemy_count": 11.362484567901234,
+      "large_per_1000_contacts": 0.9242856042517138,
+      "caps_per_active_minute": 0.0,
+      "captured_cap_examples": []
+    },
+    "S": {
+      "episodes": 9,
+      "wall_seconds": 1080,
+      "contacts": 13053,
+      "shots": 443,
+      "caps": 2,
+      "large_corrections": 10,
+      "corrections_over_one": 267,
+      "release_inside": 14,
+      "respawns": 41,
+      "drops": 41,
+      "occupied_respawns": 2,
+      "blocked_respawn_ticks": 0,
+      "introduced_events": 3,
+      "path_crossings": 0,
+      "clock_unknown_ticks": 0,
+      "physical_missing_ms": 134.35894898609828,
+      "cap_physical_missing_ms": 33.3333333333333,
+      "missing_ticks": 62,
+      "missing_over_half_tick": 6,
+      "detection_opportunities": 2807,
+      "reference_samples": 85,
+      "coarse_shot_errors": 1,
+      "refined_shot_errors": 1,
+      "reference_unstable": 0,
+      "ball_damage_events": 528,
+      "damage_events": 7429,
+      "enemy_ticks_removed": 783792,
+      "enemy_overlaps_removed": 7438,
+      "spawned": 1080,
+      "killed": 851,
+      "escaped": 36,
+      "correction_max_px": 93.4104843139648,
+      "new_contact_max_px": 93.4104843139648,
+      "release_depth_max_px": 35.855518945528,
+      "max_cap_run": 1,
+      "max_slow_run": 0,
+      "max_jitter_run": 3,
+      "enemy_depth_max_px": 0.00725999304165015,
+      "enemy_count_max": 54,
+      "max_blocked_respawn_ticks": 0,
+      "respawn_overlap_max_px": 28.5440998077393,
+      "missing_max_ms": 16.6666666666667,
+      "active_seconds": 1060.8666666666668,
+      "mean_enemy_count": 12.098533950617284,
+      "large_per_1000_contacts": 0.7661074082586379,
+      "caps_per_active_minute": 0.11311506315591024,
+      "captured_cap_examples": [
+        {
+          "profile": "held",
+          "seed": 271,
+          "frame": 5617,
+          "missing_ms": 16.6666666666667,
+          "recorded_tail_ticks": 61,
+          "active_after_tail": true,
+          "tail_caps": 1,
+          "end_position": [
+            848.262634277344,
+            1003.14819335938
+          ]
+        },
+        {
+          "profile": "held",
+          "seed": 271,
+          "frame": 6913,
+          "missing_ms": 16.6666666666667,
+          "recorded_tail_ticks": 61,
+          "active_after_tail": true,
+          "tail_caps": 1,
+          "end_position": [
+            747.981689453125,
+            994.048095703125
+          ]
+        }
+      ]
+    },
+    "B": {
+      "episodes": 9,
+      "wall_seconds": 1080,
+      "contacts": 12761,
+      "shots": 462,
+      "caps": 1,
+      "large_corrections": 8,
+      "corrections_over_one": 260,
+      "release_inside": 8,
+      "respawns": 55,
+      "drops": 55,
+      "occupied_respawns": 4,
+      "blocked_respawn_ticks": 0,
+      "introduced_events": 1,
+      "path_crossings": 0,
+      "clock_unknown_ticks": 0,
+      "physical_missing_ms": 158.0508666765899,
+      "cap_physical_missing_ms": 11.0017397175953,
+      "missing_ticks": 67,
+      "missing_over_half_tick": 7,
+      "detection_opportunities": 2779,
+      "reference_samples": 82,
+      "coarse_shot_errors": 0,
+      "refined_shot_errors": 0,
+      "reference_unstable": 0,
+      "ball_damage_events": 519,
+      "damage_events": 7840,
+      "enemy_ticks_removed": 699115,
+      "enemy_overlaps_removed": 7423,
+      "spawned": 1080,
+      "killed": 890,
+      "escaped": 31,
+      "correction_max_px": 44.2521057128906,
+      "new_contact_max_px": 2.87585663795471,
+      "release_depth_max_px": 45.0609800429869,
+      "max_cap_run": 1,
+      "max_slow_run": 0,
+      "max_jitter_run": 2,
+      "enemy_depth_max_px": 0.00725185305204334,
+      "enemy_count_max": 58,
+      "max_blocked_respawn_ticks": 0,
+      "respawn_overlap_max_px": 18.3666114807129,
+      "missing_max_ms": 16.6666666666667,
+      "active_seconds": 1054.3333333333333,
+      "mean_enemy_count": 10.791265432098765,
+      "large_per_1000_contacts": 0.6269101167620093,
+      "caps_per_active_minute": 0.05690799873537781,
+      "captured_cap_examples": [
+        {
+          "profile": "held",
+          "seed": 809,
+          "frame": 6096,
+          "missing_ms": 11.0017397175953,
+          "recorded_tail_ticks": 61,
+          "active_after_tail": true,
+          "tail_caps": 1,
+          "end_position": [
+            708.789794921875,
+            970.145141601563
+          ]
+        }
+      ]
+    },
+    "F": {
+      "episodes": 9,
+      "wall_seconds": 1080,
+      "contacts": 12549,
+      "shots": 462,
+      "caps": 8,
+      "large_corrections": 12,
+      "corrections_over_one": 60,
+      "release_inside": 16,
+      "respawns": 45,
+      "drops": 45,
+      "occupied_respawns": 4,
+      "blocked_respawn_ticks": 0,
+      "introduced_events": 6,
+      "path_crossings": 0,
+      "clock_unknown_ticks": 0,
+      "physical_missing_ms": 254.63038603246193,
+      "cap_physical_missing_ms": 46.18734682118416,
+      "missing_ticks": 85,
+      "missing_over_half_tick": 12,
+      "detection_opportunities": 3002,
+      "reference_samples": 88,
+      "coarse_shot_errors": 0,
+      "refined_shot_errors": 0,
+      "reference_unstable": 0,
+      "ball_damage_events": 522,
+      "damage_events": 7866,
+      "enemy_ticks_removed": 728390,
+      "enemy_overlaps_removed": 6404,
+      "spawned": 1080,
+      "killed": 892,
+      "escaped": 31,
+      "correction_max_px": 41.9200248718262,
+      "new_contact_max_px": 0.322494864463806,
+      "release_depth_max_px": 51.2656865597443,
+      "max_cap_run": 3,
+      "max_slow_run": 0,
+      "max_jitter_run": 2,
+      "enemy_depth_max_px": 0.00720810064576938,
+      "enemy_count_max": 51,
+      "max_blocked_respawn_ticks": 0,
+      "respawn_overlap_max_px": 34.6584587097168,
+      "missing_max_ms": 16.6666666666667,
+      "active_seconds": 1059.0,
+      "mean_enemy_count": 11.24300925925926,
+      "large_per_1000_contacts": 0.9562514941429596,
+      "caps_per_active_minute": 0.45325779036827196,
+      "captured_cap_examples": [
+        {
+          "profile": "alternate",
+          "seed": 809,
+          "frame": 3461,
+          "missing_ms": 4.96554038730383,
+          "recorded_tail_ticks": 61,
+          "active_after_tail": true,
+          "tail_caps": 1,
+          "end_position": [
+            1342.69946289063,
+            389.669006347656
+          ]
+        },
+        {
+          "profile": "held",
+          "seed": 113,
+          "frame": 7174,
+          "missing_ms": 16.6666666666667,
+          "recorded_tail_ticks": 26,
+          "active_after_tail": true,
+          "tail_caps": 2,
+          "end_position": [
+            812.307922363281,
+            956.52197265625
+          ]
+        },
+        {
+          "profile": "held",
+          "seed": 113,
+          "frame": 7175,
+          "missing_ms": 16.6666666666667,
+          "recorded_tail_ticks": 25,
+          "active_after_tail": true,
+          "tail_caps": 1,
+          "end_position": [
+            812.307922363281,
+            956.52197265625
+          ]
+        },
+        {
+          "profile": "held",
+          "seed": 271,
+          "frame": 4923,
+          "missing_ms": 7.88847310054703,
+          "recorded_tail_ticks": 61,
+          "active_after_tail": true,
+          "tail_caps": 1,
+          "end_position": [
+            600.297424316406,
+            966.673706054688
+          ]
+        },
+        {
+          "profile": "held",
+          "seed": 809,
+          "frame": 2823,
+          "missing_ms": 0.0,
+          "recorded_tail_ticks": 61,
+          "active_after_tail": true,
+          "tail_caps": 3,
+          "end_position": [
+            854.128051757813,
+            816.047790527344
+          ]
+        },
+        {
+          "profile": "held",
+          "seed": 809,
+          "frame": 2824,
+          "missing_ms": 0.0,
+          "recorded_tail_ticks": 61,
+          "active_after_tail": true,
+          "tail_caps": 2,
+          "end_position": [
+            856.833374023438,
+            779.867858886719
+          ]
+        },
+        {
+          "profile": "held",
+          "seed": 809,
+          "frame": 2825,
+          "missing_ms": 0.0,
+          "recorded_tail_ticks": 61,
+          "active_after_tail": true,
+          "tail_caps": 1,
+          "end_position": [
+            834.985412597656,
+            763.277282714844
+          ]
+        },
+        {
+          "profile": "held",
+          "seed": 809,
+          "frame": 6155,
+          "missing_ms": 0.0,
+          "recorded_tail_ticks": 61,
+          "active_after_tail": true,
+          "tail_caps": 1,
+          "end_position": [
+            711.461608886719,
+            969.795593261719
+          ]
+        }
+      ]
+    },
+    "P": {
+      "episodes": 9,
+      "wall_seconds": 1080,
+      "contacts": 11621,
+      "shots": 446,
+      "caps": 4,
+      "large_corrections": 9,
+      "corrections_over_one": 247,
+      "release_inside": 15,
+      "respawns": 42,
+      "drops": 42,
+      "occupied_respawns": 0,
+      "blocked_respawn_ticks": 440,
+      "introduced_events": 4,
+      "path_crossings": 0,
+      "clock_unknown_ticks": 0,
+      "physical_missing_ms": 43.83465015722484,
+      "cap_physical_missing_ms": 12.74559759932391,
+      "missing_ticks": 56,
+      "missing_over_half_tick": 2,
+      "detection_opportunities": 2926,
+      "reference_samples": 89,
+      "coarse_shot_errors": 0,
+      "refined_shot_errors": 0,
+      "reference_unstable": 0,
+      "ball_damage_events": 600,
+      "damage_events": 7690,
+      "enemy_ticks_removed": 659957,
+      "enemy_overlaps_removed": 3547,
+      "spawned": 1080,
+      "killed": 893,
+      "escaped": 33,
+      "correction_max_px": 85.5862274169922,
+      "new_contact_max_px": 85.5862274169922,
+      "release_depth_max_px": 58.4477213732999,
+      "max_cap_run": 2,
+      "max_slow_run": 0,
+      "max_jitter_run": 3,
+      "enemy_depth_max_px": 0.00713891092425811,
+      "enemy_count_max": 41,
+      "max_blocked_respawn_ticks": 214,
+      "respawn_overlap_max_px": 36.0017585754395,
+      "missing_max_ms": 12.2433041376152,
+      "active_seconds": 1053.0666666666666,
+      "mean_enemy_count": 10.186898148148147,
+      "large_per_1000_contacts": 0.7744600292573789,
+      "caps_per_active_minute": 0.2279057989364396,
+      "captured_cap_examples": [
+        {
+          "profile": "alternate",
+          "seed": 809,
+          "frame": 4884,
+          "missing_ms": 0.0,
+          "recorded_tail_ticks": 61,
+          "active_after_tail": true,
+          "tail_caps": 2,
+          "end_position": [
+            550.360717773438,
+            954.149169921875
+          ]
+        },
+        {
+          "profile": "alternate",
+          "seed": 809,
+          "frame": 4885,
+          "missing_ms": 0.0,
+          "recorded_tail_ticks": 61,
+          "active_after_tail": true,
+          "tail_caps": 1,
+          "end_position": [
+            549.071166992188,
+            954.934265136719
+          ]
+        },
+        {
+          "profile": "held",
+          "seed": 809,
+          "frame": 6626,
+          "missing_ms": 12.2433041376152,
+          "recorded_tail_ticks": 61,
+          "active_after_tail": true,
+          "tail_caps": 1,
+          "end_position": [
+            1298.47143554688,
+            970.611206054688
+          ]
+        },
+        {
+          "profile": "adaptive",
+          "seed": 113,
+          "frame": 5677,
+          "missing_ms": 0.50229346170871,
+          "recorded_tail_ticks": 61,
+          "active_after_tail": true,
+          "tail_caps": 1,
+          "end_position": [
+            682.200012207031,
+            954.840087890625
+          ]
+        }
+      ]
+    }
+  },
+  "profiles": {
+    "A": {
+      "alternate": {
+        "episodes": 3,
+        "wall_seconds": 360,
+        "contacts": 3400,
+        "shots": 162,
+        "caps": 0,
+        "large_corrections": 2,
+        "corrections_over_one": 104,
+        "release_inside": 1,
+        "respawns": 16,
+        "drops": 16,
+        "occupied_respawns": 0,
+        "blocked_respawn_ticks": 0,
+        "introduced_events": 0,
+        "path_crossings": 0,
+        "clock_unknown_ticks": 0,
+        "physical_missing_ms": 7.68988756704194,
+        "cap_physical_missing_ms": 0.0,
+        "missing_ticks": 10,
+        "missing_over_half_tick": 0,
+        "detection_opportunities": 1272,
+        "reference_samples": 39,
+        "coarse_shot_errors": 0,
+        "refined_shot_errors": 0,
+        "reference_unstable": 0,
+        "ball_damage_events": 170,
+        "damage_events": 2786,
+        "enemy_ticks_removed": 163638,
+        "enemy_overlaps_removed": 277,
+        "spawned": 360,
+        "killed": 321,
+        "escaped": 10,
+        "correction_max_px": 35.3406524658203,
+        "new_contact_max_px": 35.3406524658203,
+        "release_depth_max_px": 35.855518945528,
+        "max_cap_run": 0,
+        "max_slow_run": 0,
+        "max_jitter_run": 2,
+        "enemy_depth_max_px": 0.00682857663681347,
+        "enemy_count_max": 26,
+        "max_blocked_respawn_ticks": 0,
+        "respawn_overlap_max_px": 0.0,
+        "missing_max_ms": 3.20458057670768,
+        "active_seconds": 352.53333333333336,
+        "mean_enemy_count": 7.577175925925926,
+        "large_per_1000_contacts": 0.588235294117647,
+        "caps_per_active_minute": 0.0,
+        "captured_cap_examples": []
+      },
+      "held": {
+        "episodes": 3,
+        "wall_seconds": 360,
+        "contacts": 6827,
+        "shots": 114,
+        "caps": 0,
+        "large_corrections": 6,
+        "corrections_over_one": 96,
+        "release_inside": 9,
+        "respawns": 23,
+        "drops": 23,
+        "occupied_respawns": 2,
+        "blocked_respawn_ticks": 0,
+        "introduced_events": 1,
+        "path_crossings": 0,
+        "clock_unknown_ticks": 0,
+        "physical_missing_ms": 84.83782177727143,
+        "cap_physical_missing_ms": 0.0,
+        "missing_ticks": 26,
+        "missing_over_half_tick": 4,
+        "detection_opportunities": 871,
+        "reference_samples": 26,
+        "coarse_shot_errors": 1,
+        "refined_shot_errors": 1,
+        "reference_unstable": 0,
+        "ball_damage_events": 203,
+        "damage_events": 2014,
+        "enemy_ticks_removed": 426968,
+        "enemy_overlaps_removed": 5719,
+        "spawned": 360,
+        "killed": 227,
+        "escaped": 23,
+        "correction_max_px": 93.4104843139648,
+        "new_contact_max_px": 93.4104843139648,
+        "release_depth_max_px": 35.5997216816103,
+        "max_cap_run": 0,
+        "max_slow_run": 0,
+        "max_jitter_run": 2,
+        "enemy_depth_max_px": 0.00725999304165015,
+        "enemy_count_max": 54,
+        "max_blocked_respawn_ticks": 0,
+        "respawn_overlap_max_px": 28.5440998077393,
+        "missing_max_ms": 16.6666666666667,
+        "active_seconds": 349.26666666666665,
+        "mean_enemy_count": 19.772129629629628,
+        "large_per_1000_contacts": 0.8788633367511353,
+        "caps_per_active_minute": 0.0,
+        "captured_cap_examples": []
+      },
+      "adaptive": {
+        "episodes": 3,
+        "wall_seconds": 360,
+        "contacts": 2331,
+        "shots": 156,
+        "caps": 2,
+        "large_corrections": 0,
+        "corrections_over_one": 36,
+        "release_inside": 0,
+        "respawns": 2,
+        "drops": 2,
+        "occupied_respawns": 0,
+        "blocked_respawn_ticks": 0,
+        "introduced_events": 0,
+        "path_crossings": 0,
+        "clock_unknown_ticks": 0,
+        "physical_missing_ms": 11.840345838742099,
+        "cap_physical_missing_ms": 6.074157810201981,
+        "missing_ticks": 21,
+        "missing_over_half_tick": 0,
+        "detection_opportunities": 688,
+        "reference_samples": 20,
+        "coarse_shot_errors": 0,
+        "refined_shot_errors": 0,
+        "reference_unstable": 0,
+        "ball_damage_events": 169,
+        "damage_events": 2933,
+        "enemy_ticks_removed": 103808,
+        "enemy_overlaps_removed": 68,
+        "spawned": 360,
+        "killed": 342,
+        "escaped": 2,
+        "correction_max_px": 4.9154052734375,
+        "new_contact_max_px": 3.12331819534302,
+        "release_depth_max_px": 0.0,
+        "max_cap_run": 1,
+        "max_slow_run": 0,
+        "max_jitter_run": 3,
+        "enemy_depth_max_px": 0.0066070556640625,
+        "enemy_count_max": 14,
+        "max_blocked_respawn_ticks": 0,
+        "respawn_overlap_max_px": 0.0,
+        "missing_max_ms": 5.57186434849327,
+        "active_seconds": 359.06666666666666,
+        "mean_enemy_count": 4.806666666666667,
+        "large_per_1000_contacts": 0.0,
+        "caps_per_active_minute": 0.33419977720014854,
+        "captured_cap_examples": [
+          {
+            "profile": "adaptive",
+            "seed": 113,
+            "frame": 5677,
+            "missing_ms": 0.50229346170871,
+            "recorded_tail_ticks": 61,
+            "active_after_tail": true,
+            "tail_caps": 1,
+            "end_position": [
+              682.200012207031,
+              954.840087890625
+            ]
+          },
+          {
+            "profile": "adaptive",
+            "seed": 809,
+            "frame": 6891,
+            "missing_ms": 5.57186434849327,
+            "recorded_tail_ticks": 61,
+            "active_after_tail": true,
+            "tail_caps": 1,
+            "end_position": [
+              864.948913574219,
+              964.349609375
+            ]
+          }
+        ]
+      }
+    },
+    "N": {
+      "alternate": {
+        "episodes": 3,
+        "wall_seconds": 360,
+        "contacts": 3048,
+        "shots": 169,
+        "caps": 0,
+        "large_corrections": 0,
+        "corrections_over_one": 89,
+        "release_inside": 0,
+        "respawns": 32,
+        "drops": 32,
+        "occupied_respawns": 0,
+        "blocked_respawn_ticks": 0,
+        "introduced_events": 0,
+        "path_crossings": 0,
+        "clock_unknown_ticks": 0,
+        "physical_missing_ms": 0.06212080717299912,
+        "cap_physical_missing_ms": 0.0,
+        "missing_ticks": 8,
+        "missing_over_half_tick": 0,
+        "detection_opportunities": 1154,
+        "reference_samples": 34,
+        "coarse_shot_errors": 0,
+        "refined_shot_errors": 0,
+        "reference_unstable": 0,
+        "ball_damage_events": 114,
+        "damage_events": 3177,
+        "enemy_ticks_removed": 80075,
+        "enemy_overlaps_removed": 9,
+        "spawned": 360,
+        "killed": 351,
+        "escaped": 0,
+        "correction_max_px": 3.11026644706726,
+        "new_contact_max_px": 2.87585663795471,
+        "release_depth_max_px": 0.0,
+        "max_cap_run": 0,
+        "max_slow_run": 0,
+        "max_jitter_run": 1,
+        "enemy_depth_max_px": 0.00556182861328125,
+        "enemy_count_max": 17,
+        "max_blocked_respawn_ticks": 0,
+        "respawn_overlap_max_px": 0.0,
+        "missing_max_ms": 0.0276654087216603,
+        "active_seconds": 345.06666666666666,
+        "mean_enemy_count": 3.7075925925925928,
+        "large_per_1000_contacts": 0.0,
+        "caps_per_active_minute": 0.0,
+        "captured_cap_examples": []
+      },
+      "held": {
+        "episodes": 3,
+        "wall_seconds": 360,
+        "contacts": 7467,
+        "shots": 128,
+        "caps": 0,
+        "large_corrections": 11,
+        "corrections_over_one": 124,
+        "release_inside": 16,
+        "respawns": 27,
+        "drops": 27,
+        "occupied_respawns": 4,
+        "blocked_respawn_ticks": 0,
+        "introduced_events": 2,
+        "path_crossings": 0,
+        "clock_unknown_ticks": 0,
+        "physical_missing_ms": 162.5551752551361,
+        "cap_physical_missing_ms": 0.0,
+        "missing_ticks": 40,
+        "missing_over_half_tick": 8,
+        "detection_opportunities": 936,
+        "reference_samples": 29,
+        "coarse_shot_errors": 1,
+        "refined_shot_errors": 0,
+        "reference_unstable": 0,
+        "ball_damage_events": 263,
+        "damage_events": 1560,
+        "enemy_ticks_removed": 583123,
+        "enemy_overlaps_removed": 9586,
+        "spawned": 360,
+        "killed": 207,
+        "escaped": 29,
+        "correction_max_px": 44.2521057128906,
+        "new_contact_max_px": 2.82998371124268,
+        "release_depth_max_px": 45.0609800429869,
+        "max_cap_run": 0,
+        "max_slow_run": 0,
+        "max_jitter_run": 3,
+        "enemy_depth_max_px": 0.00725185305204334,
+        "enemy_count_max": 58,
+        "max_blocked_respawn_ticks": 0,
+        "respawn_overlap_max_px": 14.3877601623535,
+        "missing_max_ms": 16.6666666666667,
+        "active_seconds": 347.4,
+        "mean_enemy_count": 27.002175925925926,
+        "large_per_1000_contacts": 1.4731485201553502,
+        "caps_per_active_minute": 0.0,
+        "captured_cap_examples": []
+      },
+      "adaptive": {
+        "episodes": 3,
+        "wall_seconds": 360,
+        "contacts": 2468,
+        "shots": 166,
+        "caps": 0,
+        "large_corrections": 1,
+        "corrections_over_one": 54,
+        "release_inside": 0,
+        "respawns": 2,
+        "drops": 2,
+        "occupied_respawns": 0,
+        "blocked_respawn_ticks": 0,
+        "introduced_events": 0,
+        "path_crossings": 0,
+        "clock_unknown_ticks": 0,
+        "physical_missing_ms": 9.890619297944468,
+        "cap_physical_missing_ms": 0.0,
+        "missing_ticks": 27,
+        "missing_over_half_tick": 0,
+        "detection_opportunities": 738,
+        "reference_samples": 21,
+        "coarse_shot_errors": 0,
+        "refined_shot_errors": 0,
+        "reference_unstable": 0,
+        "ball_damage_events": 140,
+        "damage_events": 3054,
+        "enemy_ticks_removed": 72939,
+        "enemy_overlaps_removed": 0,
+        "spawned": 360,
+        "killed": 341,
+        "escaped": 0,
+        "correction_max_px": 25.1547107696533,
+        "new_contact_max_px": 2.68360900878906,
+        "release_depth_max_px": 0.0,
+        "max_cap_run": 0,
+        "max_slow_run": 0,
+        "max_jitter_run": 1,
+        "enemy_depth_max_px": 0.0,
+        "enemy_count_max": 13,
+        "max_blocked_respawn_ticks": 0,
+        "respawn_overlap_max_px": 0.0,
+        "missing_max_ms": 3.0388687810531,
+        "active_seconds": 359.06666666666666,
+        "mean_enemy_count": 3.377685185185185,
+        "large_per_1000_contacts": 0.4051863857374392,
+        "caps_per_active_minute": 0.0,
+        "captured_cap_examples": []
+      }
+    },
+    "S": {
+      "alternate": {
+        "episodes": 3,
+        "wall_seconds": 360,
+        "contacts": 3400,
+        "shots": 162,
+        "caps": 0,
+        "large_corrections": 2,
+        "corrections_over_one": 104,
+        "release_inside": 1,
+        "respawns": 16,
+        "drops": 16,
+        "occupied_respawns": 0,
+        "blocked_respawn_ticks": 0,
+        "introduced_events": 0,
+        "path_crossings": 0,
+        "clock_unknown_ticks": 0,
+        "physical_missing_ms": 7.68988756704194,
+        "cap_physical_missing_ms": 0.0,
+        "missing_ticks": 10,
+        "missing_over_half_tick": 0,
+        "detection_opportunities": 1272,
+        "reference_samples": 39,
+        "coarse_shot_errors": 0,
+        "refined_shot_errors": 0,
+        "reference_unstable": 0,
+        "ball_damage_events": 170,
+        "damage_events": 2786,
+        "enemy_ticks_removed": 163638,
+        "enemy_overlaps_removed": 277,
+        "spawned": 360,
+        "killed": 321,
+        "escaped": 10,
+        "correction_max_px": 35.3406524658203,
+        "new_contact_max_px": 35.3406524658203,
+        "release_depth_max_px": 35.855518945528,
+        "max_cap_run": 0,
+        "max_slow_run": 0,
+        "max_jitter_run": 2,
+        "enemy_depth_max_px": 0.00682857663681347,
+        "enemy_count_max": 26,
+        "max_blocked_respawn_ticks": 0,
+        "respawn_overlap_max_px": 0.0,
+        "missing_max_ms": 3.20458057670768,
+        "active_seconds": 352.53333333333336,
+        "mean_enemy_count": 7.577175925925926,
+        "large_per_1000_contacts": 0.588235294117647,
+        "caps_per_active_minute": 0.0,
+        "captured_cap_examples": []
+      },
+      "held": {
+        "episodes": 3,
+        "wall_seconds": 360,
+        "contacts": 7087,
+        "shots": 129,
+        "caps": 2,
+        "large_corrections": 8,
+        "corrections_over_one": 129,
+        "release_inside": 13,
+        "respawns": 24,
+        "drops": 24,
+        "occupied_respawns": 2,
+        "blocked_respawn_ticks": 0,
+        "introduced_events": 3,
+        "path_crossings": 0,
+        "clock_unknown_ticks": 0,
+        "physical_missing_ms": 123.92999029237828,
+        "cap_physical_missing_ms": 33.3333333333333,
+        "missing_ticks": 34,
+        "missing_over_half_tick": 6,
+        "detection_opportunities": 912,
+        "reference_samples": 27,
+        "coarse_shot_errors": 1,
+        "refined_shot_errors": 1,
+        "reference_unstable": 0,
+        "ball_damage_events": 209,
+        "damage_events": 1642,
+        "enemy_ticks_removed": 520502,
+        "enemy_overlaps_removed": 7096,
+        "spawned": 360,
+        "killed": 190,
+        "escaped": 26,
+        "correction_max_px": 93.4104843139648,
+        "new_contact_max_px": 93.4104843139648,
+        "release_depth_max_px": 35.8334349148827,
+        "max_cap_run": 1,
+        "max_slow_run": 0,
+        "max_jitter_run": 2,
+        "enemy_depth_max_px": 0.00725999304165015,
+        "enemy_count_max": 54,
+        "max_blocked_respawn_ticks": 0,
+        "respawn_overlap_max_px": 28.5440998077393,
+        "missing_max_ms": 16.6666666666667,
+        "active_seconds": 348.8,
+        "mean_enemy_count": 24.103981481481483,
+        "large_per_1000_contacts": 1.1288274305065613,
+        "caps_per_active_minute": 0.3440366972477064,
+        "captured_cap_examples": [
+          {
+            "profile": "held",
+            "seed": 271,
+            "frame": 5617,
+            "missing_ms": 16.6666666666667,
+            "recorded_tail_ticks": 61,
+            "active_after_tail": true,
+            "tail_caps": 1,
+            "end_position": [
+              848.262634277344,
+              1003.14819335938
+            ]
+          },
+          {
+            "profile": "held",
+            "seed": 271,
+            "frame": 6913,
+            "missing_ms": 16.6666666666667,
+            "recorded_tail_ticks": 61,
+            "active_after_tail": true,
+            "tail_caps": 1,
+            "end_position": [
+              747.981689453125,
+              994.048095703125
+            ]
+          }
+        ]
+      },
+      "adaptive": {
+        "episodes": 3,
+        "wall_seconds": 360,
+        "contacts": 2566,
+        "shots": 152,
+        "caps": 0,
+        "large_corrections": 0,
+        "corrections_over_one": 34,
+        "release_inside": 0,
+        "respawns": 1,
+        "drops": 1,
+        "occupied_respawns": 0,
+        "blocked_respawn_ticks": 0,
+        "introduced_events": 0,
+        "path_crossings": 0,
+        "clock_unknown_ticks": 0,
+        "physical_missing_ms": 2.739071126678072,
+        "cap_physical_missing_ms": 0.0,
+        "missing_ticks": 18,
+        "missing_over_half_tick": 0,
+        "detection_opportunities": 623,
+        "reference_samples": 19,
+        "coarse_shot_errors": 0,
+        "refined_shot_errors": 0,
+        "reference_unstable": 0,
+        "ball_damage_events": 149,
+        "damage_events": 3001,
+        "enemy_ticks_removed": 99652,
+        "enemy_overlaps_removed": 65,
+        "spawned": 360,
+        "killed": 340,
+        "escaped": 0,
+        "correction_max_px": 4.14738798141479,
+        "new_contact_max_px": 3.0531370639801,
+        "release_depth_max_px": 0.0,
+        "max_cap_run": 0,
+        "max_slow_run": 0,
+        "max_jitter_run": 3,
+        "enemy_depth_max_px": 0.0066070556640625,
+        "enemy_count_max": 15,
+        "max_blocked_respawn_ticks": 0,
+        "respawn_overlap_max_px": 0.0,
+        "missing_max_ms": 2.29861658049031,
+        "active_seconds": 359.5333333333333,
+        "mean_enemy_count": 4.614444444444445,
+        "large_per_1000_contacts": 0.0,
+        "caps_per_active_minute": 0.0,
+        "captured_cap_examples": []
+      }
+    },
+    "B": {
+      "alternate": {
+        "episodes": 3,
+        "wall_seconds": 360,
+        "contacts": 2876,
+        "shots": 173,
+        "caps": 0,
+        "large_corrections": 0,
+        "corrections_over_one": 96,
+        "release_inside": 0,
+        "respawns": 30,
+        "drops": 30,
+        "occupied_respawns": 0,
+        "blocked_respawn_ticks": 0,
+        "introduced_events": 0,
+        "path_crossings": 0,
+        "clock_unknown_ticks": 0,
+        "physical_missing_ms": 0.09757411288851234,
+        "cap_physical_missing_ms": 0.0,
+        "missing_ticks": 7,
+        "missing_over_half_tick": 0,
+        "detection_opportunities": 1099,
+        "reference_samples": 33,
+        "coarse_shot_errors": 0,
+        "refined_shot_errors": 0,
+        "reference_unstable": 0,
+        "ball_damage_events": 125,
+        "damage_events": 3094,
+        "enemy_ticks_removed": 72535,
+        "enemy_overlaps_removed": 98,
+        "spawned": 360,
+        "killed": 342,
+        "escaped": 0,
+        "correction_max_px": 6.56071424484253,
+        "new_contact_max_px": 2.87585663795471,
+        "release_depth_max_px": 0.0,
+        "max_cap_run": 0,
+        "max_slow_run": 0,
+        "max_jitter_run": 1,
+        "enemy_depth_max_px": 0.0065155029296875,
+        "enemy_count_max": 13,
+        "max_blocked_respawn_ticks": 0,
+        "respawn_overlap_max_px": 0.0,
+        "missing_max_ms": 0.0452923122860154,
+        "active_seconds": 346.0,
+        "mean_enemy_count": 3.358935185185185,
+        "large_per_1000_contacts": 0.0,
+        "caps_per_active_minute": 0.0,
+        "captured_cap_examples": []
+      },
+      "held": {
+        "episodes": 3,
+        "wall_seconds": 360,
+        "contacts": 7365,
+        "shots": 121,
+        "caps": 1,
+        "large_corrections": 7,
+        "corrections_over_one": 111,
+        "release_inside": 8,
+        "respawns": 23,
+        "drops": 23,
+        "occupied_respawns": 4,
+        "blocked_respawn_ticks": 0,
+        "introduced_events": 1,
+        "path_crossings": 0,
+        "clock_unknown_ticks": 0,
+        "physical_missing_ms": 147.9682046934867,
+        "cap_physical_missing_ms": 11.0017397175953,
+        "missing_ticks": 37,
+        "missing_over_half_tick": 7,
+        "detection_opportunities": 919,
+        "reference_samples": 27,
+        "coarse_shot_errors": 0,
+        "refined_shot_errors": 0,
+        "reference_unstable": 0,
+        "ball_damage_events": 245,
+        "damage_events": 1794,
+        "enemy_ticks_removed": 512693,
+        "enemy_overlaps_removed": 7230,
+        "spawned": 360,
+        "killed": 222,
+        "escaped": 26,
+        "correction_max_px": 44.2521057128906,
+        "new_contact_max_px": 2.79178285598755,
+        "release_depth_max_px": 45.0609800429869,
+        "max_cap_run": 1,
+        "max_slow_run": 0,
+        "max_jitter_run": 2,
+        "enemy_depth_max_px": 0.00725185305204334,
+        "enemy_count_max": 58,
+        "max_blocked_respawn_ticks": 0,
+        "respawn_overlap_max_px": 18.3666114807129,
+        "missing_max_ms": 16.6666666666667,
+        "active_seconds": 349.26666666666665,
+        "mean_enemy_count": 23.740972222222222,
+        "large_per_1000_contacts": 0.9504412763068567,
+        "caps_per_active_minute": 0.1717885092574919,
+        "captured_cap_examples": [
+          {
+            "profile": "held",
+            "seed": 809,
+            "frame": 6096,
+            "missing_ms": 11.0017397175953,
+            "recorded_tail_ticks": 61,
+            "active_after_tail": true,
+            "tail_caps": 1,
+            "end_position": [
+              708.789794921875,
+              970.145141601563
+            ]
+          }
+        ]
+      },
+      "adaptive": {
+        "episodes": 3,
+        "wall_seconds": 360,
+        "contacts": 2520,
+        "shots": 168,
+        "caps": 0,
+        "large_corrections": 1,
+        "corrections_over_one": 53,
+        "release_inside": 0,
+        "respawns": 2,
+        "drops": 2,
+        "occupied_respawns": 0,
+        "blocked_respawn_ticks": 0,
+        "introduced_events": 0,
+        "path_crossings": 0,
+        "clock_unknown_ticks": 0,
+        "physical_missing_ms": 9.985087870214686,
+        "cap_physical_missing_ms": 0.0,
+        "missing_ticks": 23,
+        "missing_over_half_tick": 0,
+        "detection_opportunities": 761,
+        "reference_samples": 22,
+        "coarse_shot_errors": 0,
+        "refined_shot_errors": 0,
+        "reference_unstable": 0,
+        "ball_damage_events": 149,
+        "damage_events": 2952,
+        "enemy_ticks_removed": 113887,
+        "enemy_overlaps_removed": 95,
+        "spawned": 360,
+        "killed": 326,
+        "escaped": 5,
+        "correction_max_px": 25.1547107696533,
+        "new_contact_max_px": 2.68360900878906,
+        "release_depth_max_px": 0.0,
+        "max_cap_run": 0,
+        "max_slow_run": 0,
+        "max_jitter_run": 2,
+        "enemy_depth_max_px": 0.0066680908203125,
+        "enemy_count_max": 18,
+        "max_blocked_respawn_ticks": 0,
+        "respawn_overlap_max_px": 0.0,
+        "missing_max_ms": 3.0388687810531,
+        "active_seconds": 359.06666666666666,
+        "mean_enemy_count": 5.273888888888889,
+        "large_per_1000_contacts": 0.3968253968253968,
+        "caps_per_active_minute": 0.0,
+        "captured_cap_examples": []
+      }
+    },
+    "F": {
+      "alternate": {
+        "episodes": 3,
+        "wall_seconds": 360,
+        "contacts": 3229,
+        "shots": 168,
+        "caps": 1,
+        "large_corrections": 3,
+        "corrections_over_one": 11,
+        "release_inside": 1,
+        "respawns": 23,
+        "drops": 23,
+        "occupied_respawns": 1,
+        "blocked_respawn_ticks": 0,
+        "introduced_events": 0,
+        "path_crossings": 0,
+        "clock_unknown_ticks": 0,
+        "physical_missing_ms": 108.65202307322016,
+        "cap_physical_missing_ms": 4.96554038730383,
+        "missing_ticks": 21,
+        "missing_over_half_tick": 5,
+        "detection_opportunities": 1377,
+        "reference_samples": 42,
+        "coarse_shot_errors": 0,
+        "refined_shot_errors": 0,
+        "reference_unstable": 0,
+        "ball_damage_events": 172,
+        "damage_events": 2875,
+        "enemy_ticks_removed": 182024,
+        "enemy_overlaps_removed": 543,
+        "spawned": 360,
+        "killed": 328,
+        "escaped": 6,
+        "correction_max_px": 38.1915817260742,
+        "new_contact_max_px": 0.30596587061882,
+        "release_depth_max_px": 24.5884657673015,
+        "max_cap_run": 1,
+        "max_slow_run": 0,
+        "max_jitter_run": 2,
+        "enemy_depth_max_px": 0.006866455078125,
+        "enemy_count_max": 23,
+        "max_blocked_respawn_ticks": 0,
+        "respawn_overlap_max_px": 4.04338073730469,
+        "missing_max_ms": 16.6666666666667,
+        "active_seconds": 349.26666666666665,
+        "mean_enemy_count": 8.42824074074074,
+        "large_per_1000_contacts": 0.9290802105915144,
+        "caps_per_active_minute": 0.1717885092574919,
+        "captured_cap_examples": [
+          {
+            "profile": "alternate",
+            "seed": 809,
+            "frame": 3461,
+            "missing_ms": 4.96554038730383,
+            "recorded_tail_ticks": 61,
+            "active_after_tail": true,
+            "tail_caps": 1,
+            "end_position": [
+              1342.69946289063,
+              389.669006347656
+            ]
+          }
+        ]
+      },
+      "held": {
+        "episodes": 3,
+        "wall_seconds": 360,
+        "contacts": 6826,
+        "shots": 131,
+        "caps": 7,
+        "large_corrections": 9,
+        "corrections_over_one": 47,
+        "release_inside": 15,
+        "respawns": 19,
+        "drops": 19,
+        "occupied_respawns": 3,
+        "blocked_respawn_ticks": 0,
+        "introduced_events": 6,
+        "path_crossings": 0,
+        "clock_unknown_ticks": 0,
+        "physical_missing_ms": 142.951048174605,
+        "cap_physical_missing_ms": 41.22180643388033,
+        "missing_ticks": 39,
+        "missing_over_half_tick": 7,
+        "detection_opportunities": 910,
+        "reference_samples": 26,
+        "coarse_shot_errors": 0,
+        "refined_shot_errors": 0,
+        "reference_unstable": 0,
+        "ball_damage_events": 236,
+        "damage_events": 1949,
+        "enemy_ticks_removed": 460297,
+        "enemy_overlaps_removed": 5828,
+        "spawned": 360,
+        "killed": 230,
+        "escaped": 25,
+        "correction_max_px": 41.9200248718262,
+        "new_contact_max_px": 0.28325492143631,
+        "release_depth_max_px": 51.2656865597443,
+        "max_cap_run": 3,
+        "max_slow_run": 0,
+        "max_jitter_run": 2,
+        "enemy_depth_max_px": 0.00720810064576938,
+        "enemy_count_max": 51,
+        "max_blocked_respawn_ticks": 0,
+        "respawn_overlap_max_px": 34.6584587097168,
+        "missing_max_ms": 16.6666666666667,
+        "active_seconds": 351.1333333333333,
+        "mean_enemy_count": 21.314907407407407,
+        "large_per_1000_contacts": 1.3184881336067975,
+        "caps_per_active_minute": 1.1961268274159864,
+        "captured_cap_examples": [
+          {
+            "profile": "held",
+            "seed": 113,
+            "frame": 7174,
+            "missing_ms": 16.6666666666667,
+            "recorded_tail_ticks": 26,
+            "active_after_tail": true,
+            "tail_caps": 2,
+            "end_position": [
+              812.307922363281,
+              956.52197265625
+            ]
+          },
+          {
+            "profile": "held",
+            "seed": 113,
+            "frame": 7175,
+            "missing_ms": 16.6666666666667,
+            "recorded_tail_ticks": 25,
+            "active_after_tail": true,
+            "tail_caps": 1,
+            "end_position": [
+              812.307922363281,
+              956.52197265625
+            ]
+          },
+          {
+            "profile": "held",
+            "seed": 271,
+            "frame": 4923,
+            "missing_ms": 7.88847310054703,
+            "recorded_tail_ticks": 61,
+            "active_after_tail": true,
+            "tail_caps": 1,
+            "end_position": [
+              600.297424316406,
+              966.673706054688
+            ]
+          },
+          {
+            "profile": "held",
+            "seed": 809,
+            "frame": 2823,
+            "missing_ms": 0.0,
+            "recorded_tail_ticks": 61,
+            "active_after_tail": true,
+            "tail_caps": 3,
+            "end_position": [
+              854.128051757813,
+              816.047790527344
+            ]
+          },
+          {
+            "profile": "held",
+            "seed": 809,
+            "frame": 2824,
+            "missing_ms": 0.0,
+            "recorded_tail_ticks": 61,
+            "active_after_tail": true,
+            "tail_caps": 2,
+            "end_position": [
+              856.833374023438,
+              779.867858886719
+            ]
+          },
+          {
+            "profile": "held",
+            "seed": 809,
+            "frame": 2825,
+            "missing_ms": 0.0,
+            "recorded_tail_ticks": 61,
+            "active_after_tail": true,
+            "tail_caps": 1,
+            "end_position": [
+              834.985412597656,
+              763.277282714844
+            ]
+          },
+          {
+            "profile": "held",
+            "seed": 809,
+            "frame": 6155,
+            "missing_ms": 0.0,
+            "recorded_tail_ticks": 61,
+            "active_after_tail": true,
+            "tail_caps": 1,
+            "end_position": [
+              711.461608886719,
+              969.795593261719
+            ]
+          }
+        ]
+      },
+      "adaptive": {
+        "episodes": 3,
+        "wall_seconds": 360,
+        "contacts": 2494,
+        "shots": 163,
+        "caps": 0,
+        "large_corrections": 0,
+        "corrections_over_one": 2,
+        "release_inside": 0,
+        "respawns": 3,
+        "drops": 3,
+        "occupied_respawns": 0,
+        "blocked_respawn_ticks": 0,
+        "introduced_events": 0,
+        "path_crossings": 0,
+        "clock_unknown_ticks": 0,
+        "physical_missing_ms": 3.027314784636769,
+        "cap_physical_missing_ms": 0.0,
+        "missing_ticks": 25,
+        "missing_over_half_tick": 0,
+        "detection_opportunities": 715,
+        "reference_samples": 20,
+        "coarse_shot_errors": 0,
+        "refined_shot_errors": 0,
+        "reference_unstable": 0,
+        "ball_damage_events": 114,
+        "damage_events": 3042,
+        "enemy_ticks_removed": 86069,
+        "enemy_overlaps_removed": 33,
+        "spawned": 360,
+        "killed": 334,
+        "escaped": 0,
+        "correction_max_px": 6.35244464874268,
+        "new_contact_max_px": 0.322494864463806,
+        "release_depth_max_px": 0.0,
+        "max_cap_run": 0,
+        "max_slow_run": 0,
+        "max_jitter_run": 2,
+        "enemy_depth_max_px": 0.00705718994140625,
+        "enemy_count_max": 14,
+        "max_blocked_respawn_ticks": 0,
+        "respawn_overlap_max_px": 0.0,
+        "missing_max_ms": 2.92520709259857,
+        "active_seconds": 358.6,
+        "mean_enemy_count": 3.9858796296296295,
+        "large_per_1000_contacts": 0.0,
+        "caps_per_active_minute": 0.0,
+        "captured_cap_examples": []
+      }
+    },
+    "P": {
+      "alternate": {
+        "episodes": 3,
+        "wall_seconds": 360,
+        "contacts": 3499,
+        "shots": 172,
+        "caps": 2,
+        "large_corrections": 6,
+        "corrections_over_one": 127,
+        "release_inside": 5,
+        "respawns": 23,
+        "drops": 23,
+        "occupied_respawns": 0,
+        "blocked_respawn_ticks": 440,
+        "introduced_events": 4,
+        "path_crossings": 0,
+        "clock_unknown_ticks": 0,
+        "physical_missing_ms": 23.32026690437614,
+        "cap_physical_missing_ms": 0.0,
+        "missing_ticks": 12,
+        "missing_over_half_tick": 1,
+        "detection_opportunities": 1505,
+        "reference_samples": 46,
+        "coarse_shot_errors": 0,
+        "refined_shot_errors": 0,
+        "reference_unstable": 0,
+        "ball_damage_events": 192,
+        "damage_events": 2364,
+        "enemy_ticks_removed": 259413,
+        "enemy_overlaps_removed": 1155,
+        "spawned": 360,
+        "killed": 273,
+        "escaped": 13,
+        "correction_max_px": 50.8977241516113,
+        "new_contact_max_px": 46.9247856140137,
+        "release_depth_max_px": 58.4477213732999,
+        "max_cap_run": 2,
+        "max_slow_run": 0,
+        "max_jitter_run": 2,
+        "enemy_depth_max_px": 0.00713891092425811,
+        "enemy_count_max": 41,
+        "max_blocked_respawn_ticks": 214,
+        "respawn_overlap_max_px": 36.0017585754395,
+        "missing_max_ms": 11.4583333333333,
+        "active_seconds": 341.93333333333334,
+        "mean_enemy_count": 12.013287037037037,
+        "large_per_1000_contacts": 1.7147756501857674,
+        "caps_per_active_minute": 0.35094560343146813,
+        "captured_cap_examples": [
+          {
+            "profile": "alternate",
+            "seed": 809,
+            "frame": 4884,
+            "missing_ms": 0.0,
+            "recorded_tail_ticks": 61,
+            "active_after_tail": true,
+            "tail_caps": 2,
+            "end_position": [
+              550.360717773438,
+              954.149169921875
+            ]
+          },
+          {
+            "profile": "alternate",
+            "seed": 809,
+            "frame": 4885,
+            "missing_ms": 0.0,
+            "recorded_tail_ticks": 61,
+            "active_after_tail": true,
+            "tail_caps": 1,
+            "end_position": [
+              549.071166992188,
+              954.934265136719
+            ]
+          }
+        ]
+      },
+      "held": {
+        "episodes": 3,
+        "wall_seconds": 360,
+        "contacts": 5689,
+        "shots": 121,
+        "caps": 1,
+        "large_corrections": 3,
+        "corrections_over_one": 88,
+        "release_inside": 10,
+        "respawns": 18,
+        "drops": 18,
+        "occupied_respawns": 0,
+        "blocked_respawn_ticks": 0,
+        "introduced_events": 0,
+        "path_crossings": 0,
+        "clock_unknown_ticks": 0,
+        "physical_missing_ms": 17.27546279285122,
+        "cap_physical_missing_ms": 12.2433041376152,
+        "missing_ticks": 25,
+        "missing_over_half_tick": 1,
+        "detection_opportunities": 790,
+        "reference_samples": 24,
+        "coarse_shot_errors": 0,
+        "refined_shot_errors": 0,
+        "reference_unstable": 0,
+        "ball_damage_events": 242,
+        "damage_events": 2392,
+        "enemy_ticks_removed": 299457,
+        "enemy_overlaps_removed": 2327,
+        "spawned": 360,
+        "killed": 280,
+        "escaped": 20,
+        "correction_max_px": 85.5862274169922,
+        "new_contact_max_px": 85.5862274169922,
+        "release_depth_max_px": 33.5920185924919,
+        "max_cap_run": 1,
+        "max_slow_run": 0,
+        "max_jitter_run": 2,
+        "enemy_depth_max_px": 0.00707887879520896,
+        "enemy_count_max": 35,
+        "max_blocked_respawn_ticks": 0,
+        "respawn_overlap_max_px": 0.0,
+        "missing_max_ms": 12.2433041376152,
+        "active_seconds": 351.6,
+        "mean_enemy_count": 13.866527777777778,
+        "large_per_1000_contacts": 0.5273334505185445,
+        "caps_per_active_minute": 0.1706484641638225,
+        "captured_cap_examples": [
+          {
+            "profile": "held",
+            "seed": 809,
+            "frame": 6626,
+            "missing_ms": 12.2433041376152,
+            "recorded_tail_ticks": 61,
+            "active_after_tail": true,
+            "tail_caps": 1,
+            "end_position": [
+              1298.47143554688,
+              970.611206054688
+            ]
+          }
+        ]
+      },
+      "adaptive": {
+        "episodes": 3,
+        "wall_seconds": 360,
+        "contacts": 2433,
+        "shots": 153,
+        "caps": 1,
+        "large_corrections": 0,
+        "corrections_over_one": 32,
+        "release_inside": 0,
+        "respawns": 1,
+        "drops": 1,
+        "occupied_respawns": 0,
+        "blocked_respawn_ticks": 0,
+        "introduced_events": 0,
+        "path_crossings": 0,
+        "clock_unknown_ticks": 0,
+        "physical_missing_ms": 3.238920459997486,
+        "cap_physical_missing_ms": 0.50229346170871,
+        "missing_ticks": 19,
+        "missing_over_half_tick": 0,
+        "detection_opportunities": 631,
+        "reference_samples": 19,
+        "coarse_shot_errors": 0,
+        "refined_shot_errors": 0,
+        "reference_unstable": 0,
+        "ball_damage_events": 166,
+        "damage_events": 2934,
+        "enemy_ticks_removed": 101087,
+        "enemy_overlaps_removed": 65,
+        "spawned": 360,
+        "killed": 340,
+        "escaped": 0,
+        "correction_max_px": 4.14738798141479,
+        "new_contact_max_px": 3.0531370639801,
+        "release_depth_max_px": 0.0,
+        "max_cap_run": 1,
+        "max_slow_run": 0,
+        "max_jitter_run": 3,
+        "enemy_depth_max_px": 0.0066070556640625,
+        "enemy_count_max": 15,
+        "max_blocked_respawn_ticks": 0,
+        "respawn_overlap_max_px": 0.0,
+        "missing_max_ms": 2.29861658049031,
+        "active_seconds": 359.5333333333333,
+        "mean_enemy_count": 4.680879629629629,
+        "large_per_1000_contacts": 0.0,
+        "caps_per_active_minute": 0.16688299647691454,
+        "captured_cap_examples": [
+          {
+            "profile": "adaptive",
+            "seed": 113,
+            "frame": 5677,
+            "missing_ms": 0.50229346170871,
+            "recorded_tail_ticks": 61,
+            "active_after_tail": true,
+            "tail_caps": 1,
+            "end_position": [
+              682.200012207031,
+              954.840087890625
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "observer_pairs": [
+    {
+      "mode": "A",
+      "profile": "held",
+      "matched_checkpoints": false,
+      "first_mismatch_frame": 1020,
+      "observed_median_us": 363.0,
+      "lean_median_us": 303.0,
+      "lean_p95_us": 532.0,
+      "lean_p99_us": 674.0300000000007,
+      "lean_max_us": 891,
+      "use_for_observer_overhead": false
+    },
+    {
+      "mode": "A",
+      "profile": "adaptive",
+      "matched_checkpoints": true,
+      "first_mismatch_frame": null,
+      "observed_median_us": 112.0,
+      "lean_median_us": 95.0,
+      "lean_p95_us": 207.04999999999927,
+      "lean_p99_us": 306.0,
+      "lean_max_us": 514,
+      "use_for_observer_overhead": true
+    },
+    {
+      "mode": "N",
+      "profile": "held",
+      "matched_checkpoints": false,
+      "first_mismatch_frame": 540,
+      "observed_median_us": 496.0,
+      "lean_median_us": 210.0,
+      "lean_p95_us": 404.0,
+      "lean_p99_us": 544.0700000000015,
+      "lean_max_us": 931,
+      "use_for_observer_overhead": false
+    },
+    {
+      "mode": "N",
+      "profile": "adaptive",
+      "matched_checkpoints": true,
+      "first_mismatch_frame": null,
+      "observed_median_us": 113.0,
+      "lean_median_us": 99.0,
+      "lean_p95_us": 213.0,
+      "lean_p99_us": 314.0100000000002,
+      "lean_max_us": 596,
+      "use_for_observer_overhead": true
+    },
+    {
+      "mode": "B",
+      "profile": "held",
+      "matched_checkpoints": true,
+      "first_mismatch_frame": null,
+      "observed_median_us": 499.0,
+      "lean_median_us": 438.0,
+      "lean_p95_us": 858.0,
+      "lean_p99_us": 1084.0300000000007,
+      "lean_max_us": 1564,
+      "use_for_observer_overhead": true
+    },
+    {
+      "mode": "B",
+      "profile": "adaptive",
+      "matched_checkpoints": true,
+      "first_mismatch_frame": null,
+      "observed_median_us": 114.0,
+      "lean_median_us": 101.0,
+      "lean_p95_us": 215.0,
+      "lean_p99_us": 312.0,
+      "lean_max_us": 630,
+      "use_for_observer_overhead": true
+    },
+    {
+      "mode": "F",
+      "profile": "held",
+      "matched_checkpoints": true,
+      "first_mismatch_frame": null,
+      "observed_median_us": 372.0,
+      "lean_median_us": 339.0,
+      "lean_p95_us": 658.0,
+      "lean_p99_us": 821.0100000000002,
+      "lean_max_us": 1276,
+      "use_for_observer_overhead": true
+    },
+    {
+      "mode": "F",
+      "profile": "adaptive",
+      "matched_checkpoints": true,
+      "first_mismatch_frame": null,
+      "observed_median_us": 119.0,
+      "lean_median_us": 105.0,
+      "lean_p95_us": 230.0,
+      "lean_p99_us": 335.0,
+      "lean_max_us": 610,
+      "use_for_observer_overhead": true
+    }
+  ],
+  "repeats": [
+    {
+      "files": [
+        "value_repeat_first_A_held_113_60.json",
+        "value_repeat_A_held_113_60.json"
+      ],
+      "checkpoints_equal": true,
+      "stats_equal": true,
+      "first_difference_frame": null,
+      "caps": [
+        2,
+        2
+      ],
+      "large": [
+        5,
+        5
+      ]
+    },
+    {
+      "files": [
+        "value_isolated_A_held_113_60.json",
+        "value_isolated_repeat_A_held_113_60.json"
+      ],
+      "checkpoints_equal": false,
+      "stats_equal": false,
+      "first_difference_frame": 1020,
+      "caps": [
+        0,
+        0
+      ],
+      "large": [
+        2,
+        5
+      ]
+    }
+  ],
+  "cost_checks": 222913,
+  "one_step_cost": {
+    "A": {
+      "all": {
+        "cases": 336,
+        "samples": 1008,
+        "median_us": 64.0,
+        "p95_us": 122.0,
+        "p99_us": 164.92999999999995,
+        "max_us": 204
+      },
+      "no_contact": {
+        "cases": 186,
+        "samples": 558,
+        "median_us": 43.5,
+        "p95_us": 76.0,
+        "p99_us": 97.28999999999985,
+        "max_us": 141
+      },
+      "contact": {
+        "cases": 150,
+        "samples": 450,
+        "median_us": 83.0,
+        "p95_us": 150.54999999999995,
+        "p99_us": 175.52999999999997,
+        "max_us": 204
+      }
+    },
+    "N": {
+      "all": {
+        "cases": 336,
+        "samples": 1008,
+        "median_us": 46.0,
+        "p95_us": 85.0,
+        "p99_us": 113.92999999999995,
+        "max_us": 164
+      },
+      "no_contact": {
+        "cases": 186,
+        "samples": 558,
+        "median_us": 46.0,
+        "p95_us": 83.14999999999998,
+        "p99_us": 115.0,
+        "max_us": 164
+      },
+      "contact": {
+        "cases": 150,
+        "samples": 450,
+        "median_us": 45.0,
+        "p95_us": 89.54999999999995,
+        "p99_us": 110.0,
+        "max_us": 161
+      }
+    },
+    "S": {
+      "all": {
+        "cases": 336,
+        "samples": 1008,
+        "median_us": 64.0,
+        "p95_us": 135.64999999999998,
+        "p99_us": 193.64999999999975,
+        "max_us": 342
+      },
+      "no_contact": {
+        "cases": 186,
+        "samples": 558,
+        "median_us": 44.0,
+        "p95_us": 81.14999999999998,
+        "p99_us": 101.0,
+        "max_us": 110
+      },
+      "contact": {
+        "cases": 150,
+        "samples": 450,
+        "median_us": 105.0,
+        "p95_us": 172.54999999999995,
+        "p99_us": 209.0,
+        "max_us": 342
+      }
+    },
+    "B": {
+      "all": {
+        "cases": 336,
+        "samples": 1008,
+        "median_us": 47.0,
+        "p95_us": 88.64999999999998,
+        "p99_us": 117.0,
+        "max_us": 150
+      },
+      "no_contact": {
+        "cases": 186,
+        "samples": 558,
+        "median_us": 47.0,
+        "p95_us": 87.14999999999998,
+        "p99_us": 112.42999999999995,
+        "max_us": 144
+      },
+      "contact": {
+        "cases": 150,
+        "samples": 450,
+        "median_us": 47.0,
+        "p95_us": 89.54999999999995,
+        "p99_us": 121.03999999999996,
+        "max_us": 150
+      }
+    },
+    "F": {
+      "all": {
+        "cases": 336,
+        "samples": 1008,
+        "median_us": 73.0,
+        "p95_us": 116.0,
+        "p99_us": 153.92999999999995,
+        "max_us": 215
+      },
+      "no_contact": {
+        "cases": 186,
+        "samples": 558,
+        "median_us": 54.0,
+        "p95_us": 95.14999999999998,
+        "p99_us": 134.7199999999998,
+        "max_us": 148
+      },
+      "contact": {
+        "cases": 150,
+        "samples": 450,
+        "median_us": 81.0,
+        "p95_us": 138.0,
+        "p99_us": 175.01999999999998,
+        "max_us": 215
+      }
+    }
+  },
+  "initial_overlap": {
+    "checks": 2881,
+    "different_full_tick_results": {
+      "F": 99
+    },
+    "failures": 0,
+    "methods": [
+      "A",
+      "N",
+      "S",
+      "B",
+      "F"
+    ],
+    "overlap_cases": 288,
+    "scope": "A/N/S/B match saved baselines; F matches its observed implementation, later contact times may differ"
+  },
+  "focus": {
+    "cases": [
+      {
+        "fixture": "N_held_809_tick503",
+        "limit_ms": 16.6666666666667,
+        "methods": {
+          "B": {
+            "depth": 1.50213158425996,
+            "found": true,
+            "normal": [
+              0.94683450460434,
+              -0.321721017360687
+            ],
+            "point": [
+              918.000122070313,
+              1042.99865722656
+            ],
+            "shot": false,
+            "time_ms": 2.5,
+            "velocity": [
+              1017.88049316406,
+              -317.681915283203
+            ]
+          },
+          "B+4": {
+            "depth": 0.0966453959255951,
+            "found": true,
+            "normal": [
+              0.915125668048859,
+              -0.403168708086014
+            ],
+            "point": [
+              918.0,
+              1045.18115234375
+            ],
+            "shot": true,
+            "time_ms": 1.71875,
+            "velocity": [
+              846.685485839844,
+              -1013.2099609375
+            ]
+          },
+          "reference": {
+            "depth": 0.000520345060706973,
+            "found": true,
+            "normal": [
+              0.912977397441864,
+              -0.408010214567184
+            ],
+            "point": [
+              918.000061035156,
+              1045.322265625
+            ],
+            "shot": true,
+            "time_ms": 1.66834983295606,
+            "velocity": [
+              856.461547851563,
+              -1024.79370117188
+            ]
+          },
+          "shared_predicate_reference": {
+            "center": [
+              939.911499023438,
+              1035.53002929688
+            ],
+            "depth": 0.000520345060706973,
+            "found": true,
+            "normal": [
+              0.912977397441864,
+              -0.408010214567184
+            ],
+            "point": [
+              918.000061035156,
+              1045.322265625
+            ],
+            "polygon": [
+              [
+                658.485900878906,
+                1001.89916992188
+              ],
+              [
+                918.0,
+                1045.322265625
+              ],
+              [
+                918.0,
+                1115.84851074219
+              ],
+              [
+                658.485900878906,
+                1115.84851074219
+              ]
+            ],
+            "shot": true,
+            "time_ms": 1.66832067770883,
+            "velocity": [
+              856.461730957031,
+              -1024.79382324219
+            ]
+          }
+        },
+        "native_target": "none",
+        "rule": 0
+      },
+      {
+        "fixture": "N_held_809_tick503",
+        "limit_ms": 16.6666666666667,
+        "methods": {
+          "B": {
+            "depth": 1.50213158425996,
+            "found": true,
+            "normal": [
+              0.94683450460434,
+              -0.321721017360687
+            ],
+            "point": [
+              918.000122070313,
+              1042.99865722656
+            ],
+            "shot": true,
+            "time_ms": 2.5,
+            "velocity": [
+              683.947021484375,
+              -819.803771972656
+            ]
+          },
+          "B+4": {
+            "depth": 0.0966453959255951,
+            "found": true,
+            "normal": [
+              0.915125668048859,
+              -0.403168708086014
+            ],
+            "point": [
+              918.0,
+              1045.18115234375
+            ],
+            "shot": true,
+            "time_ms": 1.71875,
+            "velocity": [
+              846.685485839844,
+              -1013.2099609375
+            ]
+          },
+          "reference": {
+            "depth": 0.000520345060706973,
+            "found": true,
+            "normal": [
+              0.912977397441864,
+              -0.408010214567184
+            ],
+            "point": [
+              918.000061035156,
+              1045.322265625
+            ],
+            "shot": true,
+            "time_ms": 1.66834983295606,
+            "velocity": [
+              856.461547851563,
+              -1024.79370117188
+            ]
+          },
+          "shared_predicate_reference": {
+            "center": [
+              939.911499023438,
+              1035.53002929688
+            ],
+            "depth": 0.000520345060706973,
+            "found": true,
+            "normal": [
+              0.912977397441864,
+              -0.408010214567184
+            ],
+            "point": [
+              918.000061035156,
+              1045.322265625
+            ],
+            "polygon": [
+              [
+                658.485900878906,
+                1001.89916992188
+              ],
+              [
+                918.0,
+                1045.322265625
+              ],
+              [
+                918.0,
+                1115.84851074219
+              ],
+              [
+                658.485900878906,
+                1115.84851074219
+              ]
+            ],
+            "shot": true,
+            "time_ms": 1.66832067770883,
+            "velocity": [
+              856.461730957031,
+              -1024.79382324219
+            ]
+          }
+        },
+        "native_target": "none",
+        "rule": 2
+      },
+      {
+        "fixture": "A_held_809_tick2447",
+        "limit_ms": 1.5299481282407,
+        "methods": {
+          "B": {
+            "found": false,
+            "shot": false
+          },
+          "B+4": {
+            "found": false,
+            "shot": false
+          },
+          "reference": {
+            "found": false,
+            "shot": false
+          },
+          "shared_predicate_reference": {
+            "center": [
+              609.810180664063,
+              968.466674804688
+            ],
+            "depth": 83.052280607944,
+            "found": true,
+            "normal": [
+              0.168279394507408,
+              -0.985739290714264
+            ],
+            "point": [
+              658.48583984375,
+              1001.90008544922
+            ],
+            "polygon": [
+              [
+                658.485900878906,
+                1001.90008544922
+              ],
+              [
+                918.0,
+                1046.20275878906
+              ],
+              [
+                918.0,
+                1115.84851074219
+              ],
+              [
+                658.485900878906,
+                1115.84851074219
+              ]
+            ],
+            "shot": true,
+            "time_ms": 1.35364175214453,
+            "velocity": [
+              -524.032836914063,
+              -1444.30920410156
+            ]
+          }
+        },
+        "native_target": "Lower",
+        "rule": 0
+      },
+      {
+        "fixture": "A_held_809_tick2447",
+        "limit_ms": 1.5299481282407,
+        "methods": {
+          "B": {
+            "found": false,
+            "shot": false
+          },
+          "B+4": {
+            "found": false,
+            "shot": false
+          },
+          "reference": {
+            "found": false,
+            "shot": false
+          },
+          "shared_predicate_reference": {
+            "center": [
+              609.810180664063,
+              968.466674804688
+            ],
+            "depth": 83.052280607944,
+            "found": true,
+            "normal": [
+              0.168279394507408,
+              -0.985739290714264
+            ],
+            "point": [
+              658.48583984375,
+              1001.90008544922
+            ],
+            "polygon": [
+              [
+                658.485900878906,
+                1001.90008544922
+              ],
+              [
+                918.0,
+                1046.20275878906
+              ],
+              [
+                918.0,
+                1115.84851074219
+              ],
+              [
+                658.485900878906,
+                1115.84851074219
+              ]
+            ],
+            "shot": true,
+            "time_ms": 1.35364175214453,
+            "velocity": [
+              -524.032836914063,
+              -1444.30920410156
+            ]
+          }
+        },
+        "native_target": "Lower",
+        "rule": 2
+      }
+    ],
+    "checks": 11,
+    "failures": 0
+  },
+  "production_hashes_match": {
+    "enemies/crowd.gd": true,
+    "enemies/enemy.gd": true,
+    "enemies/enemy.tscn": true,
+    "enemies/routes.gd": true,
+    "main/main.gd": true,
+    "main/main.tscn": true,
+    "pinball/ball.gd": true,
+    "pinball/boundary.gd": true,
+    "pinball/flipper.gd": true,
+    "pinball/flipper.tscn": true,
+    "pinball/flippers.gd": true,
+    "pinball/motion.gd": true,
+    "pinball/table_flipper.gd": true
+  },
+  "regressions": {
+    "migration": {
+      "checks": 96,
+      "failures": 0
+    },
+    "enemy": {
+      "checks": 3737,
+      "failures": 2
+    }
+  },
+  "reference_warning": "Main-scene shared-predicate reference flags are candidates only. A/S held809 tick2447 are false flags rejected by independent scalar convex geometry. N held809 tick503 is independently confirmed; under three shot conditions it is a speed error, not a shot miss."
+}

@@ -1,0 +1,1 @@
+{"checks":2881,"different_full_tick_results":{"F":99},"failures":0,"methods":["A","N","S","B","F"],"overlap_cases":288,"scope":"A/N/S/B match saved baselines; F matches its observed implementation, later contact times may differ"}

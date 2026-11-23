@@ -1,0 +1,46 @@
+{
+  "arguments": {
+    "godot": "C:\\GameDev\\Tools\\Godot\\Godot_v4.7.2-stable_win64_console.exe",
+    "tag": "isolated",
+    "modes": "A,N,B,F",
+    "profiles": "held,adaptive",
+    "seeds": "113",
+    "seconds": 120,
+    "rate": 60,
+    "off": true
+  },
+  "runs": [
+    {
+      "file": "value_off_isolated_A_held_113_60.json",
+      "wall_seconds": 3.8053945999999996
+    },
+    {
+      "file": "value_off_isolated_N_held_113_60.json",
+      "wall_seconds": 3.1510730999998486
+    },
+    {
+      "file": "value_off_isolated_B_held_113_60.json",
+      "wall_seconds": 5.103712900000119
+    },
+    {
+      "file": "value_off_isolated_F_held_113_60.json",
+      "wall_seconds": 4.077514600000086
+    },
+    {
+      "file": "value_off_isolated_A_adaptive_113_60.json",
+      "wall_seconds": 2.2262652999997954
+    },
+    {
+      "file": "value_off_isolated_N_adaptive_113_60.json",
+      "wall_seconds": 2.317473399999926
+    },
+    {
+      "file": "value_off_isolated_B_adaptive_113_60.json",
+      "wall_seconds": 2.317809600000146
+    },
+    {
+      "file": "value_off_isolated_F_adaptive_113_60.json",
+      "wall_seconds": 2.4099852999997893
+    }
+  ]
+}

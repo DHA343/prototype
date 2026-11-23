@@ -1,0 +1,230 @@
+{
+  "arguments": {
+    "godot": "C:\\GameDev\\Tools\\Godot\\Godot_v4.7.2-stable_win64_console.exe",
+    "tag": "isolated",
+    "modes": "A,N,S,B,F,P",
+    "profiles": "alternate,held,adaptive",
+    "seeds": "113,271,809",
+    "seconds": 120,
+    "rate": 60,
+    "off": false
+  },
+  "runs": [
+    {
+      "file": "value_isolated_A_alternate_113_60.json",
+      "wall_seconds": 3.426188099999763
+    },
+    {
+      "file": "value_isolated_N_alternate_113_60.json",
+      "wall_seconds": 2.9670364000003246
+    },
+    {
+      "file": "value_isolated_S_alternate_113_60.json",
+      "wall_seconds": 3.4326773000002504
+    },
+    {
+      "file": "value_isolated_B_alternate_113_60.json",
+      "wall_seconds": 2.781828499999847
+    },
+    {
+      "file": "value_isolated_F_alternate_113_60.json",
+      "wall_seconds": 3.4357076999999663
+    },
+    {
+      "file": "value_isolated_P_alternate_113_60.json",
+      "wall_seconds": 3.529501800000162
+    },
+    {
+      "file": "value_isolated_A_alternate_271_60.json",
+      "wall_seconds": 2.881978699999763
+    },
+    {
+      "file": "value_isolated_N_alternate_271_60.json",
+      "wall_seconds": 2.97806700000001
+    },
+    {
+      "file": "value_isolated_S_alternate_271_60.json",
+      "wall_seconds": 2.9775683000002573
+    },
+    {
+      "file": "value_isolated_B_alternate_271_60.json",
+      "wall_seconds": 2.8833159999999225
+    },
+    {
+      "file": "value_isolated_F_alternate_271_60.json",
+      "wall_seconds": 2.976235199999792
+    },
+    {
+      "file": "value_isolated_P_alternate_271_60.json",
+      "wall_seconds": 2.8754432000000634
+    },
+    {
+      "file": "value_isolated_A_alternate_809_60.json",
+      "wall_seconds": 3.154490600000372
+    },
+    {
+      "file": "value_isolated_N_alternate_809_60.json",
+      "wall_seconds": 2.8833254999999554
+    },
+    {
+      "file": "value_isolated_S_alternate_809_60.json",
+      "wall_seconds": 3.2562221000002864
+    },
+    {
+      "file": "value_isolated_B_alternate_809_60.json",
+      "wall_seconds": 2.882072700000208
+    },
+    {
+      "file": "value_isolated_F_alternate_809_60.json",
+      "wall_seconds": 3.437907600000017
+    },
+    {
+      "file": "value_isolated_P_alternate_809_60.json",
+      "wall_seconds": 4.3612160000002405
+    },
+    {
+      "file": "value_isolated_A_held_113_60.json",
+      "wall_seconds": 4.815154299999904
+    },
+    {
+      "file": "value_isolated_N_held_113_60.json",
+      "wall_seconds": 5.749053999999887
+    },
+    {
+      "file": "value_isolated_S_held_113_60.json",
+      "wall_seconds": 4.824652600000263
+    },
+    {
+      "file": "value_isolated_B_held_113_60.json",
+      "wall_seconds": 5.839025499999934
+    },
+    {
+      "file": "value_isolated_F_held_113_60.json",
+      "wall_seconds": 4.7300366999998005
+    },
+    {
+      "file": "value_isolated_P_held_113_60.json",
+      "wall_seconds": 3.522193100000095
+    },
+    {
+      "file": "value_isolated_A_held_271_60.json",
+      "wall_seconds": 3.0656856999999036
+    },
+    {
+      "file": "value_isolated_N_held_271_60.json",
+      "wall_seconds": 4.641141099999913
+    },
+    {
+      "file": "value_isolated_S_held_271_60.json",
+      "wall_seconds": 4.077545499999815
+    },
+    {
+      "file": "value_isolated_B_held_271_60.json",
+      "wall_seconds": 4.634817000000112
+    },
+    {
+      "file": "value_isolated_F_held_271_60.json",
+      "wall_seconds": 3.6220203000002584
+    },
+    {
+      "file": "value_isolated_P_held_271_60.json",
+      "wall_seconds": 3.0661111999997956
+    },
+    {
+      "file": "value_isolated_A_held_809_60.json",
+      "wall_seconds": 5.102553499999885
+    },
+    {
+      "file": "value_isolated_N_held_809_60.json",
+      "wall_seconds": 4.637386500000048
+    },
+    {
+      "file": "value_isolated_S_held_809_60.json",
+      "wall_seconds": 5.003312899999855
+    },
+    {
+      "file": "value_isolated_B_held_809_60.json",
+      "wall_seconds": 3.5276677000001655
+    },
+    {
+      "file": "value_isolated_F_held_809_60.json",
+      "wall_seconds": 5.000989300000128
+    },
+    {
+      "file": "value_isolated_P_held_809_60.json",
+      "wall_seconds": 4.264188799999829
+    },
+    {
+      "file": "value_isolated_A_adaptive_113_60.json",
+      "wall_seconds": 2.5955269000000953
+    },
+    {
+      "file": "value_isolated_N_adaptive_113_60.json",
+      "wall_seconds": 2.699649000000136
+    },
+    {
+      "file": "value_isolated_S_adaptive_113_60.json",
+      "wall_seconds": 2.785764499999914
+    },
+    {
+      "file": "value_isolated_B_adaptive_113_60.json",
+      "wall_seconds": 2.6981120999998893
+    },
+    {
+      "file": "value_isolated_F_adaptive_113_60.json",
+      "wall_seconds": 2.7888624000001982
+    },
+    {
+      "file": "value_isolated_P_adaptive_113_60.json",
+      "wall_seconds": 2.7007011000000603
+    },
+    {
+      "file": "value_isolated_A_adaptive_271_60.json",
+      "wall_seconds": 2.6998060000000805
+    },
+    {
+      "file": "value_isolated_N_adaptive_271_60.json",
+      "wall_seconds": 2.600042399999893
+    },
+    {
+      "file": "value_isolated_S_adaptive_271_60.json",
+      "wall_seconds": 2.6896484999997483
+    },
+    {
+      "file": "value_isolated_B_adaptive_271_60.json",
+      "wall_seconds": 3.0683059000002686
+    },
+    {
+      "file": "value_isolated_F_adaptive_271_60.json",
+      "wall_seconds": 2.698087000000214
+    },
+    {
+      "file": "value_isolated_P_adaptive_271_60.json",
+      "wall_seconds": 2.791442199999892
+    },
+    {
+      "file": "value_isolated_A_adaptive_809_60.json",
+      "wall_seconds": 2.8859873000001244
+    },
+    {
+      "file": "value_isolated_N_adaptive_809_60.json",
+      "wall_seconds": 2.7913398000000598
+    },
+    {
+      "file": "value_isolated_S_adaptive_809_60.json",
+      "wall_seconds": 2.789509100000032
+    },
+    {
+      "file": "value_isolated_B_adaptive_809_60.json",
+      "wall_seconds": 2.785147799999777
+    },
+    {
+      "file": "value_isolated_F_adaptive_809_60.json",
+      "wall_seconds": 2.7849707000000308
+    },
+    {
+      "file": "value_isolated_P_adaptive_809_60.json",
+      "wall_seconds": 2.700654199999917
+    }
+  ]
+}
