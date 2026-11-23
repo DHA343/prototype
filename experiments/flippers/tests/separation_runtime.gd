@@ -2,59 +2,21 @@ extends RefCounted
 
 
 func run(preview: Node) -> Dictionary:
-	var main: PinballLab = preview.main
-	main.set_physics_process(false)
-	main.get_node("Playfield/ShotGuide").set_physics_process(false)
-	main.spawner.enabled = false
-	var saved: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(
-		"res://experiments/flippers/evidence/continuous_audit.json"))
-	var results: Array[Dictionary] = []
-	var controls: Array[Dictionary] = []
-	for mode: int in 4:
-		var key := InputEventKey.new()
-		key.keycode = KEY_1 + mode
-		key.pressed = true
-		preview._unhandled_key_input(key)
-		controls.append({"mode": mode, "label": str(preview.label.text),
-			"flippers": main.flippers.items.map(func(item: PinballFlipper) -> int: return item.get("rule")),
-			"motion": main.ball._motion.get_script().resource_path})
-		for id: int in [96, 1885]:
-			var row: Dictionary = saved.cases.filter(func(item: Dictionary) -> bool:
-				return item.has("case") and int(item.id) == id)[0]
-			var fixture: Dictionary = row.case
-			main.flippers.reset_input()
-			main.flippers.swing_angle = 18.0
-			main.flippers.raise_speed = 600.0
-			main.flippers.return_speed = 420.0
-			main.flippers.pass_until_descending = true
-			if fixture.angle != 0.0:
-				main.flippers.advance(float(fixture.angle) / 600.0, true, true)
-			for item: PinballFlipper in main.flippers.items:
-				item.angular_velocity = 0.0
-				item.collision_layer = 8 << item.side
-			var target: PinballFlipper = main.flippers.items[int(fixture.side)]
-			var rising: bool = fixture.angle == 0.0
-			var plan := target.plan_motion(rising, 18.0, 600.0 if rising else 420.0)
-			var duration: float = 1.0 / fixture.rate
-			main.flippers.advance(duration, rising, rising)
-			main.ball.radius = float(fixture.radius)
-			main.ball.gravity = 0.0
-			main.ball.max_speed = 3600.0
-			main.ball.hit_sound = null
-			main.ball.collision_mask = 8 << target.side
-			main.ball.reset_at(_vector(fixture.start), _vector(fixture.velocity))
-			main.ball.advance(duration, [plan])
-			results.append({"mode": mode, "id": id, "rate": row.rate,
-				"position": [main.ball.global_position.x, main.ball.global_position.y],
-				"velocity": [main.ball.velocity.x, main.ball.velocity.y],
-				"exceptions": main.ball.get_collision_exceptions().size()})
-	preview.set_mode(3)
-	var output := {"controls": controls, "results": results,
-		"scope": "Live rendered preview; actual four-mode key handlers and lean motion; two CLI fixtures per mode"}
-	var file := FileAccess.open("res://experiments/flippers/evidence/separation_runtime.json", FileAccess.WRITE)
-	file.store_string(JSON.stringify(output, "\t"))
-	return output
-
-
-func _vector(value: Array) -> Vector2:
-	return Vector2(float(value[0]), float(value[1]))
+	var rows: Array[Dictionary] = []
+	for index: int in 8:
+		for mode: int in 2:
+			preview.variant = 0
+			await preview.reset_case(index, mode)
+			for frame: int in 3:
+				preview.step_once()
+				await preview.get_tree().physics_frame
+			rows.append({"scene": index + 1, "mode": "S" if mode == 0 else "B",
+				"initial": preview.initial.duplicate(true), "updates": preview.frames,
+				"max_correction_px": preview.max_correction, "caps": preview.capped_updates,
+				"first": preview.events[0].duplicate(true) if not preview.events.is_empty() else {}})
+	var output := {"cases": rows, "scope": "Live rendered eight-scene preview, three updates per S/B"}
+	var file := FileAccess.open("res://experiments/flippers/evidence/separation_view_runtime.json", FileAccess.WRITE)
+	assert(file != null, "Cannot save visual runtime comparison")
+	file.store_string(JSON.stringify(output))
+	await preview.reset_case(0, 1)
+	return {"scenes": 8, "methods": 2, "cases": rows.size(), "saved": "separation_view_runtime.json"}

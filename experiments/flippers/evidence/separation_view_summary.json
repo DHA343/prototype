@@ -1,0 +1,135 @@
+{
+  "cli_checks": 130,
+  "cli_failures": [],
+  "visual_cases": 16,
+  "comparisons": [
+    {
+      "scene": 1,
+      "mode": "S",
+      "position_delta_px": 0.0,
+      "velocity_delta_px_s": 0.0,
+      "correction_delta_px": 0.0
+    },
+    {
+      "scene": 1,
+      "mode": "B",
+      "position_delta_px": 0.0,
+      "velocity_delta_px_s": 0.0,
+      "correction_delta_px": 0.0
+    },
+    {
+      "scene": 2,
+      "mode": "S",
+      "position_delta_px": 0.0,
+      "velocity_delta_px_s": 0.0,
+      "correction_delta_px": 0.0
+    },
+    {
+      "scene": 2,
+      "mode": "B",
+      "position_delta_px": 0.0,
+      "velocity_delta_px_s": 0.0,
+      "correction_delta_px": 0.0
+    },
+    {
+      "scene": 3,
+      "mode": "S",
+      "position_delta_px": 0.0,
+      "velocity_delta_px_s": 0.0,
+      "correction_delta_px": 0.0
+    },
+    {
+      "scene": 3,
+      "mode": "B",
+      "position_delta_px": 0.0,
+      "velocity_delta_px_s": 0.0,
+      "correction_delta_px": 0.0
+    },
+    {
+      "scene": 4,
+      "mode": "S",
+      "position_delta_px": 0.0,
+      "velocity_delta_px_s": 0.0,
+      "correction_delta_px": 0.0
+    },
+    {
+      "scene": 4,
+      "mode": "B",
+      "position_delta_px": 0.0,
+      "velocity_delta_px_s": 0.0,
+      "correction_delta_px": 0.0
+    },
+    {
+      "scene": 5,
+      "mode": "S",
+      "position_delta_px": 0.0,
+      "velocity_delta_px_s": 0.0,
+      "correction_delta_px": 0.0
+    },
+    {
+      "scene": 5,
+      "mode": "B",
+      "position_delta_px": 0.0,
+      "velocity_delta_px_s": 0.0,
+      "correction_delta_px": 0.0
+    },
+    {
+      "scene": 6,
+      "mode": "S",
+      "position_delta_px": 0.0,
+      "velocity_delta_px_s": 0.0,
+      "correction_delta_px": 0.0
+    },
+    {
+      "scene": 6,
+      "mode": "B",
+      "position_delta_px": 0.0,
+      "velocity_delta_px_s": 0.0,
+      "correction_delta_px": 0.0
+    },
+    {
+      "scene": 7,
+      "mode": "S",
+      "position_delta_px": 0.0,
+      "velocity_delta_px_s": 0.0,
+      "correction_delta_px": 0.0
+    },
+    {
+      "scene": 7,
+      "mode": "B",
+      "position_delta_px": 0.0,
+      "velocity_delta_px_s": 0.0,
+      "correction_delta_px": 0.0
+    },
+    {
+      "scene": 8,
+      "mode": "S",
+      "position_delta_px": 0.0,
+      "velocity_delta_px_s": 0.0,
+      "correction_delta_px": 0.0
+    },
+    {
+      "scene": 8,
+      "mode": "B",
+      "position_delta_px": 0.0,
+      "velocity_delta_px_s": 0.0,
+      "correction_delta_px": 0.0
+    }
+  ],
+  "production_hashes_match": {
+    "enemies/crowd.gd": true,
+    "enemies/enemy.gd": true,
+    "enemies/enemy.tscn": true,
+    "enemies/routes.gd": true,
+    "main/main.gd": true,
+    "main/main.tscn": true,
+    "pinball/ball.gd": true,
+    "pinball/boundary.gd": true,
+    "pinball/flipper.gd": true,
+    "pinball/flipper.tscn": true,
+    "pinball/flippers.gd": true,
+    "pinball/motion.gd": true,
+    "pinball/table_flipper.gd": true
+  },
+  "scope": "Same initial state and first contact checked; long trajectories need not remain identical"
+}
