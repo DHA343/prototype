@@ -1,7 +1,0 @@
-extends "res://experiments/flippers/tests/native_motion.gd"
-
-const Contact = preload("res://experiments/flippers/contact.gd")
-
-
-func advance(delta: float, swings: Array[PinballFlipper.Swing] = []) -> void:
-	super.advance(delta, Contact.complete_motion(body, flippers.items, swings))

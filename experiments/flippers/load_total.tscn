@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3]
-
-[ext_resource type="Script" path="res://experiments/flippers/tests/load_total_audit.gd" id="1"]
-
-[node name="LoadTotal" type="Node"]
-script = ExtResource("1")
