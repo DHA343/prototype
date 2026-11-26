@@ -1,5 +1,7 @@
 extends SceneTree
 
+const TEST_STEP: float = 1.0 / 240.0
+
 const MAIN: PackedScene = preload("res://main/main.tscn")
 
 var _main: PinballLab
@@ -76,7 +78,7 @@ func _test_swept_tip() -> void:
 		Vector2(3600, 600))
 	var predicted := _main.predict_shot()
 	Input.action_press(&"pinball_left")
-	_main.advance(PinballLab.STEP)
+	_main.advance(TEST_STEP)
 	Input.action_release(&"pinball_left")
 	_check(_ball.last_normal != Vector2.ZERO and _ball.velocity.y < 0.0,
 		"Main detects a high-speed contact with the tip during its rotation")
@@ -97,7 +99,7 @@ func _test_solid_flippers() -> void:
 		var center := _boundary.to_global(_boundary.opening_center)
 		_main.place_ball(center + Vector2.UP * 90.0, Vector2.DOWN * 600.0)
 		for _step in 96:
-			_ball.advance(PinballLab.STEP)
+			_ball.advance(TEST_STEP)
 		_check(_ball.global_position.y > center.y + 90.0,
 			"Narrow drain remains traversable at root/tip widths %s" % widths)
 		for flipper: PinballFlipper in _main.flippers.items:
@@ -113,7 +115,7 @@ func _test_solid_flippers() -> void:
 				_main.place_ball(point + outward * (_ball.radius + 0.5), -outward * 540.0)
 				flipper.angular_velocity = -1.0 if flipper.side == 0 else 1.0
 				var prediction := flipper.predicted_contact(point + outward * (_ball.radius - 0.1),
-					_ball.radius, 0.00001, PinballLab.STEP, _main.flippers.swing_angle,
+					_ball.radius, 0.00001, TEST_STEP, _main.flippers.swing_angle,
 					_main.flippers.raise_speed, 1.0)
 				_check(not prediction.is_empty(), "Prediction includes solid underside contact")
 				if not prediction.is_empty():
@@ -123,7 +125,7 @@ func _test_solid_flippers() -> void:
 				_check(not flipper.is_striking(root_back, normal), "Wall-side root does not grant a powered shot")
 				flipper.angular_velocity = 0.0
 				for _step in 12:
-					_ball.advance(PinballLab.STEP)
+					_ball.advance(TEST_STEP)
 				_check(_ball.velocity.dot(outward) > 0.0, "Ball rebounds outward from the underside")
 				flipper.angular_velocity = 0.0
 			# The pivot position stays fixed through repeated raises and returns.
@@ -467,7 +469,7 @@ func _test_rounded_corners() -> void:
 		_check(absf(normal.x) > 0.1 and absf(normal.y) > 0.1, "Corner has an intermediate surface normal")
 		_main.place_ball(contact + normal * (_ball.radius + 6.0), -normal * 600.0)
 		for _step in 12:
-			_ball.advance(PinballLab.STEP)
+			_ball.advance(TEST_STEP)
 		_check(_ball.velocity.dot(normal) > 1.0, "Ball reflects from the rounded corner")
 	_ball.gravity = 2100.0
 
@@ -485,7 +487,7 @@ func _test_lower_contacts() -> void:
 			var point := _boundary.to_global(local_point)
 			_main.place_ball(point + normal * (_ball.radius + 6.0), -normal * 1950.0)
 			for _step in 6:
-				_ball.advance(PinballLab.STEP)
+				_ball.advance(TEST_STEP)
 			_check(_ball.velocity.dot(normal) > 0.0, "Lower edge reflects at distance %.1f" % distance)
 	for side: int in 2:
 		for ratio: float in [0.02, 0.25, 0.5, 0.75, 0.98]:
@@ -494,7 +496,7 @@ func _test_lower_contacts() -> void:
 			var normal: Vector2 = contact[1]
 			_main.place_ball(point + normal * (_ball.radius + 24.0), -normal * 1500.0)
 			for _step in 24:
-				_ball.advance(PinballLab.STEP)
+				_ball.advance(TEST_STEP)
 			_check(_ball.velocity.dot(normal) > 0.0, "Straight lower edge reflects on side %d at %.2f" % [side, ratio])
 			_check(is_equal_approx(_boundary.rotation, 0.0), "Surface does not rotate")
 	var original_restitution := _boundary.lower_restitution
@@ -507,7 +509,7 @@ func _test_lower_contacts() -> void:
 			_main.flippers.restitution = bounce
 			_main.place_ball(point + normal * (_ball.radius + 6.0), -normal * 600.0)
 			for _step in 12:
-				_ball.advance(PinballLab.STEP)
+				_ball.advance(TEST_STEP)
 			_check(absf(_ball.velocity.dot(normal) - 600.0 * bounce) < 0.1,
 				"Lower restitution controls the unpressed flipper interval")
 	_boundary.lower_restitution = 0.0
@@ -520,7 +522,7 @@ func _test_lower_contacts() -> void:
 		_main.place_ball(point + normal * (_ball.radius + 6.0))
 		var maximum_outward := 0.0
 		for _step in 30:
-			_ball.advance(PinballLab.STEP)
+			_ball.advance(TEST_STEP)
 			maximum_outward = maxf(maximum_outward, _ball.velocity.dot(normal))
 		# This is the previous 1-unit/s tolerance converted to the 1920-wide coordinate scale.
 		_check(maximum_outward < 3.0, "Zero restitution does not bounce under gravity: %.5f" % maximum_outward)
@@ -554,7 +556,7 @@ func _test_connections() -> void:
 				_main.place_ball(start - tangent * direction * 60.0
 					+ normal * (_ball.radius + 0.06), velocity)
 				for _step in 64:
-					_ball.advance(PinballLab.STEP)
+					_ball.advance(TEST_STEP)
 				_check(_ball.velocity.distance_to(velocity) < 0.1,
 					"Ball crosses the pivot in either direction without catching or bouncing")
 	_fixture()
@@ -596,7 +598,7 @@ func _test_strikes() -> void:
 			_boundary.wall_restitution = 1.0 - bounce
 			_main.place_ball(middle + normal * (_ball.radius + 6.0), -normal * 600.0)
 			for _step in 12:
-				_ball.advance(PinballLab.STEP)
+				_ball.advance(TEST_STEP)
 			_check(absf(_ball.velocity.dot(normal) - 600.0 * bounce) < 0.2,
 				"Held flipper uses its own restitution independently of walls")
 		_boundary.lower_restitution = 0.1
@@ -722,7 +724,7 @@ func _moving_hit(side: int, ratio: float, speed: float, incoming: float, rate: f
 	for _frame in 3:
 		var remaining := 1.0 / rate
 		while remaining > 0.000001:
-			var step := minf(minf(PinballLab.STEP, remaining),
+			var step := minf(minf(TEST_STEP, remaining),
 				_main.flippers.motion_step_limit(_ball.radius, side == 0, side == 1))
 			_main.flippers.advance(step, side == 0, side == 1)
 			_ball.advance(step)
@@ -762,7 +764,7 @@ func _test_return_contact(flipper: PinballFlipper) -> void:
 			responses.append(PinballBall.reflected_velocity(incoming, hit_normal,
 				_main.flippers.restitution, flipper.surface_velocity_at(hit_point)))
 	_ball.bounced.connect(on_bounced)
-	_ball.advance(PinballLab.STEP)
+	_ball.advance(TEST_STEP)
 	_ball.bounced.disconnect(on_bounced)
 	_check(responses.size() == 2, "Ball contacts the returning flipper")
 	if responses.size() == 2:
@@ -820,7 +822,7 @@ func _test_bumper_missiles(bumper: PinballBumper) -> void:
 			"Each missile starts at the bumper center with the configured penetration limit")
 	launcher.free()
 	bumper.hit(point)
-	_main.advance(_main.STEP)
+	_main.advance(TEST_STEP)
 	_check(not is_instance_valid(_main.launcher), "The playfield advances without a launcher")
 
 
@@ -832,7 +834,7 @@ func _test_bumper_and_respawn() -> void:
 	_ball.gravity = 0.0
 	_main.place_ball(bumper.global_position + Vector2(0.0, -105.0), Vector2(0.0, 300.0))
 	for _step in 40:
-		_ball.advance(PinballLab.STEP)
+		_ball.advance(TEST_STEP)
 	_check(_ball.velocity.y < -1350.0, "Bumper preserves minimum exit speed")
 	bumper.queue_free()
 	_ball.gravity = 2100.0

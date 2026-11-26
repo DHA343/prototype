@@ -141,12 +141,22 @@ func surface_velocity_at(point: Vector2, equalization: float = 0.0) -> Vector2:
 
 
 func is_rising() -> bool:
-	return angular_velocity * _direction > 0.0
+	return _is_rising_at(angular_velocity)
 
 
 func is_striking(point: Vector2, normal: Vector2) -> bool:
-	# The round root joins a fixed wall; touching it must not grant a powered shot.
-	return is_rising() and to_local(point).x > 0.0 and normal.dot(strike_normal()) > 0.5
+	return is_rising() and _is_shot_face(point, normal, global_transform)
+
+
+func contact_info(point: Vector2, normal: Vector2, equalization: float) -> Dictionary:
+	var striking := is_striking(point, normal)
+	var surface := surface_velocity_at(point)
+	return {
+		"flipper": self, "point": point, "normal": normal,
+		"ratio": contact_ratio(point), "is_striking": striking,
+		"surface_velocity": surface,
+		"strike_surface_velocity": surface_velocity_at(point, equalization) if striking else surface,
+	}
 
 
 func strike_normal() -> Vector2:
@@ -227,17 +237,37 @@ func _target_offset(pressed: bool, swing_angle: float) -> float:
 	return _direction * deg_to_rad(swing_angle) if pressed else 0.0
 
 
+func _contact_outline(_pose: Transform2D) -> PackedVector2Array:
+	return _outline
+
+
+func _is_rising_at(omega: float) -> bool:
+	return omega * _direction > 0.0
+
+
+func _is_shot_face(point: Vector2, normal: Vector2, pose: Transform2D) -> bool:
+	# The rounded flipper is also used by the older experiment scenes.
+	var upper := pose.basis_xform(Vector2(0.0, _direction)).normalized()
+	return (pose.affine_inverse() * point).x > 0.0 and normal.dot(upper) > 0.5
+
+
+func _surface_velocity_for_contact(
+	point: Vector2, pose: Transform2D, omega: float, equalization: float, _on_shot_face: bool,
+) -> Vector2:
+	return _point_velocity(point - pose.origin, pose * _tip.position - pose.origin,
+		omega, equalization)
+
+
 func _contact_at(
 	center: Vector2, ball_radius: float, pose: Transform2D, omega: float, equalization: float,
 ) -> Dictionary:
-	var start := pose.origin
-	var end := pose * _tip.position
+	var outline := _contact_outline(pose)
 	var closest := Vector2.ZERO
 	var distance_squared := INF
 	var face_normal := Vector2.ZERO
-	for index in _outline.size():
-		var a := pose * _outline[index]
-		var b := pose * _outline[(index + 1) % _outline.size()]
+	for index in outline.size():
+		var a := pose * outline[index]
+		var b := pose * outline[(index + 1) % outline.size()]
 		var candidate := Geometry2D.get_closest_point_to_segment(center, a, b)
 		var distance := center.distance_squared_to(candidate)
 		if distance < distance_squared:
@@ -245,29 +275,30 @@ func _contact_at(
 			closest = candidate
 			var edge := b - a
 			face_normal = Vector2(edge.y, -edge.x).normalized()
-	var inside := Geometry2D.is_point_in_polygon(pose.affine_inverse() * center, _outline)
+	var inverse := pose.affine_inverse()
+	var inside := Geometry2D.is_point_in_polygon(inverse * center, outline)
 	if not inside and distance_squared > ball_radius * ball_radius:
 		return {}
 	var normal := face_normal if inside else (center - closest).normalized()
 	if normal == Vector2.ZERO:
 		normal = face_normal
-	var point := closest
-	var arm := point - start
-	var contact_x := (pose.affine_inverse() * point).x
-	var ratio := clampf(contact_x / length, 0.0, 1.0)
-	var upper_normal := pose.basis_xform(Vector2(0.0, _direction)).normalized()
-	var on_shot_face := contact_x > 0.0 and normal.dot(upper_normal) > 0.5
-	var is_raising := omega * _direction > 0.0 and on_shot_face
+	var ratio := clampf((inverse * closest).x / length, 0.0, 1.0)
+	var on_shot_face := _is_shot_face(closest, normal, pose)
+	var striking := _is_rising_at(omega) and on_shot_face
+	var surface := _surface_velocity_for_contact(closest, pose, omega, 0.0, on_shot_face)
+	var strike_surface := surface
+	if striking and equalization != 0.0:
+		strike_surface = _surface_velocity_for_contact(closest, pose, omega, equalization, on_shot_face)
+	var distance := sqrt(distance_squared)
 	return {
-		"point": point, "normal": normal,
+		"point": closest, "normal": normal,
 		"pose": pose,
-		"depth": ball_radius + sqrt(distance_squared) if inside else ball_radius - sqrt(distance_squared),
-		"surface_velocity": _point_velocity(arm, end - start, omega, 0.0),
-		"strike_surface_velocity": _point_velocity(arm, end - start, omega,
-			equalization if is_raising else 0.0),
+		"depth": ball_radius + distance if inside else ball_radius - distance,
+		"surface_velocity": surface,
+		"strike_surface_velocity": strike_surface,
 		"ratio": ratio,
 		"on_shot_face": on_shot_face,
-		"is_striking": is_raising,
+		"is_striking": striking,
 	}
 
 
@@ -306,6 +337,10 @@ class Swing:
 	var origin: Vector2
 	var reach: float
 
+	func pose_at(elapsed: float) -> Transform2D:
+		var angle := start_angle + speed * minf(elapsed, stop_time)
+		return parent_pose * Transform2D(angle, flipper.position)
+
 	func sweep(
 		center: Vector2, velocity: Vector2, radius: float,
 		elapsed: float, duration: float, equalization: float, accept: Callable = Callable(),
@@ -342,9 +377,7 @@ class Swing:
 		var samples := maxi(1, ceili(travel / SWEEP_STEP))
 		for index in range(samples + 1 if duration > 0.0 else 1):
 			var time := duration * float(index) / samples
-			var at := elapsed + time
-			var angle := start_angle + speed * minf(at, stop_time)
-			var pose := parent_pose * Transform2D(angle, flipper.position)
+			var pose := pose_at(elapsed + time)
 			var hit := flipper._contact_at(center + velocity * time, radius, pose, omega, equalization)
 			if hit.is_empty():
 				continue

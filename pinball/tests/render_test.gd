@@ -8,6 +8,7 @@ func _initialize() -> void:
 
 
 func _run() -> void:
+	_check(DirAccess.make_dir_recursive_absolute("res://_temp") == OK, "Preview directory exists")
 	var scene := load("res://main/main.tscn") as PackedScene
 	var main := scene.instantiate() as PinballLab
 	root.add_child(main)
@@ -70,12 +71,34 @@ func _run() -> void:
 		"Migrated effects remain available")
 	post.enabled = false
 	await _draw_frames()
+	await _test_shot_guide(main)
 	for failure: String in _failures:
 		printerr("FAIL: " + failure)
 	print("Render failures: ", _failures.size())
 	main.queue_free()
 	await process_frame
 	quit(0 if _failures.is_empty() else 1)
+
+
+func _test_shot_guide(main: PinballLab) -> void:
+	main.reset_ball()
+	var table := main.flippers.items[0] as TableFlipper
+	var points := table.world_polygon_at(table.global_transform)
+	var normal := (points[1] - points[0]).orthogonal().normalized()
+	var ball := main.ball
+	main.place_ball(points[0].lerp(points[1], 0.55) + normal * (ball.radius + 1.0),
+		-normal * 300.0)
+	var predicted := main.predict_shot()
+	_check(predicted != Vector2.ZERO, "Directed shot has a visible guide")
+	if predicted == Vector2.ZERO:
+		return
+	await _draw_frames()
+	var sample := (ball.global_position + predicted.normalized() * 100.0) * (2.0 / 3.0)
+	var visible := _brightness(root.get_texture().get_image(), sample, 4.0)
+	main.flippers.disable_target(ball)
+	await _draw_frames()
+	var hidden := _brightness(root.get_texture().get_image(), sample, 4.0)
+	_check(visible > hidden + 0.12, "Guide pixels disappear when guard 3 disables the shot")
 
 
 func _draw_frames() -> void:

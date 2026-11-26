@@ -85,29 +85,27 @@ func plan_motion(pressed: bool, swing_angle: float, speed: float) -> Swing:
 
 
 func surface_velocity_at(point: Vector2, equalization: float = 0.0) -> Vector2:
-	if not _is_upper_contact(point, global_transform):
+	var pose := global_transform
+	return _surface_velocity_for_contact(point, pose, angular_velocity, equalization,
+		_is_upper_contact(point, pose))
+
+
+func _contact_outline(pose: Transform2D) -> PackedVector2Array:
+	return polygon_at(pose)
+
+
+func _is_shot_face(point: Vector2, _normal: Vector2, pose: Transform2D) -> bool:
+	return _is_upper_contact(point, pose)
+
+
+func _surface_velocity_for_contact(
+	point: Vector2, pose: Transform2D, omega: float, equalization: float, on_shot_face: bool,
+) -> Vector2:
+	if not on_shot_face:
 		return Vector2.ZERO
-	return _upper_velocity(super.surface_velocity_at(point, equalization), global_transform)
-
-
-func _contact_at(
-	center: Vector2, ball_radius: float, pose: Transform2D, omega: float, equalization: float,
-) -> Dictionary:
-	var visual := _outline
-	_outline = polygon_at(pose)
-	var hit := super._contact_at(center, ball_radius, pose, omega, equalization)
-	_outline = visual
-	if hit.is_empty():
-		return hit
-	if _is_upper_contact(hit.point, pose):
-		hit.surface_velocity = _upper_velocity(hit.surface_velocity, pose)
-		hit.strike_surface_velocity = _upper_velocity(hit.strike_surface_velocity, pose)
-	else:
-		hit.surface_velocity = Vector2.ZERO
-		hit.strike_surface_velocity = Vector2.ZERO
-		hit.on_shot_face = false
-		hit.is_striking = false
-	return hit
+	var rotation_velocity := super._surface_velocity_for_contact(
+		point, pose, omega, equalization, on_shot_face)
+	return _upper_velocity(rotation_velocity, pose)
 
 
 func _is_upper_contact(point: Vector2, pose: Transform2D) -> bool:
