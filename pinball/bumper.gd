@@ -2,7 +2,7 @@
 class_name PinballBumper
 extends StaticBody2D
 
-signal hit_occurred(point: Vector2)
+signal hit_occurred(point: Vector2, source: CharacterBody2D)
 
 @export_range(18.0, 96.0, 3.0, "suffix:px") var radius: float = 54.0:
 	set(value):
@@ -34,7 +34,7 @@ func _draw() -> void:
 	draw_circle(Vector2.ZERO, radius * _visual_scale, color)
 
 
-func hit(point: Vector2) -> void:
+func hit(point: Vector2, source: CharacterBody2D = null) -> void:
 	if _hit_tween != null:
 		_hit_tween.kill()
 	_hit_tween = create_tween()
@@ -46,7 +46,7 @@ func hit(point: Vector2) -> void:
 		_set_visual_scale, hit_scale, 1.0, return_duration
 	) \
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	hit_occurred.emit(point)
+	hit_occurred.emit(point, source)
 
 
 func _set_visual_scale(value: float) -> void:

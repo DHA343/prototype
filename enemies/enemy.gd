@@ -78,17 +78,7 @@ func prepare(delta: float) -> void:
 	if not active:
 		return
 	_advance_presentation(delta)
-	_repath_remaining -= delta
-	if _routes != null and (_repath_remaining <= 0.0 or _path_revision != _routes.revision):
-		_path = _routes.path_from(global_position, radius)
-		_path_index = 0
-		_path_revision = _routes.revision
-		_repath_remaining = repath_interval
-	while _path_index < _path.size() and global_position.distance_to(_path[_path_index]) < 3.0:
-		_path_index += 1
-	var desired := Vector2.ZERO
-	if _path_index < _path.size():
-		desired = global_position.direction_to(_path[_path_index]) * move_speed
+	var desired := _route_velocity(delta)
 	_movement_velocity = _movement_velocity.move_toward(desired, acceleration * delta)
 
 
@@ -121,9 +111,13 @@ func knockback_velocity() -> Vector2:
 	return _knockback_initial * ratio * ratio
 
 
-func receive_hit(amount: float, point: Vector2, impulse: Vector2) -> void:
+func receive_ball_hit(amount: float, point: Vector2, impulse: Vector2) -> void:
+	receive_hit(amount, point, impulse)
+
+
+func receive_hit(amount: float, point: Vector2, impulse: Vector2) -> bool:
 	if not active or _spawn_elapsed < grow_duration:
-		return
+		return false
 	current_health = maxf(0.0, current_health - maxf(amount, 0.0))
 	var impulse_velocity := impulse * (1.0 - knockback_resistance)
 	_knockback_initial = (knockback_velocity() + impulse_velocity).limit_length(max_knockback)
@@ -137,6 +131,7 @@ func receive_hit(amount: float, point: Vector2, impulse: Vector2) -> void:
 		if death_cue != null:
 			sound_requested.emit(SoundRequest.new(death_cue, global_position, self))
 		finish(ExitReason.KILLED)
+	return true
 
 
 func finish(reason: ExitReason) -> void:
@@ -147,6 +142,20 @@ func finish(reason: ExitReason) -> void:
 	visible = false
 	removed.emit(self, reason)
 	queue_free()
+
+
+func _route_velocity(delta: float) -> Vector2:
+	_repath_remaining -= delta
+	if _routes != null and (_repath_remaining <= 0.0 or _path_revision != _routes.revision):
+		_path = _routes.path_from(global_position, radius)
+		_path_index = 0
+		_path_revision = _routes.revision
+		_repath_remaining = repath_interval
+	while _path_index < _path.size() and global_position.distance_to(_path[_path_index]) < 3.0:
+		_path_index += 1
+	if _path_index < _path.size():
+		return global_position.direction_to(_path[_path_index]) * move_speed
+	return Vector2.ZERO
 
 
 func _advance_presentation(delta: float) -> void:

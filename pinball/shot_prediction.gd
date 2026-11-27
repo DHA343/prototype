@@ -63,7 +63,7 @@ func predict(ball: PinballBall, flippers: PinballFlippers) -> Vector2:
 
 func _prepare_query(ball: PinballBall, swings: Array[PinballFlipper.Swing]) -> void:
 	_query.shape = (ball.get_node("CollisionShape2D") as CollisionShape2D).shape
-	_query.collision_mask = ball.collision_mask
+	_query.collision_mask = ball.solid_collision_mask()
 	var ball_rid := ball.get_rid()
 	var changed := _ball_rid != ball_rid or _excluded.size() != swings.size() + 1
 	if not changed:

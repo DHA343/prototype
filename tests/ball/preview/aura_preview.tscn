@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://cld3f6gp45b52"]
+
+[ext_resource type="Script" uid="uid://d056q8u6p2q41" path="res://tests/ball/preview/aura_preview.gd" id="1_preview"]
+
+[sub_resource type="Theme" id="Theme_preview"]
+default_font_size = 24
+
+[sub_resource type="Gradient" id="Gradient_ua4af"]
+colors = PackedColorArray(1, 0, 0, 1, 0, 1, 0, 1)
+
+[node name="AuraPreview" type="Control" unique_id=1183365473]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_preview")
+script = ExtResource("1_preview")
+color_gradient = SubResource("Gradient_ua4af")
+lifetime = 0.11000000000000001
+opacity = 1.0
+root_color_hold = 0.1
+
+[node name="Background" type="ColorRect" parent="." unique_id=64842043]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.031, 0.043, 0.063, 1)
+
+[node name="Layout" type="VBoxContainer" parent="." unique_id=393816126]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 260.0
+offset_top = 64.0
+offset_right = -260.0
+grow_horizontal = 2
+theme_override_constants/separation = 28
+
+[node name="Heading" type="HBoxContainer" parent="Layout" unique_id=437936949]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="Title" type="Label" parent="Layout/Heading" unique_id=1885089870]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 52
+text = "Ball aura"
+
+[node name="Controls" type="Label" parent="Layout/Heading" unique_id=170335437]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.635, 0.733, 0.82, 1)
+text = "A / D  Flippers  ·  R  Reset"
+
+[node name="Boards" type="HBoxContainer" parent="Layout" unique_id=1460181568]
+layout_mode = 2
+theme_override_constants/separation = 40

@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://bi87i7yvodvvw"]
+
+[ext_resource type="PackedScene" uid="uid://dvdsb43n7d23u" path="res://main/main.tscn" id="1_main"]
+[ext_resource type="Script" uid="uid://bbd0wr5qtsunh" path="res://tests/enemy/enemy_physics.gd" id="2_lab"]
+[ext_resource type="PackedScene" path="res://tests/enemy/physics_enemy.tscn" id="3_enemy"]
+[ext_resource type="PackedScene" path="res://tests/enemy/homing_2.tscn" id="4_homing"]
+[ext_resource type="Script" path="res://tests/enemy/ball.gd" id="5_ball"]
+[ext_resource type="Script" path="res://tests/ball/ball_outline.gd" id="6_outline"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_yf35m"]
+radius = 24.0
+
+[node name="EnemyPhysics" unique_id=546306041 instance=ExtResource("1_main")]
+script = ExtResource("2_lab")
+enemy_gravity_enabled = false
+enemy_gravity = 90.0
+enemy_route_speed = 120.0
+enemy_max_speed = 300.0
+enemy_collisions_enabled = true
+enemy_ball_restitution = 0.47
+enemy_knockback_resistance = 0.0
+enemy_downward_knockback_scale = 0.25
+ball_pierces_enemies = true
+reaction_mode = 3
+reaction_duration = 0.2
+reaction_slow_speed_ratio = 0.5
+
+[node name="Ball" parent="Playfield" parent_id_path=PackedInt32Array(172764747) index="2" unique_id=361712701]
+script = ExtResource("5_ball")
+
+[node name="CollisionShape2D" parent="Playfield/Ball" parent_id_path=PackedInt32Array(361712701) index="0" unique_id=1980512776]
+shape = SubResource("CircleShape2D_yf35m")
+
+[node name="KnockbackOutline" type="Node2D" parent="Playfield/Ball" index="1"]
+visible = false
+script = ExtResource("6_outline")
+radius = 24.0
+tint = Color(1, 0.76, 0.22, 1)
+
+[node name="MissileLauncher" parent="Playfield" parent_id_path=PackedInt32Array(172764747) index="6" unique_id=2131053223]
+missile_scene = ExtResource("4_homing")
+volley_size = 2
+
+[node name="EnemySpawner" parent="." index="2" unique_id=1347142709]
+enemy_scene = ExtResource("3_enemy")

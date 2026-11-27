@@ -14,6 +14,10 @@ var boundary: PinballBoundary
 var flippers: PinballFlippers
 var native_contact: Callable
 var contact_recorded: Callable
+var segment_traveled: Callable
+var trajectory_changed: Callable
+var segment_start_time: float = 0.0
+var elapsed_in_step: float = 0.0
 ## Historical experiment fixtures can supply their own separation policy.
 var separate_new_contacts: bool = true
 var _guard_exceptions: Array[PinballFlipper] = []
@@ -71,6 +75,7 @@ func advance_motion(delta: float, swings: Array[PinballFlipper.Swing]) -> void:
 	var swept := not swings.is_empty()
 	var update_start := body.global_position
 	for _index in MAX_CONTACTS:
+		var segment_start := body.global_position
 		var motion := body.velocity * remaining
 		var collision := body.move_and_collide(motion, swept, CONTACT_MARGIN, true)
 		var fraction := 1.0
@@ -84,7 +89,14 @@ func advance_motion(delta: float, swings: Array[PinballFlipper.Swing]) -> void:
 		if swept and not flippers.is_target_disabled(body.get_instance_id()):
 			hit = flippers.first_contact(swings, body.global_position, body.velocity,
 				radius, elapsed, collision_time)
-		if not hit.is_empty() and (collision == null or hit.time < collision_time):
+		var flipper_first: bool = not hit.is_empty() and (collision == null or hit.time < collision_time)
+		segment_start_time = elapsed
+		var travel_time: float = hit.time if flipper_first else collision_time
+		elapsed_in_step = elapsed + travel_time
+		if segment_traveled.is_valid():
+			var travel: Vector2 = body.velocity * hit.time if flipper_first else motion * fraction
+			segment_traveled.call(segment_start, segment_start + travel)
+		if flipper_first:
 			if separate_new_contacts and _is_new_contact(hit, update_start, elapsed):
 				hit.normal_separation = true
 			apply_swept_contact(hit)
@@ -131,9 +143,25 @@ func resolve_contact(collision: KinematicCollision2D) -> void:
 	var surface := moving.velocity if moving != null else Vector2.ZERO
 	var incoming := -(body.velocity - surface).dot(normal)
 	var restitution := boundary.restitution_for(collision.get_collider()) if boundary != null else 0.1
-	body.velocity = reflected_velocity(body.velocity, normal, restitution, surface)
+	var bumper := collision.get_collider() as PinballBumper
+	var incoming_velocity := body.velocity
+	if bumper != null and incoming > 0.0:
+		var outward_speed := maxf(incoming * restitution, bumper.exit_speed)
+		body.velocity += normal * (incoming + outward_speed)
+		if incoming > 30.0:
+			bumper.hit(point, body)
+	else:
+		body.velocity = reflected_velocity(body.velocity, normal, restitution, surface)
+	record_trajectory_change(incoming_velocity)
 	if incoming > 30:
 		_record(point, normal)
+
+
+func record_trajectory_change(incoming_velocity: Vector2, is_flip: bool = false) -> void:
+	if not trajectory_changed.is_valid():
+		return
+	if is_flip or not body.velocity.is_equal_approx(incoming_velocity):
+		trajectory_changed.call(is_flip, elapsed_in_step)
 
 
 func _is_new_contact(hit: Dictionary, update_start: Vector2, elapsed: float) -> bool:
@@ -154,13 +182,16 @@ func _respond_to_flipper(hit: Dictionary) -> void:
 	var approach_speed := flipper_approach_speed(body.velocity, hit)
 	if approach_speed <= 0.0:
 		return
-	if is_flip_shot(hit, approach_speed):
+	var incoming_velocity := body.velocity
+	var is_flip := is_flip_shot(hit, approach_speed)
+	if is_flip:
 		body.velocity = flippers.shot_velocity(body.velocity, hit, flippers.outward_shot_direction(hit))
 		if flippers.disable_target(body):
 			_exclude_flippers()
 	else:
 		body.velocity = reflected_velocity(
 			body.velocity, hit.normal, flippers.restitution, hit.surface_velocity)
+	record_trajectory_change(incoming_velocity, is_flip)
 	if approach_speed > 30:
 		_record(hit.point, hit.normal)
 

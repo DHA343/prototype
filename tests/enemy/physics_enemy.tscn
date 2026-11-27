@@ -1,0 +1,7 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://enemies/enemy.tscn" id="1_enemy"]
+[ext_resource type="Script" path="res://tests/enemy/physics_enemy.gd" id="2_motion"]
+
+[node name="Enemy" instance=ExtResource("1_enemy")]
+script = ExtResource("2_motion")

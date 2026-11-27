@@ -1,0 +1,14 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://cy3c208ylouii"]
+
+[ext_resource type="Shader" uid="uid://dixe716ppjg6i" path="res://tests/ball/sphere.gdshader" id="1_sphere"]
+
+[resource]
+resource_name = "Silver band"
+shader = ExtResource("1_sphere")
+shader_parameter/pattern = 1
+shader_parameter/body_color = Color(0.8, 0.85, 0.9, 1)
+shader_parameter/pattern_color = Color(0.14, 0.23, 0.32, 1)
+shader_parameter/line_width = 0.12
+shader_parameter/gloss = 0.31
+shader_parameter/metal = 0.14
+shader_parameter/surface_basis = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)

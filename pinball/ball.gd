@@ -9,6 +9,7 @@ const Motion = preload("res://pinball/motion.gd")
 const MAX_CONTACTS: int = Motion.MAX_CONTACTS
 const CONTACT_MARGIN: float = Motion.CONTACT_MARGIN
 const SWEEP_SEPARATION: float = Motion.SEPARATION_MARGIN
+const ENEMY_MASK: int = 1 << 2
 
 @export_range(6.0, 36.0, 1.5, "suffix:px") var radius: float = 15.0:
 	set(value):
@@ -32,6 +33,7 @@ const SWEEP_SEPARATION: float = Motion.SEPARATION_MARGIN
 var boundary: PinballBoundary
 var flippers: PinballFlippers
 var active: bool = true
+var pierces_enemies: bool = false
 var last_contact: Vector2 = Vector2.ZERO
 var last_normal: Vector2 = Vector2.ZERO
 var _enemy_contacts: Array[Enemy] = []
@@ -74,17 +76,33 @@ func step_velocity(current_velocity: Vector2, delta: float) -> Vector2:
 	return _motion.step_velocity(current_velocity, delta)
 
 
-func advance(delta: float, swings: Array[PinballFlipper.Swing] = []) -> void:
+func advance(
+	delta: float, swings: Array[PinballFlipper.Swing] = [], enemies: Array[Enemy] = [],
+) -> void:
 	if not active:
 		return
-	_release_enemy_contacts()
+	_release_enemy_contacts(global_position)
 	_sync_motion()
+	var solid_mask := solid_collision_mask()
+	if solid_mask == collision_mask:
+		_motion.advance(delta, swings)
+		return
+
+	var original_mask := collision_mask
+	collision_mask = solid_mask
+	_motion.segment_traveled = _hit_enemies_along.bind(enemies)
 	_motion.advance(delta, swings)
+	_motion.segment_traveled = Callable()
+	collision_mask = original_mask
+
+
+func solid_collision_mask() -> int:
+	return collision_mask & ~ENEMY_MASK if pierces_enemies else collision_mask
 
 
 func _resolve_contact(collision: KinematicCollision2D) -> void:
 	var collider := collision.get_collider()
-	if collider is PinballFlipper:
+	if collider is PinballFlipper or collider is PinballBumper:
 		_sync_motion()
 		_motion.resolve_contact(collision)
 		return
@@ -97,29 +115,58 @@ func _resolve_contact(collision: KinematicCollision2D) -> void:
 		return
 	var impact_speed := velocity.length()
 	var restitution := enemy.restitution if enemy != null else boundary.restitution_for(collider)
-	var bumper := collider as PinballBumper
-	if bumper != null:
-		var outward_speed := maxf(incoming_speed * restitution, bumper.exit_speed)
-		velocity += normal * (incoming_speed + outward_speed)
-		if incoming_speed > 30:
-			bumper.hit(point)
-	else:
-		velocity = reflected_velocity(velocity, normal, restitution, surface_velocity)
-	if enemy != null and impact_speed > 30 and enemy not in _enemy_contacts:
-		_enemy_contacts.append(enemy)
-		enemy.receive_hit(damage + impact_speed * damage_per_speed, point,
-			-normal * (knockback + impact_speed * knockback_per_speed))
-		if hit_sound != null:
-			sound_requested.emit(SoundRequest.new(hit_sound, point, self))
+	var incoming_velocity := velocity
+	velocity = reflected_velocity(velocity, normal, restitution, surface_velocity)
+	# An enemy that redirects the shot is hit before the new trajectory takes effect.
+	if enemy != null:
+		_hit_enemy(enemy, point, normal, impact_speed, _motion.elapsed_in_step)
+	_motion.record_trajectory_change(incoming_velocity)
 	if incoming_speed > 30:
 		_record_contact(point, normal)
 
 
-func _release_enemy_contacts() -> void:
+func _hit_enemies_along(start: Vector2, end: Vector2, enemies: Array[Enemy]) -> void:
+	var impact_speed := velocity.length()
+	if impact_speed <= 30.0 or start.is_equal_approx(end):
+		return
+	_release_enemy_contacts(start)
+	# Lethal hits remove enemies from the lab's list immediately.
+	for enemy: Enemy in enemies.duplicate():
+		if not enemy.active or (enemy.collision_layer & ENEMY_MASK) == 0 or enemy in _enemy_contacts:
+			continue
+		var center := enemy.global_position
+		var combined_radius := radius + enemy.radius
+		var fraction := 0.0
+		if start.distance_squared_to(center) > combined_radius * combined_radius:
+			fraction = Geometry2D.segment_intersects_circle(start, end, center, combined_radius)
+		if fraction < 0.0:
+			continue
+		var normal := center.direction_to(start.lerp(end, fraction))
+		if normal == Vector2.ZERO:
+			normal = end.direction_to(start)
+		if (velocity - enemy.velocity).dot(normal) >= 0.0:
+			continue
+		var hit_time := lerpf(_motion.segment_start_time, _motion.elapsed_in_step, fraction)
+		_hit_enemy(enemy, center + normal * enemy.radius, normal, impact_speed, hit_time)
+
+
+func _hit_enemy(
+	enemy: Enemy, point: Vector2, normal: Vector2, impact_speed: float, _hit_time: float,
+) -> void:
+	if impact_speed <= 30.0 or enemy in _enemy_contacts:
+		return
+	_enemy_contacts.append(enemy)
+	enemy.receive_ball_hit(damage + impact_speed * damage_per_speed, point,
+		-normal * (knockback + impact_speed * knockback_per_speed))
+	if hit_sound != null:
+		sound_requested.emit(SoundRequest.new(hit_sound, point, self))
+
+
+func _release_enemy_contacts(point: Vector2) -> void:
 	for index in range(_enemy_contacts.size() - 1, -1, -1):
 		var enemy := _enemy_contacts[index]
 		if not is_instance_valid(enemy) or not enemy.active \
-			or global_position.distance_to(enemy.global_position) > radius + enemy.radius + 1.5:
+			or point.distance_to(enemy.global_position) > radius + enemy.radius + 1.5:
 			_enemy_contacts.remove_at(index)
 
 

@@ -49,13 +49,9 @@ func advance(delta: float) -> void:
 	var right_pressed := Input.is_action_pressed(&"pinball_right")
 	var swings := flippers.plan_motion(left_pressed, right_pressed)
 	flippers.advance(delta, left_pressed, right_pressed)
-	for enemy: Enemy in enemies:
-		enemy.prepare(delta)
-	crowd.calculate(enemies, delta, boundary.exit_target())
-	for enemy: Enemy in enemies:
-		enemy.advance(delta)
+	_advance_enemies(delta, swings)
 	if ball.active:
-		ball.advance(delta, swings)
+		ball.advance(delta, swings, enemies)
 		if boundary.to_local(ball.global_position).y > boundary.bottom + 120.0:
 			ball.active = false
 			ball.visible = false
@@ -89,6 +85,14 @@ func predict_shot() -> Vector2:
 	return $Playfield/ShotGuide.predict_shot()
 
 
+func _advance_enemies(delta: float, _swings: Array[PinballFlipper.Swing]) -> void:
+	for enemy: Enemy in enemies:
+		enemy.prepare(delta)
+	crowd.calculate(enemies, delta, boundary.exit_target())
+	for enemy: Enemy in enemies:
+		enemy.advance(delta)
+
+
 func _can_spawn_enemy(point: Vector2, radius: float) -> bool:
 	if not routes.is_spawn_point(point, radius):
 		return false
@@ -118,8 +122,9 @@ func _on_enemy_removed(enemy: Enemy, _reason: Enemy.ExitReason) -> void:
 	enemies.erase(enemy)
 
 
-func _on_bumper_hit(point: Vector2, bumper: PinballBumper) -> void:
-	bumper_hit.emit(bumper.global_position)
+func _on_bumper_hit(point: Vector2, source: CharacterBody2D, bumper: PinballBumper) -> void:
+	if source == ball or source == null:
+		bumper_hit.emit(bumper.global_position)
 	if bumper.hit_sound != null:
 		_sound.request(SoundRequest.new(bumper.hit_sound, point, bumper))
 

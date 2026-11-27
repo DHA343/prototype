@@ -1,0 +1,33 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tests/ball/ball.gd" id="1_ball"]
+[ext_resource type="Script" path="res://tests/ball/ball_outline.gd" id="2_outline"]
+[ext_resource type="Script" path="res://tests/ball/ball_visual.gd" id="3_visual"]
+[ext_resource type="Resource" path="res://pinball/hit.tres" id="4_hit"]
+[ext_resource type="Script" path="res://tests/ball/ball_aura.gd" id="5_aura"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ball"]
+radius = 24.0
+
+[node name="Ball" type="CharacterBody2D"]
+collision_mask = 6
+script = ExtResource("1_ball")
+radius = 24.0
+gravity = 1500.0
+max_speed = 3600.0
+damage = 50.0
+hit_sound = ExtResource("4_hit")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ball")
+
+[node name="Aura" type="Node2D" parent="."]
+visible = false
+script = ExtResource("5_aura")
+
+[node name="Outline" type="Node2D" parent="."]
+visible = false
+script = ExtResource("2_outline")
+
+[node name="Sphere" type="Node2D" parent="."]
+script = ExtResource("3_visual")
